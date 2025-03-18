@@ -18,7 +18,7 @@ class FinanceUi extends StatelessWidget {
           bottom: TabBar(
             isScrollable: true,
             padding: EdgeInsets.all(0),
-            indicatorColor: Colors.green, // Green underline for active tab
+            indicatorColor: Colors.pink, // Green underline for active tab
             labelColor: Colors.green, // Active tab text color
             unselectedLabelColor: Colors.white, // Inactive tab text color
             tabs: [
