@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: const Text(
-          "Home", // Change this to your desired title
+          "asdfasdf", // Change this to your desired title
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
         centerTitle: true, // Centers the title
