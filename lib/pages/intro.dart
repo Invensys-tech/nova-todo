@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/finance/finance.dart';
-import 'package:flutter_application_1/pages/goal.dart';
+import 'package:flutter_application_1/pages/goal/goal.dart';
 import 'package:flutter_application_1/pages/home.dart';
 import 'package:flutter_application_1/pages/notes.dart';
 import 'package:flutter_application_1/pages/todo.dart';
@@ -13,7 +13,7 @@ class IntorPage extends StatefulWidget {
 }
 
 class _IntorPageState extends State<IntorPage> {
-  int selectedIndex = 1;
+  int selectedIndex = 2;
 
   Widget currentPage = HomePage();
 
