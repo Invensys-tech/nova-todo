@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/finance/common/balance.dart';
+import 'package:flutter_application_1/pages/finance/common/bank.dart';
 
 class BankPage extends StatefulWidget {
   const BankPage({super.key});
@@ -11,9 +13,10 @@ class _BankPageState extends State<BankPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff2F2F2F),
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.height * 0.045,
+          horizontal: MediaQuery.of(context).size.width * 0.045,
         ),
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
@@ -21,22 +24,16 @@ class _BankPageState extends State<BankPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(
-                  // Remove fixed height to allow content to determine height
-                  color: Color(0xff202020),
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.045,
-                  vertical: MediaQuery.of(context).size.height * 0.0095,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [],
-                ),
-              ),
+              BankBalance(),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              BankWidget(),
+              BankWidget(),
+              BankWidget(),
+              BankWidget(),
+              BankWidget(),
+              BankWidget(),
+              BankWidget(),
+              BankWidget(),
             ],
           ),
         ),

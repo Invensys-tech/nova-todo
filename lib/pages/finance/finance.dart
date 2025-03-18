@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/finance/analytics/analytics.dart';
 import 'package:flutter_application_1/pages/finance/bank/bank.dart';
+import 'package:flutter_application_1/pages/finance/loan/loanpage.dart';
 
 class FinanceUi extends StatelessWidget {
   const FinanceUi({super.key});
@@ -32,11 +33,11 @@ class FinanceUi extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Scaffold(body: AnalyticsPage()),
+            Scaffold(body: AnalyticsPage(), backgroundColor: Color(0xff2F2F2F)),
             Center(child: Text(" Transactions Page")),
             Center(child: Text(" Savings Page")),
-            Scaffold(body: BankPage()),
-            Column(children: [AnalyticsPage()]),
+            Scaffold(body: BankPage(), backgroundColor: Color(0xff2F2F2F)),
+            Scaffold(body: Loanpage(), backgroundColor: Color(0xff2F2F2F)),
           ],
         ),
       ),
