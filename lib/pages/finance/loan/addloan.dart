@@ -1,46 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
-import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AddExpense extends StatefulWidget {
-  const AddExpense({super.key});
+class AddLoan extends StatefulWidget {
+  const AddLoan({super.key});
 
   @override
-  State<AddExpense> createState() => _AddExpenseState();
+  State<AddLoan> createState() => _AddLoanState();
 }
 
-class _AddExpenseState extends State<AddExpense> {
-  final TextEditingController _amountController = TextEditingController();
-  final TextEditingController _expenseNameController = TextEditingController();
-  final TextEditingController _expenseTypeController = TextEditingController();
-  final TextEditingController _expenseCategoryController =
-      TextEditingController();
-  final TextEditingController _bankAccountCOntroller = TextEditingController();
-  final TextEditingController _paidByController = TextEditingController();
-
-  // final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+class _AddLoanState extends State<AddLoan> {
+  @override
+  final TextEditingController _loanerName = TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
+  final TextEditingController _amount = TextEditingController();
+  final TextEditingController _type = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _bank = TextEditingController();
 
   final List<String> searchItems = [
-    "Orange",
-    "Apple",
-    "Banana",
-    "Mango",
-    "Carrot",
-    "Watermelon",
-    "Grapes",
-    "Dates",
-    "Dragon Fruit",
+    "Abebe",
+    "Kebede",
+    "Chala",
+    "Alemu",
+    "Ayele",
   ];
-  final _expenseStream = Supabase.instance.client
-      .from('expense')
-      .stream(primaryKey: ['id']);
-  @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff2F2F2F),
@@ -53,7 +42,7 @@ class _AddExpenseState extends State<AddExpense> {
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: Text(
-          "Add Expense",
+          "Add Loan",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -72,7 +61,7 @@ class _AddExpenseState extends State<AddExpense> {
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Text(
-                "Amount",
+                "Loaner Name",
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
@@ -80,52 +69,12 @@ class _AddExpenseState extends State<AddExpense> {
                 ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              TextFields(
-                hinttext: '0.0',
-                whatIsInput: '0',
-                controller: _amountController,
-                icon: Icons.attach_money,
-              ),
 
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Text(
-                "Expense Name",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              TextFields(
-                hinttext: 'Lunch At Bole',
-                whatIsInput: '1',
-                controller: _expenseNameController,
-                icon: Icons.fingerprint,
-              ),
-
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
-              Text(
-                "Category",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              // CustomDropdown(
-              //   hintText: "Select an option",
-              //   icon: Icons.local_mall,
-              //   items: ["Option 1", "Option 2", "Option 3"],
-              //   controller: dropdownController,
-              // ),
               AutoCompleteText(
                 suggestions: searchItems,
-                controller: _expenseCategoryController,
-                hintText: "Search for a Category...",
-                icon: Icons.search,
+                controller: _loanerName,
+                hintText: "Loaner Name",
+                icon: Icons.shopping_bag_rounded,
                 suggestionBuilder: (String text) {
                   return ListTile(
                     title: Text(
@@ -149,7 +98,42 @@ class _AddExpenseState extends State<AddExpense> {
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Text(
-                "Types of Expenses",
+                "Phone Number",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white70,
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+              TextFields(
+                hinttext: 'Phone Number',
+                whatIsInput: '0',
+                controller: _phoneNumber,
+                icon: Icons.phone,
+              ),
+
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Text(
+                "Amount",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white70,
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              TextFields(
+                hinttext: '0.0',
+                whatIsInput: '0',
+                controller: _amount,
+                icon: Icons.attach_money,
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+              Text(
+                "Types ",
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
@@ -160,11 +144,12 @@ class _AddExpenseState extends State<AddExpense> {
               CustomDropdown(
                 hintText: "Select an option",
                 icon: Icons.local_mall,
-                items: ["Option 1", "Option 2", "Option 3"],
-                controller: _expenseTypeController,
+                items: ["Payable", "Receivable"],
+                controller: _type,
               ),
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
               Text(
                 "Date",
                 style: TextStyle(
@@ -185,7 +170,7 @@ class _AddExpenseState extends State<AddExpense> {
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Text(
-                "Paid By",
+                "Bank",
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
@@ -194,49 +179,38 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               CustomDropdown(
-                hintText: "Select an option",
-                icon: Icons.ac_unit_sharp,
-                items: ["Option 1", "Option 2", "Option 3"],
-                controller: _paidByController,
-              ),
-
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Text(
-                "Bank Account",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              CustomDropdown(
-                hintText: "Select an option",
+                hintText: "Select a Bank",
                 icon: Icons.local_mall,
-                items: ["Option 1", "Option 2", "Option 3"],
-                controller: _bankAccountCOntroller,
+                items: [
+                  'Abay Bank',
+                  'Addis International Bank',
+                  'Ahadu Bank',
+                  'Amhara Bank',
+                  'Awash Bank',
+                  'Bank of Abyssinia',
+                  'Berhan Bank',
+                  'Bunna Bank',
+                  'Commercial Bank of Ethiopia',
+                  'Cooperative Bank of Oromia',
+                  'Dashen Bank',
+                  'Development Bank of Ethiopia',
+                  'Gadaa Bank',
+                  'Hibret Bank',
+                  'Lion International Bank',
+                  'NIB International Bank',
+                  'Oromia International Bank',
+                  'Rammis Bank',
+                  'Sidama Bank',
+                  'Siket Bank',
+                  'Tsedey Bank',
+                  'Tsehay Bank',
+                  'Wegagen Bank',
+                  'Zemen Bank',
+                ],
+                controller: _bank,
               ),
 
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Text(
-                "Description",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              MultiLineTextField(
-                hintText: 'description',
-                controller: _descriptionController,
-                icon: Icons.description,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [],
-              // ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.06),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -244,15 +218,15 @@ class _AddExpenseState extends State<AddExpense> {
                     child: ElevatedButton(
                       onPressed: () {
                         // Clear all input controllers
-                        _amountController.clear();
-                        _expenseNameController.clear();
-                        _paidByController.clear();
-                        _bankAccountCOntroller.clear();
-                        _descriptionController.clear();
+                        _amount.clear();
+                        _bank.clear();
                         _dateController.clear();
-                        _expenseTypeController.clear();
-                        _expenseCategoryController.clear();
+                        _loanerName.clear();
+                        _type.clear();
+
+                        _phoneNumber.clear();
                         setState(() {});
+                        Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey, // Gray background
@@ -273,17 +247,15 @@ class _AddExpenseState extends State<AddExpense> {
                       onPressed: () async {
                         try {
                           final response = await Supabase.instance.client
-                              .from('expense')
+                              .from('loan')
                               .insert({
-                                'amount':
-                                    double.tryParse(_amountController.text) ??
-                                    0.0,
-                                'expenseName': _expenseNameController.text,
-                                'category': _expenseCategoryController.text,
-                                'type': _expenseTypeController.text,
-                                'bankAccount': _bankAccountCOntroller.text,
-                                'paidBy': _paidByController.text,
-                                'description': _descriptionController.text,
+                                'amount': double.tryParse(_amount.text) ?? 0.0,
+                                'loanerName': _loanerName.text,
+
+                                'type': _type.text,
+                                'bank': _bank.text,
+                                'phoneNumber': _phoneNumber.text,
+                                'userId': 1,
                                 'date': formatDate(
                                   _dateController.text,
                                 ), // Ensure correct format
@@ -306,9 +278,7 @@ class _AddExpenseState extends State<AddExpense> {
 
                           print("Expense added successfully!");
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Expense added successfully!"),
-                            ),
+                            SnackBar(content: Text("Loan added successfully!")),
                           );
                           Navigator.pop(context);
                         } catch (e) {
@@ -327,7 +297,7 @@ class _AddExpenseState extends State<AddExpense> {
                         ),
                       ),
                       child: const Text(
-                        "Add Expense",
+                        "Add Loan",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -341,9 +311,4 @@ class _AddExpenseState extends State<AddExpense> {
       ),
     );
   }
-}
-
-String formatDate(String date) {
-  List<String> parts = date.split('-'); // Split DD-MM-YYYY
-  return '${parts[2]}-${parts[1]}-${parts[0]}'; // Convert to YYYY-MM-DD
 }
