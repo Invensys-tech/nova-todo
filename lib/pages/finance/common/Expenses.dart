@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-
-class BankWidget extends StatefulWidget {
-  const BankWidget({super.key});
+class ExpensesWidget extends StatefulWidget {
+  const ExpensesWidget({super.key});
 
   @override
-  State<BankWidget> createState() => _BankWidgetState();
+  State<ExpensesWidget> createState() => _ExpensesWidgetState();
 }
 
-class _BankWidgetState extends State<BankWidget> {
+class _ExpensesWidgetState extends State<ExpensesWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,9 +29,10 @@ class _BankWidgetState extends State<BankWidget> {
             height: MediaQuery.of(context).size.height * 0.05,
             width: MediaQuery.of(context).size.height * 0.045,
             decoration: BoxDecoration(
-              color: Color(0xff8466fc),
+              color: Color(0xff057939),
               shape: BoxShape.circle,
             ),
+            child: Icon(Icons.local_pizza,color: Colors.deepOrange, size: 24,),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.035),
           Column(
@@ -40,7 +40,7 @@ class _BankWidgetState extends State<BankWidget> {
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Text(
-                "Commercial bank of eth.",
+                "BreakFast.",
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w300,
@@ -48,7 +48,7 @@ class _BankWidgetState extends State<BankWidget> {
                 ),
               ),
               Text(
-                "10000000000000",
+                "15 Expenses",
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w200,
@@ -59,13 +59,15 @@ class _BankWidgetState extends State<BankWidget> {
           ),
           Spacer(),
           Text(
-            '\$ 1,000,000',
+            '\$ 4,500',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w200,
               color: Colors.white.withOpacity(0.8),
             ),
           ),
+          SizedBox(width: MediaQuery.of(context).size.width*.015,),
+          Icon(Icons.chevron_right,size: 25,color: Colors.white.withOpacity(.8),)
         ],
       ),
     );

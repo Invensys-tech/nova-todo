@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/finance/finance.dart';
 import 'package:flutter_application_1/pages/goal/goal.dart';
-import 'package:flutter_application_1/pages/home.dart';
-import 'package:flutter_application_1/pages/notes.dart';
-import 'package:flutter_application_1/pages/todo.dart';
+import 'package:flutter_application_1/pages/Home%20Page%20/home.dart';
+import 'package:flutter_application_1/pages/Notes%20page/notes.dart';
+import 'package:flutter_application_1/pages/ToDo%20page/todo.dart';
 
 class IntorPage extends StatefulWidget {
   const IntorPage({super.key});
@@ -46,12 +46,12 @@ class _IntorPageState extends State<IntorPage> {
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
+          color: Colors.white,
           border: Border(
             top: BorderSide(color: Colors.green, width: 1), // Green top border
           ),
         ),
         child: BottomNavigationBar(
-          backgroundColor: Colors.black,
           selectedItemColor: Colors.green,
           unselectedItemColor: Colors.white,
           type: BottomNavigationBarType.fixed,
@@ -83,8 +83,6 @@ class _IntorPageState extends State<IntorPage> {
         ),
       ),
       body: currentPage,
-
-      backgroundColor: Colors.black,
     );
   }
 }
