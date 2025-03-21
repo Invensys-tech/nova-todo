@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/finance/Expenses/ExpnesePgae.dart';
 import 'package:flutter_application_1/pages/finance/analytics/analytics.dart';
 import 'package:flutter_application_1/pages/finance/bank/bank.dart';
+import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
+import 'package:flutter_application_1/pages/finance/expense/expense.dart';
+import 'package:flutter_application_1/pages/finance/loan/addloan.dart';
 import 'package:flutter_application_1/pages/finance/loan/loanpage.dart';
 
 class FinanceUi extends StatelessWidget {
@@ -60,6 +63,55 @@ class FinanceUi extends StatelessWidget {
             ],
           ),
         ),
+<<<<<<< HEAD
+=======
+        body: TabBarView(
+          children: [
+            Scaffold(body: AnalyticsPage(), backgroundColor: Color(0xff2F2F2F)),
+            Scaffold(
+              body: ExpensePage(),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddExpense(),
+                    ), // Navigate to NewScreen
+                  );
+                },
+                backgroundColor: Colors.green, // Green background
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white, // White icon color
+                  size: 30, // Adjust size if needed
+                ),
+              ),
+            ),
+            Center(child: Text(" Savings Page")),
+            Scaffold(body: BankPage(), backgroundColor: Color(0xff2F2F2F)),
+            Scaffold(
+              body: Loanpage(),
+              backgroundColor: Color(0xff2F2F2F),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddLoan(),
+                    ), // Navigate to NewScreen
+                  );
+                },
+                backgroundColor: Colors.green, // Green background
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white, // White icon color
+                  size: 30, // Adjust size if needed
+                ),
+              ),
+            ),
+          ],
+        ),
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
       ),
     );
   }

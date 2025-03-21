@@ -13,7 +13,7 @@ class IntorPage extends StatefulWidget {
 }
 
 class _IntorPageState extends State<IntorPage> {
-  int selectedIndex = 2;
+  int selectedIndex = 1;
 
   Widget currentPage = HomePage();
 
