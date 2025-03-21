@@ -13,7 +13,6 @@ class _BankPageState extends State<BankPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff2F2F2F),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.045,

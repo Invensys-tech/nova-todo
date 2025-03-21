@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  calendar_timeline:
+    dependency: "direct main"
+    description:
+      name: calendar_timeline
+      sha256: "55f47db9791bc28e06f2211d475229d1e802aa4ef0266a2313b66c23a97a53e0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.3"
   characters:
     dependency: transitive
     description:
@@ -81,6 +89,25 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
+<<<<<<< HEAD
+  contained_tab_bar_view:
+    dependency: "direct main"
+    description:
+      name: contained_tab_bar_view
+      sha256: "87e35f47992764e45ab6205493f2f90c1e3fac4ad84f2b2285b73414727b756e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
+  container_tab_indicator:
+    dependency: transitive
+    description:
+      name: container_tab_indicator
+      sha256: b0bdd73bb495c31c5711cefa363511b10bb3ebcfc007b603a2599401ebe6b2d9
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
+=======
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
   crypto:
     dependency: transitive
     description:
@@ -97,6 +124,24 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+<<<<<<< HEAD
+  dynamic_themes:
+    dependency: "direct main"
+    description:
+      name: dynamic_themes
+      sha256: "35e285d3b61cd70a25bf1035e6192fc578d7b6c7b09b0cc99da0f5e2780651a9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
+  ethiopian_datetime:
+    dependency: "direct main"
+    description:
+      name: ethiopian_datetime
+      sha256: f1eaecd84211d763f0a81652cad406a1a6bf865c072d61b488b5303b5754b718
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
+=======
   dropdown_button2:
     dependency: "direct main"
     description:
@@ -105,6 +150,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.9"
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
   fake_async:
     dependency: transitive
     description:
@@ -200,6 +246,24 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      sha256: d3a89184101baec7f4600d58840a764d2ef760fe1c5a20ef9e6b0e9b24a07a3a
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.8.0"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      sha256: b1ac0fe2832c9cc95e5e88b57d627c5e68c223b9657f4b96e1487aa9098c7b82
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.1"
+=======
   functions_client:
     dependency: transitive
     description:
@@ -224,6 +288,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
   http:
     dependency: transitive
     description:
@@ -241,6 +306,15 @@ packages:
     source: hosted
     version: "4.1.2"
   intl:
+<<<<<<< HEAD
+    dependency: transitive
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
+=======
     dependency: "direct main"
     description:
       name: intl
@@ -256,6 +330,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.1"
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
   leak_tracker:
     dependency: transitive
     description:
@@ -384,6 +459,17 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
+<<<<<<< HEAD
+  persistent_bottom_nav_bar:
+    dependency: "direct main"
+    description:
+      name: persistent_bottom_nav_bar
+      sha256: "6aa9b97ced1abd92c90cedd1997d34ea0b35c3ded762ac6063baccc299b0c4c5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.1"
+=======
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
   platform:
     dependency: transitive
     description:
@@ -400,6 +486,16 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+<<<<<<< HEAD
+  scrollable_positioned_list:
+    dependency: transitive
+    description:
+      name: scrollable_positioned_list
+      sha256: "1b54d5f1329a1e263269abc9e2543d90806131aa14fe7c6062a8054d57249287"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.8"
+=======
   postgrest:
     dependency: transitive
     description:
@@ -432,6 +528,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
   shared_preferences:
     dependency: transitive
     description:
@@ -493,6 +590,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  slider_bar_chart:
+    dependency: "direct main"
+    description:
+      name: slider_bar_chart
+      sha256: f3183a6e51356658f0fd4a32ef49981b71fa98204d39f19858f98142524d967f
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   source_span:
     dependency: transitive
     description:
@@ -573,6 +678,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+<<<<<<< HEAD
+=======
   url_launcher:
     dependency: transitive
     description:
@@ -637,6 +744,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.4"
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
   vector_math:
     dependency: transitive
     description:
@@ -661,6 +769,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+<<<<<<< HEAD
+=======
   web_socket:
     dependency: transitive
     description:
@@ -677,6 +787,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
   xdg_directories:
     dependency: transitive
     description:
@@ -685,6 +796,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+<<<<<<< HEAD
+=======
   yet_another_json_isolate:
     dependency: transitive
     description:
@@ -693,6 +806,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+>>>>>>> e3a15744797bc87929f5ad245556b1bd23e5fa6b
 sdks:
   dart: ">=3.7.0 <4.0.0"
   flutter: ">=3.27.0"
