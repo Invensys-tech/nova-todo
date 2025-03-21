@@ -67,7 +67,6 @@ class _LoanViewState extends State<LoanView> {
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
-                  color: Color(0xff202020),
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 padding: EdgeInsets.symmetric(
