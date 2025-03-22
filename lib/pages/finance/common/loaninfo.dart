@@ -83,18 +83,23 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/pages/finance/loan/loanview.dart';
 
 class LoanCard extends StatelessWidget {
+  final Datamanager datamanager;
   final String name;
   final String phoneNumber;
   final double loanAmount;
+  final int id;
 
   const LoanCard({
     Key? key,
     required this.name,
     required this.phoneNumber,
     required this.loanAmount,
+    required this.id,
+    required this.datamanager,
   }) : super(key: key);
 
   @override
@@ -109,6 +114,8 @@ class LoanCard extends StatelessWidget {
                   name: name,
                   phoneNumber: phoneNumber,
                   loanAmount: loanAmount,
+                  parentLoanId: id,
+                  datamanager: datamanager,
                 ),
           ),
         );

@@ -1,5 +1,6 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/pages/finance/Expenses/ExpnesePgae.dart';
 import 'package:flutter_application_1/pages/finance/analytics/analytics.dart';
 import 'package:flutter_application_1/pages/finance/bank/bank.dart';
@@ -9,7 +10,8 @@ import 'package:flutter_application_1/pages/finance/loan/addloan.dart';
 import 'package:flutter_application_1/pages/finance/loan/loanpage.dart';
 
 class FinanceUi extends StatelessWidget {
-  const FinanceUi({super.key});
+  final Datamanager datamanager;
+  const FinanceUi({super.key, required this.datamanager});
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +61,10 @@ class FinanceUi extends StatelessWidget {
               unselectedLabelStyle: TextStyle(fontSize: 13),
             ),
             views: [
-              Expensespage(),
+              Expensespage(datamanager: datamanager),
               Center(child: Text(" Savings Page")),
               BankPage(),
-              Loanpage(),
+              Loanpage(datamanager: datamanager),
               AnalyticsPage(),
             ],
           ),

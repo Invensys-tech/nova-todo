@@ -6,6 +6,7 @@
 //   final IconData icon;
 //   final List<String> items;
 //   final TextEditingController controller;
+//   final void Function(String?)? onChanged; // Optional callback
 
 //   const CustomDropdown({
 //     Key? key,
@@ -13,6 +14,7 @@
 //     required this.icon,
 //     required this.items,
 //     required this.controller,
+//     this.onChanged,
 //   }) : super(key: key);
 
 //   @override
@@ -21,6 +23,18 @@
 
 // class _CustomDropdownState extends State<CustomDropdown> {
 //   String? selectedValue;
+
+//   @override
+//   void didUpdateWidget(covariant CustomDropdown oldWidget) {
+//     super.didUpdateWidget(oldWidget);
+//     // If the selected value is no longer in the new items, clear it.
+//     if (!widget.items.contains(selectedValue)) {
+//       setState(() {
+//         selectedValue = null;
+//         widget.controller.text = '';
+//       });
+//     }
+//   }
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -33,7 +47,6 @@
 //             fontSize: 11,
 //             fontWeight: FontWeight.w200,
 //             color: Colors.blue,
-//             // backgroundColor: Colors.amberAccent,
 //           ),
 //         ),
 //         items:
@@ -42,19 +55,20 @@
 //                 value: item,
 //                 child: Text(
 //                   item,
-//                   style: const TextStyle(
-//                     color: Colors.white60,
-//                     // backgroundColor: Colors.black12,
-//                   ),
+//                   style: const TextStyle(color: Colors.white60),
 //                 ),
 //               );
 //             }).toList(),
 //         value: selectedValue,
 //         onChanged: (value) {
 //           setState(() {
-//             selectedValue = value as String?;
+//             selectedValue = value;
 //             widget.controller.text = selectedValue ?? '';
 //           });
+//           // Call parent callback if provided.
+//           if (widget.onChanged != null) {
+//             widget.onChanged!(value);
+//           }
 //         },
 //         customButton: Container(
 //           height: 48,
@@ -95,7 +109,7 @@
 //         ),
 //         dropdownStyleData: DropdownStyleData(
 //           decoration: BoxDecoration(
-//             color: Color(0xff626262), // Set dropdown background to gray
+//             color: const Color(0xff626262),
 //             borderRadius: BorderRadius.circular(5),
 //           ),
 //           maxHeight: 200,
@@ -132,10 +146,24 @@ class _CustomDropdownState extends State<CustomDropdown> {
   String? selectedValue;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.controller.text.isNotEmpty &&
+        widget.items.contains(widget.controller.text)) {
+      selectedValue = widget.controller.text;
+    }
+  }
+
+  @override
   void didUpdateWidget(covariant CustomDropdown oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // If the selected value is no longer in the new items, clear it.
-    if (!widget.items.contains(selectedValue)) {
+    if (widget.controller.text.isNotEmpty &&
+        widget.items.contains(widget.controller.text) &&
+        widget.controller.text != selectedValue) {
+      setState(() {
+        selectedValue = widget.controller.text;
+      });
+    } else if (!widget.items.contains(selectedValue)) {
       setState(() {
         selectedValue = null;
         widget.controller.text = '';
@@ -170,9 +198,8 @@ class _CustomDropdownState extends State<CustomDropdown> {
         onChanged: (value) {
           setState(() {
             selectedValue = value;
-            widget.controller.text = selectedValue ?? '';
+            widget.controller.text = value ?? '';
           });
-          // Call parent callback if provided.
           if (widget.onChanged != null) {
             widget.onChanged!(value);
           }
