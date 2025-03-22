@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamanager.dart';
+import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/finance/common/transaction.dart';
 import 'package:flutter_application_1/pages/finance/loan/singleloan.dart';
 
@@ -6,12 +8,16 @@ class LoanView extends StatefulWidget {
   final String name;
   final String phoneNumber;
   final double loanAmount;
+  final int parentLoanId;
+  final Datamanager datamanager;
 
   const LoanView({
     Key? key,
     required this.name,
     required this.phoneNumber,
     required this.loanAmount,
+    required this.parentLoanId,
+    required this.datamanager,
   }) : super(key: key);
 
   @override
@@ -27,7 +33,8 @@ class _LoanViewState extends State<LoanView> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SingleLoan(),
+              builder:
+                  (context) => SingleLoan(parentLoanId: widget.parentLoanId),
             ), // Navigate to NewScreen
           );
         },
@@ -203,11 +210,60 @@ class _LoanViewState extends State<LoanView> {
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              Transaction(),
-              Transaction(),
-              Transaction(),
-              Transaction(),
-              Transaction(),
+
+              FutureBuilder(
+                future: widget.datamanager.getChildLoan(widget.parentLoanId),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var childLoans = snapshot.data as List<ChildLoan>;
+                    double cumulative = 0;
+                    final List<Map<String, double>> cumulativeAmounts = [];
+                    for (var loan in childLoans) {
+                      double before = cumulative;
+                      double after;
+                      if (loan.type.toLowerCase() == 'payable') {
+                        // If type is Payable, subtract the amount.
+                        after = before - loan.amount;
+                      } else {
+                        // Otherwise, add the amount.
+                        after = before + loan.amount;
+                      }
+                      cumulative = after;
+                      cumulativeAmounts.add({"before": before, "after": after});
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: childLoans.length,
+                      itemBuilder: (context, index) {
+                        final loan = childLoans[index];
+                        final amounts = cumulativeAmounts[index];
+                        return Column(
+                          children: [
+                            Transaction(
+                              date: childLoans[index].date,
+                              amount: childLoans[index].amount,
+                              before: amounts["before"]!,
+                              after: amounts["after"]!,
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return Text(
+                        "There was an error fetching data ${snapshot.error}",
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  }
+                },
+              ),
+
+              // Transaction(date: '04/2/3455',amount: 500.00,),
             ],
           ),
         ),

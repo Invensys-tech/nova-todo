@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/pages/finance/finance.dart';
 import 'package:flutter_application_1/pages/goal/goal.dart';
 import 'package:flutter_application_1/pages/Home%20Page%20/home.dart';
@@ -13,18 +14,19 @@ class IntorPage extends StatefulWidget {
 }
 
 class _IntorPageState extends State<IntorPage> {
+  var datamanger = Datamanager();
   int selectedIndex = 1;
 
-  Widget currentPage = HomePage();
+  Widget currentPage = HomePage(datamanager: Datamanager());
 
   @override
   Widget build(BuildContext context) {
     switch (selectedIndex) {
       case 0:
-        currentPage = HomePage();
+        currentPage = HomePage(datamanager: datamanger);
         break;
       case 1:
-        currentPage = FinanceUi();
+        currentPage = FinanceUi(datamanager: datamanger);
         break;
       case 2:
         currentPage = GoalPage();

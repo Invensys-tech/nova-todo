@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
@@ -263,24 +264,16 @@ class _AddLoanState extends State<AddLoan> {
 
                           print(response);
 
-                          // Check if response has an error
-                          // if (response == null) {
-                          //   print("Error: Response is null");
-                          //   ScaffoldMessenger.of(context).showSnackBar(
-                          //     SnackBar(
-                          //       content: Text(
-                          //         "Failed to add expense. No response received.",
-                          //       ),
-                          //     ),
-                          //   );
-                          //   return;
-                          // }
-
                           print("Expense added successfully!");
+                          final updatedLoans = await Datamanager().fetchLoan();
+
+                          // Show success message
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Loan added successfully!")),
                           );
-                          Navigator.pop(context);
+
+                          // Pass the updated loan data back before popping the screen
+                          Navigator.pop(context, updatedLoans);
                         } catch (e) {
                           print("Error inserting expense: $e");
                           ScaffoldMessenger.of(

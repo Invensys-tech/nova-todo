@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 
 class Transaction extends StatelessWidget {
-  const Transaction({super.key});
+  final DateTime date;
+  final double amount;
+  final double before;
+  final double after;
+
+  const Transaction({
+    super.key,
+    required this.date,
+    required this.amount,
+    required this.after,
+    required this.before,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +41,7 @@ class Transaction extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "12-04-2025",
+                    date.toString(),
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w200,
@@ -54,7 +65,7 @@ class Transaction extends StatelessWidget {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.009),
                   Text(
-                    "\$ 670,000",
+                    "\$ ${amount}",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w200,
@@ -99,7 +110,7 @@ class Transaction extends StatelessWidget {
                                   MediaQuery.of(context).size.height * 0.009,
                             ),
                             Text(
-                              "\$ 500,000",
+                              "\$ ${before}",
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w200,
@@ -124,7 +135,7 @@ class Transaction extends StatelessWidget {
                                   MediaQuery.of(context).size.height * 0.009,
                             ),
                             Text(
-                              "\$ 900,000",
+                              "\$ ${after}",
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w200,
