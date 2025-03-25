@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/goal/common/addgoal.dart';
 import 'package:flutter_application_1/pages/goal/common/goalwidget.dart';
 
 class GoalPage extends StatefulWidget {
@@ -14,8 +15,19 @@ class _GoalPageState extends State<GoalPage> {
     return Scaffold(
       backgroundColor: Color(0xff2F2F2F),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.green, // Green background
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xFF2b2d30),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50), // Rounded corners
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddGoal(),
+            ), // Navigate to NewScreen
+          );
+        },
         child: Icon(
           Icons.add,
           color: Colors.white, // White icon color

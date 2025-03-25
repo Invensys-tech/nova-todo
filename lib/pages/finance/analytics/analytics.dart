@@ -622,52 +622,34 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
       // Add this to ensure proper layout
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery
-              .of(context)
-              .size
-              .width * 0.045,
+          horizontal: MediaQuery.of(context).size.width * 0.045,
         ),
         child: SingleChildScrollView(
           physics:
-          AlwaysScrollableScrollPhysics(), // Add this to enable scrolling even with little content
+              AlwaysScrollableScrollPhysics(), // Add this to enable scrolling even with little content
           child: Column(
             crossAxisAlignment:
-            CrossAxisAlignment.start, // Move this up from the nested Column
+                CrossAxisAlignment.start, // Move this up from the nested Column
             children: [
-              SizedBox(height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.02),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               // Balance container
               BankBalance(),
-              SizedBox(height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.01),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               // Income and Expense containers
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Income container
                   Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.43,
+                    width: MediaQuery.of(context).size.width * 0.43,
                     decoration: BoxDecoration(
                       // Remove fixed height
                       color: Color(0xff202020),
                       borderRadius: BorderRadius.all(Radius.circular(11)),
                     ),
                     padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.045,
-                      vertical: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.0095,
+                      horizontal: MediaQuery.of(context).size.width * 0.045,
+                      vertical: MediaQuery.of(context).size.height * 0.0095,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -681,10 +663,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.003,
+                          height: MediaQuery.of(context).size.height * 0.003,
                         ),
                         Text(
                           '\$ 15,000',
@@ -699,24 +678,15 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   ),
                   // Expense container
                   Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.43,
+                    width: MediaQuery.of(context).size.width * 0.43,
                     decoration: BoxDecoration(
                       // Remove fixed height
                       color: Color(0xff202020),
                       borderRadius: BorderRadius.all(Radius.circular(11)),
                     ),
                     padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.045,
-                      vertical: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.0095,
+                      horizontal: MediaQuery.of(context).size.width * 0.045,
+                      vertical: MediaQuery.of(context).size.height * 0.0095,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -730,10 +700,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                           ),
                         ),
                         SizedBox(
-                          height: MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.003,
+                          height: MediaQuery.of(context).size.height * 0.003,
                         ),
                         Text(
                           '\$ -5,000',
@@ -748,26 +715,14 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   ),
                 ],
               ),
-              SizedBox(height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.03),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               // Add more content to ensure scrolling
               _buildAccountSection(),
-              SizedBox(height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.03),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               _ExpensesCatagorypage(),
-              SizedBox(height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.03),
-              _GraphDesign(),// Add one more to ensure content overflows
-              SizedBox(height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.03),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              _GraphDesign(), // Add one more to ensure content overflows
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               // Add one more to ensure content overflows
             ],
           ),
@@ -798,13 +753,12 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
             ),
           ],
         ),
-        BankWidget(),
-        BankWidget(),
-        BankWidget(),
+        BankWidget(accountname: "Jhon", balance: 787970, accoutnumber: 4646464),
+        BankWidget(accountname: "Jhon", balance: 787970, accoutnumber: 4646464),
+        BankWidget(accountname: "Jhon", balance: 787970, accoutnumber: 4646464),
       ],
     );
   }
-
 
   _ExpensesCatagorypage() {
     return Column(
@@ -858,29 +812,29 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
           ],
         ),
         Container(
-          height: MediaQuery.of(context).size.height*.35,
+          height: MediaQuery.of(context).size.height * .35,
           width: MediaQuery.of(context).size.width,
           child: chartToRun(),
-        )
+        ),
       ],
     );
   }
 
   Widget chartToRun() {
-  return SliderBarChartWidget(
-    decoration: SbcDecoration(
-      height: 300.0,
-      showScrollbar: true,
-      singleBarPosition: SingleBarPosition.bottom, // Default value
-      titleDecoration: SbcTitleDecoration(
-        xHeightSpace: 40.0,
-        xWidthSpace: 35.0,
-        showYTitles: true,
-        yTitleTextFormatter: null,
-        fixedYTitles: false,
-        yTitlePosition: YTitlePosition.both,
-      ),
-      tooltipDecoration: SbcTooltipDecoration(
+    return SliderBarChartWidget(
+      decoration: SbcDecoration(
+        height: 300.0,
+        showScrollbar: true,
+        singleBarPosition: SingleBarPosition.bottom, // Default value
+        titleDecoration: SbcTitleDecoration(
+          xHeightSpace: 40.0,
+          xWidthSpace: 35.0,
+          showYTitles: true,
+          yTitleTextFormatter: null,
+          fixedYTitles: false,
+          yTitlePosition: YTitlePosition.both,
+        ),
+        tooltipDecoration: SbcTooltipDecoration(
           backgroundColor: Colors.red,
           triggerMode: TooltipTriggerMode.tap,
           waitDuration: Duration.zero,
@@ -888,20 +842,19 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
           yTextFormatter: null,
           y2TextFormatter: null,
           border: null,
-          borderRadius: 14
+          borderRadius: 14,
+        ),
+        barDecoration: SbcBarDecoration(
+          width: 15.0,
+          showAsProgress: true,
+          yColor: Colors.red,
+          y2Color: Colors.green,
+        ),
       ),
-      barDecoration: SbcBarDecoration(
-        width: 15.0,
-        showAsProgress: true,
-        yColor: Colors.red,
-        y2Color: Colors.green,
+      data: SbcData(
+        xValues: List.generate(10, (index) => index),
+        yValues: List.generate(10, (index) => Random().nextDouble() * 256),
       ),
-    ),
-    data: SbcData(
-      xValues: List.generate(10, (index) => index),
-      yValues: List.generate(
-          10, (index) => Random().nextDouble() * 256),
-    ),
-  );
+    );
   }
 }

@@ -63,7 +63,7 @@ class FinanceUi extends StatelessWidget {
             views: [
               Expensespage(datamanager: datamanager),
               Center(child: Text(" Savings Page")),
-              BankPage(),
+              BankPage(datamanager: datamanager),
               Loanpage(datamanager: datamanager),
               AnalyticsPage(),
             ],
