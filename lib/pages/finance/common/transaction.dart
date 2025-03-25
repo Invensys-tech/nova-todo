@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Transaction extends StatelessWidget {
   final DateTime date;
-  final double amount;
+  final num amount;
   final double before;
   final double after;
 

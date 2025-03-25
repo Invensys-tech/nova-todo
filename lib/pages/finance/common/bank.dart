@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
 class BankWidget extends StatefulWidget {
-  const BankWidget({super.key});
+  const BankWidget({
+    super.key,
+    required this.accountname,
+    required this.accoutnumber,
+    required this.balance,
+  });
+
+  final String accountname;
+  final num accoutnumber;
+  final num balance;
 
   @override
   State<BankWidget> createState() => _BankWidgetState();
@@ -40,7 +49,7 @@ class _BankWidgetState extends State<BankWidget> {
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Text(
-                "Commercial bank of eth.",
+                '${widget.accountname}',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w300,
@@ -48,7 +57,7 @@ class _BankWidgetState extends State<BankWidget> {
                 ),
               ),
               Text(
-                "10000000000000",
+                '${widget.accoutnumber}',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w200,
@@ -59,7 +68,7 @@ class _BankWidgetState extends State<BankWidget> {
           ),
           Spacer(),
           Text(
-            '\$ 1,000,000',
+            '${widget.balance}',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w200,
