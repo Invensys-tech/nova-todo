@@ -131,3 +131,73 @@ class ChildLoan {
     );
   }
 }
+
+class Bank {
+  int id;
+  num balance;
+  String accountHolder;
+  num accountNumber;
+  int userId;
+  String accountBank;
+  String branch;
+  String accountType;
+
+  Bank({
+    required this.accountBank,
+    required this.accountHolder,
+    required this.accountNumber,
+    required this.accountType,
+    required this.balance,
+    required this.branch,
+    required this.id,
+    required this.userId,
+  });
+
+  factory Bank.fromJson(Map<String, dynamic> json) {
+    return Bank(
+      accountBank: json['accountBank'] as String,
+      accountHolder: json['accountHolder'] as String,
+      accountNumber: json['accountNumber'] as num,
+      accountType: json['accountType'] as String,
+      balance: json['balance'] as num,
+      branch: json['branch'] as String,
+      id: json['id'] as int,
+      userId: json['userId'] as int,
+    );
+  }
+}
+
+class Goal {
+  int id;
+  String name;
+  String term;
+  String status;
+  String description;
+  String priority;
+  Map<String, dynamic> motivation;
+  Map<String, dynamic> finance;
+
+  Goal({
+    required this.description,
+    required this.finance,
+    required this.id,
+    required this.motivation,
+    required this.name,
+    required this.priority,
+    required this.status,
+    required this.term,
+  });
+
+  factory Goal.fromJson(Map<String, dynamic> json) {
+    return Goal(
+      description: json['description'] as String,
+      finance: json['finance'] as Map<String, dynamic>,
+      id: json['id'] as int,
+      motivation: json['motivation'] as Map<String, dynamic>,
+      name: json['name'] as String,
+      priority: json['priority'] as String,
+      status: json['status'] as String,
+      term: json['term'] as String,
+    );
+  }
+}

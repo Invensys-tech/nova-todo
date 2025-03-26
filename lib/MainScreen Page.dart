@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
-import 'package:flutter_application_1/pages/Home%20Page%20/home.dart';
-import 'package:flutter_application_1/pages/Notes%20page/notes.dart';
-import 'package:flutter_application_1/pages/ToDo%20page/todo.dart';
+import 'package:flutter_application_1/pages/homepage/home.dart';
+import 'package:flutter_application_1/pages/notespage/notes.dart';
+import 'package:flutter_application_1/pages/todopage/todo.dart';
 import 'package:flutter_application_1/pages/finance/finance.dart';
 import 'package:flutter_application_1/pages/goal/goal.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,7 +29,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
     return [
       HomePage(datamanager: dataManager),
       FinanceUi(datamanager: dataManager),
-      const GoalPage(),
+      GoalPage(datamanager: dataManager),
       const TodoPage(),
       const NotesPage(),
     ];

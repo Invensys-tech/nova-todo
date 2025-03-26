@@ -1,7 +1,7 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
-import 'package:flutter_application_1/pages/finance/Expenses/ExpnesePgae.dart';
+import 'package:flutter_application_1/pages/finance/expenses/ExpnesePgae.dart';
 import 'package:flutter_application_1/pages/finance/analytics/analytics.dart';
 import 'package:flutter_application_1/pages/finance/bank/bank.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
@@ -63,7 +63,7 @@ class FinanceUi extends StatelessWidget {
             views: [
               Expensespage(datamanager: datamanager),
               Center(child: Text(" Savings Page")),
-              BankPage(),
+              BankPage(datamanager: datamanager),
               Loanpage(datamanager: datamanager),
               AnalyticsPage(),
             ],

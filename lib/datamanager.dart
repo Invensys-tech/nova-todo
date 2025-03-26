@@ -21,7 +21,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class Datamanager {
   Future<List<Expense>> fetchExpense() async {
     final data = await Supabase.instance.client.from('expense').select('*');
-    print(data);
+    // print(data);
     // Convert the returned list of maps into a list of Expense objects.
     return (data as List<dynamic>)
         .map((e) => Expense.fromJson(e as Map<String, dynamic>))
@@ -45,6 +45,20 @@ class Datamanager {
         .toList();
   }
 
+  Future<List<Bank>> fetchBanks() async {
+    final data = await Supabase.instance.client.from('bank').select('*');
+    return (data as List<dynamic>)
+        .map((e) => Bank.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<Goal>> fetchGoals() async {
+    final data = await Supabase.instance.client.from('goal').select('*');
+    return (data as List<dynamic>)
+        .map((e) => Goal.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
   Future<List<Expense>> getExpense() async {
     return await fetchExpense();
   }
@@ -55,5 +69,13 @@ class Datamanager {
 
   Future<List<ChildLoan>> getChildLoan(int id) async {
     return await fetchChildLoans(id);
+  }
+
+  Future<List<Bank>> getBanks() async {
+    return await fetchBanks();
+  }
+
+  Future<List<Goal>> getGoals() async {
+    return await fetchGoals();
   }
 }
