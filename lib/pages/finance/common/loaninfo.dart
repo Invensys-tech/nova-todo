@@ -90,7 +90,7 @@ class LoanCard extends StatelessWidget {
   final Datamanager datamanager;
   final String name;
   final String phoneNumber;
-  final double loanAmount;
+  final num loanAmount;
   final int id;
 
   const LoanCard({

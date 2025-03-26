@@ -68,7 +68,7 @@ class Expense {
 class Loan {
   int id;
   String loanerName;
-  double amount;
+  num amount;
   String type;
   String phoneNumber;
   String bank;
@@ -88,7 +88,7 @@ class Loan {
 
   factory Loan.fromJson(Map<String, dynamic> json) {
     return Loan(
-      amount: json['amount'] as double,
+      amount: json['amount'] as num,
       bank: json['bank'] as String,
       date: DateTime.parse(json['date'] as String),
       id: json['id'] as int,
@@ -104,7 +104,7 @@ class ChildLoan {
   int id;
   String paidFrom;
   String specificFrom;
-  double amount;
+  num amount;
   String type;
   DateTime date;
   int parentId;
@@ -121,7 +121,7 @@ class ChildLoan {
 
   factory ChildLoan.fromJson(Map<String, dynamic> json) {
     return ChildLoan(
-      amount: json['amount'] as double,
+      amount: json['amount'] as num,
       date: DateTime.parse(json['date'] as String),
       id: json['id'] as int,
       type: json['type'] as String,
