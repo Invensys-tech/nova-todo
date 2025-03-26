@@ -1,16 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamanager.dart';
+import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/goal/common/addgoal.dart';
 import 'package:flutter_application_1/pages/goal/common/goalwidget.dart';
 
 class GoalPage extends StatefulWidget {
-  const GoalPage({super.key});
+  final Datamanager datamanager;
+
+  const GoalPage({super.key, required this.datamanager});
 
   @override
   State<GoalPage> createState() => _GoalPageState();
 }
 
 class _GoalPageState extends State<GoalPage> {
+  late Future<List<Goal>> _goalFuture;
   @override
+  void initState() {
+    super.initState();
+    _goalFuture = Datamanager().getGoals();
+  }
+
+  void _refreshLoans() {
+    setState(() {
+      _goalFuture = Datamanager().getGoals();
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff2F2F2F),
@@ -20,13 +36,18 @@ class _GoalPageState extends State<GoalPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50), // Rounded corners
         ),
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final newGoals = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => AddGoal(),
             ), // Navigate to NewScreen
           );
+          if (newGoals != null) {
+            setState(() {
+              _goalFuture = Future.value(newGoals);
+            });
+          }
         },
         child: Icon(
           Icons.add,
@@ -41,13 +62,38 @@ class _GoalPageState extends State<GoalPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GoalWidget(),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.2),
-              GoalWidget(),
-              GoalWidget(),
-              GoalWidget(),
-              GoalWidget(),
-              GoalWidget(),
+              FutureBuilder(
+                future: _goalFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var goals = snapshot.data as List<Goal>;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: goals.length,
+                      itemBuilder: (context, index) {
+                        return (Column(
+                          children: [
+                            GoalWidget(
+                              description: goals[index].description,
+                              title: goals[index].name,
+                            ),
+                          ],
+                        ));
+                      },
+                    );
+                  } else {
+                    if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return Text(
+                        "There was an error fetching data ${snapshot.error}",
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  }
+                },
+              ),
             ],
           ),
         ),
