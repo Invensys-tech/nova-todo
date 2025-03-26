@@ -53,7 +53,6 @@ flutter_icons:
   min_sdk_android: 16 # android min sdk min:16, default 21
 
 
-  accordion: ^2.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
