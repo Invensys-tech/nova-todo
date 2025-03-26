@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/pages/finance/finance.dart';
 import 'package:flutter_application_1/pages/goal/goal.dart';
-import 'package:flutter_application_1/pages/Home%20Page%20/home.dart';
-import 'package:flutter_application_1/pages/Notes%20page/notes.dart';
-import 'package:flutter_application_1/pages/ToDo%20page/todo.dart';
+import 'package:flutter_application_1/pages/homepage/home.dart';
+import 'package:flutter_application_1/pages/notespage/notes.dart';
+import 'package:flutter_application_1/pages/todopage/todo.dart';
 
 class IntorPage extends StatefulWidget {
   const IntorPage({super.key});
@@ -29,7 +29,7 @@ class _IntorPageState extends State<IntorPage> {
         currentPage = FinanceUi(datamanager: datamanger);
         break;
       case 2:
-        currentPage = GoalPage();
+        currentPage = GoalPage(datamanager: datamanger);
         break;
       case 3:
         currentPage = TodoPage();

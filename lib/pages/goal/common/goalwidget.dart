@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/goal/goalview.dart';
 
 class GoalWidget extends StatefulWidget {
-  const GoalWidget({super.key});
+  final String title;
+  final String description;
+  final String? date;
+  const GoalWidget({
+    super.key,
+    required this.description,
+    required this.title,
+    this.date,
+  });
 
   @override
   State<GoalWidget> createState() => _GoalWidgetState();
@@ -37,7 +45,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Reaching 100,000,000",
+                    widget.title,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -46,7 +54,7 @@ class _GoalWidgetState extends State<GoalWidget> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   Text(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,  ",
+                    widget.description,
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w400,
