@@ -48,15 +48,19 @@ class _FinanceImpactFormState extends State<FinanceImpactForm> {
           (incomeSource) => Row(
             spacing: 3.2,
             children: [
-              TextFields(
-                hinttext: incomeSource.key.hint,
-                whatIsInput: incomeSource.key.type,
-                controller: incomeSource.key.controller,
+              Expanded(
+                child: TextFields(
+                  hinttext: incomeSource.key.hint,
+                  whatIsInput: incomeSource.key.type,
+                  controller: incomeSource.key.controller,
+                ),
               ),
-              TextFields(
-                hinttext: incomeSource.value.hint,
-                whatIsInput: incomeSource.value.type,
-                controller: incomeSource.value.controller,
+              Expanded(
+                child: TextFields(
+                  hinttext: incomeSource.value.hint,
+                  whatIsInput: incomeSource.value.type,
+                  controller: incomeSource.value.controller,
+                ),
               ),
             ],
           ),

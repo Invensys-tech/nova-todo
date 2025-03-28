@@ -24,6 +24,7 @@ class _SubGoalsFormState extends State<SubGoalsForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Container(child: Text('Sub Goals')),
         TextFields(
           controller: widget.deadline.controller,
           hinttext: widget.deadline.hint,
@@ -33,15 +34,19 @@ class _SubGoalsFormState extends State<SubGoalsForm> {
           (subGoal) => Row(
             spacing: 3.2,
             children: [
-              TextFields(
-                controller: subGoal.key.controller,
-                hinttext: subGoal.key.hint,
-                whatIsInput: subGoal.key.type,
+              Expanded(
+                child: TextFields(
+                  controller: subGoal.key.controller,
+                  hinttext: subGoal.key.hint,
+                  whatIsInput: subGoal.key.type,
+                ),
               ),
-              TextFields(
-                controller: subGoal.key.controller,
-                hinttext: subGoal.key.hint,
-                whatIsInput: subGoal.key.type,
+              Expanded(
+                child: TextFields(
+                  controller: subGoal.value.controller,
+                  hinttext: subGoal.value.hint,
+                  whatIsInput: subGoal.value.type,
+                ),
               ),
             ],
           ),

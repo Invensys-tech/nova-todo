@@ -23,9 +23,9 @@ class FormInputPair {
   FormInputPair({required this.key, required this.value});
 }
 
-class SubGoal {
-  final FormInput name;
-  final FormInput deadline;
+// class SubGoal {
+//   final FormInput name;
+//   final FormInput deadline;
 
-  SubGoal({required this.name, required this.deadline});
-}
+//   SubGoal({required this.name, required this.deadline});
+// }

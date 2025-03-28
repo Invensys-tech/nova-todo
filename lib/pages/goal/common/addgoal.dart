@@ -1448,12 +1448,11 @@ class _AccordionAxampleState extends State<AddGoal> {
               // ),
             ],
             expansionCallback: (panelIndex, isExpanded) {
-              setState(
-                () =>
-                    panelIndex == _expandedIndex
-                        ? _expandedIndex = -1
-                        : _expandedIndex = panelIndex,
-              );
+              setState(() {
+                panelIndex == _expandedIndex
+                    ? _expandedIndex = -1
+                    : _expandedIndex = panelIndex;
+              });
             },
           ),
         ),
