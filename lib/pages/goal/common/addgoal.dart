@@ -958,7 +958,12 @@ import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
+import 'package:flutter_application_1/pages/goal/common/form.finance-impact.dart';
+import 'package:flutter_application_1/pages/goal/common/form.goal.dart';
+import 'package:flutter_application_1/pages/goal/common/form.motivation.dart';
+import 'package:flutter_application_1/pages/goal/common/form.subgoals.dart';
 import 'package:flutter_application_1/pages/goal/common/goalInformationAccordion.dart';
+import 'package:flutter_application_1/pages/goal/common/header.expansion-panel.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
@@ -1163,7 +1168,12 @@ class _AccordionAxampleState extends State<AddGoal> {
   // };
 
   int _expandedIndex = -1;
-  final List _expansions = ["Goal Information", "Sub Goals", "Motivation"];
+  final List _expansions = [
+    "goals Goals",
+    "motivations Motivations",
+    "subGoalsWithDeadline SubGoals",
+    "financeImpact Finance",
+  ];
   final Map<String, dynamic> _controllers = {
     "goals": {
       "name": FormInput(
@@ -1219,14 +1229,14 @@ class _AccordionAxampleState extends State<AddGoal> {
         hint: "Enter Deadline Of this current Vision Board",
       ),
       "subGoals": [
-        SubGoal(
-          name: FormInput(
+        FormInputPair(
+          key: FormInput(
             label: "Sub goal name",
             controller: TextEditingController(),
             type: "1",
             hint: "Enter Sub goal name",
           ),
-          deadline: FormInput(
+          value: FormInput(
             label: "Subgoal Deadline",
             controller: TextEditingController(),
             type: "1",
@@ -1276,45 +1286,57 @@ class _AccordionAxampleState extends State<AddGoal> {
   };
 
   addMotivation() {
-    _controllers["motivations"].append(
-      FormInput(
-        label: "Additional Motivation",
-        controller: TextEditingController(),
-        type: "1",
-        hint: "Enter Additional Motivation",
-      ),
-    );
+    setState(() {
+      _controllers["motivations"].add(
+        FormInput(
+          label: "Additional Motivation",
+          controller: TextEditingController(),
+          type: "1",
+          hint: "Enter Additional Motivation",
+        ),
+      );
+    });
   }
 
   addIncomeSource() {
-    _controllers["financeImpact"]["incomeSource"].append({
-      FormInput(
-        label: "Source",
-        controller: TextEditingController(),
-        type: "1",
-        hint: "Enter Source",
-      ): FormInput(
-        label: "Amount",
-        controller: TextEditingController(),
-        type: "1",
-        hint: "Enter Amount",
-      ),
+    setState(() {
+      _controllers["financeImpact"]["incomeSource"].add(
+        FormInputPair(
+          key: FormInput(
+            label: "Source",
+            controller: TextEditingController(),
+            type: "1",
+            hint: "Enter Source",
+          ),
+          value: FormInput(
+            label: "Amount",
+            controller: TextEditingController(),
+            type: "1",
+            hint: "Enter Amount",
+          ),
+        ),
+      );
     });
   }
 
   addSubGoals() {
-    _controllers["subGoalsWithDeadline"]["subGoals"].append({
-      FormInput(
-        label: "Sub goal name",
-        controller: TextEditingController(),
-        type: "1",
-        hint: "Enter Sub goal name",
-      ): FormInput(
-        label: "Subgoal Deadline",
-        controller: TextEditingController(),
-        type: "1",
-        hint: "Enter Subgoal Deadline",
-      ),
+    setState(() {
+      _controllers["subGoalsWithDeadline"]["subGoals"].add(
+        FormInputPair(
+          key: FormInput(
+            label: "Sub goal name",
+            controller: TextEditingController(),
+            type: "1",
+            hint: "Enter Sub goal name",
+          ),
+          value: FormInput(
+            label: "Subgoal Deadline",
+            controller: TextEditingController(),
+            type: "1",
+            hint: "Enter Subgoal Deadline",
+          ),
+        ),
+      );
     });
   }
 
@@ -1354,79 +1376,60 @@ class _AccordionAxampleState extends State<AddGoal> {
           // child: Container(
           child: ExpansionPanelList(
             children: [
-              ..._expansions.asMap().entries.map(
-                (entry) => ExpansionPanel(
-                  headerBuilder: (context, isExpanded) {
-                    return Container(
-                      padding: const EdgeInsets.all(8.0),
-                      color: const Color(0xff2F2F2F),
-                      child: Text(entry.value, style: headerStyle),
-                    );
-                  },
-                  body: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.40,
-                            child: TextFields(
-                              hinttext: 'Goal Name',
-                              whatIsInput: '1',
-                              controller: _goalName,
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.40,
-                            child: TextFields(
-                              hinttext: 'Terms of Goal',
-                              whatIsInput: '1',
-                              controller: _goalTerm,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.40,
-                            child: TextFields(
-                              hinttext: 'Goal Priority',
-                              whatIsInput: '1',
-                              controller: _goalPriority,
-                            ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.40,
-                            child: TextFields(
-                              hinttext: 'Goal Status',
-                              whatIsInput: '1',
-                              controller: _goalStatus,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      MultiLineTextField(
-                        hintText: 'description',
-                        controller: _goalDescription,
-                        icon: Icons.description,
-                      ),
-
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Submit'),
-                      ),
-                    ],
-                  ),
-                  isExpanded: _expandedIndex == entry.key,
+              ExpansionPanel(
+                headerBuilder: (context, isExpanded) {
+                  return MyExpansionPanelHeader(title: "Goal Information");
+                },
+                body: GoalForm(
+                  goalName: _controllers["goals"]["name"] as FormInput,
+                  goalTerms: _controllers["goals"]["term"] as FormInput,
+                  goalPriority: _controllers["goals"]["priority"] as FormInput,
+                  goalStatus: _controllers["goals"]["status"] as FormInput,
                 ),
+                isExpanded: _expandedIndex == 0,
+              ),
+              ExpansionPanel(
+                headerBuilder: (context, isExpanded) {
+                  return MyExpansionPanelHeader(title: "Motivations");
+                },
+                body: MotivationForm(
+                  motivations: _controllers["motivations"] as List<FormInput>,
+                  addMotivations: addMotivation,
+                ),
+                isExpanded: _expandedIndex == 1,
+              ),
+              ExpansionPanel(
+                headerBuilder: (context, isExpanded) {
+                  return MyExpansionPanelHeader(title: "SubGoals");
+                },
+                body: SubGoalsForm(
+                  deadline:
+                      _controllers["subGoalsWithDeadline"]["deadline"]
+                          as FormInput,
+                  subGoals:
+                      _controllers["subGoalsWithDeadline"]["subGoals"]
+                          as List<FormInputPair>,
+                  addSubGoal: addSubGoals,
+                ),
+                isExpanded: _expandedIndex == 2,
+              ),
+              ExpansionPanel(
+                headerBuilder: (context, isExpanded) {
+                  return MyExpansionPanelHeader(title: "Finance");
+                },
+                body: FinanceImpactForm(
+                  totalMoney:
+                      _controllers["financeImpact"]["totalMoney"] as FormInput,
+                  amountSaved:
+                      _controllers["financeImpact"]["amountSaved"] as FormInput,
+                  timeSaved:
+                      _controllers["financeImpact"]["timeSaved"] as FormInput,
+                  incomeSources:
+                      _controllers["financeImpact"]["incomeSource"]
+                          as List<FormInputPair>,
+                  addIncomeSource: addIncomeSource,
+                ),
+                isExpanded: _expandedIndex == 3,
               ),
               // ExpansionPanel(
               //   headerBuilder: headerBuilder,
