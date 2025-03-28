@@ -1076,30 +1076,30 @@ class _AccordionAxampleState extends State<AddGoal> {
     print(jsonEncode(data));
 
     try {
-      final goalResponse = await Supabase.instance.client.from('goal').insert({
-        'name': _goalName.text,
-        'status': _goalStatus.text,
-        'priority': _goalStatus.text,
-        'description': _goalDescription.text,
-        'term': _goalTerm.text,
-        'userId': 1,
-        'motivation': getMotivationJson(),
-        'finance': getFinanceJson(),
-      });
-      final goals = await Datamanager().getGoals();
-      final goalIdIndex =
-          goals.length - 1; // Fixing index to get the last inserted goal
-      final goalId = goals[goalIdIndex].id;
+      // final goalResponse = await Supabase.instance.client.from('goal').insert({
+      //   'name': _goalName.text,
+      //   'status': _goalStatus.text,
+      //   'priority': _goalStatus.text,
+      //   'description': _goalDescription.text,
+      //   'term': _goalTerm.text,
+      //   'userId': 1,
+      //   'motivation': getMotivationJson(),
+      //   'finance': getFinanceJson(),
+      // });
+      // final goals = await Datamanager().getGoals();
+      // final goalIdIndex =
+      //     goals.length - 1; // Fixing index to get the last inserted goal
+      // final goalId = goals[goalIdIndex].id;
 
-      // Now insert sub-goals
-      await insertSubGoals(goalId);
+      // // Now insert sub-goals
+      // await insertSubGoals(goalId);
 
-      print(goalResponse);
-      print("Goal added successfully!");
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Goal added successfully!")));
-      Navigator.pop(context);
+      // print(goalResponse);
+      // print("Goal added successfully!");
+      // ScaffoldMessenger.of(
+      //   context,
+      // ).showSnackBar(const SnackBar(content: Text("Goal added successfully!")));
+      // Navigator.pop(context);
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(
@@ -1525,11 +1525,11 @@ class _AccordionAxampleState extends State<AddGoal> {
         //       //     SizedBox(
         //       //       height: MediaQuery.of(context).size.height * 0.02,
         //       //     ),
-        //       //     MultiLineTextField(
-        //       //       hintText: 'description',
-        //       //       controller: _goalDescription,
-        //       //       icon: Icons.description,
-        //       //     ),
+        // MultiLineTextField(
+        //   hintText: 'description',
+        //   controller: _goalDescription,
+        //   icon: Icons.description,
+        // ),
         //       //   ],
         //       // ),
         //     ),
