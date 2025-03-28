@@ -23,49 +23,53 @@ class SubGoalsForm extends StatefulWidget {
 class _SubGoalsFormState extends State<SubGoalsForm> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: MediaQuery.of(context).size.width * 0.04,
-      children: [
-        Container(child: Text('Sub Goals')),
-        DateSelector(
-          controller: widget.deadline.controller,
-          hintText: widget.deadline.hint,
-          icon: Icons.calendar_today,
-          firstDate: DateTime(2000),
-          lastDate: DateTime(2100),
-          initialDate: DateTime.now(),
-        ),
-        ...widget.subGoals.map(
-          (subGoal) => Row(
-            spacing: MediaQuery.of(context).size.width * 0.04,
-            children: [
-              Expanded(
-                child: TextFields(
-                  controller: subGoal.key.controller,
-                  hinttext: subGoal.key.hint,
-                  whatIsInput: subGoal.key.type,
-                ),
-              ),
-              Expanded(
-                child: DateSelector(
-                  controller: subGoal.value.controller,
-                  hintText: subGoal.value.hint,
-                  icon: Icons.calendar_today,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                  initialDate: DateTime.now(),
-                ),
-              ),
-            ],
+    return Container(
+      padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
+      color: const Color(0x00000000),
+      child: Column(
+        spacing: MediaQuery.of(context).size.width * 0.04,
+        children: [
+          Container(child: Text('Sub Goals')),
+          DateSelector(
+            controller: widget.deadline.controller,
+            hintText: widget.deadline.hint,
+            icon: Icons.calendar_today,
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2100),
+            initialDate: DateTime.now(),
           ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            widget.addSubGoal();
-          },
-          child: const Text('Add Sub Goal'),
-        ),
-      ],
+          ...widget.subGoals.map(
+            (subGoal) => Row(
+              spacing: MediaQuery.of(context).size.width * 0.04,
+              children: [
+                Expanded(
+                  child: TextFields(
+                    controller: subGoal.key.controller,
+                    hinttext: subGoal.key.hint,
+                    whatIsInput: subGoal.key.type,
+                  ),
+                ),
+                Expanded(
+                  child: DateSelector(
+                    controller: subGoal.value.controller,
+                    hintText: subGoal.value.hint,
+                    icon: Icons.calendar_today,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                    initialDate: DateTime.now(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              widget.addSubGoal();
+            },
+            child: const Text('Add Sub Goal'),
+          ),
+        ],
+      ),
     );
   }
 }

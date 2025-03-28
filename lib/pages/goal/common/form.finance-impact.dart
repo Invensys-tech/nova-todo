@@ -27,67 +27,65 @@ class FinanceImpactForm extends StatefulWidget {
 class _FinanceImpactFormState extends State<FinanceImpactForm> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: MediaQuery.of(context).size.width * 0.04,
-      children: [
-        DateSelector(
-          hintText: widget.totalMoney.hint,
-          controller: widget.totalMoney.controller,
-          icon: Icons.calendar_today,
-          firstDate: DateTime(2000),
-          lastDate: DateTime(2100),
-          initialDate: DateTime.now(),
-        ),
-        Row(
-          spacing: MediaQuery.of(context).size.width * 0.04,
-          children: [
-            Expanded(
-              child: TextFields(
-                hinttext: widget.amountSaved.hint,
-                whatIsInput: widget.amountSaved.type,
-                controller: widget.amountSaved.controller,
-              ),
-            ),
-            Expanded(
-              child: TextFields(
-                hinttext: widget.timeSaved.hint,
-                whatIsInput: widget.timeSaved.type,
-                controller: widget.timeSaved.controller,
-              ),
-            ),
-          ],
-        ),
-        ...widget.incomeSources.map(
-          (incomeSource) => Row(
+    return Container(
+      padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
+      color: const Color(0x00000000),
+      child: Column(
+        spacing: MediaQuery.of(context).size.width * 0.04,
+        children: [
+          TextFields(
+            hinttext: widget.totalMoney.hint,
+            controller: widget.totalMoney.controller,
+            whatIsInput: widget.totalMoney.type,
+          ),
+          Row(
             spacing: MediaQuery.of(context).size.width * 0.04,
             children: [
               Expanded(
                 child: TextFields(
-                  hinttext: incomeSource.key.hint,
-                  whatIsInput: incomeSource.key.type,
-                  controller: incomeSource.key.controller,
+                  hinttext: widget.amountSaved.hint,
+                  whatIsInput: widget.amountSaved.type,
+                  controller: widget.amountSaved.controller,
                 ),
               ),
               Expanded(
-                child: DateSelector(
-                  hintText: incomeSource.value.hint,
-                  controller: incomeSource.value.controller,
-                  icon: Icons.calendar_today,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                  initialDate: DateTime.now(),
+                child: TextFields(
+                  hinttext: widget.timeSaved.hint,
+                  whatIsInput: widget.timeSaved.type,
+                  controller: widget.timeSaved.controller,
                 ),
               ),
             ],
           ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            widget.addIncomeSource();
-          },
-          child: Text('Add Income Source'),
-        ),
-      ],
+          ...widget.incomeSources.map(
+            (incomeSource) => Row(
+              spacing: MediaQuery.of(context).size.width * 0.04,
+              children: [
+                Expanded(
+                  child: TextFields(
+                    hinttext: incomeSource.key.hint,
+                    whatIsInput: incomeSource.key.type,
+                    controller: incomeSource.key.controller,
+                  ),
+                ),
+                Expanded(
+                  child: TextFields(
+                    hinttext: incomeSource.value.hint,
+                    controller: incomeSource.value.controller,
+                    whatIsInput: incomeSource.value.type,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              widget.addIncomeSource();
+            },
+            child: Text('Add Income Source'),
+          ),
+        ],
+      ),
     );
   }
 }

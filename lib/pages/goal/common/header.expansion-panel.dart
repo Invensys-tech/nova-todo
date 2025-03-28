@@ -2,15 +2,29 @@ import 'package:flutter/widgets.dart';
 
 class MyExpansionPanelHeader extends StatelessWidget {
   final String title;
+  final Icon icon;
 
-  const MyExpansionPanelHeader({super.key, required this.title});
+  const MyExpansionPanelHeader({
+    super.key,
+    required this.title,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      // margin: EdgeInsets.symmetric(
+      //   vertical: MediaQuery.of(context).size.height * 0.01,
+      // ),
+      padding: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.height * 0.01,
+        horizontal: MediaQuery.of(context).size.width * 0.02,
+      ),
       color: const Color(0xff2F2F2F),
-      child: Text(title),
+      child: Row(
+        spacing: MediaQuery.of(context).size.width * 0.04,
+        children: [icon, Text(title)],
+      ),
     );
   }
 }
