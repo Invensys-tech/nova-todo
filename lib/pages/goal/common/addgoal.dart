@@ -1027,30 +1027,30 @@ class _AccordionAxampleState extends State<AddGoal> {
     fontWeight: FontWeight.bold,
   );
 
-  @override
-  void dispose() {
-    _goalName.dispose();
-    _goalTerm.dispose();
-    _goalPriority.dispose();
-    _goalStatus.dispose();
-    _goalDescription.dispose();
-    for (var controller in motivationControllers) {
-      controller.dispose();
-    }
-    for (var subGoal in subGoals) {
-      subGoal.goalController.dispose();
-      subGoal.deadlineController.dispose();
-    }
-    _totalMoney.dispose();
-    _amountSaved.dispose();
-    _timeSaved.dispose();
-    for (var inc in income) {
-      inc.sourceController.dispose();
-      inc.amountController.dispose();
-    }
-    _dateController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _goalName.dispose();
+  //   _goalTerm.dispose();
+  //   _goalPriority.dispose();
+  //   _goalStatus.dispose();
+  //   _goalDescription.dispose();
+  //   for (var controller in motivationControllers) {
+  //     controller.dispose();
+  //   }
+  //   for (var subGoal in subGoals) {
+  //     subGoal.goalController.dispose();
+  //     subGoal.deadlineController.dispose();
+  //   }
+  //   _totalMoney.dispose();
+  //   _amountSaved.dispose();
+  //   _timeSaved.dispose();
+  //   for (var inc in income) {
+  //     inc.sourceController.dispose();
+  //     inc.amountController.dispose();
+  //   }
+  //   _dateController.dispose();
+  //   super.dispose();
+  // }
 
   void _printAllValues() async {
     // print("----- Goal Information -----");
