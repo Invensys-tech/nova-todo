@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
+import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 
 class SubGoalsForm extends StatefulWidget {
@@ -23,16 +24,20 @@ class _SubGoalsFormState extends State<SubGoalsForm> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: MediaQuery.of(context).size.width * 0.04,
       children: [
         Container(child: Text('Sub Goals')),
-        TextFields(
+        DateSelector(
           controller: widget.deadline.controller,
-          hinttext: widget.deadline.hint,
-          whatIsInput: widget.deadline.type,
+          hintText: widget.deadline.hint,
+          icon: Icons.calendar_today,
+          firstDate: DateTime(2000),
+          lastDate: DateTime(2100),
+          initialDate: DateTime.now(),
         ),
         ...widget.subGoals.map(
           (subGoal) => Row(
-            spacing: 3.2,
+            spacing: MediaQuery.of(context).size.width * 0.04,
             children: [
               Expanded(
                 child: TextFields(
@@ -42,10 +47,13 @@ class _SubGoalsFormState extends State<SubGoalsForm> {
                 ),
               ),
               Expanded(
-                child: TextFields(
+                child: DateSelector(
                   controller: subGoal.value.controller,
-                  hinttext: subGoal.value.hint,
-                  whatIsInput: subGoal.value.type,
+                  hintText: subGoal.value.hint,
+                  icon: Icons.calendar_today,
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                  initialDate: DateTime.now(),
                 ),
               ),
             ],

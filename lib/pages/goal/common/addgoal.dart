@@ -1066,23 +1066,72 @@ class _AccordionAxampleState extends State<AddGoal> {
     // print("Goal Priority: ${_goalPriority.text}");
     // print("Goal Status: ${_goalStatus.text}");
     // print("Description: ${_goalDescription.text}");
+    print("-------- Goals ----------");
+    print("Goal Name: ${_controllers["goals"]["name"].controller.text}");
+    print("Goal Term: ${_controllers["goals"]["term"].controller.text}");
+    print(
+      "Goal Priority: ${_controllers["goals"]["priority"].controller.text}",
+    );
 
-    Map<String, dynamic> data = {
-      ...getMotivationJson(),
-      ...getSubGoalsJson(),
-      ...getFinanceJson(),
-    };
+    print("----- Motivations -----");
+    for (int i = 0; i < _controllers["motivations"].length; i++) {
+      print(
+        "Motivation ${i + 1}: ${_controllers["motivations"][i].controller.text}",
+      );
+    }
 
-    print(jsonEncode(data));
+    print("----------- Sub goals | DEADLINE -------------");
+    print(
+      "Deadline: ${_controllers["subGoalsWithDeadline"]["deadline"].controller.text}",
+    );
+    for (
+      var i = 0;
+      i < _controllers["subGoalsWithDeadline"]["subGoals"].length;
+      i++
+    ) {
+      print(
+        "Sub Goal ${i + 1}: ${_controllers["subGoalsWithDeadline"]["subGoals"][i].key.controller.text}, Deadline: ${_controllers["subGoalsWithDeadline"]["subGoals"][i].value.controller.text}",
+      );
+    }
+
+    print("---------------------- FINANCE -----------------");
+    print(_controllers["financeImpact"]["totalMoney"].controller.text);
+    print(_controllers["financeImpact"]["amountSaved"].controller.text);
+    print(_controllers["financeImpact"]["timeSaved"].controller.text);
+
+    for (
+      var i = 0;
+      i < _controllers["financeImpact"]["incomeSource"].length;
+      i++
+    ) {
+      print(
+        "Source ${i + 1}: ${_controllers["financeImpact"]["incomeSource"][i].key.controller.text}",
+      );
+      print(
+        "Source ${i + 1}: ${_controllers["financeImpact"]["incomeSource"][i].value.controller.text}",
+      );
+    }
+
+    // return;
+
+    // Map<String, dynamic> data = {
+    //   ...getMotivationJson(),
+    //   ...getSubGoalsJson(),
+    //   ...getFinanceJson(),
+    // };
+
+    // print(jsonEncode(data));
 
     try {
       final goalResponse = await Supabase.instance.client.from('goal').insert({
-        'name': _goalName.text,
-        'status': _goalStatus.text,
-        'priority': _goalStatus.text,
-        'description': _goalDescription.text,
-        'term': _goalTerm.text,
+        'name': _controllers["goals"]["name"].controller.text,
+        'status': _controllers["goals"]["priority"].controller.text,
+        'priority': _controllers["goals"]["priority"].controller.text,
+        'description': _controllers["goals"]["description"].controller.text,
+        'term': _controllers["goals"]["term"].controller.text,
         'userId': 1,
+        'deadline':
+            _controllers["subGoalsWithDeadline"]["deadline"].controller.text,
         'motivation': getMotivationJson(),
         'finance': getFinanceJson(),
       });
@@ -1111,31 +1160,25 @@ class _AccordionAxampleState extends State<AddGoal> {
   Map<String, dynamic> getMotivationJson() {
     return {
       "motivations":
-          motivationControllers.map((controller) => controller.text).toList(),
+          _controllers["motivations"]
+              .map((motivation) => (motivation as FormInput).controller.text)
+              .toList(),
     };
   }
 
-  Map<String, dynamic> getSubGoalsJson() {
-    return {
-      "sub_goals":
-          subGoals.map((subGoal) {
-            return {
-              "goal": subGoal.goalController.text,
-              "deadline": formatDate(subGoal.deadlineController.text),
-            };
-          }).toList(),
-    };
+  List<Map<String, dynamic>> getSubGoalsJson() {
+    return _controllers["subGoalsWithDeadline"]["subGoals"]
+        .map(
+          (subGoal) => {
+            "goal": (subGoal as FormInputPair).key.controller.text,
+            "deadline": formatDate(subGoal.value.controller.text),
+          },
+        )
+        .toList();
   }
 
   Future<void> insertSubGoals(int goalId) async {
-    List<Map<String, dynamic>> subGoalsData =
-        subGoals.map((subGoal) {
-          return {
-            "goalId": goalId, // Foreign key
-            "goal": subGoal.goalController.text,
-            "deadline": subGoal.deadlineController.text,
-          };
-        }).toList();
+    List<Map<String, dynamic>> subGoalsData = getSubGoalsJson();
 
     if (subGoalsData.isNotEmpty) {
       await Supabase.instance.client.from('sub_goal').insert(subGoalsData);
@@ -1145,16 +1188,22 @@ class _AccordionAxampleState extends State<AddGoal> {
   Map<String, dynamic> getFinanceJson() {
     return {
       "finance": {
-        "total_money": _totalMoney.text,
-        "amount_saved": _amountSaved.text,
-        "time_saved": _timeSaved.text,
+        "total_money":
+            _controllers["financeImpact"]["totalMoney"].controller.text,
+        "amount_saved":
+            _controllers["financeImpact"]["amountSaved"].controller.text,
+        "time_saved":
+            _controllers["financeImpact"]["timeSaved"].controller.text,
         "income_sources":
-            income.map((entry) {
-              return {
-                "source": entry.sourceController.text,
-                "amount": entry.amountController.text,
-              };
-            }).toList(),
+            _controllers["financeImpact"]["incomeSource"]
+                .map(
+                  (incomeSource) => {
+                    "source":
+                        (incomeSource as FormInputPair).key.controller.text,
+                    "amount": (incomeSource).value.controller.text,
+                  },
+                )
+                .toList(),
       },
     };
   }
@@ -1168,12 +1217,7 @@ class _AccordionAxampleState extends State<AddGoal> {
   // };
 
   int _expandedIndex = -1;
-  final List _expansions = [
-    "goals Goals",
-    "motivations Motivations",
-    "subGoalsWithDeadline SubGoals",
-    "financeImpact Finance",
-  ];
+
   final Map<String, dynamic> _controllers = {
     "goals": {
       "name": FormInput(
@@ -1199,6 +1243,12 @@ class _AccordionAxampleState extends State<AddGoal> {
         controller: TextEditingController(),
         type: "1",
         hint: "Enter Goal Status",
+      ),
+      "description": FormInput(
+        label: "Description",
+        controller: TextEditingController(),
+        type: "1",
+        hint: "Enter Description",
       ),
     },
     "motivations": [
@@ -1385,6 +1435,8 @@ class _AccordionAxampleState extends State<AddGoal> {
                   goalTerms: _controllers["goals"]["term"] as FormInput,
                   goalPriority: _controllers["goals"]["priority"] as FormInput,
                   goalStatus: _controllers["goals"]["status"] as FormInput,
+                  goalDescription:
+                      _controllers["goals"]["description"] as FormInput,
                 ),
                 isExpanded: _expandedIndex == 0,
               ),
