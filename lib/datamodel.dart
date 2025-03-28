@@ -174,7 +174,7 @@ class Goal {
   String status;
   String description;
   String priority;
-  String deadline;
+  String? deadline;
   Map<String, dynamic> motivation;
   Map<String, dynamic> finance;
 
@@ -187,7 +187,7 @@ class Goal {
     required this.priority,
     required this.status,
     required this.term,
-    required this.deadline,
+    this.deadline,
   });
 
   factory Goal.fromJson(Map<String, dynamic> json) {
@@ -200,7 +200,7 @@ class Goal {
       priority: json['priority'] as String,
       status: json['status'] as String,
       term: json['term'] as String,
-      deadline: json['deadline'] as String,
+      deadline: json['deadline'] as String?,
     );
   }
 }

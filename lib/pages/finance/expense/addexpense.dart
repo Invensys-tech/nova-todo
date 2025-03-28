@@ -538,5 +538,5 @@ class _AddExpenseState extends State<AddExpense> {
 
 String formatDate(String date) {
   List<String> parts = date.split('-'); // Split DD-MM-YYYY
-  return '${parts[0]}-${parts[1]}-${parts[2]}'; // Convert to YYYY-MM-DD
+  return '${parts[2]}-${parts[1]}-${parts[0]}'; // Convert to YYYY-MM-DD
 }
