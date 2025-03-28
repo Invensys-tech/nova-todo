@@ -1217,7 +1217,16 @@ class _AccordionAxampleState extends State<AddGoal> {
   // };
 
   int _expandedIndex = -1;
+<<<<<<< HEAD
 
+=======
+  final List _expansions = [
+    "goals Goals",
+    "motivations Motivations",
+    "subGoalsWithDeadline SubGoals",
+    "financeImpact Finance",
+  ];
+>>>>>>> fc3dab18e58da96c50ba6b184ed9fa0cb8e61797
   final Map<String, dynamic> _controllers = {
     "goals": {
       "name": FormInput(
@@ -1244,12 +1253,15 @@ class _AccordionAxampleState extends State<AddGoal> {
         type: "1",
         hint: "Enter Goal Status",
       ),
+<<<<<<< HEAD
       "description": FormInput(
         label: "Description",
         controller: TextEditingController(),
         type: "1",
         hint: "Enter Description",
       ),
+=======
+>>>>>>> fc3dab18e58da96c50ba6b184ed9fa0cb8e61797
     },
     "motivations": [
       FormInput(
@@ -1435,8 +1447,11 @@ class _AccordionAxampleState extends State<AddGoal> {
                   goalTerms: _controllers["goals"]["term"] as FormInput,
                   goalPriority: _controllers["goals"]["priority"] as FormInput,
                   goalStatus: _controllers["goals"]["status"] as FormInput,
+<<<<<<< HEAD
                   goalDescription:
                       _controllers["goals"]["description"] as FormInput,
+=======
+>>>>>>> fc3dab18e58da96c50ba6b184ed9fa0cb8e61797
                 ),
                 isExpanded: _expandedIndex == 0,
               ),
