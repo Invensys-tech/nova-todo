@@ -21,7 +21,7 @@ class MotivationFormState extends State<MotivationForm> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 3.2,
+      spacing: MediaQuery.of(context).size.width * 0.04,
       children: [
         // ...widget.motivations.asMap().entries.map(
         // (entry) => TextFields(
