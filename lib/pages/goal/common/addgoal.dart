@@ -1211,7 +1211,7 @@ class _AccordionAxampleState extends State<AddGoal> {
         hint: "Enter how would you feel if you don’t achieve this goal",
       ),
     ],
-    "": {
+    "subGoalsWithDeadline": {
       "deadline": FormInput(
         label: "Deadline Of this current Vision Board",
         controller: TextEditingController(),
@@ -1219,22 +1219,23 @@ class _AccordionAxampleState extends State<AddGoal> {
         hint: "Enter Deadline Of this current Vision Board",
       ),
       "subGoals": [
-        {
-          FormInput(
+        SubGoal(
+          name: FormInput(
             label: "Sub goal name",
             controller: TextEditingController(),
             type: "1",
             hint: "Enter Sub goal name",
-          ): FormInput(
+          ),
+          deadline: FormInput(
             label: "Subgoal Deadline",
             controller: TextEditingController(),
             type: "1",
             hint: "Enter Subgoal Deadline",
           ),
-        },
+        ),
       ],
     },
-    "halluuu": {
+    "financeImpact": {
       "totalMoney": FormInput(
         label: "How much will this project",
         controller: TextEditingController(),
@@ -1256,19 +1257,20 @@ class _AccordionAxampleState extends State<AddGoal> {
         span: 1.5,
       ),
       "incomeSource": [
-        {
-          FormInput(
+        FormInputPair(
+          key: FormInput(
             label: "Source",
             controller: TextEditingController(),
             type: "1",
             hint: "Enter Source",
-          ): FormInput(
+          ),
+          value: FormInput(
             label: "Amount",
             controller: TextEditingController(),
             type: "1",
             hint: "Enter Amount",
           ),
-        },
+        ),
       ],
     },
   };
@@ -1282,6 +1284,38 @@ class _AccordionAxampleState extends State<AddGoal> {
         hint: "Enter Additional Motivation",
       ),
     );
+  }
+
+  addIncomeSource() {
+    _controllers["financeImpact"]["incomeSource"].append({
+      FormInput(
+        label: "Source",
+        controller: TextEditingController(),
+        type: "1",
+        hint: "Enter Source",
+      ): FormInput(
+        label: "Amount",
+        controller: TextEditingController(),
+        type: "1",
+        hint: "Enter Amount",
+      ),
+    });
+  }
+
+  addSubGoals() {
+    _controllers["subGoalsWithDeadline"]["subGoals"].append({
+      FormInput(
+        label: "Sub goal name",
+        controller: TextEditingController(),
+        type: "1",
+        hint: "Enter Sub goal name",
+      ): FormInput(
+        label: "Subgoal Deadline",
+        controller: TextEditingController(),
+        type: "1",
+        hint: "Enter Subgoal Deadline",
+      ),
+    });
   }
 
   @override

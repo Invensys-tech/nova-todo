@@ -15,3 +15,17 @@ class FormInput {
     this.span = 3,
   });
 }
+
+class FormInputPair {
+  final FormInput key;
+  final FormInput value;
+
+  FormInputPair({required this.key, required this.value});
+}
+
+class SubGoal {
+  final FormInput name;
+  final FormInput deadline;
+
+  SubGoal({required this.name, required this.deadline});
+}
