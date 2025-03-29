@@ -4,7 +4,8 @@ enum Entities {
   GOAL("goal"),
   EXPENSE("expense"),
   LOAN("loan"),
-  BANK("bank");
+  BANK("bank"),
+  SUBGOAL_TASK("sub_goal_task");
 
   final String dbName;
 
