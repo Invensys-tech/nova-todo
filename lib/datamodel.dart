@@ -259,15 +259,10 @@ class SubGoal {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['description'] = description;
-    data['finance'] = finance;
+    data['goal'] = goal;
     data['id'] = id;
-    data['motivation'] = motivation;
-    data['name'] = name;
-    data['priority'] = priority;
-    data['status'] = status;
-    data['term'] = term;
-    data['deadline'] = deadline;
+    data['goalId'] = goalId;
+    data['tasks'] = tasks.map((task) => task.toJson()).toList();
     return data;
   }
 }
