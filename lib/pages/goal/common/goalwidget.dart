@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/goal/goalview.dart';
 
 class GoalWidget extends StatefulWidget {
+  final int id;
   final String title;
   final String description;
   final String? date;
@@ -10,6 +11,7 @@ class GoalWidget extends StatefulWidget {
     required this.description,
     required this.title,
     this.date,
+    required this.id,
   });
 
   @override
@@ -23,7 +25,7 @@ class _GoalWidgetState extends State<GoalWidget> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => GoalView()),
+          MaterialPageRoute(builder: (context) => GoalView(id: widget.id)),
         );
       },
       child: Container(

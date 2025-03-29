@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/goal/common/quil.dart';
 import 'package:flutter_application_1/pages/goal/common/quiltest.dart';
 
-void main() {
-  runApp(MaterialApp(home: GoalView()));
-}
+// void main() {
+//   runApp(MaterialApp(home: GoalView()));
+// }
 
 /// Model for an individual task.
 class Task {
@@ -136,7 +136,8 @@ class _TaskAccordionState extends State<TaskAccordion> {
 
 /// The main view that reuses the same sub-goal widget multiple times.
 class GoalView extends StatelessWidget {
-  const GoalView({super.key});
+  final int id;
+  const GoalView({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {

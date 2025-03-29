@@ -1084,6 +1084,7 @@ class _AccordionAxampleState extends State<AddGoal> {
     print(
       "Deadline: ${_controllers["subGoalsWithDeadline"]["deadline"].controller.text}",
     );
+    print(_controllers["subGoalsWithDeadline"]["subGoals"]);
     for (
       var i = 0;
       i < _controllers["subGoalsWithDeadline"]["subGoals"].length;
@@ -1130,25 +1131,28 @@ class _AccordionAxampleState extends State<AddGoal> {
         'description': _controllers["goals"]["description"].controller.text,
         'term': _controllers["goals"]["term"].controller.text,
         'userId': 1,
-        'deadline':
-            _controllers["subGoalsWithDeadline"]["deadline"].controller.text,
+        'deadline': formatDate(
+          _controllers["subGoalsWithDeadline"]["deadline"].controller.text,
+        ),
         'motivation': getMotivationJson(),
         'finance': getFinanceJson(),
       });
+
       final goals = await Datamanager().getGoals();
       final goalIdIndex =
           goals.length - 1; // Fixing index to get the last inserted goal
       final goalId = goals[goalIdIndex].id;
+      print(goalId);
 
       // // Now insert sub-goals
-      // await insertSubGoals(goalId);
+      await insertSubGoals(goalId);
 
-      // print(goalResponse);
-      // print("Goal added successfully!");
-      // ScaffoldMessenger.of(
-      //   context,
-      // ).showSnackBar(const SnackBar(content: Text("Goal added successfully!")));
-      // Navigator.pop(context);
+      print(goalResponse);
+      print("Goal added successfully!");
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Goal added successfully!")));
+      Navigator.pop(context);
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(
@@ -1166,19 +1170,21 @@ class _AccordionAxampleState extends State<AddGoal> {
     };
   }
 
-  List<Map<String, dynamic>> getSubGoalsJson() {
+  getSubGoalsJson(int id) {
     return _controllers["subGoalsWithDeadline"]["subGoals"]
         .map(
           (subGoal) => {
             "goal": (subGoal as FormInputPair).key.controller.text,
             "deadline": formatDate(subGoal.value.controller.text),
+            'goalId': id,
           },
         )
         .toList();
   }
 
   Future<void> insertSubGoals(int goalId) async {
-    List<Map<String, dynamic>> subGoalsData = getSubGoalsJson();
+    print(getSubGoalsJson(goalId));
+    List<dynamic> subGoalsData = getSubGoalsJson(goalId);
 
     if (subGoalsData.isNotEmpty) {
       await Supabase.instance.client.from('sub_goal').insert(subGoalsData);
@@ -1248,6 +1254,12 @@ class _AccordionAxampleState extends State<AddGoal> {
         controller: TextEditingController(),
         type: "1",
         hint: "Enter Goal Status",
+      ),
+      "description": FormInput(
+        label: "Goal Description",
+        controller: TextEditingController(),
+        type: "1",
+        hint: "Enter Goal Description",
       ),
     },
     "motivations": [
@@ -1434,6 +1446,8 @@ class _AccordionAxampleState extends State<AddGoal> {
                   goalTerms: _controllers["goals"]["term"] as FormInput,
                   goalPriority: _controllers["goals"]["priority"] as FormInput,
                   goalStatus: _controllers["goals"]["status"] as FormInput,
+                  goalDescription:
+                      _controllers["goals"]["description"] as FormInput,
                 ),
                 isExpanded: _expandedIndex == 0,
               ),
