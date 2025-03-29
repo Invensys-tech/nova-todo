@@ -37,7 +37,7 @@ class GoalRepository {
       final data =
           await supabaseClient
               .from(Entities.GOAL.dbName)
-              .select('*, sub_goals(*)')
+              .select('*, sub_goal(goal, id, goalId, sub_goal_task(*))')
               .eq('id', id)
               .maybeSingle();
 
@@ -47,6 +47,7 @@ class GoalRepository {
 
       return Goal.fromJson(data);
     } catch (e) {
+      print(e);
       throw Exception("Error getting the goal!");
     }
   }

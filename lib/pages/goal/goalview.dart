@@ -1,14 +1,9 @@
-import 'dart:convert';
-
 import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/goal/common/quil.dart';
+import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/goal/common/quiltest.dart';
+import 'package:flutter_application_1/pages/goal/subgoals.container.dart';
 import 'package:flutter_application_1/repositories/goal.repository.dart';
-
-// void main() {
-//   runApp(MaterialApp(home: GoalView()));
-// }
 
 /// Model for an individual task.
 class Task {
@@ -140,24 +135,30 @@ class _TaskAccordionState extends State<TaskAccordion> {
 /// The main view that reuses the same sub-goal widget multiple times.
 class GoalView extends StatefulWidget {
   final int id;
-  GoalView({super.key, required this.id}) {
-    GoalRepository()
-        .fetchView(id)
-        .then((value) => print(jsonEncode(value.toJson())));
-  }
+
+  const GoalView({super.key, required this.id});
 
   @override
   State<GoalView> createState() => _GoalViewState();
 }
 
 class _GoalViewState extends State<GoalView> {
+  late Future<Goal> goal;
+
+  void initState() {
+    super.initState();
+    goal = GoalRepository().fetchView(widget.id);
+  }
+
+  State<GoalView> createState() => _GoalViewState();
+
   @override
   Widget build(BuildContext context) {
     // For demonstration, we create three sub-goals with the same title.
-    List<Widget> subGoalWidgets = List.generate(
-      3,
-      (index) => TaskAccordion(title: "Learn Flutter"),
-    );
+    // List<Widget> subGoalWidgets = List.generate(
+    //   3,
+    //   (index) => TaskAccordion(title: "Learn Flutter"),
+    // );
 
     return Scaffold(
       appBar: AppBar(
@@ -179,280 +180,257 @@ class _GoalViewState extends State<GoalView> {
           horizontal: MediaQuery.of(context).size.width * 0.045,
         ),
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Other content above can be placed here.
-            SizedBox(height: MediaQuery.of(context).size.height * 0.009),
-            Text(
-              'We want you to remember this',
-              style: TextStyle(color: Colors.green),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.009),
-
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.005,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-
+        child: FutureBuilder(
+          future: goal,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var goal = snapshot.data!;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.arrow_right),
-                  Expanded(
-                    child: Text(
-                      "Assume the taxi self and how happy you you are going to be in the community",
-                      style: TextStyle(color: Colors.white70),
-                      softWrap: true,
+                  // Other content above can be placed here.
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
+                  Text(
+                    'We want you to remember this',
+                    style: TextStyle(color: Colors.green),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.005,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...goal.motivation["motivations"]
+                            .map(
+                              (motivation) => Row(
+                                children: [
+                                  Icon(Icons.arrow_right),
+                                  Text(
+                                    motivation as String,
+                                    style: TextStyle(color: Colors.white70),
+                                    softWrap: true,
+                                  ),
+                                ],
+                              ),
+                            )
+                            .toList(),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.005,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
 
-                children: [
-                  Icon(Icons.arrow_right),
-                  Expanded(
-                    child: Text(
-                      "Assume the taxi self and how happy you you are going to be in the community",
-                      style: TextStyle(color: Colors.white70),
-                      softWrap: true,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        // height: MediaQuery.of(context).size.height * 0.03,
+                        color: Color(0xff444444),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "First Text",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Second Text",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        // height: MediaQuery.of(context).size.height * 0.03,
+                        color: Color(0xff444444),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "First Text",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Second Text",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        // height: MediaQuery.of(context).size.height * 0.03,
+                        color: Color(0xff444444),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "First Text",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Second Text",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        // height: MediaQuery.of(context).size.height * 0.03,
+                        color: Color(0xff444444),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "First Text",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Second Text",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Description",
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.009,
+                      ),
+
+                      Text(
+                        goal.description,
+                        style: TextStyle(color: Colors.white54),
+                        softWrap: true,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.07),
+                  const SizedBox(height: 20),
+                  // "Sub-Goals" title
+                  Container(
+                    color: Color(0xff353535),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          // Multiple sub-goal widgets.
+                          Column(
+                            children: [
+                              SubGoalsContainer(subGoals: goal.subGoals),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.005,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-
-                children: [
-                  Icon(Icons.arrow_right),
-                  Expanded(
-                    child: Text(
-                      "Assume the taxi self and how happy you you are going to be in the community",
-                      style: TextStyle(color: Colors.white70),
-                      softWrap: true,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.43,
-                  // height: MediaQuery.of(context).size.height * 0.03,
-                  color: Color(0xff444444),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "First Text",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Second Text",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.43,
-                  // height: MediaQuery.of(context).size.height * 0.03,
-                  color: Color(0xff444444),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "First Text",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Second Text",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-
-            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.43,
-                  // height: MediaQuery.of(context).size.height * 0.03,
-                  color: Color(0xff444444),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "First Text",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Second Text",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.43,
-                  // height: MediaQuery.of(context).size.height * 0.03,
-                  color: Color(0xff444444),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "First Text",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Second Text",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Description",
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.009),
-
-                Text(
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has beenthe industry's standard dummy text ever sincethe 1500s, ",
-                  style: TextStyle(color: Colors.white54),
-                  softWrap: true,
-                ),
-              ],
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.07),
-            const SizedBox(height: 20),
-            // "Sub-Goals" title
-            Container(
-              color: Color(0xff353535),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: const [
-                        Icon(Icons.account_tree, color: Colors.white),
-                        SizedBox(width: 8),
-                        Text(
-                          "Sub-Goals",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.07),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(2, 2),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    // Multiple sub-goal widgets.
-                    ...subGoalWidgets,
-                    // Other content below can be placed here.
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.07),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 4,
-                    offset: Offset(2, 2),
-                  ),
-                ],
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => QuilPage()),
-                  );
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.07,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  alignment: Alignment.center,
-                  child: const Text(
-                    "Open Quill Editor",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => QuilPage()),
+                        );
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          "Open Quill Editor",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
 
-            // QuilExample(),
+                  // QuilExample(),
 
-            // QuillEditorExample(),
-          ],
+                  // QuillEditorExample(),
+                ],
+              );
+            } else {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return Text('Error: ${snapshot.error}');
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }
+          },
         ),
       ),
     );

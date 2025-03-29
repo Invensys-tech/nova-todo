@@ -177,6 +177,7 @@ class Goal {
   String? deadline;
   Map<String, dynamic> motivation;
   Map<String, dynamic> finance;
+  List<SubGoal> subGoals;
 
   Goal({
     required this.description,
@@ -187,6 +188,7 @@ class Goal {
     required this.priority,
     required this.status,
     required this.term,
+    required this.subGoals,
     this.deadline,
   });
 
@@ -201,6 +203,12 @@ class Goal {
       status: json['status'] as String,
       term: json['term'] as String,
       deadline: json['deadline'] as String?,
+      subGoals:
+          json['sub_goal'] == Null || json['sub_goal'] == null
+              ? []
+              : (json['sub_goal'] as List<dynamic>)
+                  .map((e) => SubGoal.fromJson(e))
+                  .toList(),
     );
   }
 
@@ -215,6 +223,82 @@ class Goal {
     data['status'] = status;
     data['term'] = term;
     data['deadline'] = deadline;
+    return data;
+  }
+}
+
+class SubGoal {
+  final String goal;
+  final int id;
+  final int goalId;
+  final List<Task> tasks;
+  // final DateTime deadline;
+
+  SubGoal({
+    required this.goal,
+    required this.id,
+    required this.goalId,
+    required this.tasks,
+    // required this.deadline,
+  });
+
+  factory SubGoal.fromJson(Map<String, dynamic> json) {
+    return SubGoal(
+      goal: json['goal'] as String,
+      id: json['id'] as int,
+      goalId: json['goalId'] as int,
+      tasks:
+          json['sub_goal_task'] == Null || json['sub_goal_task'] == null
+              ? []
+              : (json['sub_goal_task'] as List<dynamic>)
+                  .map((e) => Task.fromJson(e))
+                  .toList(),
+      // deadline: DateTime.parse(json['deadline'] as String),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['description'] = description;
+    data['finance'] = finance;
+    data['id'] = id;
+    data['motivation'] = motivation;
+    data['name'] = name;
+    data['priority'] = priority;
+    data['status'] = status;
+    data['term'] = term;
+    data['deadline'] = deadline;
+    return data;
+  }
+}
+
+class Task {
+  int? id;
+  final String name;
+  final int subGoalId;
+  bool status;
+
+  Task({
+    this.id,
+    required this.name,
+    required this.status,
+    required this.subGoalId,
+  });
+
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
+      id: json['id'] as int,
+      name: json['name'] as String,
+      status: json['status'] as bool,
+      subGoalId: json['subGoalId'] as int,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['status'] = status;
+    data['subGoalId'] = subGoalId;
     return data;
   }
 }
