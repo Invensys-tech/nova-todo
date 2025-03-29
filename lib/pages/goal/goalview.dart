@@ -1,16 +1,9 @@
-import 'dart:convert';
-
 import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamodel.dart';
-import 'package:flutter_application_1/pages/goal/common/quil.dart';
 import 'package:flutter_application_1/pages/goal/common/quiltest.dart';
 import 'package:flutter_application_1/pages/goal/subgoals.container.dart';
 import 'package:flutter_application_1/repositories/goal.repository.dart';
-
-// void main() {
-//   runApp(MaterialApp(home: GoalView()));
-// }
 
 /// Model for an individual task.
 class Task {
@@ -156,6 +149,8 @@ class _GoalViewState extends State<GoalView> {
     super.initState();
     goal = GoalRepository().fetchView(widget.id);
   }
+
+  State<GoalView> createState() => _GoalViewState();
 
   @override
   Widget build(BuildContext context) {

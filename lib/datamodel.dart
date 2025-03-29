@@ -256,6 +256,20 @@ class SubGoal {
       // deadline: DateTime.parse(json['deadline'] as String),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['description'] = description;
+    data['finance'] = finance;
+    data['id'] = id;
+    data['motivation'] = motivation;
+    data['name'] = name;
+    data['priority'] = priority;
+    data['status'] = status;
+    data['term'] = term;
+    data['deadline'] = deadline;
+    return data;
+  }
 }
 
 class Task {
