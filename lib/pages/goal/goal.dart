@@ -77,6 +77,7 @@ class _GoalPageState extends State<GoalPage> {
                             GoalWidget(
                               description: goals[index].description,
                               title: goals[index].name,
+                              id: goals[index].id,
                             ),
                           ],
                         ));
