@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/goal/common/quil.dart';
 import 'package:flutter_application_1/pages/goal/common/quiltest.dart';
+import 'package:flutter_application_1/repositories/goal.repository.dart';
 
 // void main() {
 //   runApp(MaterialApp(home: GoalView()));
@@ -135,10 +138,19 @@ class _TaskAccordionState extends State<TaskAccordion> {
 }
 
 /// The main view that reuses the same sub-goal widget multiple times.
-class GoalView extends StatelessWidget {
+class GoalView extends StatefulWidget {
   final int id;
-  const GoalView({super.key, required this.id});
+  GoalView({super.key, required this.id}) {
+    GoalRepository()
+        .fetchView(id)
+        .then((value) => print(jsonEncode(value.toJson())));
+  }
 
+  @override
+  State<GoalView> createState() => _GoalViewState();
+}
+
+class _GoalViewState extends State<GoalView> {
   @override
   Widget build(BuildContext context) {
     // For demonstration, we create three sub-goals with the same title.

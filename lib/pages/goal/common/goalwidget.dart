@@ -10,8 +10,8 @@ class GoalWidget extends StatefulWidget {
     super.key,
     required this.description,
     required this.title,
-    this.date,
     required this.id,
+    this.date,
   });
 
   @override

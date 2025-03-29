@@ -54,9 +54,7 @@ class Datamanager {
 
   Future<List<Goal>> fetchGoals() async {
     final data = await Supabase.instance.client.from('goal').select('*');
-    return (data as List<dynamic>)
-        .map((e) => Goal.fromJson(e as Map<String, dynamic>))
-        .toList();
+    return data.map((e) => Goal.fromJson(e)).toList();
   }
 
   Future<List<Expense>> getExpense() async {

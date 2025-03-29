@@ -20,30 +20,27 @@ class MotivationForm extends StatefulWidget {
 class MotivationFormState extends State<MotivationForm> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: MediaQuery.of(context).size.width * 0.04,
-      children: [
-        // ...widget.motivations.asMap().entries.map(
-        // (entry) => TextFields(
-        //   controller: entry.value.controller,
-        //   hinttext: entry.value.hint,
-        //   whatIsInput: entry.value.type,
-        // ),
-        // ),
-        ...widget.motivations.map(
-          (motivation) => TextFields(
-            controller: motivation.controller,
-            hinttext: motivation.hint,
-            whatIsInput: motivation.type,
+    return Container(
+      padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.01),
+      color: const Color(0x00000000),
+      child: Column(
+        spacing: MediaQuery.of(context).size.width * 0.04,
+        children: [
+          ...widget.motivations.map(
+            (motivation) => TextFields(
+              controller: motivation.controller,
+              hinttext: motivation.hint,
+              whatIsInput: motivation.type,
+            ),
           ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            widget.addMotivations();
-          },
-          child: const Text('Add Motivation'),
-        ),
-      ],
+          ElevatedButton(
+            onPressed: () {
+              widget.addMotivations();
+            },
+            child: const Text('Add Motivation'),
+          ),
+        ],
+      ),
     );
   }
 }
