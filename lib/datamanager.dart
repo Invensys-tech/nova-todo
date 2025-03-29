@@ -50,7 +50,7 @@ class Datamanager {
     return (data as List<dynamic>)
         .map((e) => Bank.fromJson(e as Map<String, dynamic>))
         .toList();
-  }
+  
 
   Future<List<Goal>> fetchGoals() async {
     final data = await Supabase.instance.client.from('goal').select('*');

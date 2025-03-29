@@ -159,13 +159,12 @@ class _AccordionAxampleState extends State<AddGoal> {
       final goalIdIndex =
           goals.length - 1; // Fixing index to get the last inserted goal
       final goalId = goals[goalIdIndex].id;
-      print(goalId);
 
       // goals.forEach((goal) => print(goal.id));
       // print("----------- Goal Id ------------");
       // print(goalId);
 
-      // Now insert sub-goals
+      // // Now insert sub-goals
       await insertSubGoals(goalId);
 
       // print(goalResponse);
@@ -174,11 +173,15 @@ class _AccordionAxampleState extends State<AddGoal> {
         context,
       ).showSnackBar(const SnackBar(content: Text("Goal added successfully!")));
       Navigator.pop(context);
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Error: $e")));
     }
   }
 
+  Map<String, dynamic> getMotivationJson() {
     return {
       "motivations":
           _controllers["motivations"]
@@ -187,27 +190,26 @@ class _AccordionAxampleState extends State<AddGoal> {
     };
   }
 
-<<<<<<< HEAD
-  getSubGoalsJson(int id) {
-    return _controllers["subGoalsWithDeadline"]["subGoals"]
-        .map(
-          (subGoal) => {
-            "goal": (subGoal as FormInputPair).key.controller.text,
-            "deadline": formatDate(subGoal.value.controller.text),
-            'goalId': id,
-          },
-        )
-        .toList();
-  }
-
-  Future<void> insertSubGoals(int goalId) async {
-    print(getSubGoalsJson(goalId));
-    List<dynamic> subGoalsData = getSubGoalsJson(goalId);
-=======
   getSubGoalsJson() {
     // getSubGoalsJson() {
     dynamic subGoalsData =
         _controllers["subGoalsWithDeadline"]["subGoals"].map((subGoal) {
+          Map<String, dynamic> subGoalData = {
+            "goal": subGoal.key.controller.text,
+            "deadline": formatDate(subGoal.value.controller.text),
+          };
+
+          return subGoalData;
+        }).toList();
+
+    return subGoalsData;
+  }
+
+  Future<void> insertSubGoals(int goalId) async {
+    // List<Map<String, dynamic>> subGoalsData = getSubGoalsJson();
+    List<dynamic> subGoalsData = getSubGoalsJson();
+    // List<Map<String, dynamic>> subGoalsData =
+    //     getSubGoalsJson() as List<Map<String, dynamic>>;
 
     if (subGoalsData.isNotEmpty) {
       await Supabase.instance.client.from('sub_goal').insert(subGoalsData);
@@ -228,6 +230,7 @@ class _AccordionAxampleState extends State<AddGoal> {
               if (incomeSource is FormInputPair) {
                 return {
                   "source": (incomeSource).key.controller.text,
+                  "amount": (incomeSource).value.controller.text,
                 };
               } else {
                 print('\n\n\n Errorororrokr \n\n\n\n\n\n');
@@ -238,16 +241,7 @@ class _AccordionAxampleState extends State<AddGoal> {
   }
 
   int _expandedIndex = -1;
-<<<<<<< HEAD
-  final List _expansions = [
-    "goals Goals",
-    "motivations Motivations",
-    "subGoalsWithDeadline SubGoals",
-    "financeImpact Finance",
-  ];
-=======
 
->>>>>>> a038667b872a3d2db350d81f6ba6e3137ac0eb68
   final Map<String, dynamic> _controllers = {
     "goals": {
       "name": FormInput(
@@ -544,374 +538,6 @@ class _AccordionAxampleState extends State<AddGoal> {
             },
           ),
         ),
-<<<<<<< HEAD
-        // children: [
-        // Accordion(
-        //   headerBorderColor: const Color(0xff959595),
-        //   contentBorderColor: const Color(0xff959595),
-        //   headerBackgroundColor: const Color(0xff2F2F2F),
-        //   headerPadding: const EdgeInsets.all(8.0),
-        //   children: [
-        //     // Goal Information Section
-        //     AccordionSection(
-        //       contentBorderColor: const Color(0xff959595),
-        //       isOpen: true,
-        //       leftIcon: const Icon(
-        //         Icons.star_rounded,
-        //         color: Colors.white,
-        //       ),
-        //       header: const Text('Goal Information', style: headerStyle),
-        //       contentVerticalPadding: 20,
-        //       contentBackgroundColor: const Color(0xff2F2F2F),
-        //       content: GoalInformationAccordion(),
-        //       // content:Column(
-        //       //   children: [
-        //       //     Row(
-        //       //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //       //       children: [
-        //       //         Container(
-        //       //           width: MediaQuery.of(context).size.width * 0.40,
-        //       //           child: TextFields(
-        //       //             hinttext: 'Goal Name',
-        //       //             whatIsInput: '1',
-        //       //             controller: _goalName,
-        //       //           ),
-        //       //         ),
-        //       //         Container(
-        //       //           width: MediaQuery.of(context).size.width * 0.40,
-        //       //           child: TextFields(
-        //       //             hinttext: 'Terms of Goal',
-        //       //             whatIsInput: '1',
-        //       //             controller: _goalTerm,
-        //       //           ),
-        //       //         ),
-        //       //       ],
-        //       //     ),
-        //       //     SizedBox(
-        //       //       height: MediaQuery.of(context).size.height * 0.02,
-        //       //     ),
-        //       //     Row(
-        //       //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //       //       children: [
-        //       //         Container(
-        //       //           width: MediaQuery.of(context).size.width * 0.40,
-        //       //           child: TextFields(
-        //       //             hinttext: 'Goal Priority',
-        //       //             whatIsInput: '1',
-        //       //             controller: _goalPriority,
-        //       //           ),
-        //       //         ),
-        //       //         Container(
-        //       //           width: MediaQuery.of(context).size.width * 0.40,
-        //       //           child: TextFields(
-        //       //             hinttext: 'Goal Status',
-        //       //             whatIsInput: '1',
-        //       //             controller: _goalStatus,
-        //       //           ),
-        //       //         ),
-        //       //       ],
-        //       //     ),
-        //       //     SizedBox(
-        //       //       height: MediaQuery.of(context).size.height * 0.02,
-        //       //     ),
-        // MultiLineTextField(
-        //   hintText: 'description',
-        //   controller: _goalDescription,
-        //   icon: Icons.description,
-        // ),
-        //       //   ],
-        //       // ),
-        //     ),
-        //     // Motivation Section
-        //     AccordionSection(
-        //       contentBorderColor: const Color(0xff959595),
-        //       isOpen: true,
-        //       leftIcon: const Icon(
-        //         Icons.ads_click_rounded,
-        //         color: Colors.white,
-        //       ),
-        //       header: const Text('Motivation', style: headerStyle),
-        //       contentVerticalPadding: 20,
-        //       contentBackgroundColor: const Color(0xff2F2F2F),
-        //       content: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           TextFields(
-        //             hinttext: 'Why is this goal important to you',
-        //             whatIsInput: '1',
-        //             controller: motivationControllers[0],
-        //           ),
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.019,
-        //           ),
-        //           TextFields(
-        //             hinttext:
-        //                 'What will happen after you achieve this goal',
-        //             whatIsInput: '1',
-        //             controller: motivationControllers[1],
-        //           ),
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.019,
-        //           ),
-        //           TextFields(
-        //             hinttext:
-        //                 'How would you feel if you don’t achieve this goal',
-        //             whatIsInput: '1',
-        //             controller: motivationControllers[2],
-        //           ),
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.019,
-        //           ),
-        //           ...motivationControllers.sublist(3).asMap().entries.map(
-        //             (entry) {
-        //               int index = entry.key;
-        //               TextEditingController controller = entry.value;
-        //               return Padding(
-        //                 padding: const EdgeInsets.symmetric(
-        //                   vertical: 8.0,
-        //                 ),
-        //                 child: TextFields(
-        //                   hinttext: 'Additional Motivation ${index + 1}',
-        //                   whatIsInput: '1',
-        //                   controller: controller,
-        //                 ),
-        //               );
-        //             },
-        //           ).toList(),
-        //           Align(
-        //             alignment: Alignment.centerRight,
-        //             child: ElevatedButton(
-        //               onPressed: () {
-        //                 setState(() {
-        //                   motivationControllers.add(
-        //                     TextEditingController(),
-        //                   );
-        //                 });
-        //               },
-        //               child: const Text('Add Motivation'),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //     // Sub Goals and Deadline Section
-        //     AccordionSection(
-        //       contentBorderColor: const Color(0xff959595),
-        //       isOpen: true,
-        //       leftIcon: const Icon(
-        //         Icons.ads_click_rounded,
-        //         color: Colors.white,
-        //       ),
-        //       header: const Text(
-        //         'Sub Goals and Deadline',
-        //         style: headerStyle,
-        //       ),
-        //       contentVerticalPadding: 20,
-        //       contentBackgroundColor: const Color(0xff2F2F2F),
-        //       content: Column(
-        //         children: [
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.019,
-        //           ),
-        //           DateSelector(
-        //             hintText: "Dead Line Of this current Vision Board",
-        //             controller: _dateController,
-        //             icon: Icons.calendar_today,
-        //             firstDate: DateTime(2000),
-        //             lastDate: DateTime(2100),
-        //             initialDate: DateTime.now(),
-        //           ),
-        //           ...subGoals.asMap().entries.map((entry) {
-        //             int index = entry.key;
-        //             SubGoalData subGoal = entry.value;
-        //             return Padding(
-        //               padding: const EdgeInsets.symmetric(vertical: 8.0),
-        //               child: Row(
-        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                 children: [
-        //                   Container(
-        //                     width:
-        //                         MediaQuery.of(context).size.width * 0.40,
-        //                     child: TextFields(
-        //                       hinttext: 'Sub goal name',
-        //                       whatIsInput: '1',
-        //                       controller: subGoal.goalController,
-        //                     ),
-        //                   ),
-        //                   Container(
-        //                     width:
-        //                         MediaQuery.of(context).size.width * 0.40,
-        //                     child: DateSelector(
-        //                       hintText: "Subgoal Deadline",
-        //                       controller: subGoal.deadlineController,
-        //                       icon: Icons.calendar_today,
-        //                       firstDate: DateTime(2000),
-        //                       lastDate: DateTime(2100),
-        //                       initialDate: DateTime.now(),
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             );
-        //           }).toList(),
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.02,
-        //           ),
-        //           Align(
-        //             alignment: Alignment.centerRight,
-        //             child: ElevatedButton(
-        //               onPressed: () {
-        //                 setState(() {
-        //                   subGoals.add(
-        //                     SubGoalData(
-        //                       goalController: TextEditingController(),
-        //                       deadlineController: TextEditingController(),
-        //                     ),
-        //                   );
-        //                 });
-        //               },
-        //               child: const Text('Add Sub Goal'),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //     // Finance and Impact Section
-        //     AccordionSection(
-        //       contentBorderColor: const Color(0xff959595),
-        //       isOpen: true,
-        //       leftIcon: const Icon(
-        //         Icons.monetization_on,
-        //         color: Colors.white,
-        //       ),
-        //       header: const Text(
-        //         'Finance and Impact',
-        //         style: headerStyle,
-        //       ),
-        //       contentVerticalPadding: 20,
-        //       contentBackgroundColor: const Color(0xff2F2F2F),
-        //       content: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.019,
-        //           ),
-        //           TextFields(
-        //             hinttext: "How much will this project",
-        //             whatIsInput: '1',
-        //             controller: _totalMoney,
-        //           ),
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.02,
-        //           ),
-        //           Align(
-        //             alignment: Alignment.centerLeft,
-        //             child: Text(
-        //               "How much do you think you are going to save",
-        //               style: TextStyle(
-        //                 backgroundColor: Colors.black87.withOpacity(.3),
-        //                 color: Colors.white70,
-        //               ),
-        //             ),
-        //           ),
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.019,
-        //           ),
-        //           Row(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             children: [
-        //               Container(
-        //                 width: MediaQuery.of(context).size.width * 0.40,
-        //                 child: TextFields(
-        //                   hinttext: 'Amount Saved',
-        //                   whatIsInput: '0',
-        //                   controller: _amountSaved,
-        //                 ),
-        //               ),
-        //               Container(
-        //                 width: MediaQuery.of(context).size.width * 0.40,
-        //                 child: TextFields(
-        //                   hinttext: 'Time Saved',
-        //                   whatIsInput: '0',
-        //                   controller: _timeSaved,
-        //                 ),
-        //               ),
-        //             ],
-        //           ),
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.02,
-        //           ),
-        //           Align(
-        //             alignment: Alignment.centerLeft,
-        //             child: Text(
-        //               "Where do you think to get the income",
-        //               style: TextStyle(
-        //                 backgroundColor: Colors.black87.withOpacity(.3),
-        //                 color: Colors.white70,
-        //               ),
-        //             ),
-        //           ),
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.019,
-        //           ),
-        //           ...income.asMap().entries.map((entry) {
-        //             int index = entry.key;
-        //             IncomeData subIncome = entry.value;
-        //             return Padding(
-        //               padding: const EdgeInsets.symmetric(vertical: 8.0),
-        //               child: Row(
-        //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                 children: [
-        //                   Container(
-        //                     width:
-        //                         MediaQuery.of(context).size.width * 0.40,
-        //                     child: TextFields(
-        //                       hinttext: 'Source',
-        //                       whatIsInput: '1',
-        //                       controller: subIncome.sourceController,
-        //                     ),
-        //                   ),
-        //                   Container(
-        //                     width:
-        //                         MediaQuery.of(context).size.width * 0.40,
-        //                     child: TextFields(
-        //                       hinttext: 'Amount',
-        //                       whatIsInput: '1',
-        //                       controller: subIncome.amountController,
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             );
-        //           }).toList(),
-        //           SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.02,
-        //           ),
-        //           Align(
-        //             alignment: Alignment.center,
-        //             child: ElevatedButton(
-        //               onPressed: () {
-        //                 setState(() {
-        //                   income.add(
-        //                     IncomeData(
-        //                       sourceController: TextEditingController(),
-        //                       amountController: TextEditingController(),
-        //                     ),
-        //                   );
-        //                 });
-        //               },
-        //               child: const Text('Add Source'),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // ),
-
-        // ],
-=======
->>>>>>> a038667b872a3d2db350d81f6ba6e3137ac0eb68
       ),
       // ),
       // ),
