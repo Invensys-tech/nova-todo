@@ -178,6 +178,7 @@ class Goal {
   Map<String, dynamic> motivation;
   Map<String, dynamic> finance;
   List<SubGoal> subGoals;
+  List<Journal> journals;
 
   Goal({
     required this.description,
@@ -189,6 +190,7 @@ class Goal {
     required this.status,
     required this.term,
     required this.subGoals,
+    required this.journals,
     this.deadline,
   });
 
@@ -208,6 +210,12 @@ class Goal {
               ? []
               : (json['sub_goal'] as List<dynamic>)
                   .map((e) => SubGoal.fromJson(e))
+                  .toList(),
+      journals:
+          json['goal_journal'] == Null || json['goal_journal'] == null
+              ? []
+              : (json['goal_journal'] as List<dynamic>)
+                  .map((e) => Journal.fromJson(e))
                   .toList(),
     );
   }
@@ -294,6 +302,30 @@ class Task {
     data['name'] = name;
     data['status'] = status;
     data['subGoalId'] = subGoalId;
+    return data;
+  }
+}
+
+class Journal {
+  DateTime? date;
+  final String journal;
+  int? goalId;
+
+  Journal({this.date, required this.journal, this.goalId});
+
+  factory Journal.fromJson(Map<String, dynamic> json) {
+    return Journal(
+      date: DateTime.parse(json['date'] as String),
+      journal: json['journal'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['date'] = date;
+    data['journal'] = journal;
+    data['goalId'] = goalId;
+
     return data;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamodel.dart';
-import 'package:flutter_application_1/pages/goal/common/quiltest.dart';
+import 'package:flutter_application_1/pages/goal/journal.container.dart';
 import 'package:flutter_application_1/pages/goal/subgoals.container.dart';
 import 'package:flutter_application_1/repositories/goal.repository.dart';
 
@@ -381,41 +381,28 @@ class _GoalViewState extends State<GoalView> {
                       ),
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.07),
                   Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 4,
-                          offset: Offset(2, 2),
-                        ),
-                      ],
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => QuilPage()),
-                        );
-                      },
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.07,
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          "Open Quill Editor",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                    color: Color(0xff353535),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          // Multiple sub-goal widgets.
+                          Column(
+                            children: [
+                              JournalContainer(
+                                journals: goal.journals,
+                                goalId: goal.id,
+                              ),
+                            ],
                           ),
-                        ),
+                          const SizedBox(height: 20),
+                        ],
                       ),
                     ),
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.07),
 
                   // QuilExample(),
 
