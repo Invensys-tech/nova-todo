@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/goal/common/quil.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 
 class JournalContainer extends StatefulWidget {
   final List<Journal> journals;
@@ -17,10 +20,18 @@ class JournalContainer extends StatefulWidget {
 }
 
 class _JournalContainerState extends State<JournalContainer> {
-  addJournal(Journal journal) {
+  addJournal(Journal journal, int? id) {
     setState(() {
       widget.journals.add(journal);
     });
+  }
+
+  updateJournal(Journal journal, int? id) {
+    if (id != null) {
+      setState(() {
+        widget.journals[id] = journal;
+      });
+    }
   }
 
   @override
@@ -42,12 +53,37 @@ class _JournalContainerState extends State<JournalContainer> {
               ],
             ),
             const SizedBox(height: 10),
-            ...widget.journals.map(
-              (journal) => Container(
-                padding: EdgeInsets.all(8.0),
-                child: Text("journal id"),
-              ),
-            ),
+            ...widget.journals.map((journal) {
+              List<dynamic> jsonList = jsonDecode(jsonDecode(journal.journal));
+
+              print("============= JSON =============");
+              print(jsonList);
+
+              // Convert List<dynamic> to List<Map<String, dynamic>>
+              List<dynamic> dataList =
+                  jsonList.map((e) => e as dynamic).toList();
+              Document quillData = Document.fromJson((dataList));
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => QuilExample(
+                            journal: jsonDecode(journal.journal),
+                            goalId: widget.goalId,
+                            addJournal: updateJournal,
+                            id: journal.id,
+                          ),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(quillData.toPlainText()),
+                ),
+              );
+            }),
             // Multiple sub-goal widgets.
             // ExpansionPanelList(
             //   materialGapSize: MediaQuery.of(context).size.width * 0.01,
@@ -94,7 +130,7 @@ class _JournalContainerState extends State<JournalContainer> {
                     MaterialPageRoute(
                       builder:
                           (context) => QuilExample(
-                            journal: 'pixel 6 hello',
+                            journal: '',
                             goalId: widget.goalId,
                             addJournal: addJournal,
                           ),
@@ -106,7 +142,7 @@ class _JournalContainerState extends State<JournalContainer> {
                   width: MediaQuery.of(context).size.width * 0.9,
                   alignment: Alignment.center,
                   child: const Text(
-                    "Open Quill Editor",
+                    "Add Journal",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

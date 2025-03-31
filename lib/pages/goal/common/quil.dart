@@ -7,13 +7,15 @@ import 'dart:convert';
 class QuilExample extends StatefulWidget {
   final int goalId;
   final String journal;
-  final void Function(Journal journal) addJournal;
+  final int? id;
+  final void Function(Journal journal, int? id) addJournal;
 
   const QuilExample({
     super.key,
     required this.goalId,
     required this.journal,
     required this.addJournal,
+    this.id,
   });
 
   @override
@@ -23,6 +25,17 @@ class QuilExample extends StatefulWidget {
 class _QuilExampleState extends State<QuilExample> {
   QuillController _controller = QuillController.basic();
 
+  @override
+  void initState() {
+    super.initState();
+    print("====================");
+    print(widget.journal);
+    _controller = QuillController(
+      document: Document.fromJson(jsonDecode(widget.journal)),
+      selection: const TextSelection.collapsed(offset: 0),
+    );
+  }
+
   logController() {
     final String json = jsonEncode(_controller.document.toDelta().toJson());
     print('-------------------- JSON ------------------');
@@ -30,12 +43,34 @@ class _QuilExampleState extends State<QuilExample> {
   }
 
   saveJournal() async {
-    final String json = jsonEncode(_controller.document.toDelta().toJson());
-    Journal savedJournal = await JournalRepository().createJournal(
-      Journal(journal: json, goalId: widget.goalId),
+    final List<Map<String, dynamic>> json =
+        (_controller.document.toDelta().toJson());
+    Journal journal = await JournalRepository().createJournal(
+      // Journal(journal: json, goalId: widget.goalId),
+      json,
       widget.goalId,
     );
-    widget.addJournal(savedJournal);
+    widget.addJournal(journal, null);
+    print('-------------------- JSON ------------------');
+    // print(jsonEncode(journal));
+    print(json.runtimeType);
+    Navigator.pop(context);
+  }
+
+  updateJournal() async {
+    final List<Map<String, dynamic>> json =
+        (_controller.document.toDelta().toJson());
+    Journal journal = await JournalRepository().updateJournal(
+      // Journal(journal: json, goalId: widget.goalId),
+      json,
+      widget.id!,
+    );
+    widget.addJournal(journal, widget.id);
+    print('-------------------- JSON ------------------');
+   
+  Future.delayed(Duration(milliseconds: 100), () {
+      Navigator.pop(context);
+    });
   }
 
   @override
@@ -64,7 +99,7 @@ class _QuilExampleState extends State<QuilExample> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: saveJournal,
+              onPressed: widget.journal != "" ? updateJournal : saveJournal,
               child: const Text("Save", style: TextStyle(color: Colors.white)),
             ),
           ),
