@@ -20,9 +20,7 @@ class TaskRepository {
           .from(Entities.SUBGOAL_TASK.dbName)
           .select('*');
 
-      Task savedTask = Task.fromJson(data[data.length - 1]);
-
-      return savedTask;
+      return Task.fromJson(data[data.length - 1]);
     } catch (e) {
       print(e);
       throw Exception("Error creating task!");
