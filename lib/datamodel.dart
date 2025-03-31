@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class User {
   int id;
   DateTime createdAt;
@@ -68,7 +70,7 @@ class Expense {
 class Loan {
   int id;
   String loanerName;
-  double amount;
+  num amount;
   String type;
   String phoneNumber;
   String bank;
@@ -88,7 +90,7 @@ class Loan {
 
   factory Loan.fromJson(Map<String, dynamic> json) {
     return Loan(
-      amount: json['amount'] as double,
+      amount: json['amount'] as num,
       bank: json['bank'] as String,
       date: DateTime.parse(json['date'] as String),
       id: json['id'] as int,
@@ -307,25 +309,42 @@ class Task {
 }
 
 class Journal {
-  DateTime? date;
+  // DateTime? date;
   final String journal;
   int? goalId;
+  int? id;
 
-  Journal({this.date, required this.journal, this.goalId});
+  Journal({required this.journal, this.goalId, this.id});
 
   factory Journal.fromJson(Map<String, dynamic> json) {
     return Journal(
-      date: DateTime.parse(json['date'] as String),
-      journal: json['journal'] as String,
+      // date: DateTime.parse(json['date'] as String),
+      journal: jsonEncode(json['journal']),
+      id: json['id'] as int,
     );
+
+    /// Converts the `Journal` instance into a JSON-compatible map.
+    ///
+    /// This method serializes the `journal` and `goalId` properties of the `Journal`
+    /// instance into a map format that can be used for JSON encoding.
+    ///
+    /// Returns a `Map<String, dynamic>` representing the `Journal` object.
+    /// Throws an exception if any error occurs during serialization.
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['date'] = date;
-    data['journal'] = journal;
-    data['goalId'] = goalId;
+    try {
+      final Map<String, dynamic> data = <String, dynamic>{};
+      // data['date'] = date;
 
-    return data;
+      data['journal'] = {"journal": journal};
+      data['goalId'] = goalId;
+
+      return data;
+    } catch (e) {
+      print("----------------------Issue in the model------------------");
+      print(e);
+      rethrow;
+    }
   }
 }

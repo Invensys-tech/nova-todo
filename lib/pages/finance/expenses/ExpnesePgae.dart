@@ -228,28 +228,28 @@ class _ExpensespageState extends State<Expensespage> {
               if (snapshot.hasData) {
                 var expenses = snapshot.data as List<Expense>;
 
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  itemCount: expenses.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        // SizedBox(
-                        //   height: MediaQuery.of(context).size.height * 0.09,
-                        // ),
-                        ExpenseList(
-                          amountofexpenses: expenses[index].amount,
-                          catagoryofexpenses: expenses[index].category,
-                          titleofExpenses: expenses[index].category,
-                          typeofexpenses: expenses[index].type,
-                        ),
-                        // SizedBox(
-                        //   height: MediaQuery.of(context).size.height * 0.09,
-                        // ),
-                      ],
-                    );
-                  },
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: expenses.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          // SizedBox(
+                          //   height: MediaQuery.of(context).size.height * 0.09,
+                          // ),
+                          ExpenseList(
+                            amountofexpenses: expenses[index].amount,
+                            catagoryofexpenses: expenses[index].category,
+                            titleofExpenses: expenses[index].category,
+                            typeofexpenses: expenses[index].type,
+                          ),
+                          // SizedBox(
+                          //   height: MediaQuery.of(context).size.height * 0.09,
+                          // ),
+                        ],
+                      );
+                    },
+                  ),
                 );
               } else {
                 if (snapshot.hasError) {

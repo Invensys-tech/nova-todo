@@ -80,30 +80,30 @@ class _AccordionAxampleState extends State<AddGoal> {
     fontWeight: FontWeight.bold,
   );
 
-  @override
-  void dispose() {
-    _goalName.dispose();
-    _goalTerm.dispose();
-    _goalPriority.dispose();
-    _goalStatus.dispose();
-    _goalDescription.dispose();
-    for (var controller in motivationControllers) {
-      controller.dispose();
-    }
-    for (var subGoal in subGoals) {
-      subGoal.goalController.dispose();
-      subGoal.deadlineController.dispose();
-    }
-    _totalMoney.dispose();
-    _amountSaved.dispose();
-    _timeSaved.dispose();
-    for (var inc in income) {
-      inc.sourceController.dispose();
-      inc.amountController.dispose();
-    }
-    _dateController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _goalName.dispose();
+  //   _goalTerm.dispose();
+  //   _goalPriority.dispose();
+  //   _goalStatus.dispose();
+  //   _goalDescription.dispose();
+  //   for (var controller in motivationControllers) {
+  //     controller.dispose();
+  //   }
+  //   for (var subGoal in subGoals) {
+  //     subGoal.goalController.dispose();
+  //     subGoal.deadlineController.dispose();
+  //   }
+  //   _totalMoney.dispose();
+  //   _amountSaved.dispose();
+  //   _timeSaved.dispose();
+  //   for (var inc in income) {
+  //     inc.sourceController.dispose();
+  //     inc.amountController.dispose();
+  //   }
+  //   _dateController.dispose();
+  //   super.dispose();
+  // }
 
   void _printAllValues() async {
     // print("-------- Goals ----------");
@@ -154,6 +154,7 @@ class _AccordionAxampleState extends State<AddGoal> {
         // 'finance': {'totalMoney', 1000},
         'finance': getFinanceJson(),
       });
+
       final goals = await Datamanager().getGoals();
       final goalIdIndex =
           goals.length - 1; // Fixing index to get the last inserted goal
@@ -163,7 +164,7 @@ class _AccordionAxampleState extends State<AddGoal> {
       // print("----------- Goal Id ------------");
       // print(goalId);
 
-      // Now insert sub-goals
+      // // Now insert sub-goals
       await insertSubGoals(goalId);
 
       // print(goalResponse);
@@ -268,10 +269,10 @@ class _AccordionAxampleState extends State<AddGoal> {
         hint: "Enter Goal Status",
       ),
       "description": FormInput(
-        label: "Description",
+        label: "Goal Description",
         controller: TextEditingController(),
         type: "1",
-        hint: "Enter Description",
+        hint: "Enter Goal Description",
       ),
     },
     "motivations": [
