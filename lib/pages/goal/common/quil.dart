@@ -67,8 +67,8 @@ class _QuilExampleState extends State<QuilExample> {
     );
     widget.addJournal(journal, widget.id);
     print('-------------------- JSON ------------------');
-   
-  Future.delayed(Duration(milliseconds: 100), () {
+
+    Future.delayed(Duration(milliseconds: 100), () {
       Navigator.pop(context);
     });
   }
@@ -114,7 +114,7 @@ class _QuilExampleState extends State<QuilExample> {
             children: [
               QuillSimpleToolbar(
                 controller: _controller,
-                config: const QuillSimpleToolbarConfig(),
+                config: QuillSimpleToolbarConfig(),
               ),
               Expanded(
                 child: QuillEditor.basic(
