@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class User {
   int id;
   DateTime createdAt;
@@ -178,6 +180,7 @@ class Goal {
   Map<String, dynamic> motivation;
   Map<String, dynamic> finance;
   List<SubGoal> subGoals;
+  List<Journal> journals;
 
   Goal({
     required this.description,
@@ -189,6 +192,7 @@ class Goal {
     required this.status,
     required this.term,
     required this.subGoals,
+    required this.journals,
     this.deadline,
   });
 
@@ -208,6 +212,12 @@ class Goal {
               ? []
               : (json['sub_goal'] as List<dynamic>)
                   .map((e) => SubGoal.fromJson(e))
+                  .toList(),
+      journals:
+          json['goal_journal'] == Null || json['goal_journal'] == null
+              ? []
+              : (json['goal_journal'] as List<dynamic>)
+                  .map((e) => Journal.fromJson(e))
                   .toList(),
     );
   }
@@ -295,5 +305,46 @@ class Task {
     data['status'] = status;
     data['subGoalId'] = subGoalId;
     return data;
+  }
+}
+
+class Journal {
+  // DateTime? date;
+  final String journal;
+  int? goalId;
+  int? id;
+
+  Journal({required this.journal, this.goalId, this.id});
+
+  factory Journal.fromJson(Map<String, dynamic> json) {
+    return Journal(
+      // date: DateTime.parse(json['date'] as String),
+      journal: jsonEncode(json['journal']),
+      id: json['id'] as int,
+    );
+
+    /// Converts the `Journal` instance into a JSON-compatible map.
+    ///
+    /// This method serializes the `journal` and `goalId` properties of the `Journal`
+    /// instance into a map format that can be used for JSON encoding.
+    ///
+    /// Returns a `Map<String, dynamic>` representing the `Journal` object.
+    /// Throws an exception if any error occurs during serialization.
+  }
+
+  Map<String, dynamic> toJson() {
+    try {
+      final Map<String, dynamic> data = <String, dynamic>{};
+      // data['date'] = date;
+
+      data['journal'] = {"journal": journal};
+      data['goalId'] = goalId;
+
+      return data;
+    } catch (e) {
+      print("----------------------Issue in the model------------------");
+      print(e);
+      rethrow;
+    }
   }
 }

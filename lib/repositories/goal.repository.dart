@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -37,9 +39,14 @@ class GoalRepository {
       final data =
           await supabaseClient
               .from(Entities.GOAL.dbName)
-              .select('*, sub_goal(goal, id, goalId, sub_goal_task(*))')
+              .select(
+                '*, sub_goal(goal, id, goalId, sub_goal_task(*)), goal_journal(journal,created_at,id ,goalId)',
+              )
               .eq('id', id)
               .maybeSingle();
+
+      // print("-------------------");
+      // print((data?['goal_journal'][0].runtimeType));
 
       if (data == null) {
         throw Error();

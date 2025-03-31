@@ -1,7 +1,6 @@
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/MainScreen%20Page.dart';
-import 'package:flutter_application_1/pages/intro.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
