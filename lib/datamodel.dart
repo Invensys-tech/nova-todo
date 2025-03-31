@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class User {
   int id;
   DateTime createdAt;
@@ -177,6 +179,8 @@ class Goal {
   String? deadline;
   Map<String, dynamic> motivation;
   Map<String, dynamic> finance;
+  List<SubGoal> subGoals;
+  List<Journal> journals;
 
   Goal({
     required this.description,
@@ -187,6 +191,8 @@ class Goal {
     required this.priority,
     required this.status,
     required this.term,
+    required this.subGoals,
+    required this.journals,
     this.deadline,
   });
 
@@ -201,6 +207,144 @@ class Goal {
       status: json['status'] as String,
       term: json['term'] as String,
       deadline: json['deadline'] as String?,
+      subGoals:
+          json['sub_goal'] == Null || json['sub_goal'] == null
+              ? []
+              : (json['sub_goal'] as List<dynamic>)
+                  .map((e) => SubGoal.fromJson(e))
+                  .toList(),
+      journals:
+          json['goal_journal'] == Null || json['goal_journal'] == null
+              ? []
+              : (json['goal_journal'] as List<dynamic>)
+                  .map((e) => Journal.fromJson(e))
+                  .toList(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['description'] = description;
+    data['finance'] = finance;
+    data['id'] = id;
+    data['motivation'] = motivation;
+    data['name'] = name;
+    data['priority'] = priority;
+    data['status'] = status;
+    data['term'] = term;
+    data['deadline'] = deadline;
+    return data;
+  }
+}
+
+class SubGoal {
+  final String goal;
+  final int id;
+  final int goalId;
+  final List<Task> tasks;
+  // final DateTime deadline;
+
+  SubGoal({
+    required this.goal,
+    required this.id,
+    required this.goalId,
+    required this.tasks,
+    // required this.deadline,
+  });
+
+  factory SubGoal.fromJson(Map<String, dynamic> json) {
+    return SubGoal(
+      goal: json['goal'] as String,
+      id: json['id'] as int,
+      goalId: json['goalId'] as int,
+      tasks:
+          json['sub_goal_task'] == Null || json['sub_goal_task'] == null
+              ? []
+              : (json['sub_goal_task'] as List<dynamic>)
+                  .map((e) => Task.fromJson(e))
+                  .toList(),
+      // deadline: DateTime.parse(json['deadline'] as String),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['goal'] = goal;
+    data['id'] = id;
+    data['goalId'] = goalId;
+    data['tasks'] = tasks.map((task) => task.toJson()).toList();
+    return data;
+  }
+}
+
+class Task {
+  int? id;
+  final String name;
+  final int subGoalId;
+  bool status;
+
+  Task({
+    this.id,
+    required this.name,
+    required this.status,
+    required this.subGoalId,
+  });
+
+  factory Task.fromJson(Map<String, dynamic> json) {
+    return Task(
+      id: json['id'] as int,
+      name: json['name'] as String,
+      status: json['status'] as bool,
+      subGoalId: json['subGoalId'] as int,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['status'] = status;
+    data['subGoalId'] = subGoalId;
+    return data;
+  }
+}
+
+class Journal {
+  // DateTime? date;
+  final String journal;
+  int? goalId;
+  int? id;
+
+  Journal({required this.journal, this.goalId, this.id});
+
+  factory Journal.fromJson(Map<String, dynamic> json) {
+    return Journal(
+      // date: DateTime.parse(json['date'] as String),
+      journal: jsonEncode(json['journal']),
+      id: json['id'] as int,
+    );
+
+    /// Converts the `Journal` instance into a JSON-compatible map.
+    ///
+    /// This method serializes the `journal` and `goalId` properties of the `Journal`
+    /// instance into a map format that can be used for JSON encoding.
+    ///
+    /// Returns a `Map<String, dynamic>` representing the `Journal` object.
+    /// Throws an exception if any error occurs during serialization.
+  }
+
+  Map<String, dynamic> toJson() {
+    try {
+      final Map<String, dynamic> data = <String, dynamic>{};
+      // data['date'] = date;
+
+      data['journal'] = {"journal": journal};
+      data['goalId'] = goalId;
+
+      return data;
+    } catch (e) {
+      print("----------------------Issue in the model------------------");
+      print(e);
+      rethrow;
+    }
   }
 }

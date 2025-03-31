@@ -1,0 +1,161 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/pages/goal/common/quil.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+
+class JournalContainer extends StatefulWidget {
+  final List<Journal> journals;
+  final int goalId;
+
+  const JournalContainer({
+    super.key,
+    required this.journals,
+    required this.goalId,
+  });
+
+  @override
+  State<JournalContainer> createState() => _JournalContainerState();
+}
+
+class _JournalContainerState extends State<JournalContainer> {
+  addJournal(Journal journal, int? id) {
+    setState(() {
+      widget.journals.add(journal);
+    });
+  }
+
+  updateJournal(Journal journal, int? id) {
+    if (id != null) {
+      setState(() {
+        widget.journals[id] = journal;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Color(0xff353535),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              children: const [
+                Icon(Icons.account_tree, color: Colors.white),
+                SizedBox(width: 8),
+                Text(
+                  "Journals",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            ...widget.journals.map((journal) {
+              List<dynamic> jsonList = jsonDecode(jsonDecode(journal.journal));
+
+              print("============= JSON =============");
+              print(jsonList);
+
+              // Convert List<dynamic> to List<Map<String, dynamic>>
+              List<dynamic> dataList =
+                  jsonList.map((e) => e as dynamic).toList();
+              Document quillData = Document.fromJson((dataList));
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => QuilExample(
+                            journal: jsonDecode(journal.journal),
+                            goalId: widget.goalId,
+                            addJournal: updateJournal,
+                            id: journal.id,
+                          ),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(quillData.toPlainText()),
+                ),
+              );
+            }),
+            // Multiple sub-goal widgets.
+            // ExpansionPanelList(
+            //   materialGapSize: MediaQuery.of(context).size.width * 0.01,
+            //   expansionCallback: (panelIndex, isExpanded) {
+            //     setState(() {
+            //       _expansionIndex =
+            //           _expansionIndex == panelIndex ? -1 : panelIndex;
+            //     });
+            //   },
+            //   children: [
+            //     ...widget.subGoals.asMap().entries.map((subGoal) {
+            //       return ExpansionPanel(
+            //         headerBuilder:
+            //             (context, isExpanded) =>
+            //                 MyExpansionPanelHeader(title: subGoal.value.goal),
+            //         isExpanded: _expansionIndex == subGoal.key,
+            //         backgroundColor: Color(0xff353535),
+            //         // body: Text(subGoal.value.goal),
+            //         body: SubGoalExpansion(
+            //           title: subGoal.value.goal,
+            //           id: subGoal.value.id,
+            //           tasks: subGoal.value.tasks,
+            //         ),
+            //       );
+            //     }),
+            //   ],
+            // ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 4,
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => QuilExample(
+                            journal: '',
+                            goalId: widget.goalId,
+                            addJournal: addJournal,
+                          ),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.07,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "Add Journal",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Other content below can be placed here.
+          ],
+        ),
+      ),
+    );
+  }
+}

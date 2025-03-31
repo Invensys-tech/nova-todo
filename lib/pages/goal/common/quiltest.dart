@@ -1,24 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/goal/common/quil.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_application_1/pages/goal/common/quil.dart';
 
-class QuilPage extends StatefulWidget {
-  const QuilPage({super.key});
+// class QuilPage extends StatefulWidget {
+//   final int goalId;
+//   final String journal;
 
-  @override
-  State<QuilPage> createState() => _QuilPageState();
-}
+//   const QuilPage({super.key, required this.goalId, required this.journal});
 
-class _QuilPageState extends State<QuilPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.abc),
-      ),
-      body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Column(children: [QuilExample()]),
-      ),
-    );
-  }
-}
+//   @override
+//   State<QuilPage> createState() => _QuilPageState();
+// }
+
+// class _QuilPageState extends State<QuilPage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: SingleChildScrollView(
+//         child: Column(children: [QuilExample()]),
+//       ),
+//     );
+//   }
+// }
