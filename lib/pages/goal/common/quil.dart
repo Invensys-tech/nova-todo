@@ -30,10 +30,12 @@ class _QuilExampleState extends State<QuilExample> {
     super.initState();
     print("====================");
     print(widget.journal);
-    _controller = QuillController(
-      document: Document.fromJson(jsonDecode(widget.journal)),
-      selection: const TextSelection.collapsed(offset: 0),
-    );
+    if (widget.journal != '') {
+      _controller = QuillController(
+        document: Document.fromJson(jsonDecode(widget.journal)),
+        selection: const TextSelection.collapsed(offset: 0),
+      );
+    }
   }
 
   logController() {
