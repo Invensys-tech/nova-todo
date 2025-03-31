@@ -7,7 +7,7 @@ import 'package:flutter_application_1/pages/finance/loan/singleloan.dart';
 class LoanView extends StatefulWidget {
   final String name;
   final String phoneNumber;
-  final double loanAmount;
+  final num loanAmount;
   final int parentLoanId;
   final Datamanager datamanager;
 
@@ -45,7 +45,6 @@ class _LoanViewState extends State<LoanView> {
           size: 30, // Adjust size if needed
         ),
       ),
-      backgroundColor: Color(0xff2F2F2F),
       appBar: AppBar(
         backgroundColor: Color(0xff2F2F2F),
         leading: IconButton(

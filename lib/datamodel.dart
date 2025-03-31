@@ -70,7 +70,7 @@ class Expense {
 class Loan {
   int id;
   String loanerName;
-  double amount;
+  num amount;
   String type;
   String phoneNumber;
   String bank;
@@ -90,7 +90,7 @@ class Loan {
 
   factory Loan.fromJson(Map<String, dynamic> json) {
     return Loan(
-      amount: json['amount'] as double,
+      amount: json['amount'] as num,
       bank: json['bank'] as String,
       date: DateTime.parse(json['date'] as String),
       id: json['id'] as int,
