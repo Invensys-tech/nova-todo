@@ -30,13 +30,12 @@ class _QuilExampleState extends State<QuilExample> {
     super.initState();
     print("====================");
     print(widget.journal);
-    if(widget.journal!=''){
+    if (widget.journal != '') {
       _controller = QuillController(
         document: Document.fromJson(jsonDecode(widget.journal)),
         selection: const TextSelection.collapsed(offset: 0),
       );
     }
-
   }
 
   logController() {
@@ -70,8 +69,8 @@ class _QuilExampleState extends State<QuilExample> {
     );
     widget.addJournal(journal, widget.id);
     print('-------------------- JSON ------------------');
-   
-  Future.delayed(Duration(milliseconds: 100), () {
+
+    Future.delayed(Duration(milliseconds: 100), () {
       Navigator.pop(context);
     });
   }
@@ -117,7 +116,7 @@ class _QuilExampleState extends State<QuilExample> {
             children: [
               QuillSimpleToolbar(
                 controller: _controller,
-                config: const QuillSimpleToolbarConfig(),
+                config: QuillSimpleToolbarConfig(),
               ),
               Expanded(
                 child: QuillEditor.basic(
