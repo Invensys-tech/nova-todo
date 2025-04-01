@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -25,8 +27,49 @@ class DailyTaskRepository {
     }
   }
 
-  Future<List<DailyTask>> fetchAll(DateTime? date) async {
+  // Future<DailyTask> addDailyTaskFromJson(Map<String, dynamic> dailyTask) async {
+  Future<bool> addDailyTaskFromJson(Map<String, dynamic> dailyTask) async {
     try {
+      // print(jsonEncode(dailyTask));
+
+      Map<String, dynamic> convertedData = {
+        "name": dailyTask['name'],
+        "type": dailyTask['type'] ?? 'Essential',
+        "date": dailyTask['date'],
+        "description": dailyTask['description'],
+        'task_time': '${dailyTask['date']}T${dailyTask['task_time']}',
+        'end_time': '${dailyTask['date']}T${dailyTask['end_time']}',
+        'reminder_time': '${dailyTask['date']}T${dailyTask['task_time']}',
+      };
+
+      final response = await supabaseClient
+          .from(Entities.DAILY_TASK.dbName)
+          .insert(convertedData)
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Error creating daily task');
+      }
+
+      // final data = await supabaseClient
+      //     .from(Entities.DAILY_TASK.dbName)
+      //     .select('*');
+
+      // return DailyTask.fromJson(data[data.length - 1]);
+
+      return true;
+    } catch (e) {
+      // print('---------- Error creating daily task ------------');
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<List<DailyTask>> fetchAll(DateTime? date) async {
+    // Future<dynamic> fetchAll(DateTime? date) async {
+    try {
+      // print('---------- Fetching daily tasks ------------');
+      print(date?.toIso8601String() ?? 'no date');
       final query = supabaseClient.from(Entities.DAILY_TASK.dbName).select('*');
 
       if (date != null) {
@@ -34,9 +77,14 @@ class DailyTaskRepository {
       }
 
       final data = await query;
+      // final data = await supabaseClient
+      //     .from(Entities.DAILY_TASK.dbName)
+      //     .select('*');
 
       return data.map((dailyTask) => DailyTask.fromJson(dailyTask)).toList();
+      // return data;
     } catch (e) {
+      print('---------- Error fetching daily tasks ------------');
       print(e);
       rethrow;
     }

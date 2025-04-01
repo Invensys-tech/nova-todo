@@ -4,29 +4,49 @@ class DailyTask {
   // ? DB property names
   // task_time, end_time, name, type, date, reminder_time, user_id;
   String name;
-  String? type;
-  DateTime? taskTime;
-  DateTime? endTime;
-  DateTime date;
-  DateTime? reminderTime;
+  String type;
+  String taskTime;
+  String endTime;
+  String date;
+  String description;
+  String reminderTime;
+  List<DailySubTask> subTasks;
+  late DateTime dateDate;
+  late DateTime endDateTime;
+  late Duration duration;
 
   DailyTask({
     required this.name,
-    this.type,
+    required this.type,
     required this.date,
-    this.taskTime,
-    this.endTime,
-    this.reminderTime,
-  });
+    required this.taskTime,
+    required this.endTime,
+    required this.reminderTime,
+    required this.subTasks,
+    required this.description,
+  }) {
+    duration = DateTime.tryParse(
+      taskTime,
+    )!.difference(DateTime.tryParse(endTime)!);
+    dateDate = DateTime.tryParse(taskTime)!;
+    endDateTime = DateTime.tryParse(endTime)!;
+  }
 
   factory DailyTask.fromJson(Map<String, dynamic> json) {
     return DailyTask(
       name: json['name'],
       type: json['type'],
-      taskTime: json['task_time'],
-      endTime: json['end_time'],
-      date: json['date'],
-      reminderTime: json['reminder_time'],
+      taskTime: json['task_time'] as String,
+      endTime: json['end_time'] as String,
+      date: json['date'] as String,
+      reminderTime: json['reminder_time'] as String,
+      description: json['description'] ?? '',
+      subTasks:
+          json['daily_sub_tasks'] == Null || json['daily_sub_tasks'] == null
+              ? []
+              : (json['daily_sub_tasks'] as List<dynamic>)
+                  .map((e) => DailySubTask.fromJson(e))
+                  .toList(),
     );
   }
 
@@ -39,6 +59,28 @@ class DailyTask {
       'date': date,
       'reminder_time': reminderTime,
     };
+  }
+
+  static Map<String, dynamic> fromUserInputToJson(Map<String, dynamic> json) {
+    return {
+      'name': json['name'],
+      'type': json['type'],
+      'task_time': json['taskTime'],
+      'end_time': json['taskEndTime'],
+      'date': json['date'],
+      'notify_me': json['notifyMe'],
+      'description': json['description'],
+    };
+  }
+
+  bool isInDate(DateTime date) {
+    Duration timeDifference = dateDate.difference(date);
+    if (timeDifference.isNegative ||
+        timeDifference.inSeconds > (60 * 60 * 24)) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
