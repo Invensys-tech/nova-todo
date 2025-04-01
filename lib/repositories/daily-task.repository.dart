@@ -39,7 +39,7 @@ class DailyTaskRepository {
         "description": dailyTask['description'],
         'task_time': '${dailyTask['date']}T${dailyTask['task_time']}',
         'end_time': '${dailyTask['date']}T${dailyTask['end_time']}',
-        'reminder_time': '${dailyTask['date']}T${dailyTask['task_time']}',
+        'reminder_time': '${dailyTask['date']}T${dailyTask['reminder_time']}',
       };
 
       final response = await supabaseClient

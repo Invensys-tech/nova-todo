@@ -1,5 +1,8 @@
 // ? DB table name
 // daily_tasks
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
+
 class DailyTask {
   // ? DB property names
   // task_time, end_time, name, type, date, reminder_time, user_id;
@@ -62,6 +65,12 @@ class DailyTask {
   }
 
   static Map<String, dynamic> fromUserInputToJson(Map<String, dynamic> json) {
+    TimeOfDay timeOfDay = timeOfDayFromString(json['taskTime']);
+    TimeOfDay reminderTime = getTimeMinus(
+      time: timeOfDay,
+      minutes: int.parse(json['notifyMe']),
+    );
+
     return {
       'name': json['name'],
       'type': json['type'],
@@ -70,6 +79,7 @@ class DailyTask {
       'date': json['date'],
       'notify_me': json['notifyMe'],
       'description': json['description'],
+      'reminder_time': formatTimeOfDayToString(reminderTime),
     };
   }
 
