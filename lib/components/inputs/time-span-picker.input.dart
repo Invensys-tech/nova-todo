@@ -71,6 +71,8 @@ class MyTimeSpanPickerState extends State<MyTimeSpanPicker> {
   }
 
   void _showAlertDialog(BuildContext context) {
+    // Todo: capture state change on the dialog
+
     showDialog(
       context: context,
       barrierDismissible: true,

@@ -27,7 +27,7 @@ class _TodoPageState extends State<TodoPage> {
 
   void refetchData() {
     setState(() {
-      // print(now.toIso8601String());
+      print(now.toIso8601String());
       todos = DailyTaskRepository().fetchAll(now);
     });
   }
