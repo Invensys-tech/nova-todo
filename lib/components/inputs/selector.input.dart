@@ -4,11 +4,13 @@ class MySelector extends StatefulWidget {
   final String label;
   final List<Map<String, dynamic>> myDropdownItems;
   final void Function(dynamic) onSelect;
+  final IconData? icon;
   const MySelector({
     super.key,
     required this.myDropdownItems,
     required this.onSelect,
     required this.label,
+    this.icon,
   });
 
   @override
@@ -30,20 +32,27 @@ class _MySelectorState extends State<MySelector> {
           ),
           SizedBox(
             width: double.infinity,
-            child: DropdownMenu(
-              // initialSelection: widget.myDropdownItems[0]['value'],
-              // enableSearch: true,
-              // enableFilter: true,
-              onSelected: widget.onSelect,
-              dropdownMenuEntries:
-                  widget.myDropdownItems
-                      .map(
-                        (e) => DropdownMenuEntry(
-                          label: e['label'],
-                          value: e['value'],
-                        ),
-                      )
-                      .toList(),
+            child: Row(
+              spacing: MediaQuery.of(context).size.width * 0.02,
+              children: [
+                widget.icon != null ? Icon(widget.icon, size: 32) : Container(),
+                DropdownMenu(
+                  menuStyle: MenuStyle(),
+                  // initialSelection: widget.myDropdownItems[0]['value'],
+                  // enableSearch: true,
+                  // enableFilter: true,
+                  onSelected: widget.onSelect,
+                  dropdownMenuEntries:
+                      widget.myDropdownItems
+                          .map(
+                            (e) => DropdownMenuEntry(
+                              label: e['label'],
+                              value: e['value'],
+                            ),
+                          )
+                          .toList(),
+                ),
+              ],
             ),
           ),
         ],
