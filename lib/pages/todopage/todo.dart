@@ -5,6 +5,7 @@ import 'package:ethiopian_datetime/ethiopian_datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
 import 'package:flutter_application_1/pages/todopage/add.todo.dart';
+import 'package:flutter_application_1/pages/todopage/components/daily-journal-quill.dart';
 import 'package:flutter_application_1/pages/todopage/components/todo.item.dart';
 import 'package:flutter_application_1/repositories/daily-task.repository.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
@@ -56,6 +57,15 @@ class _TodoPageState extends State<TodoPage> {
     //     _goalFuture = Future.value(newGoals);
     //   });
     // }
+  }
+
+  openDailyJournalQuill() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DailyJournalQuill(date: getDateOnly(now)),
+      ),
+    );
   }
 
   @override
@@ -138,144 +148,150 @@ class _TodoPageState extends State<TodoPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width * .05,
-                            vertical: MediaQuery.of(context).size.height * .015,
-                          ),
-                          width: MediaQuery.of(context).size.width * .93,
-                          decoration: BoxDecoration(
-                            color: Color(0xff0d805e).withOpacity(.35),
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color:
-                                    Colors.black, // Shadow color with opacity
-                                spreadRadius: 2, // How much the shadow spreads
-                                blurRadius: 10, // Softens the shadow
-                                offset: Offset(
-                                  -4,
-                                  0,
-                                ), // Moves shadow right & down
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Text(
-                                  "Add Daily Journal ",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w800,
+                        GestureDetector(
+                          onTap: openDailyJournalQuill,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width * .05,
+                              vertical:
+                                  MediaQuery.of(context).size.height * .015,
+                            ),
+                            width: MediaQuery.of(context).size.width * .93,
+                            decoration: BoxDecoration(
+                              color: Color(0xff0d805e).withOpacity(.35),
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      Colors.black, // Shadow color with opacity
+                                  spreadRadius:
+                                      2, // How much the shadow spreads
+                                  blurRadius: 10, // Softens the shadow
+                                  offset: Offset(
+                                    -4,
+                                    0,
+                                  ), // Moves shadow right & down
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: Text(
+                                    "Add Daily Journal ",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * .015,
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.do_not_disturb_on_total_silence,
-                                    color: Colors.white.withOpacity(.8),
-                                    size: 20,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        .015,
-                                  ),
-                                  Text(
-                                    "Things you face Today",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * .015,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.do_not_disturb_on_total_silence,
                                       color: Colors.white.withOpacity(.8),
+                                      size: 20,
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * .005,
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.do_not_disturb_on_total_silence,
-                                    color: Colors.white.withOpacity(.8),
-                                    size: 20,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        .015,
-                                  ),
-                                  Text(
-                                    "Ypur thinking and assumptions ",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          .015,
+                                    ),
+                                    Text(
+                                      "Things you face Today",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white.withOpacity(.8),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * .005,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.do_not_disturb_on_total_silence,
                                       color: Colors.white.withOpacity(.8),
+                                      size: 20,
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * .005,
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.do_not_disturb_on_total_silence,
-                                    color: Colors.white.withOpacity(.8),
-                                    size: 20,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        .015,
-                                  ),
-                                  Text(
-                                    "How was the day what needs to improve",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          .015,
+                                    ),
+                                    Text(
+                                      "Ypur thinking and assumptions ",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white.withOpacity(.8),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * .005,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.do_not_disturb_on_total_silence,
                                       color: Colors.white.withOpacity(.8),
+                                      size: 20,
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * .005,
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.do_not_disturb_on_total_silence,
-                                    color: Colors.white.withOpacity(.8),
-                                    size: 20,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        .015,
-                                  ),
-                                  Text(
-                                    "What did you learn today",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          .015,
+                                    ),
+                                    Text(
+                                      "How was the day what needs to improve",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white.withOpacity(.8),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * .005,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.do_not_disturb_on_total_silence,
                                       color: Colors.white.withOpacity(.8),
+                                      size: 20,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          .015,
+                                    ),
+                                    Text(
+                                      "What did you learn today",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white.withOpacity(.8),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(

@@ -42,6 +42,9 @@ String formatDoubleDigitTime(int hours, int minutes) {
 DateTime getStartOfDay(DateTime dateTime) =>
     DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
 
+String getDateOnly(DateTime dateTime) =>
+    '${dateTime.year}-${dateTime.month}-${dateTime.day}';
+
 TimeOfDay timeOfDayFromString(String timeOfDayString) {
   List<String> units = timeOfDayString.split(':');
   int hour = int.parse(units[0]);
