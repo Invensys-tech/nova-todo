@@ -22,9 +22,9 @@ class _DrawerpageState extends State<Drawerpage> {
       child: Column(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width*.65,
-            height: MediaQuery.of(context).size.height*.15,
-            child: Image.asset("assets/Images/VitaBoard.jpg",fit: BoxFit.fill,),
+            width: MediaQuery.of(context).size.width*.5,
+            height: MediaQuery.of(context).size.height*.075,
+            child: Image.asset("assets/Images/VitaImage1.png",fit: BoxFit.contain,),
           ),
           SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
@@ -39,42 +39,50 @@ class _DrawerpageState extends State<Drawerpage> {
             children: [
               Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
-              Text("Habits",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
+              Text("Productivity",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
               Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
-              Text("Habits",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
+              Text("Quotes",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
               Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
-              Text("Habits",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
+              Text("Community Challenges",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
               Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
-              Text("Habits",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
+              Text("Notification",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
               Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
-              Text("Habits",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
+              Text("Prcing",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
               Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
-              Text("Habits",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
+              Text("Seeting ",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
+            ],
+          ),
+          SizedBox(height: MediaQuery.of(context).size.width*.025,),
+          Row(
+            children: [
+              Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
+              SizedBox(width: MediaQuery.of(context).size.width*.035,),
+              Text("Profile ",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ),
         ],
