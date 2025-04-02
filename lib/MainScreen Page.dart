@@ -31,7 +31,11 @@ class _MainScreenPageState extends State<MainScreenPage> {
       FinanceUi(datamanager: dataManager),
       GoalPage(datamanager: dataManager),
       TodoPage(),
+<<<<<<< HEAD
       const NotesPage(),
+=======
+      NotesPage(),
+>>>>>>> 7a56b0d34e9e8d3ff0a405e0873c59bc95817d1d
     ];
   }
 

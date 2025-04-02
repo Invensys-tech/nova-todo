@@ -7,8 +7,12 @@ enum Entities {
   BANK("bank"),
   SUBGOAL_TASK("sub_goal_task"),
   JOURNAL("goal_journal"),
+<<<<<<< HEAD
   DAILY_TASK("daily_task"),
   DAILY_SUBTASK("daily_sub_tasks");
+=======
+  NOTE('notes');
+>>>>>>> 7a56b0d34e9e8d3ff0a405e0873c59bc95817d1d
 
   final String dbName;
 
