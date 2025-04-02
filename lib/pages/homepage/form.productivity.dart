@@ -4,6 +4,7 @@ import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity-habit.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
+import 'package:flutter_application_1/ui/inputs/dropdown.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
@@ -107,14 +108,20 @@ class _ProductivityFormState extends State<ProductivityForm> {
                     ),
                   ),
                   Expanded(
-                    child: DateSelector(
-                      hintText: time.hint,
+                    child: CustomDropdown(
+                      hintText: "Term",
+                      icon: Icons.local_mall,
+                      items: ["Daily", "Weekely", "Monthly", "Yearly"],
                       controller: time.controller,
-                      icon: Icons.calendar_today,
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                      initialDate: DateTime.now(),
                     ),
+                    // child: DateSelector(
+                    //   hintText: time.hint,
+                    //   controller: time.controller,
+                    //   icon: Icons.calendar_today,
+                    //   firstDate: DateTime(2000),
+                    //   lastDate: DateTime(2100),
+                    //   initialDate: DateTime.now(),
+                    // ),
                     // child: TextFields(
                     //   hinttext: time.hint,
                     //   whatIsInput: time.type,

@@ -40,4 +40,24 @@ class ProductivityRepository {
       rethrow;
     }
   }
+
+  Future<Productivity> fetchView(int id) async {
+    try {
+      final data =
+          await supabaseClient
+              .from(Entities.PRODUCTIVITY.dbName)
+              .select('*, productivity_habits(*, productivity_habit_lists(*))')
+              .eq('id', id)
+              .maybeSingle();
+      if (data == null) {
+        throw Error();
+      }
+      print('=============================');
+      print(data);
+      return Productivity.fromJson(data);
+    } catch (e) {
+      print(e);
+      throw Exception("Error getting the productivity!");
+    }
+  }
 }

@@ -1,45 +1,57 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Drawer/Productivity%20/Dailyprogress.dart';
-import 'package:flutter_application_1/Drawer/Productivity%20/General%20Progress.dart';
+import 'package:flutter_application_1/drawer/productivity/Dailyprogress.dart';
+import 'package:flutter_application_1/drawer/productivity/General%20Progress.dart';
+import 'package:flutter_application_1/entities/productivity-entity.dart';
+import 'package:flutter_application_1/repositories/productivity.repository.dart';
 
 class ProductivityViewPgae extends StatefulWidget {
-  const ProductivityViewPgae({super.key});
+  final int id;
+  const ProductivityViewPgae({super.key, required this.id});
 
   @override
   State<ProductivityViewPgae> createState() => _ProductivityViewPgaeState();
 }
 
 class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
+  late Future<Productivity> _productivityFuture;
   @override
+  void initState() {
+    super.initState();
+    _productivityFuture = ProductivityRepository().fetchView(widget.id!);
+    print(_productivityFuture);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        leading: Icon(Icons.arrow_back_sharp,color: Colors.green,size: 25,),
+        leading: Icon(Icons.arrow_back_sharp, color: Colors.green, size: 25),
         shape: Border(
           bottom: BorderSide(
             color: Colors.white, // Border color
             width: 1, // Border width
           ),
         ),
-        title: Text("Gym And Excerice Activity ",style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
-        actions: [Row(
-          children: [
+        title: Text(
+          "Title",
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+        ),
+        actions: [Row(children: [
           ],
         )],
       ),
       body: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height*.89,
+            height: MediaQuery.of(context).size.height * .89,
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).size.height * .03575,
             ),
             color: Colors.black,
             child: ContainedTabBarView(
               tabs: [
-                Tab(text: "Daily Progress",),
+                Tab(text: "Daily Progress"),
                 Tab(text: "General Progress"),
               ],
               tabBarProperties: TabBarProperties(
@@ -74,12 +86,11 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
                 unselectedLabelStyle: TextStyle(fontSize: 13),
               ),
               views: [
-                DailyprogressLists(),
-               Generalprogress()
+                DailyprogressLists(productivityFuture: _productivityFuture),
+                Generalprogress(productivityFuture: _productivityFuture),
               ],
             ),
           ),
-
         ],
       ),
     );
