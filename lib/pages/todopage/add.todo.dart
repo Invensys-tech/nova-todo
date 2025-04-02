@@ -57,6 +57,35 @@ class _AddTodoPageState extends State<AddTodoPage> {
     type: '1',
   );
 
+  FormInputPair startTimeInput = FormInputPair(
+    key: FormInput(
+      label: 'Hours',
+      hint: '00',
+      type: "0",
+      controller: TextEditingController(),
+    ),
+    value: FormInput(
+      label: 'Minutes',
+      hint: '00',
+      type: "0",
+      controller: TextEditingController(),
+    ),
+  );
+  FormInputPair endTimeInput = FormInputPair(
+    key: FormInput(
+      label: 'Hours',
+      hint: '00',
+      type: "0",
+      controller: TextEditingController(),
+    ),
+    value: FormInput(
+      label: 'Minutes',
+      hint: '00',
+      type: "0",
+      controller: TextEditingController(),
+    ),
+  );
+
   clearForm() {
     name.controller.clear();
     time.controller.clear();
@@ -65,9 +94,33 @@ class _AddTodoPageState extends State<AddTodoPage> {
     notifyMe.controller.clear();
     taskTimeController.clear();
     taskEndTimeController.clear();
+    description.controller.clear();
+    startTimeInput.key.controller.clear();
+    startTimeInput.value.controller.clear();
+    endTimeInput.key.controller.clear();
+    endTimeInput.value.controller.clear();
+  }
+
+  bool parseStartEndTime() {
+    if (int.parse(startTimeInput.key.controller.text) > 23 ||
+        int.parse(endTimeInput.key.controller.text) > 60 ||
+        int.parse(startTimeInput.value.controller.text) > 23 ||
+        int.parse(endTimeInput.value.controller.text) > 60) {
+      return false;
+    }
+    taskTimeController.text =
+        '${startTimeInput.key.controller.text}:${startTimeInput.value.controller.text}';
+    taskEndTimeController.text =
+        '${endTimeInput.key.controller.text}:${endTimeInput.value.controller.text}';
+
+    return true;
   }
 
   saveTodo() {
+    bool parsedCorrectly = parseStartEndTime();
+    if (!parsedCorrectly) {
+      return;
+    }
     setState(() {
       Map<String, dynamic> formData = {
         'name': name.controller.text,
@@ -126,8 +179,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
               notifyMe: notifyMe,
               description: description,
               subTasks: [],
-              taskTime: taskTimeController,
-              taskEndTime: taskEndTimeController,
+              // taskTime: taskTimeController,
+              // taskEndTime: taskEndTimeController,
+              startTimeInput: startTimeInput,
+              endTimeInput: endTimeInput,
             ),
             Padding(
               padding: EdgeInsets.all(

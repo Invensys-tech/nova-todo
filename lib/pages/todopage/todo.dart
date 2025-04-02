@@ -40,8 +40,8 @@ class _TodoPageState extends State<TodoPage> {
   setDate(DateTime date) {
     setState(() {
       now = getStartOfDay(date);
-      refetchData();
     });
+    refetchData();
   }
 
   void newTodo() async {
@@ -50,13 +50,8 @@ class _TodoPageState extends State<TodoPage> {
       context,
       MaterialPageRoute(
         builder: (context) => AddTodoPage(refetchData: refetchData),
-      ), // Navigate to NewScreen
+      ),
     );
-    // if (newGoals != null) {
-    //   setState(() {
-    //     _goalFuture = Future.value(newGoals);
-    //   });
-    // }
   }
 
   openDailyJournalQuill() {
@@ -72,18 +67,16 @@ class _TodoPageState extends State<TodoPage> {
   Widget build(BuildContext context) {
     // ETDateTime noww = ETDateTime.now();
     DateTime noww = DateTime.now();
-    now.subtract(Duration(days: 1));
+    // now.subtract(Duration(days: 1));
 
     return Scaffold(
       appBar: AppBar(leading: Icon(Icons.menu, size: 27, color: Colors.white)),
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
         backgroundColor: Color(0xFF2b2d30),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50), // Rounded corners
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: newTodo,
-        child: Icon(Icons.add), // The icon inside the button
+        child: Icon(Icons.add),
       ),
       body: FutureBuilder(
         future: todos,
@@ -97,6 +90,7 @@ class _TodoPageState extends State<TodoPage> {
                   SizedBox(height: MediaQuery.of(context).size.height * .015),
                   CalendarTimeline(
                     // initialDate: ETDateTime.now(),
+                    key: ValueKey(now),
                     initialDate: DateTime.now(),
                     firstDate: noww,
                     lastDate: DateTime(2027, 11, 20),

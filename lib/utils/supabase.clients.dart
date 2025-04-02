@@ -9,6 +9,7 @@ enum Entities {
   JOURNAL("goal_journal"),
   DAILY_TASK("daily_task"),
   DAILY_SUBTASK("daily_sub_tasks"),
+  DAILY_JOURNAL("daily_journals"),
   NOTE('notes');
 
   final String dbName;

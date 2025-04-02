@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/repositories/daily-journal.repository.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
 class DailyJournalQuill extends StatefulWidget {
@@ -18,7 +19,13 @@ class _DailyJournalQuillState extends State<DailyJournalQuill> {
     controller = QuillController.basic();
   }
 
-  saveJournal() {
+  saveJournal() async {
+    // controller.document.from;
+    Map<String, dynamic> dailyJournalMap = {
+      'content': controller.document.toDelta().toJson(),
+      'date': widget.date,
+    };
+    DailyJournalRepository().upsertFromMap(dailyJournalMap);
     Navigator.pop(context);
   }
 

@@ -21,8 +21,11 @@ class TodoForm extends StatefulWidget {
   final FormInput notifyMe;
   final FormInput description;
   final List<dynamic> subTasks;
-  final TextEditingController taskTime;
-  final TextEditingController taskEndTime;
+  // final TextEditingController taskTime;
+  // final TextEditingController taskEndTime;
+  final FormInputPair startTimeInput;
+  final FormInputPair endTimeInput;
+
   const TodoForm({
     super.key,
     required this.name,
@@ -32,8 +35,10 @@ class TodoForm extends StatefulWidget {
     required this.notifyMe,
     required this.description,
     required this.subTasks,
-    required this.taskTime,
-    required this.taskEndTime,
+    // required this.taskTime,
+    // required this.taskEndTime,
+    required this.startTimeInput,
+    required this.endTimeInput,
   });
 
   static const List<Map<String, dynamic>> todoTypes = [
@@ -56,13 +61,48 @@ class TodoForm extends StatefulWidget {
 class _TodoFormState extends State<TodoForm> {
   bool subTasksIsOpen = false;
 
-  setTaskTime(TimeOfDay startTime, TimeOfDay endTime) {
-    // widget.time.controller.text = value;.
-    setState(() {
-      widget.taskTime.text = formatTimeOfDayToString(startTime);
-      widget.taskEndTime.text = formatTimeOfDayToString(endTime);
-    });
-  }
+  // FormInputPair startTimeInput = FormInputPair(
+  //   key: FormInput(
+  //     label: 'Hours',
+  //     hint: '00',
+  //     type: "0",
+  //     controller: TextEditingController(),
+  //   ),
+  //   value: FormInput(
+  //     label: 'Minutes',
+  //     hint: '00',
+  //     type: "0",
+  //     controller: TextEditingController(),
+  //   ),
+  // );
+
+  // FormInputPair endTimeInput = FormInputPair(
+  //   key: FormInput(
+  //     label: 'Hours',
+  //     hint: '00',
+  //     type: "0",
+  //     controller: TextEditingController(),
+  //   ),
+  //   value: FormInput(
+  //     label: 'Minutes',
+  //     hint: '00',
+  //     type: "0",
+  //     controller: TextEditingController(),
+  //   ),
+  // );
+
+  // setTaskTime(TimeOfDay startTime, TimeOfDay endTime) {
+  //   // widget.time.controller.text = value;.
+  //   setState(() {
+  //     widget.taskTime.text = formatTimeOfDayToString(startTime);
+  //     widget.taskEndTime.text = formatTimeOfDayToString(endTime);
+  //   });
+  // }
+
+  final TextStyle _taskTimesStyle = TextStyle(
+    fontSize: 10.0,
+    fontWeight: FontWeight.w200,
+  );
 
   setTodoTypes(dynamic value) {
     widget.type.controller.text = value;
@@ -81,7 +121,82 @@ class _TodoFormState extends State<TodoForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: MediaQuery.of(context).size.width * 0.04,
         children: [
-          MyTimeSpanPicker(label: 'Task Time', onChange: setTaskTime),
+          // MyTimeSpanPicker(label: 'Task Time', onChange: setTaskTime),
+          Column(
+            spacing: MediaQuery.of(context).size.width * 0.04,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Task Time'),
+              Row(
+                spacing: MediaQuery.of(context).size.width * 0.08,
+                children: [
+                  Expanded(
+                    child: Column(
+                      spacing: MediaQuery.of(context).size.width * 0.01,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          spacing: MediaQuery.of(context).size.width * 0.01,
+                          children: [
+                            Expanded(
+                              child: TextFields(
+                                hinttext: widget.startTimeInput.key.hint,
+                                whatIsInput: widget.startTimeInput.key.type,
+                                controller:
+                                    widget.startTimeInput.key.controller,
+                              ),
+                            ),
+                            Text(':'),
+                            Expanded(
+                              child: TextFields(
+                                hinttext: widget.startTimeInput.value.hint,
+                                whatIsInput: widget.startTimeInput.value.type,
+                                controller:
+                                    widget.startTimeInput.value.controller,
+                              ),
+                            ),
+                            // startTimeInput
+                          ],
+                        ),
+                        Text('Start-Time', style: _taskTimesStyle),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      spacing: MediaQuery.of(context).size.width * 0.01,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          spacing: MediaQuery.of(context).size.width * 0.01,
+                          children: [
+                            Expanded(
+                              child: TextFields(
+                                hinttext: widget.endTimeInput.key.hint,
+                                whatIsInput: widget.endTimeInput.key.type,
+                                controller: widget.endTimeInput.key.controller,
+                              ),
+                            ),
+                            Text(':'),
+                            Expanded(
+                              child: TextFields(
+                                hinttext: widget.endTimeInput.value.hint,
+                                whatIsInput: widget.endTimeInput.value.type,
+                                controller:
+                                    widget.endTimeInput.value.controller,
+                              ),
+                            ),
+                            // startTimeInput
+                          ],
+                        ),
+                        Text('End-Time', style: _taskTimesStyle),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
           MyTextInput(
             label: 'Task Name',
             textFields: TextFields(
