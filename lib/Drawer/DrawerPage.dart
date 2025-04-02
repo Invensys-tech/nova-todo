@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Drawer/Productivity%20/ProductivityViewPsge.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class Drawerpage extends StatefulWidget {
   const Drawerpage({super.key});
@@ -21,6 +24,7 @@ class _DrawerpageState extends State<Drawerpage> {
       ),
       child: Column(
         children: [
+          SizedBox(height: MediaQuery.of(context).size.height*.03,),
           Container(
             width: MediaQuery.of(context).size.width*.5,
             height: MediaQuery.of(context).size.height*.075,
@@ -35,44 +39,55 @@ class _DrawerpageState extends State<Drawerpage> {
             ],
           ),
           SizedBox(height: MediaQuery.of(context).size.width*.025,),
-          Row(
-            children: [
-              Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
-              SizedBox(width: MediaQuery.of(context).size.width*.035,),
-              Text("Productivity",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
-            ],
+          GestureDetector(
+            onTap: (){
+
+              PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                context,
+                screen: ProductivityViewPgae(),
+                withNavBar: false,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
+              );
+            },
+            child: Row(
+              children: [
+                FaIcon(FontAwesomeIcons.users,size: 20,color: Colors.white.withOpacity(.7),),
+                SizedBox(width: MediaQuery.of(context).size.width*.035,),
+                Text("Productivity",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
+              ],
+            ),
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
-              Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
+               FaIcon(FontAwesomeIcons.gamepad,size: 25,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
               Text("Quotes",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
-              Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
+              FaIcon(FontAwesomeIcons.users,size: 20,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
               Text("Community Challenges",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
-              Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
+              FaIcon(FontAwesomeIcons.users,size: 20,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
               Text("Notification",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
-              Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
+              FaIcon(FontAwesomeIcons.users,size: 20,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
               Text("Prcing",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
           ), SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
-              Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
+              FaIcon(FontAwesomeIcons.users,size: 20,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
               Text("Seeting ",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
@@ -80,7 +95,7 @@ class _DrawerpageState extends State<Drawerpage> {
           SizedBox(height: MediaQuery.of(context).size.width*.025,),
           Row(
             children: [
-              Icon(Icons.tab_unselected,size: 25,color: Colors.white.withOpacity(.7),),
+              FaIcon(FontAwesomeIcons.streetView,size: 20,color: Colors.white.withOpacity(.7),),
               SizedBox(width: MediaQuery.of(context).size.width*.035,),
               Text("Profile ",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),)
             ],
