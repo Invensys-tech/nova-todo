@@ -28,7 +28,12 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        leading: Icon(Icons.arrow_back_sharp, color: Colors.green, size: 25),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+        ),
         shape: Border(
           bottom: BorderSide(
             color: Colors.white, // Border color

@@ -122,6 +122,8 @@ class AutoCompleteText extends StatelessWidget {
   /// Icon to display on the left side.
   final IconData icon;
 
+  final void Function(String value)? onSelect;
+
   const AutoCompleteText({
     Key? key,
     required this.suggestions,
@@ -129,6 +131,7 @@ class AutoCompleteText extends StatelessWidget {
     required this.hintText,
     required this.controller,
     required this.icon,
+    this.onSelect,
   }) : super(key: key);
 
   @override
@@ -189,6 +192,9 @@ class AutoCompleteText extends StatelessWidget {
                 print("Selected item Index is $index");
                 // Capture the selected value
                 controller.text = value;
+                if (onSelect != null) {
+                  onSelect!(value);
+                }
               },
               onSearchClear: () {
                 print("Cleared Search");
