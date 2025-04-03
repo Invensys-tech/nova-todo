@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/entities/quote.entity.dart';
+import 'package:flutter_application_1/pages/habit/components/habits-list.dart';
+import 'package:flutter_application_1/pages/habit/form.habit.dart';
+import 'package:flutter_application_1/pages/quotes/components/quotes-list.dart';
+import 'package:flutter_application_1/pages/quotes/form.quotes.dart';
+import 'package:flutter_application_1/repositories/quote.repository.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_application_1/repositories/habits.repository.dart';
+
+class QuotesPage extends StatefulWidget {
+  const QuotesPage({super.key});
+
+  @override
+  State<QuotesPage> createState() => _QuotesPageState();
+}
+
+class _QuotesPageState extends State<QuotesPage> {
+  DateTime now = DateTime.now();
+
+  late Future<List<Quote>> quotes;
+
+  @override
+  void initState() {
+    super.initState();
+    quotes = QuoteRepository().fetchAll();
+  }
+
+  void newQuote() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QuoteForm(refetch: refetchData)),
+    );
+  }
+
+  void refetchData() {
+    quotes = QuoteRepository().fetchAll();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.green.shade900,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        onPressed: newQuote,
+        child: Icon(Icons.add),
+      ),
+      appBar: AppBar(
+        title: Text("Quotes"),
+        // centerTitle: true,
+        leading: Row(
+          spacing: MediaQuery.of(context).size.width * 0.04,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back, color: Colors.green),
+            ),
+          ],
+        ),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+        child: FutureBuilder(
+          future: quotes,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return QuotesList(quotes: snapshot.data!);
+            } else {
+              if (snapshot.hasError) {
+                return Text('Error fetching quotes!');
+              }
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      ),
+    );
+  }
+}

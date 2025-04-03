@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       defaultThemeId: AppThemes.Dark, // optional, default id is 0
       builder: (context, theme) {
         return MaterialApp(
-          title: 'Coffee Masters',
+          title: 'Vita Board',
           theme: theme,
           home: const MainScreenPage(),
           debugShowCheckedModeBanner: false,
