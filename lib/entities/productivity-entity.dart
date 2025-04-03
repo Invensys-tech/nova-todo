@@ -4,7 +4,7 @@ class Productivity {
   int id;
   String title;
   String description;
-  DateTime time;
+  String time;
   List<ProductivityHabit>? productivityHabits;
 
   Productivity({
@@ -20,7 +20,7 @@ class Productivity {
     data['id'] = id;
     data['title'] = title;
     data['description'] = description;
-    data['time'] = time.toIso8601String();
+    data['time'] = time;
 
     return data;
   }
@@ -30,7 +30,7 @@ class Productivity {
       id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String,
-      time: DateTime.parse(json['time'] as String),
+      time: (json['time'] as String),
       productivityHabits:
           json['productivity_habits'] != null
               ? (json['productivity_habits'] as List<dynamic>)

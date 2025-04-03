@@ -34,6 +34,7 @@ class HabitListRepository {
 
       return HabitList.fromJson(lastItem);
     } catch (e) {
+      print("Error creating productivity habit!");
       print(e);
       rethrow;
     }

@@ -126,7 +126,7 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
         .createProductivity({
           'title': widget.title.controller.text,
           'frequency': widget.frequency.controller.text,
-          'time': formatDate(widget.time.controller.text),
+          'time': (widget.time.controller.text),
           'description': widget.description.controller.text,
           'user_id': 1,
         });
@@ -149,11 +149,12 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
         print("   Pair -> Key: $keyText, Value: $valueText");
         HabitList habitList = await HabitListRepository().createHabitList({
           'title': keyText,
-          'time': formatDate(valueText),
+          'time': (valueText),
           'productivity_habit_id': productivityHabit.id,
         });
       }
     }
+    Navigator.popUntil(context, ModalRoute.withName('/productivity-home'));
   }
 
   @override
@@ -224,19 +225,19 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                                       ),
                                       const SizedBox(width: 10),
                                       Expanded(
-                                        child: DateSelector(
-                                          hintText: p.value.hint,
-                                          controller: p.value.controller,
-                                          icon: Icons.calendar_today,
-                                          firstDate: DateTime(2000),
-                                          lastDate: DateTime(2100),
-                                          initialDate: DateTime.now(),
-                                        ),
-                                        // child: TextFields(
-                                        //   hinttext: p.value.hint,
-                                        //   whatIsInput: p.value.type,
+                                        // child: DateSelector(
+                                        //   hintText: p.value.hint,
                                         //   controller: p.value.controller,
+                                        //   icon: Icons.calendar_today,
+                                        //   firstDate: DateTime(2000),
+                                        //   lastDate: DateTime(2100),
+                                        //   initialDate: DateTime.now(),
                                         // ),
+                                        child: TextFields(
+                                          hinttext: p.value.hint,
+                                          whatIsInput: p.value.type,
+                                          controller: p.value.controller,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -290,7 +291,7 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                           _logFormValues();
 
                           // Then navigate or perform any save operations here
-                          Navigator.pop(context);
+                          // Navigator.pop(context);
                         } catch (e) {
                           print("Error saving habit: $e");
                           ScaffoldMessenger.of(

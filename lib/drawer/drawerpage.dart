@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/drawer/productivity/ProductivityViewPsge.dart';
+import 'package:flutter_application_1/drawer/productivity/productivity.view.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
@@ -64,7 +64,7 @@ class _DrawerpageState extends State<Drawerpage> {
                 screen: ProductivityHome(),
                 withNavBar: false,
                 pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                settings: const RouteSettings(),
+                settings: const RouteSettings(name: "/productivity-home"),
               );
             },
             child: Row(

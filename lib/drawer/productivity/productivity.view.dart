@@ -1,7 +1,7 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/drawer/productivity/Dailyprogress.dart';
-import 'package:flutter_application_1/drawer/productivity/General%20Progress.dart';
+import 'package:flutter_application_1/drawer/productivity/dailyprogress.dart';
+import 'package:flutter_application_1/drawer/productivity/generalprogress.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
 
@@ -23,6 +23,8 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
   }
 
   Widget build(BuildContext context) {
+    String? currentRoute = ModalRoute.of(context)?.settings.name;
+    print("Current Route: $currentRoute");
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,

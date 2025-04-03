@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/drawer/productivity/GeneralProgressStreakView.dart';
+import 'package:flutter_application_1/drawer/productivity/generalprogressstreakview.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/entities/productivity-habit-entity.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
