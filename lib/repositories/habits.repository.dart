@@ -11,7 +11,6 @@ class HabitsRepository {
       print(e);
       rethrow;
     }
-    // return ['Win CLG', 'Win CLG', 'Win CLG', 'Win CLG'];
   }
 
   Future<bool> createHabit(Map<String, dynamic> habitData) async {

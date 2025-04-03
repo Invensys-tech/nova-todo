@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/components/inputs/fixed-length-input.dart';
 import 'package:flutter_application_1/components/inputs/selector.input.dart';
 import 'package:flutter_application_1/components/inputs/text.input.dart';
 // import 'package:flutter_application_1/components/inputs/time-picker.input.dart';
@@ -139,20 +140,34 @@ class _TodoFormState extends State<TodoForm> {
                           spacing: MediaQuery.of(context).size.width * 0.01,
                           children: [
                             Expanded(
-                              child: TextFields(
-                                hinttext: widget.startTimeInput.key.hint,
-                                whatIsInput: widget.startTimeInput.key.type,
+                              child: MyCustomTextInput(
+                                maxLength: 2,
+                                hintText: widget.startTimeInput.key.hint,
+                                whatIsInput: TextInputType.numberWithOptions(
+                                  decimal: false,
+                                  signed: false,
+                                ),
                                 controller:
                                     widget.startTimeInput.key.controller,
+                                hasError: widget.startTimeInput.key.hasError,
+                                errorMessage:
+                                    widget.startTimeInput.key.errorMessage,
                               ),
                             ),
                             Text(':'),
                             Expanded(
-                              child: TextFields(
-                                hinttext: widget.startTimeInput.value.hint,
-                                whatIsInput: widget.startTimeInput.value.type,
+                              child: MyCustomTextInput(
+                                maxLength: 2,
+                                hintText: widget.startTimeInput.value.hint,
+                                whatIsInput: TextInputType.numberWithOptions(
+                                  decimal: false,
+                                  signed: false,
+                                ),
                                 controller:
                                     widget.startTimeInput.value.controller,
+                                hasError: widget.startTimeInput.value.hasError,
+                                errorMessage:
+                                    widget.startTimeInput.value.errorMessage,
                               ),
                             ),
                             // startTimeInput
@@ -171,19 +186,33 @@ class _TodoFormState extends State<TodoForm> {
                           spacing: MediaQuery.of(context).size.width * 0.01,
                           children: [
                             Expanded(
-                              child: TextFields(
-                                hinttext: widget.endTimeInput.key.hint,
-                                whatIsInput: widget.endTimeInput.key.type,
+                              child: MyCustomTextInput(
+                                maxLength: 2,
+                                hintText: widget.endTimeInput.key.hint,
+                                whatIsInput: TextInputType.numberWithOptions(
+                                  decimal: false,
+                                  signed: false,
+                                ),
                                 controller: widget.endTimeInput.key.controller,
+                                hasError: widget.endTimeInput.key.hasError,
+                                errorMessage:
+                                    widget.endTimeInput.key.errorMessage,
                               ),
                             ),
                             Text(':'),
                             Expanded(
-                              child: TextFields(
-                                hinttext: widget.endTimeInput.value.hint,
-                                whatIsInput: widget.endTimeInput.value.type,
+                              child: MyCustomTextInput(
+                                maxLength: 2,
+                                hintText: widget.endTimeInput.value.hint,
+                                whatIsInput: TextInputType.numberWithOptions(
+                                  decimal: false,
+                                  signed: false,
+                                ),
                                 controller:
                                     widget.endTimeInput.value.controller,
+                                hasError: widget.endTimeInput.value.hasError,
+                                errorMessage:
+                                    widget.endTimeInput.value.errorMessage,
                               ),
                             ),
                             // startTimeInput

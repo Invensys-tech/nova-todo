@@ -6,12 +6,16 @@ class FormInput {
   final String type;
   final TextEditingController controller;
   final double span;
+  bool? hasError;
+  final String? errorMessage;
 
   FormInput({
     required this.label,
     required this.hint,
     required this.type,
     required this.controller,
+    this.hasError = false,
+    this.errorMessage,
     this.span = 3,
   });
 }

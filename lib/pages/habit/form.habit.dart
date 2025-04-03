@@ -81,10 +81,9 @@ class _HabitFormState extends State<HabitForm> {
       'type': repetition.controller.text,
       'date': widget.date ?? getDateOnly(DateTime.now()),
       'repetition_type': repetitionTypeController.text,
+      'repititions': customRepetitionItems.toList(),
       'is_done': false,
     };
-
-    print(jsonEncode(jsonValue));
 
     HabitsRepository().createHabit(jsonValue).then((value) {
       if (value) {
@@ -160,8 +159,8 @@ class _HabitFormState extends State<HabitForm> {
                             decoration: BoxDecoration(
                               color:
                                   customRepetitionItems.contains(e)
-                                      ? Colors.blueGrey.shade800
-                                      : Colors.green.shade800,
+                                      ? Colors.green.shade800
+                                      : Colors.blueGrey.shade800,
                               borderRadius: BorderRadius.circular(40.0),
                             ),
                             alignment: Alignment.center,

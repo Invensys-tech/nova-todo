@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/pages/habit/components/habit.item.dart';
-import 'package:flutter_application_1/repositories/habits.repository.dart';
 
 class HabitsList extends StatefulWidget {
   final String? date;
@@ -12,12 +11,9 @@ class HabitsList extends StatefulWidget {
 }
 
 class _HabitsListState extends State<HabitsList> {
-  late Future<List<dynamic>> habits;
-
   @override
   void initState() {
     super.initState();
-    habits = HabitsRepository().fetchHabits();
   }
 
   @override

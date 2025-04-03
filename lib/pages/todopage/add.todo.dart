@@ -63,12 +63,14 @@ class _AddTodoPageState extends State<AddTodoPage> {
       hint: '00',
       type: "0",
       controller: TextEditingController(),
+      errorMessage: 'Must be below 24',
     ),
     value: FormInput(
       label: 'Minutes',
       hint: '00',
       type: "0",
       controller: TextEditingController(),
+      errorMessage: 'Must be below 60',
     ),
   );
   FormInputPair endTimeInput = FormInputPair(
@@ -77,12 +79,14 @@ class _AddTodoPageState extends State<AddTodoPage> {
       hint: '00',
       type: "0",
       controller: TextEditingController(),
+      errorMessage: 'Must be below 24',
     ),
     value: FormInput(
       label: 'Minutes',
       hint: '00',
       type: "0",
       controller: TextEditingController(),
+      errorMessage: 'Must be below 60',
     ),
   );
 
@@ -101,13 +105,32 @@ class _AddTodoPageState extends State<AddTodoPage> {
     endTimeInput.value.controller.clear();
   }
 
+  setValidationError(FormInput input) {
+    setState(() {
+      input.hasError = true;
+    });
+  }
+
   bool parseStartEndTime() {
     if (int.parse(startTimeInput.key.controller.text) > 23 ||
         int.parse(endTimeInput.key.controller.text) > 60 ||
         int.parse(startTimeInput.value.controller.text) > 23 ||
         int.parse(endTimeInput.value.controller.text) > 60) {
+      if (int.parse(startTimeInput.key.controller.text) > 23) {
+        setValidationError(startTimeInput.key);
+      }
+      if (int.parse(startTimeInput.value.controller.text) > 60) {
+        setValidationError(startTimeInput.value);
+      }
+      if (int.parse(endTimeInput.key.controller.text) > 23) {
+        setValidationError(endTimeInput.key);
+      }
+      if (int.parse(endTimeInput.value.controller.text) > 60) {
+        setValidationError(endTimeInput.value);
+      }
       return false;
     }
+
     taskTimeController.text =
         '${startTimeInput.key.controller.text}:${startTimeInput.value.controller.text}';
     taskEndTimeController.text =
