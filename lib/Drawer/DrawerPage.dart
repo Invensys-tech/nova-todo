@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/habit/habits.dart';
+import 'package:flutter_application_1/pages/quotes/quotes.dart';
 
 class Drawerpage extends StatefulWidget {
   const Drawerpage({super.key});
@@ -9,7 +10,15 @@ class Drawerpage extends StatefulWidget {
 }
 
 class _DrawerpageState extends State<Drawerpage> {
-  routeToProductivity() async {
+  routeToQuotes() async {
+    // final newGoals = await Navigator.push(
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QuotesPage()),
+    );
+  }
+
+  routeToHabits() async {
     // final newGoals = await Navigator.push(
     await Navigator.push(
       context,
@@ -47,7 +56,7 @@ class _DrawerpageState extends State<Drawerpage> {
           ),
           SizedBox(height: MediaQuery.of(context).size.width * .025),
           GestureDetector(
-            onTap: routeToProductivity,
+            onTap: routeToHabits,
             child: Row(
               children: [
                 Icon(
@@ -79,19 +88,22 @@ class _DrawerpageState extends State<Drawerpage> {
             ],
           ),
           SizedBox(height: MediaQuery.of(context).size.width * .025),
-          Row(
-            children: [
-              Icon(
-                Icons.tab_unselected,
-                size: 25,
-                color: Colors.white.withOpacity(.7),
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * .035),
-              Text(
-                "Quotes",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-              ),
-            ],
+          GestureDetector(
+            onTap: routeToQuotes,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.tab_unselected,
+                  size: 25,
+                  color: Colors.white.withOpacity(.7),
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * .035),
+                Text(
+                  "Quotes",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: MediaQuery.of(context).size.width * .025),
           Row(

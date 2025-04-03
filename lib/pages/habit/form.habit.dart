@@ -202,9 +202,7 @@ class _HabitFormState extends State<HabitForm> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: navigateBack,
                     child: const Text(
                       "Cancel",
                       style: TextStyle(color: Colors.white),
@@ -217,12 +215,9 @@ class _HabitFormState extends State<HabitForm> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: () {
-                      // Navigator.pop(context);
-                      saveHabit();
-                    },
+                    onPressed: saveHabit,
                     child: const Text(
-                      "Save Todo",
+                      "Save Habit",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

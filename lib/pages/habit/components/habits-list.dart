@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/pages/habit/components/habit.item.dart';
 
@@ -36,10 +37,9 @@ class _HabitsListState extends State<HabitsList> {
             );
           } else {
             if (snapshot.hasError) {
-              return const Text('Something went wrong');
-            } else {
-              return const Text('Fetching data...');
+              return const Text('Error fetching habits!');
             }
+            return Center(child: CircularProgressIndicator());
           }
         },
       ),
