@@ -239,6 +239,7 @@ class _TodoFormState extends State<TodoForm> {
             label: 'Type',
             myDropdownItems: TodoForm.todoTypes,
             onSelect: setTodoTypes,
+            currentValue: widget.type.controller.text,
           ),
           MyDateTimeInput(
             label: 'Date',
@@ -266,6 +267,7 @@ class _TodoFormState extends State<TodoForm> {
             label: 'Notify Me',
             myDropdownItems: TodoForm.notifyMeOptions,
             onSelect: setNotifyMe,
+            currentValue: widget.notifyMe.controller.text,
           ),
           MyMultiLineTextInput(
             label: 'Description',

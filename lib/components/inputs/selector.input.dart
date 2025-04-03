@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MySelector extends StatefulWidget {
   final String label;
   final List<Map<String, dynamic>> myDropdownItems;
   final void Function(dynamic) onSelect;
+  final String currentValue;
+  final TextEditingController? controller;
   final IconData? icon;
   const MySelector({
     super.key,
     required this.myDropdownItems,
     required this.onSelect,
     required this.label,
+    required this.currentValue,
+    this.controller,
     this.icon,
   });
 
@@ -41,6 +46,7 @@ class _MySelectorState extends State<MySelector> {
                   // initialSelection: widget.myDropdownItems[0]['value'],
                   // enableSearch: true,
                   // enableFilter: true,
+                  controller: widget.controller,
                   onSelected: widget.onSelect,
                   dropdownMenuEntries:
                       widget.myDropdownItems

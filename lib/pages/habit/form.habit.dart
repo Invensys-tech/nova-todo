@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/components/inputs/radio.input.dart';
 import 'package:flutter_application_1/components/inputs/selector.input.dart';
 import 'package:flutter_application_1/components/inputs/text.input.dart';
+import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
@@ -33,11 +34,17 @@ class _HabitFormState extends State<HabitForm> {
     type: "1",
   );
 
+  @override
+  void initState() {
+    super.initState();
+    repetition.controller.text = 'Daily';
+  }
+
   TextEditingController repetitionTypeController = TextEditingController();
 
   List<Map<String, dynamic>> repetitionItems = [
-    {'label': 'EveryDay', 'value': 'EveryDay'},
-    {'label': 'EveryMonth', 'value': 'EveryMonth'},
+    {'label': 'Daily', 'value': 'Daily'},
+    {'label': 'Monthly', 'value': 'Monthly'},
   ];
 
   Set<String> customRepetitionItems = {};
@@ -76,16 +83,24 @@ class _HabitFormState extends State<HabitForm> {
   }
 
   saveHabit() {
-    Map<String, dynamic> jsonValue = {
+    Habit newHabit = Habit.fromJson({
       'name': name.controller.text,
       'type': repetition.controller.text,
       'date': widget.date ?? getDateOnly(DateTime.now()),
       'repetition_type': repetitionTypeController.text,
-      'repititions': customRepetitionItems.toList(),
+      'repetitions': customRepetitionItems.toList(),
       'is_done': false,
-    };
+    });
+    // Map<String, dynamic> jsonValue = {
+    //   'name': name.controller.text,
+    //   'type': repetition.controller.text,
+    //   'date': widget.date ?? getDateOnly(DateTime.now()),
+    //   'repetition_type': repetitionTypeController.text,
+    //   'repetitions': customRepetitionItems.toList(),
+    //   'is_done': false,
+    // };
 
-    HabitsRepository().createHabit(jsonValue).then((value) {
+    HabitsRepository().createHabit(newHabit).then((value) {
       if (value) {
         navigateBack();
         widget.refetchData();
@@ -132,19 +147,21 @@ class _HabitFormState extends State<HabitForm> {
               myDropdownItems: repetitionItems,
               onSelect: selectRepetition,
               icon: Icons.circle_notifications_sharp,
+              currentValue: repetition.controller.text,
+              controller: repetition.controller,
             ),
-            MyRadioInput(
-              // label: 'Specific',
-              groupKey: 'repetition_type',
-              options: ['Specific', 'Random'],
-              onChanged: selectRepetitionType,
-              orientation: 'horizontal',
-            ),
+            // MyRadioInput(
+            //   // label: 'Specific',
+            //   groupKey: 'repetition_type',
+            //   options: ['Specific', 'Random'],
+            //   onChanged: selectRepetitionType,
+            //   orientation: 'horizontal',
+            // ),
             Row(
               // spacing: MediaQuery.of(context).size.width * 0.04,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children:
-                  (repetition.controller.text == 'EveryDay'
+                  (repetition.controller.text == repetitionItems[0]['value']
                           ? ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']
                           : ['Week1', 'Week2', 'Week3', 'Week4'])
                       .map(
@@ -152,7 +169,8 @@ class _HabitFormState extends State<HabitForm> {
                           onTap: () => setRepetitionItem(e),
                           child: Container(
                             width:
-                                repetition.controller.text == 'EveryDay'
+                                repetition.controller.text ==
+                                        repetitionItems[0]['value']
                                     ? 40.0
                                     : 80.0,
                             height: 40.0,

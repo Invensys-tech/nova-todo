@@ -1,3 +1,4 @@
+import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -13,11 +14,11 @@ class HabitsRepository {
     }
   }
 
-  Future<bool> createHabit(Map<String, dynamic> habitData) async {
+  Future<bool> createHabit(Habit habit) async {
     try {
       final response = await supabaseClient
           .from(Entities.HABITS.dbName)
-          .insert(habitData)
+          .insert(habit.toJson())
           .count(CountOption.exact);
 
       if (response.count == 0) {
