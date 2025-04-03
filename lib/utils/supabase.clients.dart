@@ -7,7 +7,10 @@ enum Entities {
   BANK("bank"),
   SUBGOAL_TASK("sub_goal_task"),
   JOURNAL("goal_journal"),
-  NOTE('notes');
+  NOTE('notes'),
+  PRODUCTIVITY('productivity'),
+  PRODUCTIVITY_HABIT('productivity_habits'),
+  HABIT_LIST('productivity_habit_lists');
 
   final String dbName;
 
