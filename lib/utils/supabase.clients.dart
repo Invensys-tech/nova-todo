@@ -12,7 +12,10 @@ enum Entities {
   DAILY_JOURNAL("daily_journals"),
   HABITS("habits"),
   QUOTES("quotes"),
-  NOTE('notes');
+  NOTE('notes'),
+  PRODUCTIVITY('productivity'),
+  PRODUCTIVITY_HABIT('productivity_habits'),
+  HABIT_LIST('productivity_habit_lists');
 
   final String dbName;
 
