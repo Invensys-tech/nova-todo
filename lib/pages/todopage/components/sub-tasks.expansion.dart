@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/entities/daily-task.entity.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 
 class SubDailyTasksExpansion extends StatefulWidget {
   final String title;
-  final int id;
   final List<dynamic> tasks;
+  final void Function(DailySubTask subTask) addSubTask;
 
   const SubDailyTasksExpansion({
     super.key,
     required this.title,
-    required this.id,
     required this.tasks,
+    required this.addSubTask,
   });
 
   @override
@@ -29,16 +30,15 @@ class _SubDailyTasksStateExpansion extends State<SubDailyTasksExpansion> {
   );
 
   addTask() {
-    Task task = Task(
-      name: _taskFormField.controller.text,
-      status: false,
-      subGoalId: widget.id,
+    DailySubTask subTask = DailySubTask(
+      text: _taskFormField.controller.text,
+      isDone: false,
     );
     // Task savedTask = await TaskRepository().createTask(task, widget.id);
-    setState(() {
-      widget.tasks.add(task);
-      // _taskFormField.controller.clear();
-    });
+    // setState(() {
+    widget.addSubTask(subTask);
+    _taskFormField.controller.clear();
+    // });
   }
 
   @override
@@ -52,22 +52,22 @@ class _SubDailyTasksStateExpansion extends State<SubDailyTasksExpansion> {
             (task) => Row(
               children: [
                 Checkbox(
-                  value: task.status,
+                  value: task.isDone,
                   onChanged: (value) {
                     setState(() {
                       // TaskRepository().updateTask(task, value ?? false);
-                      task.status = value!;
+                      task.isDone = value!;
                     });
                   },
                 ),
                 Text(
                   style: TextStyle(
                     decoration:
-                        task.status
+                        task.isDone
                             ? TextDecoration.lineThrough
                             : TextDecoration.none,
                   ),
-                  '${task.name}',
+                  '${task.text}',
                 ),
               ],
             ),

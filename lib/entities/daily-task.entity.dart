@@ -1,11 +1,14 @@
-// ? DB table name
-// daily_tasks
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 
+// ? DB table name
+// daily_tasks
 class DailyTask {
   // ? DB property names
   // task_time, end_time, name, type, date, reminder_time, user_id;
+  final int? id;
   String name;
   String type;
   String taskTime;
@@ -13,12 +16,15 @@ class DailyTask {
   String date;
   String description;
   String reminderTime;
-  List<DailySubTask> subTasks;
+  // List<DailySubTask> subTasks;
+  List<dynamic> subTasks;
   late DateTime dateDate;
-  late DateTime endDateTime;
-  late Duration duration;
+  late DateTime? endDateTime;
+  late Duration? duration;
+  late int completionPercentage;
 
   DailyTask({
+    this.id,
     required this.name,
     required this.type,
     required this.date,
@@ -27,16 +33,24 @@ class DailyTask {
     required this.reminderTime,
     required this.subTasks,
     required this.description,
+    this.completionPercentage = 0,
   }) {
-    duration = DateTime.tryParse(
-      taskTime,
-    )!.difference(DateTime.tryParse(endTime)!);
-    dateDate = DateTime.tryParse(taskTime)!;
-    endDateTime = DateTime.tryParse(endTime)!;
+    try {
+      duration = DateTime.tryParse(
+        taskTime,
+      )?.difference(DateTime.tryParse(endTime) ?? DateTime.now());
+      dateDate = DateTime.tryParse(taskTime) ?? DateTime.now();
+      endDateTime = DateTime.tryParse(endTime);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 
   factory DailyTask.fromJson(Map<String, dynamic> json) {
+    // print(json['reminder_time']);
     return DailyTask(
+      id: json['id'],
       name: json['name'],
       type: json['type'],
       taskTime: json['task_time'] as String,
@@ -47,9 +61,11 @@ class DailyTask {
       subTasks:
           json['daily_sub_tasks'] == Null || json['daily_sub_tasks'] == null
               ? []
-              : (json['daily_sub_tasks'] as List<dynamic>)
-                  .map((e) => DailySubTask.fromJson(e))
-                  .toList(),
+              : json['daily_sub_tasks'],
+      completionPercentage: json['completion_percentage'] ?? 0,
+      // : (json['daily_sub_tasks'])
+      //     .map((e) => DailySubTask.fromJson(e))
+      //     .toList(),
     );
   }
 
@@ -64,23 +80,36 @@ class DailyTask {
     };
   }
 
-  static Map<String, dynamic> fromUserInputToJson(Map<String, dynamic> json) {
+  factory DailyTask.fromUserInputJson(Map<String, dynamic> json) {
     TimeOfDay timeOfDay = timeOfDayFromString(json['taskTime']);
     TimeOfDay reminderTime = getTimeMinus(
       time: timeOfDay,
       minutes: int.parse(json['notifyMe']),
     );
 
-    return {
+    return DailyTask.fromJson({
+      // ...json,
       'name': json['name'],
       'type': json['type'],
-      'task_time': json['taskTime'],
-      'end_time': json['taskEndTime'],
+      'task_time': "${json['date']}T${json['taskTime']}",
+      'end_time': "${json['date']}T${json['taskEndTime']}",
       'date': json['date'],
-      'notify_me': json['notifyMe'],
       'description': json['description'],
-      'reminder_time': formatTimeOfDayToString(reminderTime),
-    };
+      'daily_sub_tasks': json['daily_sub_tasks'],
+      'reminder_time':
+          "${json['date']}T${formatTimeOfDayToString(reminderTime)}",
+    });
+    // return {
+    //   'name': json['name'],
+    //   'type': json['type'],
+    //   'task_time': json['taskTime'],
+    //   'end_time': json['taskEndTime'],
+    //   'date': json['date'],
+    //   'notify_me': json['notifyMe'],
+    //   'description': json['description'],
+    //   'reminder_time': formatTimeOfDayToString(reminderTime),
+    //   'sub_tasks': json['sub_tasks'] ?? [],
+    // };
   }
 
   bool isInDate(DateTime date) {
@@ -92,6 +121,19 @@ class DailyTask {
       return true;
     }
   }
+
+  factory DailyTask.fromDBJson(Map<String, dynamic> json) {
+    return DailyTask.fromJson({
+      ...json,
+      'date': json['date'].toString().split('T')[0],
+      'reminder_time': getTimeDifferenceFromTimeString(
+        json['reminder_time'],
+        DateTime.now().toIso8601String(),
+      ),
+      'task_time': getTimeFromDateTimeString(json['task_time']),
+      'end_time': getTimeFromDateTimeString(json['end_time']),
+    });
+  }
 }
 
 // ? DB table name
@@ -102,13 +144,9 @@ class DailySubTask {
 
   String text;
   bool isDone;
-  int dailyTaskId;
+  int? dailyTaskId;
 
-  DailySubTask({
-    required this.text,
-    required this.isDone,
-    required this.dailyTaskId,
-  });
+  DailySubTask({required this.text, required this.isDone, this.dailyTaskId});
 
   factory DailySubTask.fromJson(Map<String, dynamic> json) {
     return DailySubTask(

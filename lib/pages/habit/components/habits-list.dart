@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/habit/components/habit.item.dart';
 
 class HabitsList extends StatefulWidget {
   final String? date;
-  final Future<List<dynamic>> habits;
+  final Future<List<Habit>> habits;
   const HabitsList({super.key, required this.date, required this.habits});
 
   @override
@@ -31,7 +32,7 @@ class _HabitsListState extends State<HabitsList> {
                 spacing: MediaQuery.of(context).size.width * 0.04,
                 children:
                     snapshot.data!
-                        .map((habit) => HabitItem(name: habit['name']))
+                        .map((habit) => HabitItem(habit: habit))
                         .toList(),
               ),
             );

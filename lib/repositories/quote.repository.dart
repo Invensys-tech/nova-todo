@@ -35,7 +35,7 @@ class QuoteRepository {
 
       return quotes;
     } catch (e) {
-      // print(e);
+      print(e);
       rethrow;
     }
   }

@@ -4,7 +4,8 @@ import 'package:flutter_quill/flutter_quill.dart';
 
 class DailyJournalQuill extends StatefulWidget {
   final String date;
-  const DailyJournalQuill({super.key, required this.date});
+  final dynamic content;
+  const DailyJournalQuill({super.key, required this.date, this.content});
 
   @override
   State<DailyJournalQuill> createState() => _DailyJournalQuillState();
@@ -16,7 +17,14 @@ class _DailyJournalQuillState extends State<DailyJournalQuill> {
   @override
   void initState() {
     super.initState();
-    controller = QuillController.basic();
+    if (widget.content != null) {
+      controller = QuillController(
+        document: Document.fromJson(widget.content),
+        selection: const TextSelection.collapsed(offset: 0),
+      );
+    } else {
+      controller = QuillController.basic();
+    }
   }
 
   saveJournal() async {
@@ -57,43 +65,46 @@ class _DailyJournalQuillState extends State<DailyJournalQuill> {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05,
-          vertical: MediaQuery.of(context).size.height * 0.02,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Text(
-              "Journal On ${widget.date}",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w300,
-                color: Colors.white70,
+      body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.05,
+            vertical: MediaQuery.of(context).size.height * 0.02,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Text(
+                "Journal On ${widget.date}",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white70,
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.7,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  QuillSimpleToolbar(
-                    controller: controller,
-                    config: QuillSimpleToolbarConfig(),
-                  ),
-                  Expanded(
-                    child: QuillEditor.basic(
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: [
+                    QuillSimpleToolbar(
                       controller: controller,
-                      config: QuillEditorConfig(),
+                      config: QuillSimpleToolbarConfig(),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: QuillEditor.basic(
+                        controller: controller,
+                        config: QuillEditorConfig(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

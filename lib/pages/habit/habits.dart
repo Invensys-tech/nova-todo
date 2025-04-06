@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/habit/components/habits-list.dart';
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
@@ -15,7 +16,7 @@ class HabitsPage extends StatefulWidget {
 class _HabitsPageState extends State<HabitsPage> {
   DateTime now = DateTime.now();
 
-  late Future<List<dynamic>> habits;
+  late Future<List<Habit>> habits;
 
   @override
   void initState() {

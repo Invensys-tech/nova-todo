@@ -36,12 +36,12 @@ class _MySelectorState extends State<MySelector> {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           ),
           SizedBox(
-            width: double.infinity,
             child: Row(
               spacing: MediaQuery.of(context).size.width * 0.02,
               children: [
                 widget.icon != null ? Icon(widget.icon, size: 32) : Container(),
                 DropdownMenu(
+                  width: MediaQuery.of(context).size.width * 0.85,
                   menuStyle: MenuStyle(),
                   // initialSelection: widget.myDropdownItems[0]['value'],
                   // enableSearch: true,

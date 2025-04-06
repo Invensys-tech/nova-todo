@@ -144,6 +144,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     if (!parsedCorrectly) {
       return;
     }
+
     setState(() {
       Map<String, dynamic> formData = {
         'name': name.controller.text,
@@ -154,21 +155,25 @@ class _AddTodoPageState extends State<AddTodoPage> {
         'taskTime': taskTimeController.text,
         'taskEndTime': taskEndTimeController.text,
         'description': description.controller.text,
+        'daily_sub_tasks': subTasks,
       };
-
       // clearForm();
 
-      Map<String, dynamic> dailyTaskData = DailyTask.fromUserInputToJson(
-        formData,
-      );
+      DailyTask dailyTaskData = DailyTask.fromUserInputJson(formData);
       // DailyTaskRepository().addDailyTaskFromJson(dailyTaskData);
-      DailyTaskRepository().addDailyTaskFromJson(dailyTaskData).then((value) {
-        // print(jsonEncode(value));
+      DailyTaskRepository().addDailyTask(dailyTaskData).then((value) {
+        clearForm();
         widget.refetchData();
+        Navigator.pop(context);
       });
       // widget.saveTodo();
+    });
+  }
 
-      Navigator.pop(context);
+  List<dynamic> subTasks = [];
+  addSubTask(subTask) {
+    setState(() {
+      subTasks.add(subTask);
     });
   }
 
@@ -201,11 +206,12 @@ class _AddTodoPageState extends State<AddTodoPage> {
               date: date,
               notifyMe: notifyMe,
               description: description,
-              subTasks: [],
+              subTasks: subTasks,
               // taskTime: taskTimeController,
               // taskEndTime: taskEndTimeController,
               startTimeInput: startTimeInput,
               endTimeInput: endTimeInput,
+              addSubTask: addSubTask,
             ),
             Padding(
               padding: EdgeInsets.all(

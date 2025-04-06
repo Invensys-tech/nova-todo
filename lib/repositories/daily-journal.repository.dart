@@ -13,7 +13,27 @@ class DailyJournalRepository {
         throw Exception('Error upserting daily journal!');
       }
     } catch (e) {
-      print('Error creating daily journal');
+      // print('Error creating daily journal');
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchByDate(String date) async {
+    try {
+      final data =
+          await supabaseClient
+              .from(Entities.DAILY_JOURNAL.dbName)
+              .select()
+              .eq('date', date)
+              .maybeSingle();
+
+      if (data == null) {
+        throw Exception('Error getting daily journal!');
+      }
+
+      return data;
+    } catch (e) {
       print(e);
       rethrow;
     }

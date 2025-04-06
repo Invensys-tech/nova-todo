@@ -26,6 +26,7 @@ class TodoForm extends StatefulWidget {
   // final TextEditingController taskEndTime;
   final FormInputPair startTimeInput;
   final FormInputPair endTimeInput;
+  final void Function(dynamic) addSubTask;
 
   const TodoForm({
     super.key,
@@ -40,6 +41,7 @@ class TodoForm extends StatefulWidget {
     // required this.taskEndTime,
     required this.startTimeInput,
     required this.endTimeInput,
+    required this.addSubTask,
   });
 
   static const List<Map<String, dynamic>> todoTypes = [
@@ -112,6 +114,12 @@ class _TodoFormState extends State<TodoForm> {
   setNotifyMe(dynamic value) {
     widget.notifyMe.controller.text = value;
   }
+
+  // addSubTask(value) {
+  //   setState(() {
+  //     widget.subTasks.add(value);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -252,17 +260,6 @@ class _TodoFormState extends State<TodoForm> {
               initialDate: DateTime.now(),
             ),
           ),
-          // MyDateTimeInput(
-          //   label: 'Notify Me',
-          //   dateFields: DateSelector(
-          //     controller: widget.notifyMe.controller,
-          //     hintText: widget.notifyMe.hint,
-          //     icon: Icons.calendar_today,
-          //     firstDate: DateTime(2000),
-          //     lastDate: DateTime(2100),
-          //     initialDate: DateTime.now(),
-          //   ),
-          // ),
           MySelector(
             label: 'Notify Me',
             myDropdownItems: TodoForm.notifyMeOptions,
@@ -295,8 +292,8 @@ class _TodoFormState extends State<TodoForm> {
                 // body: Text(subGoal.value.goal),
                 body: SubDailyTasksExpansion(
                   title: 'Sub Tasks',
-                  id: 1,
                   tasks: widget.subTasks,
+                  addSubTask: widget.addSubTask,
                 ),
               ),
             ],
