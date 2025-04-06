@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  final bool _isInitialized = false;
+  bool _isInitialized = false;
 
   bool get isInitialized => _isInitialized;
 
@@ -12,7 +14,8 @@ class NotificationService {
     if (_isInitialized) return;
 
     const initSettingsAndroid = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
+      // '@mipmap/ic_launcher',
+      'ic_notification',
     );
     const initSettingsIOS = DarwinInitializationSettings(
       requestAlertPermission: true,
@@ -26,6 +29,8 @@ class NotificationService {
     );
 
     await flutterLocalNotificationsPlugin.initialize(initSettings);
+
+    _isInitialized = true;
   }
 
   NotificationDetails notificationDetails() {
@@ -55,13 +60,21 @@ class NotificationService {
     );
   }
 
-  // scheduleNotification(TimeOfDay time) async {
-  //   await flutterLocalNotificationsPlugin.showDailyAtTime(
-  //     0,
-  //     'Reminder',
-  //     'This is your reminder!',
-  //     time,
-  //     generalNotificationDetails,
-  //   );
-  // }
+  scheduleNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime time,
+  }) async {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.local);
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id,
+      title,
+      body,
+      tz.TZDateTime.from(time, tz.local),
+      notificationDetails(),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
+  }
 }

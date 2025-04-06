@@ -32,17 +32,28 @@ class _HomePageState extends State<HomePage> {
       // body: Column(children: [Container(child: Text("he"))]),
       body: Column(
         children: [
-          Container(
-            child: FloatingActionButton(
-              onPressed: () {
-                NotificationService().showNotification(
-                  1,
-                  'Reminder',
-                  'Time for you task',
-                );
-              },
-              child: Icon(Icons.notification_add),
-            ),
+          ElevatedButton(
+            onPressed: () {
+              print("Sending notification...");
+              NotificationService().showNotification(
+                1,
+                'Reminder',
+                'Time for you task',
+              );
+            },
+            child: Icon(Icons.notification_add),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              print("Sending timed notification...");
+              NotificationService().scheduleNotification(
+                id: 1,
+                title: 'Todo Reminder',
+                body: 'Time for you task in 5',
+                time: DateTime.now().add(Duration(seconds: 5)),
+              );
+            },
+            child: Icon(Icons.notification_important),
           ),
         ],
       ),

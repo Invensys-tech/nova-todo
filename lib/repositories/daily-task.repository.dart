@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
+import 'package:flutter_application_1/services/notification-service.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -47,9 +48,17 @@ class DailyTaskRepository {
 
       final data = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
-          .select('*, daily_sub_tasks(*)');
+          .select('*, daily_sub_tasks(*)')
+          .order('created_at', ascending: false);
 
-      return DailyTask.fromJson(data[data.length - 1]);
+      NotificationService().scheduleNotification(
+        id: data[0]['id'],
+        title: 'Daily Task Reminder',
+        body: data[0]['name'],
+        time: DateTime.parse(dailyTask.reminderTime),
+      );
+
+      return DailyTask.fromJson(data[0]);
     } catch (e) {
       print(e);
       rethrow;
