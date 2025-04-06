@@ -4,6 +4,7 @@ import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
+import 'package:flutter_application_1/services/notification-service.dart';
 
 class HomePage extends StatefulWidget {
   final Datamanager datamanager;
@@ -28,7 +29,23 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       drawer: Drawer(child: Drawerpage()),
-      body: Column(children: [Container(child: Text("he"))]),
+      // body: Column(children: [Container(child: Text("he"))]),
+      body: Column(
+        children: [
+          Container(
+            child: FloatingActionButton(
+              onPressed: () {
+                NotificationService().showNotification(
+                  1,
+                  'Reminder',
+                  'Time for you task',
+                );
+              },
+              child: Icon(Icons.notification_add),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

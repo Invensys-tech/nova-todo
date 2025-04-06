@@ -37,6 +37,10 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    dependencies {
+        implementation 'com.android.tools:desugar_jdk_libs:1.1.5'  // Add desugaring library
+    }
 }
 
 flutter {

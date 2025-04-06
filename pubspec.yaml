@@ -50,6 +50,7 @@ dependencies:
   roundcheckbox: ^2.0.5
   swipeable_button: ^0.2.0
   flutter_slidable: ^4.0.0
+  flutter_local_notifications: ^19.0.0
 
 flutter_icons:
   android: true
