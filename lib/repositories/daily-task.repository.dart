@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
+import 'package:flutter_application_1/services/notification-service.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -16,11 +17,48 @@ class DailyTaskRepository {
         throw Exception('Error creating daily task');
       }
 
+      final createdTodos = await supabaseClient
+          .from(Entities.DAILY_TASK.dbName)
+          .select('*')
+          .order('created_at', ascending: false);
+
+      int currentTodoId = createdTodos[0]['id'];
+
+      final subTasks =
+          dailyTask.subTasks
+              .map(
+                (subTask) => {
+                  ...subTask.toJson(),
+                  'daily_task_id': currentTodoId,
+                },
+              )
+              .toList();
+
+      for (var subTask in subTasks) {
+        // print(jsonEncode(subTask));
+        final subTaskResponse = await supabaseClient
+            .from(Entities.DAILY_SUBTASK.dbName)
+            .insert(subTask)
+            .count(CountOption.exact);
+
+        if (subTaskResponse.count == 0) {
+          throw Exception('Error creating daily-sub-task');
+        }
+      }
+
       final data = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
-          .select('*');
+          .select('*, daily_sub_tasks(*)')
+          .order('created_at', ascending: false);
 
-      return DailyTask.fromJson(data[data.length - 1]);
+      NotificationService().scheduleNotification(
+        id: data[0]['id'],
+        title: 'Daily Task Reminder',
+        body: data[0]['name'],
+        time: DateTime.parse(dailyTask.reminderTime),
+      );
+
+      return DailyTask.fromJson(data[0]);
     } catch (e) {
       print(e);
       rethrow;
@@ -50,16 +88,8 @@ class DailyTaskRepository {
       if (response.count == 0) {
         throw Exception('Error creating daily task');
       }
-
-      // final data = await supabaseClient
-      //     .from(Entities.DAILY_TASK.dbName)
-      //     .select('*');
-
-      // return DailyTask.fromJson(data[data.length - 1]);
-
       return true;
     } catch (e) {
-      // print('---------- Error creating daily task ------------');
       print(e);
       rethrow;
     }
@@ -69,22 +99,46 @@ class DailyTaskRepository {
     // Future<dynamic> fetchAll(DateTime? date) async {
     try {
       // print('---------- Fetching daily tasks ------------');
-      print(date?.toIso8601String() ?? 'no date');
-      final query = supabaseClient.from(Entities.DAILY_TASK.dbName).select('*');
+      // print(date?.toIso8601String() ?? 'no date');
+      final data = await supabaseClient
+          .from(Entities.DAILY_TASK.dbName)
+          .select('*, daily_sub_tasks(*)')
+          .eq('date', date!.toIso8601String());
 
-      if (date != null) {
-        query.eq('date', date.toIso8601String());
+      // for (var d in data) {
+      //   print(jsonEncode(d));
+      // }
+
+      return data.map((dailyTask) => DailyTask.fromDBJson(dailyTask)).toList();
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<double> fetchCompletionPercentage(String date) async {
+    try {
+      final data = await supabaseClient
+          .from(Entities.DAILY_TASK.dbName)
+          .select('*')
+          .eq('date', date);
+
+      if (data.isEmpty) {
+        return 0;
       }
 
-      final data = await query;
-      // final data = await supabaseClient
-      //     .from(Entities.DAILY_TASK.dbName)
-      //     .select('*');
+      int total = 0;
+      int completed = 0;
+      for (var d in data) {
+        completed += d['completion_percentage'] as int;
+        total += 100;
+      }
+      if (total == 0) {
+        return 0;
+      }
 
-      return data.map((dailyTask) => DailyTask.fromJson(dailyTask)).toList();
-      // return data;
+      return ((completed * 1000) ~/ total) / 10;
     } catch (e) {
-      print('---------- Error fetching daily tasks ------------');
       print(e);
       rethrow;
     }
@@ -124,6 +178,48 @@ class DailyTaskRepository {
       }
 
       return DailyTask.fromJson(data);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<bool> updateDailyTaskCompletionPercentage(
+    int id,
+    int completionPercentage,
+  ) async {
+    try {
+      print('Updating daily task completion percentage...');
+      final data = await supabaseClient
+          .from(Entities.DAILY_TASK.dbName)
+          .update({'completion_percentage': completionPercentage})
+          .eq('id', id)
+          .count(CountOption.exact);
+
+      if (data.count == 0) {
+        throw Exception('Error updating daily task completion percentage');
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<bool> updateSubTask(int id, bool isDone) async {
+    try {
+      final data = await supabaseClient
+          .from(Entities.DAILY_SUBTASK.dbName)
+          .update({'is_done': isDone})
+          .eq('id', id)
+          .count(CountOption.exact);
+
+      if (data.count == 0) {
+        throw Exception('Error updating sub-task');
+      }
+
+      return true;
     } catch (e) {
       print(e);
       rethrow;

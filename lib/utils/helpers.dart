@@ -88,3 +88,30 @@ TimeOfDay getTimeMinus({required TimeOfDay time, int? hours, int? minutes}) {
 
   return TimeOfDay(hour: newHour, minute: newMinute);
 }
+
+String getTimeFromDateTime(DateTime dateTime) {
+  String hour = dateTime.hour < 10 ? "0${dateTime.hour}" : "${dateTime.hour}";
+  String minute =
+      dateTime.minute < 10 ? "0${dateTime.minute}" : "${dateTime.minute}";
+  return "$hour:$minute";
+}
+
+String getTimeFromDateTimeString(String dateTimeString) {
+  DateTime dateTime = DateTime.parse(dateTimeString);
+  return getTimeFromDateTime(dateTime);
+}
+
+String getTimeDifferenceFromTimeString(
+  String timeString,
+  String compareString,
+) {
+  DateTime time = DateTime.parse(timeString);
+  DateTime compare = DateTime.parse(compareString);
+  Duration difference = time.difference(compare);
+  if (difference.inSeconds > 0) {
+    return 'After ${difference.inHours}h ${difference.inMinutes.remainder(60)}m';
+  } else if (difference.inSeconds < 0) {
+    return 'Before ${difference.inHours.abs()}h ${difference.inMinutes.remainder(60).abs()}m';
+  }
+  return '${difference.inHours}h ${difference.inMinutes.remainder(60)}m';
+}
