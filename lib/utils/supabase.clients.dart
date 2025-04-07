@@ -15,7 +15,8 @@ enum Entities {
   NOTE('notes'),
   PRODUCTIVITY('productivity'),
   PRODUCTIVITY_HABIT('productivity_habits'),
-  HABIT_LIST('productivity_habit_lists');
+  HABIT_LIST('productivity_habit_lists'),
+  USER('user');
 
   final String dbName;
 
