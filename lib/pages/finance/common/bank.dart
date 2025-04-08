@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/pages/finance/bank/SingleBankFullviewPage.dart';
 
 class BankWidget extends StatefulWidget {
@@ -7,11 +8,15 @@ class BankWidget extends StatefulWidget {
     required this.accountname,
     required this.accoutnumber,
     required this.balance,
+    required this.id,
+    required this.datamanager,
   });
 
   final String accountname;
   final num accoutnumber;
   final num balance;
+  final int id;
+  final Datamanager datamanager;
 
   @override
   State<BankWidget> createState() => _BankWidgetState();
@@ -21,10 +26,17 @@ class _BankWidgetState extends State<BankWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Singlebankfullviewpage()),
+          MaterialPageRoute(
+            builder:
+                (context) => Singlebankfullviewpage(
+                  id: widget.id,
+                  name: widget.accountname,
+                  datamanager: widget.datamanager,
+                ),
+          ),
         );
       },
       child: Container(

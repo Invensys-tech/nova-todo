@@ -6,6 +6,7 @@ import 'package:flutter_application_1/pages/finance/analytics/analytics.dart';
 import 'package:flutter_application_1/pages/finance/bank/bank.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
 import 'package:flutter_application_1/pages/finance/expense/expense.dart';
+import 'package:flutter_application_1/pages/finance/income/income.view.dart';
 import 'package:flutter_application_1/pages/finance/loan/addloan.dart';
 import 'package:flutter_application_1/pages/finance/loan/loanpage.dart';
 
@@ -62,7 +63,8 @@ class FinanceUi extends StatelessWidget {
             ),
             views: [
               Expensespage(datamanager: datamanager),
-              Center(child: Text(" Savings Page")),
+              IncomeView(datamanager: datamanager),
+              // Center(child: Text(" Savings Page")),
               BankPage(datamanager: datamanager),
               Loanpage(datamanager: datamanager),
               AnalyticsPage(),

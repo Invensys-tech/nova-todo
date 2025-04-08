@@ -753,9 +753,24 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
             ),
           ],
         ),
-        BankWidget(accountname: "Jhon", balance: 787970, accoutnumber: 4646464),
-        BankWidget(accountname: "Jhon", balance: 787970, accoutnumber: 4646464),
-        BankWidget(accountname: "Jhon", balance: 787970, accoutnumber: 4646464),
+        // BankWidget(
+        //   accountname: "Jhon",
+        //   balance: 787970,
+        //   accoutnumber: 4646464,
+        //   id: 1,
+        // ),
+        // BankWidget(
+        //   accountname: "Jhon",
+        //   balance: 787970,
+        //   accoutnumber: 4646464,
+        //   id: 1,
+        // ),
+        // BankWidget(
+        //   accountname: "Jhon",
+        //   balance: 787970,
+        //   accoutnumber: 4646464,
+        //   id: 1,
+        // ),
       ],
     );
   }
