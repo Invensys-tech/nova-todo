@@ -16,6 +16,8 @@ class _LogInPageState extends State<LogInPage> {
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  bool _signinError = false;
+
   navigateToHome() {
     Navigator.push(
       context,
@@ -34,11 +36,17 @@ class _LogInPageState extends State<LogInPage> {
     AuthService()
         .signIn(_phoneNumberController.text, _passwordController.text)
         .then((value) {
+          setState(() {
+            _signinError = false;
+          });
           // Todo: store the user data
           navigateToHome();
         })
         .catchError((error) {
-          print('Error initializing user');
+          print('Invalid Credentials');
+          setState(() {
+            _signinError = true;
+          });
         });
   }
 
@@ -73,7 +81,16 @@ class _LogInPageState extends State<LogInPage> {
                   ),
                 ],
               ),
-              ElevatedButton(onPressed: signin, child: Text('Continue')),
+              ElevatedButton(
+                onPressed: signin,
+                style: ElevatedButton.styleFrom(
+                  side: BorderSide(
+                    width: 2,
+                    color: _signinError ? Colors.red : const Color(0xFF84E1E6),
+                  ),
+                ),
+                child: Text('Continue'),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 spacing: MediaQuery.of(context).size.width * 0.05,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/drawer/drawerpage.dart';
 import 'package:flutter_application_1/datamanager.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_application_1/pages/homepage/form.productivity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,6 +38,7 @@ class _HomePageState extends State<HomePage> {
       // body: Column(children: [Container(child: Text("he"))]),
       body: Column(
         children: [
+          // FutureBuilder(future: future, builder: builder),
           ElevatedButton(
             onPressed: () {
               print("Sending notification...");
@@ -73,6 +77,16 @@ class _HomePageState extends State<HomePage> {
               UserRepository().fetchUsers();
             },
             child: Text('Log Users'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              HiveService hiveService = HiveService();
+              await hiveService.initHive(boxName: 'session');
+              dynamic data = await hiveService.getData('user');
+              print('----------------- user store in hive -----------------');
+              print(jsonEncode(data));
+            },
+            child: Text('Print Session'),
           ),
         ],
       ),

@@ -78,6 +78,7 @@ class UserRepository {
               .eq('phoneNumber', phoneNumber)
               .limit(1)
               .single();
+
       return data;
     } catch (e) {
       print(e);

@@ -15,7 +15,7 @@ class HiveService {
   }
 
   Future<dynamic> getData(String key) async {
-    await _box.get(key, defaultValue: null);
+    return await _box.get(key);
   }
 
   Future<void> deleteData(String key) async {

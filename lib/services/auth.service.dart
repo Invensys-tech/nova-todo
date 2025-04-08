@@ -110,11 +110,11 @@ class AuthService {
     await deleteSession();
   }
 
-  Future<String> findSession() async {
+  Future<Map<String, dynamic>> findSession() async {
     HiveService hiveService = HiveService();
     await hiveService.initHive(boxName: 'session');
     Map<String, dynamic> session = await hiveService.getData('user');
-    return session['id'];
+    return session;
   }
 
   Future<void> storeSession(UserEntity user) async {

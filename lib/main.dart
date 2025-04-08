@@ -16,7 +16,7 @@ void main() async {
   NotificationService().initNotifications();
   await Hive.initFlutter();
   HiveService hiveService = HiveService();
-  await hiveService.initHive();
+  await hiveService.initHive(boxName: 'session');
   dynamic data = await hiveService.getData('user');
   print('----------------- user store in hive -----------------');
   print(jsonEncode(data));
