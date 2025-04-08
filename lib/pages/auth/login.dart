@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/MainScreen%20Page.dart';
 import 'package:flutter_application_1/components/inputs/text.input.dart';
-import 'package:flutter_application_1/pages/auth/signup.dart';
+import 'package:flutter_application_1/pages/auth/otp.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
+import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_application_1/utils/enums.dart';
 
 class LogInPage extends StatefulWidget {
   const LogInPage({super.key});
@@ -14,7 +16,7 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  // final TextEditingController _passwordController = TextEditingController();
 
   bool _signinError = false;
 
@@ -25,22 +27,28 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
-  navigateToSignUp() {
+  navigateToSignUp(loginRoutes value, String phoneNumber) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignUpPage()),
+      MaterialPageRoute(
+        builder: (context) => OTPPage(phoneNumber: phoneNumber, action: value),
+      ),
     );
   }
 
   signin() {
+    String otp = AuthService().generateOTP();
+    NotificationService().showNotification(-1, 'OTP', 'Your otp is $otp');
+    String phoneNumber = _phoneNumberController.text;
     AuthService()
-        .signIn(_phoneNumberController.text, _passwordController.text)
+        .signin(_phoneNumberController.text)
         .then((value) {
+          navigateToSignUp(value, phoneNumber);
           setState(() {
             _signinError = false;
           });
           // Todo: store the user data
-          navigateToHome();
+          // navigateToHome();
         })
         .catchError((error) {
           print('Invalid Credentials');
@@ -71,14 +79,14 @@ class _LogInPageState extends State<LogInPage> {
                       controller: _phoneNumberController,
                     ),
                   ),
-                  MyTextInput(
-                    label: 'Password',
-                    textFields: TextFields(
-                      hinttext: 'Enter Password',
-                      whatIsInput: "1",
-                      controller: _passwordController,
-                    ),
-                  ),
+                  // MyTextInput(
+                  //   label: 'Password',
+                  //   textFields: TextFields(
+                  //     hinttext: 'Enter Password',
+                  //     whatIsInput: "1",
+                  //     controller: _passwordController,
+                  //   ),
+                  // ),
                 ],
               ),
               ElevatedButton(
@@ -91,20 +99,20 @@ class _LogInPageState extends State<LogInPage> {
                 ),
                 child: Text('Continue'),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: MediaQuery.of(context).size.width * 0.05,
-                children: [
-                  Text(
-                    'Don\'t have an account?',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  TextButton(
-                    onPressed: navigateToSignUp,
-                    child: Text('Sign up', style: TextStyle(fontSize: 18)),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   spacing: MediaQuery.of(context).size.width * 0.05,
+              //   children: [
+              //     Text(
+              //       'Don\'t have an account?',
+              //       style: TextStyle(fontSize: 18),
+              //     ),
+              //     TextButton(
+              //       onPressed: navigateToSignUp,
+              //       child: Text('Sign up', style: TextStyle(fontSize: 18)),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
