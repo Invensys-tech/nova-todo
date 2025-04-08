@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/drawer/drawerpage.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
+import 'package:flutter_application_1/pages/auth/login.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
-import 'package:flutter_application_1/services/notification-service.dart';
+import 'package:flutter_application_1/repositories/user.repository.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
+import 'package:flutter_application_1/services/notification.service.dart';
 
 class HomePage extends StatefulWidget {
   final Datamanager datamanager;
@@ -32,6 +38,7 @@ class _HomePageState extends State<HomePage> {
       // body: Column(children: [Container(child: Text("he"))]),
       body: Column(
         children: [
+          // FutureBuilder(future: future, builder: builder),
           ElevatedButton(
             onPressed: () {
               print("Sending notification...");
@@ -54,6 +61,32 @@ class _HomePageState extends State<HomePage> {
               );
             },
             child: Icon(Icons.notification_important),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              AuthService().logout();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LogInPage()),
+              );
+            },
+            child: Text('Logout'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              UserRepository().fetchUsers();
+            },
+            child: Text('Log Users'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              HiveService hiveService = HiveService();
+              await hiveService.initHive(boxName: 'session');
+              dynamic data = await hiveService.getData('user');
+              print('----------------- user store in hive -----------------');
+              print(jsonEncode(data));
+            },
+            child: Text('Print Session'),
           ),
         ],
       ),

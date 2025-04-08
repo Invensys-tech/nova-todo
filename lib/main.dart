@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/MainScreen%20Page.dart';
-import 'package:flutter_application_1/services/notification-service.dart';
+import 'package:flutter_application_1/services/auth.gate.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
+import 'package:flutter_application_1/services/notification.service.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,19 +14,26 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationService().initNotifications();
+  await Hive.initFlutter();
+  HiveService hiveService = HiveService();
+  await hiveService.initHive(boxName: 'session');
+  dynamic data = await hiveService.getData('user');
+  print('----------------- user store in hive -----------------');
+  print(jsonEncode(data));
   await Supabase.initialize(
     url: "https://iazgcqadmrjhszpeqxpj.supabase.co",
     anonKey:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhemdjcWFkbXJqaHN6cGVxeHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzODMxNDksImV4cCI6MjA1Nzk1OTE0OX0.v70ChJdX7BiAjvW3DmeZ1ekZ9gKGQ5zNxgbaKfsCC9c",
   );
 
-  runApp(MyApp());
+  runApp(MyApp(isLoggedIn: data != null));
 }
 
 // final supabase = Supabase.instance.client;
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
+  const MyApp({super.key, this.isLoggedIn = false});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -49,7 +61,8 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           title: 'Vita Board',
           theme: theme,
-          home: const MainScreenPage(),
+          // home: const AuthGate(),
+          home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,

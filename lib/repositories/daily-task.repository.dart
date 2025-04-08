@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
-import 'package:flutter_application_1/services/notification-service.dart';
+import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
