@@ -52,6 +52,30 @@ class Datamanager {
         .toList();
   }
 
+  Future<Map<String, dynamic>> fetchBankView(int id, String name) async {
+    final supabase = Supabase.instance.client;
+
+    // 1. Fetch bank by ID
+    final bankResponse =
+        await supabase.from('bank').select('*').eq('id', id).single();
+
+    final bank = Bank.fromJson(bankResponse);
+
+    // 2. Fetch expenses where bankAccount == name
+    final expenses = await supabase
+        .from('expense')
+        .select('*')
+        .eq('bankAccount', name);
+
+    // 3. Fetch incomes where specific_from == name
+    final incomes = await supabase
+        .from('incomes')
+        .select('*')
+        .eq('specific_from', name);
+
+    return {'bank': bank, 'expenses': expenses, 'incomes': incomes};
+  }
+
   Future<List<Goal>> fetchGoals() async {
     final data = await Supabase.instance.client.from('goal').select('*');
     return data.map((e) => Goal.fromJson(e)).toList();

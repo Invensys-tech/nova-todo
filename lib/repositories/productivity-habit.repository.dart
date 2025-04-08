@@ -18,6 +18,26 @@ class ProductivityHabitRepository {
     }
   }
 
+  Future<List<ProductivityHabit>> getProductivityHabitsNames(int id) async {
+    try {
+      final data = await supabaseClient
+          .from(Entities.PRODUCTIVITY_HABIT.dbName)
+          .select('*, productivity_habit_lists(*)')
+          .eq('productivity_id', id);
+      print("+++++++++++++++++");
+      print(data);
+      return data
+          .map(
+            (productivityHabit) =>
+                ProductivityHabit.fromJson(productivityHabit),
+          )
+          .toList();
+    } catch (e) {
+      print("${e} Error Inside p");
+      throw Exception("Error getting productivity habits!");
+    }
+  }
+
   // Future<>
 
   Future<ProductivityHabit> createProductivityHabit(

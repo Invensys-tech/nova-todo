@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/habit-list.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/entities/productivity-habit-entity.dart';
+import 'package:flutter_application_1/pages/homepage/form.productivity-habit.dart';
 
 class DailyprogressLists extends StatefulWidget {
   final Future<Productivity> productivityFuture;
@@ -16,6 +17,7 @@ class DailyprogressLists extends StatefulWidget {
 class _DailyprogressListsState extends State<DailyprogressLists> {
   ETDateTime noww = ETDateTime.now();
   @override
+  late int productivity_id;
   Widget buildContainer(ProductivityHabit p) {
     try {
       print(p);
@@ -98,48 +100,69 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
   }
 
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: AlwaysScrollableScrollPhysics(),
-      child: Column(
-        children: [
-          CalendarTimeline(
-            initialDate: ETDateTime.now(),
-            firstDate: noww,
-            lastDate: DateTime(2027, 11, 20),
-            onDateSelected: (date) {
-              print(ETDateFormat("dd-MMMM-yyyy HH:mm:ss").format(noww));
-            },
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF2b2d30),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) =>
+                      ProductivityHabitForm(productivity_id: productivity_id),
+            ),
+          );
+          // fetchProductivity(); // Refresh after returning
+        },
+        child: const Icon(Icons.add, color: Colors.white, size: 30),
+      ),
+      body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            CalendarTimeline(
+              initialDate: ETDateTime.now(),
+              firstDate: noww,
+              lastDate: DateTime(2027, 11, 20),
+              onDateSelected: (date) {
+                print(ETDateFormat("dd-MMMM-yyyy HH:mm:ss").format(noww));
+              },
 
-            leftMargin: 20,
-            showYears: false,
-            monthColor: Colors.blueGrey,
-            dayColor: Colors.teal[200],
-            activeDayColor: Colors.white,
-            activeBackgroundDayColor: Colors.grey,
-            shrink: true,
-            locale: 'en_ISO',
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * .0125),
-          FutureBuilder(
-            future: widget.productivityFuture,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var data = snapshot.data?.productivityHabits;
-                print("Data: $data");
-                return Column(
-                  children: data?.map((e) => buildContainer(e)).toList() ?? [],
-                );
-              } else {
-                if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return Text('Error: ${snapshot.error}');
+              leftMargin: 20,
+              showYears: false,
+              monthColor: Colors.blueGrey,
+              dayColor: Colors.teal[200],
+              activeDayColor: Colors.white,
+              activeBackgroundDayColor: Colors.grey,
+              shrink: true,
+              locale: 'en_ISO',
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * .0125),
+            FutureBuilder(
+              future: widget.productivityFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var data = snapshot.data?.productivityHabits;
+                  productivity_id = snapshot.data!.id;
+                  print("Data: $data");
+                  return Column(
+                    children:
+                        data?.map((e) => buildContainer(e)).toList() ?? [],
+                  );
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
                 }
-              }
-            },
-          ),
-        ],
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

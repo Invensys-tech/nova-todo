@@ -110,6 +110,7 @@ class ChildLoan {
   String type;
   DateTime date;
   int parentId;
+  String? source;
 
   ChildLoan({
     required this.amount,
@@ -119,6 +120,7 @@ class ChildLoan {
     required this.parentId,
     required this.specificFrom,
     required this.type,
+    this.source,
   });
 
   factory ChildLoan.fromJson(Map<String, dynamic> json) {
@@ -130,6 +132,7 @@ class ChildLoan {
       paidFrom: json['paidFrom'] as String,
       specificFrom: json['specificFrom'] as String,
       parentId: json['parentId'] as int,
+      source: json['source'] as String?,
     );
   }
 }

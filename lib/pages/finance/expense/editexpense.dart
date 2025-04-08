@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/entities/expense-entity.dart';
+import 'package:flutter_application_1/repositories/expense.repository.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class AddExpense extends StatefulWidget {
+class EditExpense extends StatefulWidget {
   final Datamanager datamanager;
-  const AddExpense({super.key, required this.datamanager});
+  final int expenseId;
+  const EditExpense({
+    Key? key,
+    required this.datamanager,
+    required this.expenseId,
+  }) : super(key: key);
 
   @override
-  State<AddExpense> createState() => _AddExpenseState();
+  State<EditExpense> createState() => _EditExpenseState();
 }
 
-class _AddExpenseState extends State<AddExpense> {
+class _EditExpenseState extends State<EditExpense> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _expenseNameController = TextEditingController();
   final TextEditingController _expenseTypeController = TextEditingController();
@@ -29,75 +38,72 @@ class _AddExpenseState extends State<AddExpense> {
 
   String? _paidBySelection;
   int? _parentLoanId;
+  bool _isLoading = true;
 
-  final List<String> searchNames = [
-    "Abebe",
-    "Kebede",
-    "Chala",
-    "Alemu",
-    "Ayele",
-  ];
+  final ExpenseRepository _expenseRepository = ExpenseRepository();
 
-  final List<String> banks = [
-    'Abay Bank',
-    'Addis International Bank',
-    'Ahadu Bank',
-    'Amhara Bank',
-    'Awash Bank',
-    'Bank of Abyssinia',
-    'Berhan Bank',
-    'Bunna Bank',
-    'Commercial Bank of Ethiopia',
-    'Cooperative Bank of Oromia',
-    'Dashen Bank',
-    'Development Bank of Ethiopia',
-    'Gadaa Bank',
-    'Hibret Bank',
-    'Lion International Bank',
-    'NIB International Bank',
-    'Oromia International Bank',
-    'Rammis Bank',
-    'Sidama Bank',
-    'Siket Bank',
-    'Tsedey Bank',
-    'Tsehay Bank',
-    'Wegagen Bank',
-    'Zemen Bank',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _fetchExpense();
+  }
 
-  final List<String> searchItems = [
-    "Orange",
-    "Apple",
-    "Banana",
-    "Mango",
-    "Carrot",
-    "Watermelon",
-    "Grapes",
-    "Dates",
-    "Dragon Fruit",
-  ];
+  Future<void> _fetchExpense() async {
+    try {
+      final expense = await _expenseRepository.getSingleExpense(
+        widget.expenseId,
+      );
+      // Assuming your Expense model has these fields
+      _amountController.text = expense.amount.toString();
+      _expenseNameController.text = expense.expenseName;
+      _expenseCategoryController.text = expense.category;
+      _expenseTypeController.text = expense.type;
+      _paidByController.text = expense.paidBy;
+      _paymentController.text = expense.bankAccount ?? '';
+      _descriptionController.text = expense.description;
+      _dateController.text = expense.date.toIso8601String().split('T')[0];
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching expense: $e");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<String> specificItems = [];
-    Map<String, int> partnerMapping = {};
-    if (_paidByController.text == 'Partner') {
-    } else if (_paidByController.text == 'Bank') {
-      specificItems = banks;
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: const Color(0xff2F2F2F),
+        appBar: AppBar(
+          backgroundColor: const Color(0xff2F2F2F),
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+          ),
+          title: const Text(
+            "Edit Expense",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          centerTitle: true,
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
     }
-
     return Scaffold(
       backgroundColor: const Color(0xff2F2F2F),
       appBar: AppBar(
         backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: const Text(
-          "Add Expense",
+          "Edit Expense",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
@@ -157,7 +163,18 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               AutoCompleteText(
-                suggestions: searchItems,
+                suggestions: [
+                  "Orange",
+                  "Apple",
+                  "Banana",
+                  "Mango",
+                  "Carrot",
+                  "Watermelon",
+                  "Grapes",
+                  "Dates",
+                  "Dragon Fruit",
+                ],
+
                 controller: _expenseCategoryController,
                 hintText: "Search for a Category...",
                 icon: Icons.search,
@@ -178,6 +195,7 @@ class _AddExpenseState extends State<AddExpense> {
                   );
                 },
               ),
+              // --- Types of Expenses ---
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               const Text(
                 "Types of Expenses",
@@ -213,22 +231,18 @@ class _AddExpenseState extends State<AddExpense> {
                 lastDate: DateTime(2100),
                 initialDate: DateTime.now(),
               ),
+              // --- Paid By and Bank Account ---
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
               FutureBuilder(
-                // Use different futures based on the "Paid By" selection.
                 future:
                     _paidByController.text == "Partner"
                         ? widget.datamanager.getLoan()
                         : _paidByController.text == "Bank"
                         ? widget.datamanager.getBanks()
-                        : Future.value(
-                          [],
-                        ), // if nothing selected, return empty list
+                        : Future.value([]),
                 builder: (context, snapshot) {
                   Map<String, int> partnerMapping = {};
                   List<String> dynamicItems = [];
-
                   if (_paidByController.text == 'Partner') {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
@@ -237,7 +251,6 @@ class _AddExpenseState extends State<AddExpense> {
                         "Error fetching partner names: ${snapshot.error}",
                       );
                     } else if (snapshot.hasData) {
-                      // Assume snapshot.data is List<Loan> for partner
                       for (Loan loan in snapshot.data as List<Loan>) {
                         partnerMapping[loan.loanerName] = loan.id;
                       }
@@ -249,7 +262,6 @@ class _AddExpenseState extends State<AddExpense> {
                     } else if (snapshot.hasError) {
                       return Text("Error fetching banks: ${snapshot.error}");
                     } else if (snapshot.hasData) {
-                      // Assume snapshot.data is List<Bank> for banks
                       dynamicItems =
                           (snapshot.data as List<Bank>)
                               .map((bank) => bank.accountHolder)
@@ -273,7 +285,6 @@ class _AddExpenseState extends State<AddExpense> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
-                      // "Paid By" Dropdown remains as before
                       CustomDropdown(
                         hintText: "Select an option",
                         icon: Icons.ac_unit_sharp,
@@ -283,7 +294,6 @@ class _AddExpenseState extends State<AddExpense> {
                           setState(() {
                             _paidBySelection = value;
                             _paidByController.text = value ?? '';
-                            // Clear payment selection when switching modes.
                             _paymentController.clear();
                             _parentLoanId = null;
                           });
@@ -309,7 +319,6 @@ class _AddExpenseState extends State<AddExpense> {
                         items: dynamicItems,
                         controller: _paymentController,
                         onChanged: (value) {
-                          // If partner is selected, update _parentLoanId based on partnerMapping.
                           if (_paidByController.text == 'Partner' &&
                               partnerMapping.containsKey(value!)) {
                             setState(() {
@@ -322,7 +331,7 @@ class _AddExpenseState extends State<AddExpense> {
                   );
                 },
               ),
-
+              // --- Description ---
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               const Text(
                 "Description",
@@ -339,23 +348,15 @@ class _AddExpenseState extends State<AddExpense> {
                 icon: Icons.description,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-
+              // --- Buttons ---
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // Clear all input controllers
-                        _amountController.clear();
-                        _expenseNameController.clear();
-                        _paidByController.clear();
-                        _paymentController.clear();
-                        _descriptionController.clear();
-                        _dateController.clear();
-                        _expenseTypeController.clear();
-                        _expenseCategoryController.clear();
-                        setState(() {});
+                        // Cancel changes and navigate back
+                        Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey,
@@ -375,10 +376,10 @@ class _AddExpenseState extends State<AddExpense> {
                     child: ElevatedButton(
                       onPressed: () async {
                         try {
-                          // Insert expense
-                          final expenseResponse = await Supabase.instance.client
+                          // Update expense logic using Supabase update operation
+                          final response = await Supabase.instance.client
                               .from('expense')
-                              .insert({
+                              .update({
                                 'amount':
                                     double.tryParse(_amountController.text) ??
                                     0.0,
@@ -389,43 +390,21 @@ class _AddExpenseState extends State<AddExpense> {
                                     _paidByController.text == "Partner"
                                         ? null
                                         : _paymentController.text,
-
                                 'paidBy': _paidByController.text,
                                 'description': _descriptionController.text,
                                 'date': formatDate(_dateController.text),
-                                'userid': 1,
-                              });
-                          print(expenseResponse);
-                          print("Expense added successfully!");
+                              })
+                              .eq('id', widget.expenseId);
+                          print(response);
+                          print("Expense updated successfully!");
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Expense added successfully!"),
+                              content: Text("Expense updated successfully!"),
                             ),
                           );
-
-                          if (_paidByController.text == "Partner") {
-                            final singleLoanResponse = await Supabase
-                                .instance
-                                .client
-                                .from('single_loan')
-                                .insert({
-                                  'amount':
-                                      double.tryParse(_amountController.text) ??
-                                      0.0,
-                                  'type': "Payable",
-                                  'paidFrom': "Partner",
-                                  'specificFrom': _paymentController.text,
-                                  'parentId': _parentLoanId,
-                                  'date': formatDate(_dateController.text),
-                                  'source': "Expense",
-                                });
-                            print('-----------------------------------------');
-                            print(singleLoanResponse);
-                            print('-----------------------------------------');
-                          }
                           Navigator.pop(context);
                         } catch (e) {
-                          print("Error inserting expense: $e");
+                          print("Error updating expense: $e");
                           ScaffoldMessenger.of(
                             context,
                           ).showSnackBar(SnackBar(content: Text("Error: $e")));
@@ -439,7 +418,7 @@ class _AddExpenseState extends State<AddExpense> {
                         ),
                       ),
                       child: const Text(
-                        "Add Expense",
+                        "Update Expense",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -456,6 +435,6 @@ class _AddExpenseState extends State<AddExpense> {
 }
 
 String formatDate(String date) {
-  List<String> parts = date.split('-'); // Split DD-MM-YYYY
-  return '${parts[2]}-${parts[1]}-${parts[0]}'; // Convert to YYYY-MM-DD
+  List<String> parts = date.split('-'); // expects DD-MM-YYYY
+  return '${parts[2]}-${parts[1]}-${parts[0]}'; // converts to YYYY-MM-DD
 }
