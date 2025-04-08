@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.view.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
+import 'package:flutter_application_1/entities/habit.entity.dart';
+import 'package:flutter_application_1/pages/habit/habits.dart';
+import 'package:flutter_application_1/pages/quotes/quotes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
@@ -12,6 +15,20 @@ class Drawerpage extends StatefulWidget {
 }
 
 class _DrawerpageState extends State<Drawerpage> {
+  routeToHabits() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HabitsPage()),
+    );
+  }
+
+  routeToQuotes() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QuotesPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,19 +59,22 @@ class _DrawerpageState extends State<Drawerpage> {
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.width * .025),
-          Row(
-            children: [
-              Icon(
-                Icons.tab_unselected,
-                size: 25,
-                color: Colors.white.withOpacity(.7),
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * .035),
-              Text(
-                "Habits",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-              ),
-            ],
+          GestureDetector(
+            onTap: routeToHabits,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.tab_unselected,
+                  size: 25,
+                  color: Colors.white.withOpacity(.7),
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * .035),
+                Text(
+                  "Habits",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: MediaQuery.of(context).size.width * .025),
           GestureDetector(
@@ -83,19 +103,22 @@ class _DrawerpageState extends State<Drawerpage> {
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.width * .025),
-          Row(
-            children: [
-              FaIcon(
-                FontAwesomeIcons.gamepad,
-                size: 25,
-                color: Colors.white.withOpacity(.7),
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * .035),
-              Text(
-                "Quotes",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-              ),
-            ],
+          GestureDetector(
+            onTap: routeToQuotes,
+            child: Row(
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.gamepad,
+                  size: 25,
+                  color: Colors.white.withOpacity(.7),
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * .035),
+                Text(
+                  "Quotes",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: MediaQuery.of(context).size.width * .025),
           Row(
