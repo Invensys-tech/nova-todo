@@ -1,42 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
-import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
+import 'package:flutter_application_1/entities/income-entity.dart';
+import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
+import 'package:flutter_application_1/pages/goal/common/types.dart';
+import 'package:flutter_application_1/repositories/income.repository.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AddExpense extends StatefulWidget {
+class IncomeForm extends StatefulWidget {
   final Datamanager datamanager;
-  const AddExpense({super.key, required this.datamanager});
+  const IncomeForm({super.key, required this.datamanager});
 
   @override
-  State<AddExpense> createState() => _AddExpenseState();
+  State<IncomeForm> createState() => _IncomeFormState();
 }
 
-class _AddExpenseState extends State<AddExpense> {
-  final TextEditingController _amountController = TextEditingController();
-  final TextEditingController _expenseNameController = TextEditingController();
-  final TextEditingController _expenseTypeController = TextEditingController();
-  final TextEditingController _expenseCategoryController =
-      TextEditingController();
-  final TextEditingController _paymentController = TextEditingController();
-  final TextEditingController _paidByController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
+class _IncomeFormState extends State<IncomeForm> {
+  final name = FormInput(
+    label: "Income Name",
+    hint: "Income Name",
+    type: "1",
+    controller: TextEditingController(),
+  );
+  final category = FormInput(
+    label: "Category",
+    hint: "Category",
+    type: "1",
+    controller: TextEditingController(),
+  );
+  final amount = FormInput(
+    label: "Amount",
+    hint: "Amount",
+    type: "0",
+    controller: TextEditingController(),
+  );
+  final date = FormInput(
+    label: "Date",
+    hint: "Date",
+    type: "1",
+    controller: TextEditingController(),
+  );
+
+  final paid_from = FormInput(
+    label: "Paid From",
+    hint: "Paid From",
+    type: "1",
+    controller: TextEditingController(),
+  );
+
+  final specific_from = FormInput(
+    label: "Specific From",
+    hint: "Specific From",
+    type: "1",
+    controller: TextEditingController(),
+  );
+
+  final description = FormInput(
+    label: "Description",
+    hint: "Description",
+    type: "1",
+    controller: TextEditingController(),
+  );
 
   String? _paidBySelection;
   int? _parentLoanId;
 
-  final List<String> searchNames = [
-    "Abebe",
-    "Kebede",
-    "Chala",
-    "Alemu",
-    "Ayele",
-  ];
+  saveIncome() async {
+    print("Income data ${specific_from.controller.text}");
+    Income income = await IncomeRepository().createIncome({
+      "name": name.controller.text,
+      'category': category.controller.text,
+      'date': formatDate(date.controller.text),
+      'paid_from': paid_from.controller.text,
+      "specific_from": specific_from.controller.text,
+      "amount": amount.controller.text,
+      'user_id': 1,
+      'description': description.controller.text,
+    });
+    print("Income Saved");
+  }
 
   final List<String> banks = [
     'Abay Bank',
@@ -65,29 +110,20 @@ class _AddExpenseState extends State<AddExpense> {
     'Zemen Bank',
   ];
 
-  final List<String> searchItems = [
-    "Orange",
-    "Apple",
-    "Banana",
-    "Mango",
-    "Carrot",
-    "Watermelon",
-    "Grapes",
-    "Dates",
-    "Dragon Fruit",
-  ];
-
   @override
+  void initState() {
+    super.initState();
+    _paidBySelection = paid_from.controller.text;
+  }
+
   Widget build(BuildContext context) {
     List<String> specificItems = [];
     Map<String, int> partnerMapping = {};
-    if (_paidByController.text == 'Partner') {
-    } else if (_paidByController.text == 'Bank') {
+    if (paid_from.controller.text == 'Partner') {
+    } else if (paid_from.controller.text == 'Bank') {
       specificItems = banks;
     }
-
     return Scaffold(
-      backgroundColor: const Color(0xff2F2F2F),
       appBar: AppBar(
         backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
@@ -97,21 +133,35 @@ class _AddExpenseState extends State<AddExpense> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: const Text(
-          "Add Expense",
+          "Add Income",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.045,
-        ),
+        padding: EdgeInsets.all(8),
         child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: AlwaysScrollableScrollPhysics(),
+
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // --- Amount Field ---
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              const Text(
+                "Income Name",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.white70,
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              TextFields(
+                hinttext: name.hint,
+                controller: name.controller,
+                whatIsInput: name.type,
+                icon: Icons.fingerprint,
+              ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               const Text(
                 "Amount",
@@ -123,78 +173,11 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               TextFields(
-                hinttext: '0.0',
-                whatIsInput: '0',
-                controller: _amountController,
+                hinttext: amount.hint,
+                whatIsInput: amount.type,
+                controller: amount.controller,
                 icon: Icons.attach_money,
               ),
-              // --- Expense Name Field ---
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const Text(
-                "Expense Name",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              TextFields(
-                hinttext: 'Lunch At Bole',
-                whatIsInput: '1',
-                controller: _expenseNameController,
-                icon: Icons.fingerprint,
-              ),
-              // --- Category ---
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const Text(
-                "Category",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              AutoCompleteText(
-                suggestions: searchItems,
-                controller: _expenseCategoryController,
-                hintText: "Search for a Category...",
-                icon: Icons.search,
-                suggestionBuilder: (String text) {
-                  return ListTile(
-                    title: Text(
-                      text,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                    subtitle: const Text(
-                      "Tap to select",
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const Text(
-                "Types of Expenses",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              CustomDropdown(
-                hintText: "Select an option",
-                icon: Icons.local_mall,
-                items: ["Option 1", "Option 2", "Option 3"],
-                controller: _expenseTypeController,
-              ),
-              // --- Date ---
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               const Text(
                 "Date",
@@ -207,29 +190,26 @@ class _AddExpenseState extends State<AddExpense> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               DateSelector(
                 hintText: "Select a date",
-                controller: _dateController,
+                controller: date.controller,
                 icon: Icons.calendar_today,
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2100),
                 initialDate: DateTime.now(),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
               FutureBuilder(
-                // Use different futures based on the "Paid By" selection.
                 future:
-                    _paidByController.text == "Partner"
+                    _paidBySelection == "Partner"
                         ? widget.datamanager.getLoan()
-                        : _paidByController.text == "Bank"
+                        : _paidBySelection == "Bank"
                         ? widget.datamanager.getBanks()
-                        : Future.value(
-                          [],
-                        ), // if nothing selected, return empty list
+                        : Future.value([]),
+
                 builder: (context, snapshot) {
                   Map<String, int> partnerMapping = {};
                   List<String> dynamicItems = [];
 
-                  if (_paidByController.text == 'Partner') {
+                  if (paid_from.controller.text == 'Partner') {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
@@ -243,7 +223,7 @@ class _AddExpenseState extends State<AddExpense> {
                       }
                       dynamicItems = partnerMapping.keys.toList();
                     }
-                  } else if (_paidByController.text == 'Bank') {
+                  } else if (paid_from.controller.text == 'Bank') {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
@@ -278,13 +258,14 @@ class _AddExpenseState extends State<AddExpense> {
                         hintText: "Select an option",
                         icon: Icons.ac_unit_sharp,
                         items: ["Partner", "Bank"],
-                        controller: _paidByController,
+                        controller: paid_from.controller,
+
                         onChanged: (value) {
                           setState(() {
                             _paidBySelection = value;
-                            _paidByController.text = value ?? '';
-                            // Clear payment selection when switching modes.
-                            _paymentController.clear();
+                            paid_from.controller.text = value ?? '';
+                            specific_from.controller
+                                .clear(); // Clear previous selection
                             _parentLoanId = null;
                           });
                         },
@@ -307,10 +288,10 @@ class _AddExpenseState extends State<AddExpense> {
                         hintText: "Select a specific payer",
                         icon: Icons.account_balance_wallet,
                         items: dynamicItems,
-                        controller: _paymentController,
+                        controller: specific_from.controller,
                         onChanged: (value) {
                           // If partner is selected, update _parentLoanId based on partnerMapping.
-                          if (_paidByController.text == 'Partner' &&
+                          if (paid_from.controller.text == 'Partner' &&
                               partnerMapping.containsKey(value!)) {
                             setState(() {
                               _parentLoanId = partnerMapping[value];
@@ -335,11 +316,10 @@ class _AddExpenseState extends State<AddExpense> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               MultiLineTextField(
                 hintText: 'description',
-                controller: _descriptionController,
+                controller: description.controller,
                 icon: Icons.description,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -347,14 +327,7 @@ class _AddExpenseState extends State<AddExpense> {
                     child: ElevatedButton(
                       onPressed: () {
                         // Clear all input controllers
-                        _amountController.clear();
-                        _expenseNameController.clear();
-                        _paidByController.clear();
-                        _paymentController.clear();
-                        _descriptionController.clear();
-                        _dateController.clear();
-                        _expenseTypeController.clear();
-                        _expenseCategoryController.clear();
+
                         setState(() {});
                       },
                       style: ElevatedButton.styleFrom(
@@ -376,53 +349,15 @@ class _AddExpenseState extends State<AddExpense> {
                       onPressed: () async {
                         try {
                           // Insert expense
-                          final expenseResponse = await Supabase.instance.client
-                              .from('expense')
-                              .insert({
-                                'amount':
-                                    double.tryParse(_amountController.text) ??
-                                    0.0,
-                                'expenseName': _expenseNameController.text,
-                                'category': _expenseCategoryController.text,
-                                'type': _expenseTypeController.text,
-                                'bankAccount':
-                                    _paidByController.text == "Partner"
-                                        ? null
-                                        : _paymentController.text,
+                          saveIncome();
 
-                                'paidBy': _paidByController.text,
-                                'description': _descriptionController.text,
-                                'date': formatDate(_dateController.text),
-                                'userid': 1,
-                              });
-                          print(expenseResponse);
-                          print("Expense added successfully!");
+                          print("Income added successfully!");
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text("Expense added successfully!"),
                             ),
                           );
 
-                          if (_paidByController.text == "Partner") {
-                            final singleLoanResponse = await Supabase
-                                .instance
-                                .client
-                                .from('single_loan')
-                                .insert({
-                                  'amount':
-                                      double.tryParse(_amountController.text) ??
-                                      0.0,
-                                  'type': "Payable",
-                                  'paidFrom': "Partner",
-                                  'specificFrom': _paymentController.text,
-                                  'parentId': _parentLoanId,
-                                  'date': formatDate(_dateController.text),
-                                  'source': "Expense",
-                                });
-                            print('-----------------------------------------');
-                            print(singleLoanResponse);
-                            print('-----------------------------------------');
-                          }
                           Navigator.pop(context);
                         } catch (e) {
                           print("Error inserting expense: $e");
@@ -453,9 +388,4 @@ class _AddExpenseState extends State<AddExpense> {
       ),
     );
   }
-}
-
-String formatDate(String date) {
-  List<String> parts = date.split('-'); // Split DD-MM-YYYY
-  return '${parts[2]}-${parts[1]}-${parts[0]}'; // Convert to YYYY-MM-DD
 }
