@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/MainScreen%20Page.dart';
+import 'package:flutter_application_1/datamanager.dart';
+import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
+import 'package:flutter_application_1/pages/finance/income/form.income.dart';
 import 'package:flutter_application_1/services/auth.gate.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
@@ -28,6 +31,8 @@ void main() async {
 
   runApp(MyApp(isLoggedIn: data != null));
 }
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // final supabase = Supabase.instance.client;
 
@@ -59,10 +64,11 @@ class _MyAppState extends State<MyApp> {
       defaultThemeId: AppThemes.Dark, // optional, default id is 0
       builder: (context, theme) {
         return MaterialApp(
+          navigatorKey: navigatorKey,
           title: 'Vita Board',
           theme: theme,
           // home: const AuthGate(),
-          home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
+          // home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
@@ -70,6 +76,17 @@ class _MyAppState extends State<MyApp> {
             GlobalWidgetsLocalizations.delegate,
             FlutterQuillLocalizations.delegate,
           ],
+          routes: {
+            '/':
+                (context) =>
+                    widget.isLoggedIn
+                        ? const MainScreenPage()
+                        : const AuthGate(),
+            '/login': (context) => const AuthGate(),
+            '/expense-form':
+                (context) => AddExpense(datamanager: Datamanager()),
+            '/income-form': (context) => IncomeForm(datamanager: Datamanager()),
+          },
         );
       },
     );

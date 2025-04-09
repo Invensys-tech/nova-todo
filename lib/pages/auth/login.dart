@@ -37,8 +37,6 @@ class _LogInPageState extends State<LogInPage> {
   }
 
   signin() {
-    String otp = AuthService().generateOTP();
-    NotificationService().showNotification(-1, 'OTP', 'Your otp is $otp');
     String phoneNumber = _phoneNumberController.text;
     AuthService()
         .signin(_phoneNumberController.text)

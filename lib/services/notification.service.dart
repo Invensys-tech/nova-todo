@@ -1,4 +1,6 @@
 // import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -28,7 +30,35 @@ class NotificationService {
       iOS: initSettingsIOS,
     );
 
-    await flutterLocalNotificationsPlugin.initialize(initSettings);
+    await flutterLocalNotificationsPlugin.initialize(
+      initSettings,
+      onDidReceiveNotificationResponse: (details) async {
+        final String? payload = details.payload;
+        if (payload != null && payload.isNotEmpty) {
+          switch (payload) {
+            case 'test':
+              // print('Notification tapped with payload: $payload');
+              break;
+            case 'add-expense':
+              navigatorKey.currentState?.pushNamedAndRemoveUntil(
+                '/',
+                (route) => false,
+              );
+              navigatorKey.currentState?.pushNamed('/expense-form');
+              break;
+            case 'add-income':
+              navigatorKey.currentState?.pushNamedAndRemoveUntil(
+                '/',
+                (route) => false,
+              );
+              navigatorKey.currentState?.pushNamed('/income-form');
+              break;
+            default:
+            // print('Notification tapped with unknown payload: $payload');
+          }
+        }
+      },
+    );
 
     _isInitialized = true;
   }
@@ -51,12 +81,18 @@ class NotificationService {
     );
   }
 
-  Future<void> showNotification(int id, String title, String body) async {
+  Future<void> showNotification(
+    int id,
+    String title,
+    String body, {
+    String payload = '',
+  }) async {
     await flutterLocalNotificationsPlugin.show(
       id,
       title,
       body,
       notificationDetails(),
+      payload: payload,
     );
   }
 

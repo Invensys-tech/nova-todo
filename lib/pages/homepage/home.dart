@@ -88,6 +88,30 @@ class _HomePageState extends State<HomePage> {
             },
             child: Text('Print Session'),
           ),
+          ElevatedButton(
+            onPressed: () async {
+              print("Sending expense notification...");
+              NotificationService().showNotification(
+                2,
+                'Expense',
+                'Tap to add expense',
+                payload: 'add-expense',
+              );
+            },
+            child: Text('Expense Notification'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              print("Sending income notification...");
+              NotificationService().showNotification(
+                2,
+                'Income',
+                'Tap to add income',
+                payload: 'add-income',
+              );
+            },
+            child: Text('Income Notification'),
+          ),
         ],
       ),
     );

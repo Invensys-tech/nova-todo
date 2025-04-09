@@ -50,10 +50,10 @@ class AuthService {
         phoneNumber,
       );
 
+      NotificationService().showNotification(-1, 'OTP', 'Your otp is $otp');
+
       if (userData == null) {
         UserRepository().createUser(phoneNumber, otp);
-        NotificationService().showNotification(-1, 'OTP', 'Your otp is $otp');
-
         return loginRoutes.SIGNUP;
       }
 
@@ -80,9 +80,13 @@ class AuthService {
       }
 
       if (userData['otp'] != otp) {
-        // print('wrong otp');
+        print('wrong otp');
+        print('${userData['otp']} != $otp');
         return false;
       }
+
+      UserEntity user = UserEntity.fromJson(userData);
+      storeSession(user);
 
       return true;
     } catch (e) {
