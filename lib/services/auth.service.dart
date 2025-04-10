@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_application_1/entities/user.entity.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
+import 'package:flutter_application_1/services/message.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 
@@ -45,6 +46,14 @@ class AuthService {
       print(otp);
       UserRepository().createUser(phoneNumber, password, otp);
       NotificationService().showNotification(-1, 'OTP', 'Your otp is $otp');
+      await sendMessage(
+        token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiNUtEbmtHSTRMcWlscGlFeUsxSXlwbDRjNUcxSGRCSUEiLCJleHAiOjE5MDIwMzkwNjIsImlhdCI6MTc0NDI3MjY2MiwianRpIjoiYjdlNzkzZGYtYjg2OC00NzI4LTkzOTMtYTY0ZDEzODZkODIzIn0.IcSjFjbAs1jo8pb4zCzBkRUQI_p373N7qtiqDRpWsDU',
+        identifierId: '',
+        senderName: 'MyApp',
+        recipient: '+251911451079',
+        message: 'Hello from Flutter!',
+      );
       // print(jsonEncode({'phoneNumber': phoneNumber, 'password': password}));
     } catch (e) {
       print(e);
