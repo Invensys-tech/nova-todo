@@ -95,10 +95,10 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async {
               print("Sending expense notification...");
               NotificationService().showNotification(
-                2,
-                'Expense',
-                'Tap to add expense',
-                payload: 'add-expense',
+                -2,
+                'Income',
+                'Tap to add expense from CBE',
+                payload: 'add-expense||200.00',
               );
             },
             child: Text('Expense Notification'),
@@ -107,10 +107,10 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async {
               print("Sending income notification...");
               NotificationService().showNotification(
-                2,
+                -2,
                 'Income',
-                'Tap to add income',
-                payload: 'add-income',
+                'Tap to add income from CBE',
+                payload: 'add-income||300.00',
               );
             },
             child: Text('Income Notification'),
