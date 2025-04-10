@@ -805,7 +805,6 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
         //   balance: 787970,
         //   accoutnumber: 4646464,
         //   id: 1,
-
         // ),
         // BankWidget(
         //   accountname: "Jhon",
