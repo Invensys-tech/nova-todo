@@ -19,14 +19,43 @@ import 'package:flutter_application_1/datamodel.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Datamanager {
-  Future<List<Expense>> fetchExpense() async {
-    final data = await Supabase.instance.client.from('expense').select('*');
-    // print(data);
-    // Convert the returned list of maps into a list of Expense objects.
+  Future<List<Expense>> fetchExpenseWithDateFilter(
+    DateTime start,
+    DateTime end,
+  ) async {
+    final data = await Supabase.instance.client
+        .from('expense')
+        .select('*')
+        // Assuming your expense date field is named 'date'
+        .gte('date', start.toIso8601String())
+        .lte('date', end.toIso8601String());
     return (data as List<dynamic>)
         .map((e) => Expense.fromJson(e as Map<String, dynamic>))
         .toList();
   }
+
+  Future<List<Expense>> getExpense({DateTime? start, DateTime? end}) async {
+    if (start != null && end != null) {
+      return await fetchExpenseWithDateFilter(start, end);
+    } else {
+      return await fetchExpense(); // your original fetchExpense
+    }
+  }
+
+  Future<List<Expense>> fetchExpense() async {
+    final data = await Supabase.instance.client.from('expense').select('*');
+    return (data as List<dynamic>)
+        .map((e) => Expense.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+  // Future<List<Expense>> fetchExpense() async {
+  //   final data = await Supabase.instance.client.from('expense').select('*');
+  //   // print(data);
+  //   // Convert the returned list of maps into a list of Expense objects.
+  //   return (data as List<dynamic>)
+  //       .map((e) => Expense.fromJson(e as Map<String, dynamic>))
+  //       .toList();
+  // }
 
   Future<List<Loan>> fetchLoan() async {
     final data = await Supabase.instance.client.from('loan').select('*');
@@ -81,9 +110,9 @@ class Datamanager {
     return data.map((e) => Goal.fromJson(e)).toList();
   }
 
-  Future<List<Expense>> getExpense() async {
-    return await fetchExpense();
-  }
+  // Future<List<Expense>> getExpense() async {
+  //   return await fetchExpense();
+  // }
 
   Future<List<Loan>> getLoan() async {
     return await fetchLoan();

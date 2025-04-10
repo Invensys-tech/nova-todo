@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+
 class ExpensesWidget extends StatefulWidget {
-  const ExpensesWidget({super.key});
+  final num expenseCount;
+  final String category;
+  final num amount;
+  ExpensesWidget({
+    super.key,
+    required this.expenseCount,
+    required this.category,
+    required this.amount,
+  });
 
   @override
   State<ExpensesWidget> createState() => _ExpensesWidgetState();
@@ -32,7 +41,7 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
               color: Color(0xff057939),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.local_pizza,color: Colors.deepOrange, size: 24,),
+            child: Icon(Icons.local_pizza, color: Colors.deepOrange, size: 24),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.035),
           Column(
@@ -40,7 +49,7 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Text(
-                "BreakFast.",
+                "${widget.category}",
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w300,
@@ -48,7 +57,7 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
                 ),
               ),
               Text(
-                "15 Expenses",
+                "${widget.expenseCount} Expenses",
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w200,
@@ -59,15 +68,19 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
           ),
           Spacer(),
           Text(
-            '\$ 4,500',
+            '\$ ${widget.amount}',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w200,
               color: Colors.white.withOpacity(0.8),
             ),
           ),
-          SizedBox(width: MediaQuery.of(context).size.width*.015,),
-          Icon(Icons.chevron_right,size: 25,color: Colors.white.withOpacity(.8),)
+          SizedBox(width: MediaQuery.of(context).size.width * .015),
+          Icon(
+            Icons.chevron_right,
+            size: 25,
+            color: Colors.white.withOpacity(.8),
+          ),
         ],
       ),
     );

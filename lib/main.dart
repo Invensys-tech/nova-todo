@@ -61,8 +61,8 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           title: 'Vita Board',
           theme: theme,
-          // home: const AuthGate(),
-          home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
+          home: const MainScreenPage(),
+          // home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
