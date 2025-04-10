@@ -19,6 +19,8 @@ class IncomeForm extends StatefulWidget {
 }
 
 class _IncomeFormState extends State<IncomeForm> {
+  bool isFromNotification = false;
+
   final name = FormInput(
     label: "Income Name",
     hint: "Income Name",
@@ -116,11 +118,33 @@ class _IncomeFormState extends State<IncomeForm> {
     _paidBySelection = paid_from.controller.text;
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final args = ModalRoute.of(context)?.settings.arguments as String?;
+    // print('in change dependencies');
+    if (args != null) {
+      // print('found args');
+      // print(args);
+      setState(() {
+        paid_from.controller.text == 'Bank';
+        isFromNotification = true;
+        amount.controller.text = args;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<String> specificItems = [];
     Map<String, int> partnerMapping = {};
     if (paid_from.controller.text == 'Partner') {
     } else if (paid_from.controller.text == 'Bank') {
+      specificItems = banks;
+    }
+
+    if (isFromNotification) {
       specificItems = banks;
     }
     return Scaffold(
@@ -259,7 +283,7 @@ class _IncomeFormState extends State<IncomeForm> {
                         icon: Icons.ac_unit_sharp,
                         items: ["Partner", "Bank"],
                         controller: paid_from.controller,
-
+                        selectedValue: isFromNotification ? 'Bank' : 'Partner',
                         onChanged: (value) {
                           setState(() {
                             _paidBySelection = value;

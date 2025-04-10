@@ -1,4 +1,6 @@
 // import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -28,7 +30,39 @@ class NotificationService {
       iOS: initSettingsIOS,
     );
 
-    await flutterLocalNotificationsPlugin.initialize(initSettings);
+    await flutterLocalNotificationsPlugin.initialize(
+      initSettings,
+      onDidReceiveNotificationResponse: (details) async {
+        final String? payload = details.payload;
+        if (payload != null && payload.isNotEmpty) {
+          if (payload.contains('add-expense')) {
+            List<String> parts = payload.split('||');
+            String amount = parts[1];
+            print('Amount: $amount');
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+              '/',
+              (route) => false,
+            );
+            navigatorKey.currentState?.pushNamed(
+              '/expense-form',
+              arguments: amount,
+            );
+          } else if (payload.contains('add-income')) {
+            List<String> parts = payload.split('||');
+            String amount = parts[1];
+            print('Amount: $amount');
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+              '/',
+              (route) => false,
+            );
+            navigatorKey.currentState?.pushNamed(
+              '/income-form',
+              arguments: amount,
+            );
+          }
+        }
+      },
+    );
 
     _isInitialized = true;
   }
@@ -51,12 +85,18 @@ class NotificationService {
     );
   }
 
-  Future<void> showNotification(int id, String title, String body) async {
+  Future<void> showNotification(
+    int id,
+    String title,
+    String body, {
+    String payload = '',
+  }) async {
     await flutterLocalNotificationsPlugin.show(
       id,
       title,
       body,
       notificationDetails(),
+      payload: payload,
     );
   }
 

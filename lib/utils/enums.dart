@@ -1,0 +1,1 @@
+enum loginRoutes { LOGIN, SIGNUP }

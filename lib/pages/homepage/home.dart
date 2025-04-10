@@ -11,6 +11,7 @@ import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
+import 'package:flutter_application_1/services/sms.service.dart';
 
 class HomePage extends StatefulWidget {
   final Datamanager datamanager;
@@ -37,11 +38,13 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(child: Drawerpage()),
       // body: Column(children: [Container(child: Text("he"))]),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: MediaQuery.of(context).size.height * 0.02,
         children: [
           // FutureBuilder(future: future, builder: builder),
           ElevatedButton(
             onPressed: () {
-              print("Sending notification...");
+              // print("Sending notification...");
               NotificationService().showNotification(
                 1,
                 'Reminder',
@@ -52,7 +55,7 @@ class _HomePageState extends State<HomePage> {
           ),
           ElevatedButton(
             onPressed: () {
-              print("Sending timed notification...");
+              // print("Sending timed notification...");
               NotificationService().scheduleNotification(
                 id: 1,
                 title: 'Todo Reminder',
@@ -87,6 +90,43 @@ class _HomePageState extends State<HomePage> {
               print(jsonEncode(data));
             },
             child: Text('Print Session'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              print("Sending expense notification...");
+              NotificationService().showNotification(
+                -2,
+                'Income',
+                'Tap to add expense from CBE',
+                payload: 'add-expense||200.00',
+              );
+            },
+            child: Text('Expense Notification'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              print("Sending income notification...");
+              NotificationService().showNotification(
+                -2,
+                'Income',
+                'Tap to add income from CBE',
+                payload: 'add-income||300.00',
+              );
+            },
+            child: Text('Income Notification'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              print("Sending message...");
+              // NotificationService().showNotification(
+              //   2,
+              //   'Income',
+              //   'Tap to add income',
+              //   payload: 'add-income',
+              // );
+              SmsService().sendSms('0943656931', 'good morning');
+            },
+            child: Text('Send Message'),
           ),
         ],
       ),

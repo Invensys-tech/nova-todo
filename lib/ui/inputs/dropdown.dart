@@ -128,6 +128,7 @@ class CustomDropdown extends StatefulWidget {
   final List<String> items;
   final TextEditingController controller;
   final void Function(String?)? onChanged; // Optional callback
+  final String? selectedValue;
 
   const CustomDropdown({
     super.key,
@@ -136,6 +137,7 @@ class CustomDropdown extends StatefulWidget {
     required this.items,
     required this.controller,
     this.onChanged,
+    this.selectedValue,
   });
 
   @override
@@ -147,7 +149,13 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
   @override
   void initState() {
+    // print('------------selected value-----------------');
+    // print(widget.selectedValue);
     super.initState();
+    if (widget.selectedValue != null) {
+      selectedValue = widget.selectedValue;
+      widget.controller.text = widget.selectedValue!;
+    }
     if (widget.controller.text.isNotEmpty &&
         widget.items.contains(widget.controller.text)) {
       selectedValue = widget.controller.text;

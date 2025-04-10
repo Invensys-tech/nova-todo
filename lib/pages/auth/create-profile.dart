@@ -16,7 +16,6 @@ class CreateProfile extends StatefulWidget {
 class CreateProfileState extends State<CreateProfile> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
-  final TextEditingController _otpController = TextEditingController();
 
   @override
   void initState() {
@@ -40,7 +39,6 @@ class CreateProfileState extends State<CreateProfile> {
           widget.phoneNumber,
           _nameController.text,
           _genderController.text,
-          _otpController.text,
         )
         .then((value) {
           // Todo: store the user data
@@ -80,14 +78,6 @@ class CreateProfileState extends State<CreateProfile> {
                     onSelect: selectGender,
                     label: 'Gender',
                     currentValue: _genderController.text,
-                  ),
-                  MyTextInput(
-                    label: 'OTP',
-                    textFields: TextFields(
-                      hinttext: 'Enter OTP',
-                      whatIsInput: "1",
-                      controller: _otpController,
-                    ),
                   ),
                 ],
               ),

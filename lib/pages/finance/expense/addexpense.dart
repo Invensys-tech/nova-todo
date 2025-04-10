@@ -77,6 +77,25 @@ class _AddExpenseState extends State<AddExpense> {
     "Dragon Fruit",
   ];
 
+  bool isFromNotification = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final args = ModalRoute.of(context)?.settings.arguments as String?;
+    // print('in change dependencies');
+    if (args != null) {
+      // print('found args');
+      // print(args);
+      setState(() {
+        isFromNotification = true;
+        _paidByController.text = 'Bank';
+        _amountController.text = args;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> specificItems = [];
@@ -279,6 +298,7 @@ class _AddExpenseState extends State<AddExpense> {
                         icon: Icons.ac_unit_sharp,
                         items: ["Partner", "Bank"],
                         controller: _paidByController,
+                        selectedValue: isFromNotification ? 'Bank' : null,
                         onChanged: (value) {
                           setState(() {
                             _paidBySelection = value;
