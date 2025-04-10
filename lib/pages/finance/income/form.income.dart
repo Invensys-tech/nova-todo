@@ -116,6 +116,22 @@ class _IncomeFormState extends State<IncomeForm> {
     _paidBySelection = paid_from.controller.text;
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final args = ModalRoute.of(context)?.settings.arguments as String?;
+    print('in change dependencies');
+    if (args != null) {
+      print('found args');
+      print(args);
+      setState(() {
+        amount.controller.text = args;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<String> specificItems = [];
     Map<String, int> partnerMapping = {};

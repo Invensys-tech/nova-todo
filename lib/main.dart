@@ -1,5 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
-
+import 'dart:io' show Platform;
+import 'package:another_telephony/telephony.dart';
+import 'package:flutter_application_1/services/sms.service.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/MainScreen%20Page.dart';
@@ -56,6 +60,43 @@ class _MyAppState extends State<MyApp> {
     fallbackTheme:
         ThemeData.light(), // optional fallback theme, default value is ThemeData.light()
   );
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAndListenSms(); // Call the function here!
+  }
+
+  final Telephony telephony = Telephony.instance;
+  StreamSubscription<SmsMessage>? _onSmsReceived;
+  String _permission = 'Not Requested';
+
+  Future<void> _checkAndListenSms() async {
+    if (Platform.isAndroid) {
+      final permissions = await Permission.sms.request();
+      if (permissions.isGranted) {
+        setState(() => _permission = 'Granted');
+        _startListener();
+        print(_permission);
+      } else {
+        setState(() => _permission = 'Denied');
+        print(_permission);
+      }
+    } else {
+      setState(() => _permission = 'Not Available on iOS');
+    }
+  }
+
+  void _startListener() {
+    print('in start listener');
+    telephony.listenIncomingSms(
+      onNewMessage: (SmsMessage msg) {
+        print('New SMS: ${msg.address} - ${msg.body}');
+        SmsService().parseSms(msg);
+      },
+      listenInBackground: false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

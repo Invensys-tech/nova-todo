@@ -35,26 +35,30 @@ class NotificationService {
       onDidReceiveNotificationResponse: (details) async {
         final String? payload = details.payload;
         if (payload != null && payload.isNotEmpty) {
-          switch (payload) {
-            case 'test':
-              // print('Notification tapped with payload: $payload');
-              break;
-            case 'add-expense':
-              navigatorKey.currentState?.pushNamedAndRemoveUntil(
-                '/',
-                (route) => false,
-              );
-              navigatorKey.currentState?.pushNamed('/expense-form');
-              break;
-            case 'add-income':
-              navigatorKey.currentState?.pushNamedAndRemoveUntil(
-                '/',
-                (route) => false,
-              );
-              navigatorKey.currentState?.pushNamed('/income-form');
-              break;
-            default:
-            // print('Notification tapped with unknown payload: $payload');
+          if (payload.contains('add-expense')) {
+            List<String> parts = payload.split('||');
+            String amount = parts[1];
+            print('Amount: $amount');
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+              '/',
+              (route) => false,
+            );
+            navigatorKey.currentState?.pushNamed(
+              '/expense-form',
+              arguments: amount,
+            );
+          } else if (payload.contains('add-income')) {
+            List<String> parts = payload.split('||');
+            String amount = parts[1];
+            print('Amount: $amount');
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+              '/',
+              (route) => false,
+            );
+            navigatorKey.currentState?.pushNamed(
+              '/income-form',
+              arguments: amount,
+            );
           }
         }
       },

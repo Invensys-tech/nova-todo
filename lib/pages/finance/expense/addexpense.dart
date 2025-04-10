@@ -78,6 +78,21 @@ class _AddExpenseState extends State<AddExpense> {
   ];
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final args = ModalRoute.of(context)?.settings.arguments as String?;
+    print('in change dependencies');
+    if (args != null) {
+      print('found args');
+      print(args);
+      setState(() {
+        _amountController.text = args;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<String> specificItems = [];
     Map<String, int> partnerMapping = {};
