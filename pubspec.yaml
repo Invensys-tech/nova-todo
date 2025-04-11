@@ -49,6 +49,8 @@ dependencies:
   percent_indicator: ^4.2.4
   roundcheckbox: ^2.0.5
   swipeable_button: ^0.2.0
+  shared_preferences: ^2.5.3
+  easy_localization: ^3.0.7+1
 
 flutter_icons:
   android: true
@@ -112,5 +114,9 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
+  fonts:
+    - family: Outfit
+      fonts:
+        - asset: assets/Fonts/OutFit/Outfit-VariableFont_wght.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

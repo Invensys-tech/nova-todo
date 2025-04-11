@@ -21,6 +21,13 @@ class MainScreenPage extends StatefulWidget {
 class _MainScreenPageState extends State<MainScreenPage> {
   var dataManager = Datamanager();
 
+
+
+
+
+
+
+
   PersistentTabController _persistentTabController = PersistentTabController(
     initialIndex: 0,
   );
@@ -43,7 +50,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
         iconSize: 24,
         textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff2E783A),
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        inactiveColorPrimary: Theme.of(context).cardColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.monetization_on_outlined),
@@ -51,7 +58,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
         iconSize: 24,
         textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        inactiveColorPrimary:Theme.of(context).cardColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.ads_click),
@@ -59,7 +66,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
         iconSize: 24,
         textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        inactiveColorPrimary: Theme.of(context).cardColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.assignment_add),
@@ -67,7 +74,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
         iconSize: 24,
         textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        inactiveColorPrimary: Theme.of(context).cardColor,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.description),
@@ -76,7 +83,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
         contentPadding: 0,
         textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        inactiveColorPrimary: Theme.of(context).cardColor,
       ),
     ];
   }
@@ -97,7 +104,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
           items: _navBarsItems(),
           confineToSafeArea: true,
           margin: EdgeInsets.all(0),
-          backgroundColor: const Color(0xFF2b2d30), // Default is Colors.white.
+          backgroundColor:  Theme.of(context).hintColor, // Default is Colors.white.
           handleAndroidBackButtonPress: true, // Default is true.
           resizeToAvoidBottomInset:
               true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
@@ -105,7 +112,10 @@ class _MainScreenPageState extends State<MainScreenPage> {
           hideNavigationBarWhenKeyboardAppears:
               true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
           decoration: NavBarDecoration(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(10),
+              topLeft: Radius.circular(10)
+            ),
             colorBehindNavBar: Colors.black45,
           ),
           animationSettings: const NavBarAnimationSettings(
