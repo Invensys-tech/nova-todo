@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-      drawer: Drawer(child: Drawerpage()),
+      drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent,),
       // body: Column(children: [Container(child: Text("he"))]),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
               //   'Tap to add income',
               //   payload: 'add-income',
               // );
-              SmsService().sendSms('0943656931', 'good morning');
+              // SmsService().sendSms('0943656931', 'good morning');
             },
             child: Text('Send Message'),
           ),

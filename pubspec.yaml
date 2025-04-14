@@ -54,10 +54,12 @@ dependencies:
   timezone: ^0.10.0
   hive: ^2.0.5
   hive_flutter: ^1.1.0
-  another_telephony: ^0.3.0
+  # another_telephony: ^0.3.0
   permission_handler: ^12.0.0
   chapasdk: ^0.0.7+1
   flutter_dotenv: ^5.2.1
+  easy_localization: ^3.0.7+1
+  shared_preferences: ^2.5.3
 
 flutter_icons:
   android: true
@@ -97,6 +99,7 @@ flutter:
   assets:
     - assets/Images/VitaBoard.jpg
     - assets/Images/VitaImage1.png
+    - assets/Images/VitaNew.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -120,6 +123,18 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+  fonts:
+    - family: Outfit
+      fonts:
+        - asset: assets/Fonts/OutFit/Outfit-VariableFont_wght.ttf
+        - asset: assets/Fonts/OutFit/static/Outfit-Bold.ttf
+        - asset: assets/Fonts/OutFit/static/Outfit-Black.ttf
+        - asset: assets/Fonts/OutFit/static/Outfit-ExtraBold.ttf
+        - asset: assets/Fonts/OutFit/static/Outfit-ExtraLight.ttf
+        - asset: assets/Fonts/OutFit/static/Outfit-Light.ttf
+        - asset: assets/Fonts/OutFit/static/Outfit-Medium.ttf
+        - asset: assets/Fonts/OutFit/static/Outfit-Regular.ttf
+        - asset: assets/Fonts/OutFit/static/Outfit-SemiBold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

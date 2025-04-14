@@ -10,6 +10,9 @@ import 'package:flutter_application_1/pages/finance/income/income.view.dart';
 import 'package:flutter_application_1/pages/finance/loan/addloan.dart';
 import 'package:flutter_application_1/pages/finance/loan/loanpage.dart';
 
+import '../../drawer/Seeting Page/SeetingPage.dart';
+import '../../main.dart';
+
 class FinanceUi extends StatelessWidget {
   final Datamanager datamanager;
   const FinanceUi({super.key, required this.datamanager});
@@ -23,7 +26,7 @@ class FinanceUi extends StatelessWidget {
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).size.height * .0575,
           ),
-          color: Colors.black,
+          color: Theme.of(context).scaffoldBackgroundColor,
           child: ContainedTabBarView(
             tabs: [
               Tab(text: "Expense"),
@@ -41,24 +44,17 @@ class FinanceUi extends StatelessWidget {
               ),
               background: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.4),
-                      spreadRadius: 0.5,
-                      blurRadius: 2,
-                      offset: Offset(1, -1),
-                    ),
-                  ],
+
                 ),
               ),
               position: TabBarPosition.top,
               alignment: TabBarAlignment.start,
               indicatorColor: Colors.transparent,
-              labelColor: Colors.white,
+
               labelStyle: TextStyle(fontSize: 16),
-              unselectedLabelColor: Colors.grey[400],
+              unselectedLabelColor: Colors.grey,
               unselectedLabelStyle: TextStyle(fontSize: 13),
             ),
             views: [
