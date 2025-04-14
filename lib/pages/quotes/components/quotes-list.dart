@@ -8,9 +8,23 @@ class QuotesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      spacing: MediaQuery.of(context).size.width * 0.04,
-      children: quotes.map((quote) => QuoteItem(quote: quote)).toList(),
+    int i = 0;
+    final tiltAngle = 0.012;
+
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      child: Column(
+        spacing: MediaQuery.of(context).size.width * 0.07,
+        children:
+            quotes.map((quote) {
+              i++;
+              return Transform.rotate(
+                angle: i % 2 == 0 ? -tiltAngle : tiltAngle,
+                origin: Offset(50.0, 0.0),
+                child: QuoteItem(quote: quote),
+              );
+            }).toList(),
+      ),
     );
   }
 }

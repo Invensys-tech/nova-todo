@@ -8,14 +8,30 @@ class QuoteItem extends StatelessWidget {
   final Quote quote;
   QuoteItem({super.key, required this.quote});
 
-  final Random random = Random();
+  // final Random random = Random();
+  // final bgColors = [
+  //   Color(0xFF0B211C),
+  //   Color(0xFF371A12),
+  //   Color(0xFF39143B),
+  //   Color(0xFF0C2524),
+  //   Color(0xFF09090B),
+  // ];
 
-  final Color backgroundColor = Color.fromARGB(
-    255,
-    100 + Random().nextInt(100),
-    50 + Random().nextInt(100),
-    50 + Random().nextInt(100),
-  );
+  // final Color backgroundColor = Color.fromARGB(
+  //   255,
+  //   100 + Random().nextInt(100),
+  //   50 + Random().nextInt(100),
+  //   50 + Random().nextInt(100),
+  // );
+
+  final backgroundColor =
+      [
+        Color(0xFF0B211C),
+        Color(0xFF371A12),
+        Color(0xFF39143B),
+        Color(0xFF0C2524),
+        Color(0xFF09090B),
+      ][Random().nextInt(5)];
 
   Widget _buildSquare(double radius, Color color) {
     return Container(
@@ -27,85 +43,90 @@ class QuoteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        // color: Colors.grey.shade800,
-        color: backgroundColor,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(10.0),
-          topLeft: Radius.circular(10.0),
-          bottomLeft: Radius.circular(10.0),
-          bottomRight: Radius.circular(30.0),
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(10.0),
+        topLeft: Radius.circular(10.0),
+        bottomLeft: Radius.circular(10.0),
+        bottomRight: Radius.circular(30.0),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          // color: Colors.grey.shade800,
+          color: backgroundColor,
         ),
-      ),
-      padding: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.width * 0.03,
-        horizontal: MediaQuery.of(context).size.width * 0.04,
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            bottom: -60,
-            right: -60,
-            child: _buildSquare(75.0, const Color(0xFFECE8E8)),
-          ),
-          Column(
-            spacing: MediaQuery.of(context).size.width * 0.02,
-            children: [
-              Text(
-                '"${quote.text}"',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: -60,
+              right: -60,
+              child: _buildSquare(
+                90.0,
+                const Color(0xFFFAFAFA).withValues(alpha: 0.5),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+              child: Column(
+                spacing: MediaQuery.of(context).size.width * 0.06,
                 children: [
-                  Column(
+                  Text(
+                    '"${quote.text}"',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xFFD4D4D8),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        quote.author,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12.0,
+                          vertical: 4.0,
+                        ),
+                        margin: EdgeInsets.only(bottom: 10.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF27272A).withValues(alpha: .5),
+                          borderRadius: BorderRadius.circular(40.0),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          quote.category,
+                          style: TextStyle(color: Colors.white, fontSize: 12),
                         ),
                       ),
-                      Text(
-                        quote.source,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.grey.shade400,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        spacing: MediaQuery.of(context).size.width * 0.015,
+                        children: [
+                          Text(
+                            quote.author,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            quote.source,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.grey.shade400,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade900,
-                      borderRadius: BorderRadius.circular(40.0),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      quote.category,
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                  // Text(
-                  //   getDateOnly(DateTime.now()),
-                  //   style: TextStyle(color: Colors.grey.shade400),
-                  // ),
-                ],
-              ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
     // return Container(
