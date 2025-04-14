@@ -1,14 +1,22 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 // import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GoalRepository {
+  AuthService authService = AuthService();
+  dynamic session;
+
   Future<List<Goal>> fetchAll() async {
     try {
-      final data = await supabaseClient.from(Entities.GOAL.dbName).select();
+      final data = await supabaseClient
+          .from(Entities.GOAL.dbName)
+          .select()
+          .eq('userId', (await authService.findSession())['id']);
+
       return data.map((goal) => Goal.fromJson(goal)).toList();
     } catch (e) {
       throw Exception("Error getting goals!");
@@ -22,6 +30,7 @@ class GoalRepository {
               .from(Entities.GOAL.dbName)
               .select()
               .eq('id', id)
+              .eq('userId', (await authService.findSession())['id'])
               .maybeSingle();
 
       if (data == null) {
@@ -43,6 +52,7 @@ class GoalRepository {
                 '*, sub_goal(goal, id, goalId, sub_goal_task(*)), goal_journal(journal,created_at,id ,goalId)',
               )
               .eq('id', id)
+              .eq('userId', (await authService.findSession())['id'])
               .maybeSingle();
 
       // print("-------------------");
@@ -63,7 +73,10 @@ class GoalRepository {
     try {
       final response = await Supabase.instance.client
           .from(Entities.GOAL.dbName)
-          .insert(goal.toJson())
+          .insert({
+            ...goal.toJson(),
+            'userId': (await authService.findSession())['id'],
+          })
           .count(CountOption.exact);
 
       // Todo: check if there was an error while inserting
@@ -82,6 +95,7 @@ class GoalRepository {
           .from(Entities.GOAL.dbName)
           .delete()
           .eq('id', id)
+          .eq('userId', (await authService.findSession())['id'])
           .count(CountOption.exact);
 
       // Todo: check if there was an error while deleting

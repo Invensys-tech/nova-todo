@@ -16,9 +16,12 @@ class _MyTextInputState extends State<MyTextInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+        Padding(
+          padding: EdgeInsets.only(left: 8.0),
+          child: Text(
+            widget.label,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+          ),
         ),
         widget.textFields,
       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
+import 'package:flutter_application_1/pages/habit/components/habit-daily-list.dart';
 import 'package:flutter_application_1/pages/habit/components/habits-list.dart';
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
@@ -66,13 +67,14 @@ class _HabitsPageState extends State<HabitsPage> {
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
       ),
       body: Padding(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+
         child: DefaultTabController(
           length: 2,
           child: Scaffold(
             appBar: AppBar(
               bottom: TabBar(
-                tabs: [Tab(text: "All"), Tab(text: "Daily")],
+                tabs: [Tab(text: "Daily"), Tab(text: "General")],
                 labelColor: Colors.green,
                 unselectedLabelColor: Colors.white,
                 indicator: BoxDecoration(
@@ -87,8 +89,8 @@ class _HabitsPageState extends State<HabitsPage> {
             ),
             body: TabBarView(
               children: [
+                Container(child: HabitsDailyList()),
                 Container(child: HabitsList(date: null, habits: habits)),
-                Container(child: HabitsList(date: 'new date', habits: habits)),
               ],
             ),
           ),

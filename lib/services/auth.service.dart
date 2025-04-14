@@ -85,8 +85,10 @@ class AuthService {
         return false;
       }
 
-      UserEntity user = UserEntity.fromJson(userData);
-      storeSession(user);
+      if (userData['name'] != null) {
+        UserEntity user = UserEntity.fromJson(userData);
+        storeSession(user);
+      }
 
       return true;
     } catch (e) {
@@ -119,6 +121,7 @@ class AuthService {
         phoneNumber,
         name,
         gender,
+        DateTime.now().add(const Duration(minutes: 1)).toIso8601String(),
       );
 
       UserEntity user = UserEntity.fromJson(data);
@@ -159,7 +162,7 @@ class AuthService {
     }
   }
 
-  String generateOTP() => generateRandomString(5);
+  String generateOTP() => generateRandomString(4);
 
   Future<void> logout() async {
     await deleteSession();
@@ -168,8 +171,13 @@ class AuthService {
   Future<Map<String, dynamic>> findSession() async {
     HiveService hiveService = HiveService();
     await hiveService.initHive(boxName: 'session');
-    Map<String, dynamic> session = await hiveService.getData('user');
-    return session;
+
+    final session = await hiveService.getData('user');
+    if (session is Map) {
+      return Map<String, dynamic>.from(session);
+    } else {
+      throw Exception('Invalid session data format');
+    }
   }
 
   Future<void> storeSession(UserEntity user) async {
@@ -182,5 +190,37 @@ class AuthService {
     HiveService hiveService = HiveService();
     await hiveService.initHive(boxName: 'session');
     await hiveService.deleteData('user');
+  }
+
+  Future<bool?> isSubscriptionActive() async {
+    try {
+      dynamic session = await findSession();
+      InitPage initPage = InitPage.AUTH;
+      bool isSubscriptionActive = DateTime.now().isBefore(
+        (await UserRepository().getSubscriptionEndDate(session['phoneNumber'])),
+      );
+
+      if (isSubscriptionActive) {
+        initPage = InitPage.HOME;
+      } else {
+        initPage = InitPage.PAYMENT;
+      }
+
+      return isSubscriptionActive;
+
+      // print('----------------- Is After -----------------');
+      // print(
+      //   DateTime.now().isAfter(
+      //     (await UserRepository().getSubscriptionEndDate(data['phoneNumber'])),
+      //   ),
+      // );
+      // print('----------------- Now -----------------');
+      // print(DateTime.now().toIso8601String());
+      // print('----------------- Subscription End Date -----------------');
+      // print(await UserRepository().getSubscriptionEndDate(data['phoneNumber']));
+    } catch (e) {
+      print('Error getting sub end date initializing Supabase');
+      return null;
+    }
   }
 }

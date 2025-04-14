@@ -66,18 +66,52 @@ class _QuotesPageState extends State<QuotesPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-        child: FutureBuilder(
-          future: quotes,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return QuotesList(quotes: snapshot.data!);
-            } else {
-              if (snapshot.hasError) {
-                return Text('Error fetching quotes!');
-              }
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+        // child: FutureBuilder(
+        //   future: quotes,
+        //   builder: (context, snapshot) {
+        //     if (snapshot.hasData) {
+        //       return QuotesList(quotes: snapshot.data!);
+        //     } else {
+        //       if (snapshot.hasError) {
+        //         return Text('Error fetching quotes!');
+        //       }
+        //       return Center(child: CircularProgressIndicator());
+        //     }
+        //   },
+        // ),
+        child: QuotesList(
+          quotes: [
+            Quote(
+              author: 'Abebe Bikila',
+              text: 'The best way to predict the future is to create it.',
+              source: 'Abraham Lincoln',
+              category: 'Motivation',
+            ),
+            Quote(
+              author: 'Kenenisa Bekele',
+              text: 'The best way to predict the future is to create it.',
+              source: 'Abraham Lincoln',
+              category: 'Motivation',
+            ),
+            Quote(
+              author: 'Adane Girma',
+              text: 'The best way to predict the future is to create it.',
+              source: 'Abraham Lincoln',
+              category: 'Motivation',
+            ),
+            Quote(
+              author: 'Addis Hntsa',
+              text: 'The best way to predict the future is to create it.',
+              source: 'Abraham Lincoln',
+              category: 'Motivation',
+            ),
+            Quote(
+              author: 'Asrat Megersa',
+              text: 'The best way to predict the future is to create it.',
+              source: 'Abraham Lincoln',
+              category: 'Motivation',
+            ),
+          ],
         ),
       ),
     );

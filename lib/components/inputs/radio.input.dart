@@ -35,25 +35,84 @@ class MyRadioInputState extends State<MyRadioInput> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: MediaQuery.of(context).size.height * 0.008,
       children: [
         widget.label != null
-            ? Text(
-              widget.label!,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            ? Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Text(
+                widget.label!,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+              ),
             )
             : Container(),
         widget.orientation == 'horizontal'
             ? Row(
+              spacing: MediaQuery.of(context).size.width * 0.03,
               children:
                   widget.options
                       .map(
                         (option) => Expanded(
-                          child: ListTile(
-                            title: Text(option),
-                            leading: Radio(
-                              value: option,
-                              groupValue: _selectedValue,
-                              onChanged: selectValue,
+                          // child: ListTile(
+                          //   // color: ,
+                          //   leading: Radio(
+                          //     activeColor: Color(0xFF009966),
+                          //     overlayColor:
+                          //         option == _selectedValue
+                          //             ? MaterialStateProperty.all(
+                          //               Colors.transparent,
+                          //             )
+                          //             : MaterialStateProperty.all(
+                          //               Color(0xFF9F9FA9),
+                          //             ),
+                          //     value: option,
+                          //     groupValue: _selectedValue,
+                          //     onChanged: selectValue,
+                          //   ),
+                          //   title: Text(option, style: TextStyle(fontSize: 14)),
+                          // ),
+                          child: GestureDetector(
+                            onTap: () => selectValue(option),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color:
+                                      option == _selectedValue
+                                          ? Color(0xFF00D492)
+                                          : Color(0xFFE4E4E7),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                  vertical: 8.0,
+                                ),
+                                child: Row(
+                                  spacing:
+                                      MediaQuery.of(context).size.width * 0.02,
+                                  children: [
+                                    option == _selectedValue
+                                        ? Icon(
+                                          Icons.circle,
+                                          color: Color(0xFF00D492),
+                                          size: 18,
+                                        )
+                                        : Icon(
+                                          Icons.circle_outlined,
+                                          color: Color(0xFFE4E4E7),
+                                          size: 18,
+                                        ),
+                                    Text(
+                                      option,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -64,12 +123,43 @@ class MyRadioInputState extends State<MyRadioInput> {
               children:
                   widget.options
                       .map(
-                        (option) => ListTile(
-                          title: Text(option),
-                          leading: Radio(
-                            value: option,
-                            groupValue: _selectedValue,
-                            onChanged: selectValue,
+                        (option) =>
+                        // ListTile(
+                        //   leading: Radio(
+                        //     value: option,
+                        //     groupValue: _selectedValue,
+                        //     onChanged: selectValue,
+                        //   ),
+                        //   title: Text(option, style: TextStyle(fontSize: 12)),
+                        // ),
+                        GestureDetector(
+                          onTap: () => selectValue(option),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color:
+                                    option == _selectedValue
+                                        ? Color(0xFF00D492)
+                                        : Color(0xFFE4E4E7),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                option == _selectedValue
+                                    ? Icon(
+                                      Icons.circle,
+                                      color: Color(0xFF00D492),
+                                      size: 12,
+                                    )
+                                    : Icon(
+                                      Icons.circle_outlined,
+                                      color: Color(0xFF00D492),
+                                      size: 12,
+                                    ),
+                                Text(option),
+                              ],
+                            ),
                           ),
                         ),
                       )

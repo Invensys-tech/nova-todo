@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -7,6 +10,9 @@ class UserRepository {
     String otp,
   ) async {
     try {
+      String userId = generateUniqueId(null);
+      print(userId);
+
       final response = await supabaseClient
           .from(Entities.USER.dbName)
           .insert({'phoneNumber': phoneNumber, 'otp': otp})
@@ -35,11 +41,12 @@ class UserRepository {
     String phoneNumber,
     String name,
     String gender,
+    String endTime,
   ) async {
     try {
       final response = await supabaseClient
           .from(Entities.USER.dbName)
-          .update({'name': name, 'gender': gender})
+          .update({'name': name, 'gender': gender, 'sub_end_date': endTime})
           .eq('phoneNumber', phoneNumber)
           .count(CountOption.exact);
 
@@ -89,6 +96,68 @@ class UserRepository {
       return data;
     } catch (e) {
       // print('error fetching the users');
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<void> addSubscription(int? days, String phoneNumber) async {
+    try {
+      final userData =
+          await supabaseClient
+              .from(Entities.USER.dbName)
+              .select('created_at')
+              .eq('phoneNumber', phoneNumber)
+              .maybeSingle();
+
+      if (userData == null) {
+        throw Exception('User not found');
+      }
+
+      final createdAt = userData['created_at'];
+
+      final createdAtDateTime = DateTime.parse(createdAt);
+      final subscriptionEndDateTime = createdAtDateTime.add(
+        Duration(days: days ?? 90),
+      );
+
+      final response = await supabaseClient
+          .from(Entities.USER.dbName)
+          .update({'sub_end_date': subscriptionEndDateTime.toIso8601String()})
+          .eq('phoneNumber', phoneNumber)
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Error adding subscription');
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<DateTime> getSubscriptionEndDate(String phoneNumber) async {
+    try {
+      final userData =
+          await supabaseClient
+              .from(Entities.USER.dbName)
+              .select('sub_end_date')
+              .eq('phoneNumber', phoneNumber)
+              .maybeSingle();
+
+      print(jsonEncode(userData));
+
+      if (userData == null) {
+        throw Exception('User not found');
+      }
+
+      if (userData['sub_end_date'] == null) {
+        throw Exception('Subscription end date not found');
+      }
+
+      final subEndDate = userData['sub_end_date'];
+      return DateTime.parse(subEndDate);
+    } catch (e) {
       print(e);
       rethrow;
     }

@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'dart:math';
+import 'package:uuid/uuid.dart';
+
+enum InitPage { AUTH, PAYMENT, HOME }
 
 String generateRandomString(int length) {
-  const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#';
+  const characters = '0123456789';
   Random random = Random();
 
   return List.generate(
     length,
     (index) => characters[random.nextInt(characters.length)],
   ).join();
+}
+
+enum UuidVersion { V1, V4, V5 }
+
+String generateUniqueId(UuidVersion? uuidVersion) {
+  var uuid = Uuid();
+
+  switch (uuidVersion) {
+    case UuidVersion.V1:
+      return uuid.v1();
+    case UuidVersion.V4:
+      return uuid.v4();
+    case UuidVersion.V5:
+      return uuid.v1();
+    default:
+      return uuid.v1() + uuid.v4();
+  }
 }
 
 String formatDate(String date) {
@@ -54,8 +74,11 @@ String formatDoubleDigitTime(int hours, int minutes) {
 DateTime getStartOfDay(DateTime dateTime) =>
     DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
 
+DateTime getEndOfDay(DateTime dateTime) =>
+    DateTime(dateTime.year, dateTime.month, dateTime.day, 23, 59, 59, 999);
+
 String getDateOnly(DateTime dateTime) =>
-    '${dateTime.year}-${dateTime.month}-${dateTime.day}';
+    '${dateTime.year}-${dateTime.month < 10 ? "0${dateTime.month}" : "${dateTime.month}"}-${dateTime.day < 10 ? "0${dateTime.day}" : "${dateTime.day}"}';
 
 TimeOfDay timeOfDayFromString(String timeOfDayString) {
   List<String> units = timeOfDayString.split(':');
@@ -102,10 +125,16 @@ TimeOfDay getTimeMinus({required TimeOfDay time, int? hours, int? minutes}) {
 }
 
 String getTimeFromDateTime(DateTime dateTime) {
-  String hour = dateTime.hour < 10 ? "0${dateTime.hour}" : "${dateTime.hour}";
+  String hour =
+      dateTime.hour < 10
+          ? "0${dateTime.hour}"
+          : dateTime.hour > 12
+          ? "${dateTime.hour - 12}"
+          : "${dateTime.hour}";
   String minute =
       dateTime.minute < 10 ? "0${dateTime.minute}" : "${dateTime.minute}";
-  return "$hour:$minute";
+  String amPm = dateTime.hour > 12 ? "PM" : "AM";
+  return "$hour:$minute $amPm";
 }
 
 String getTimeFromDateTimeString(String dateTimeString) {
@@ -126,4 +155,20 @@ String getTimeDifferenceFromTimeString(
     return 'Before ${difference.inHours.abs()}h ${difference.inMinutes.remainder(60).abs()}m';
   }
   return '${difference.inHours}h ${difference.inMinutes.remainder(60)}m';
+}
+
+String getDayFromDateTime(DateTime dateTime) =>
+    DateFormat('EEEE').format(dateTime);
+
+String getMonthFromDateTime(DateTime dateTime) =>
+    DateFormat('MMM').format(dateTime);
+
+List<DateTime> getDatesBetween(DateTime start, DateTime end) {
+  List<DateTime> dates = [];
+
+  for (int i = 0; i <= end.difference(start).inDays; i++) {
+    dates.add(start.add(Duration(days: i)));
+  }
+
+  return dates;
 }
