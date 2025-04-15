@@ -46,207 +46,101 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-      drawer: Drawer(child: Drawerpage()),
+      drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
       body: StepperForm(),
-      // body: TodoViewPage(
-      //   dailyTask: DailyTask(
-      //     name: 'Hit The Gym',
-      //     type: 'Must',
-      //     date: '2024-04-03',
-      //     taskTime: '2024-04-03T08:00:00',
-      //     endTime: '2024-04-03T09:00:00',
-      //     reminderTime: '2024-04-03T07:00:00',
-      //     subTasks: [
-      //       {
-      //         'text':
-      //             '''Daily Journal is the first task that has been in this era for a very long period of time''',
-      //         'is_done': true,
-      //       },
-      //       {
-      //         'text':
-      //             '''Daily Journal is the first task that has been in this era for a very long period of time''',
-      //         'is_done': true,
-      //       },
-      //       {
-      //         'text':
-      //             '''Daily Journal is the first task that has been in this era for a very long period of time''',
-      //         'is_done': false,
-      //       },
+      //   body: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.start,
+      //     spacing: MediaQuery.of(context).size.height * 0.02,
+      //     children: [
+      //       // FutureBuilder(future: future, builder: builder),
+      //       ElevatedButton(
+      //         onPressed: () {
+      //           // print("Sending notification...");
+      //           NotificationService().showNotification(
+      //             1,
+      //             'Reminder',
+      //             'Time for you task',
+      //           );
+      //         },
+      //         child: Icon(Icons.notification_add),
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () {
+      //           // print("Sending timed notification...");
+      //           NotificationService().scheduleNotification(
+      //             id: 1,
+      //             title: 'Todo Reminder',
+      //             body: 'Time for you task in 5',
+      //             time: DateTime.now().add(Duration(seconds: 5)),
+      //           );
+      //         },
+      //         child: Icon(Icons.notification_important),
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () {
+      //           AuthService().logout();
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(builder: (context) => LogInPage()),
+      //           );
+      //         },
+      //         child: Text('Logout'),
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () {
+      //           UserRepository().fetchUsers();
+      //         },
+      //         child: Text('Log Users'),
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () async {
+      //           HiveService hiveService = HiveService();
+      //           await hiveService.initHive(boxName: 'session');
+      //           dynamic data = await hiveService.getData('user');
+      //           print('----------------- user store in hive -----------------');
+      //           print(jsonEncode(data));
+      //         },
+      //         child: Text('Print Session'),
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () async {
+      //           print("Sending expense notification...");
+      //           NotificationService().showNotification(
+      //             -2,
+      //             'Income',
+      //             'Tap to add expense from CBE',
+      //             payload: 'add-expense||200.00',
+      //           );
+      //         },
+      //         child: Text('Expense Notification'),
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () async {
+      //           print("Sending income notification...");
+      //           NotificationService().showNotification(
+      //             -2,
+      //             'Income',
+      //             'Tap to add income from CBE',
+      //             payload: 'add-income||300.00',
+      //           );
+      //         },
+      //         child: Text('Income Notification'),
+      //       ),
+      //       ElevatedButton(
+      //         onPressed: () async {
+      //           print("Sending message...");
+      //           // NotificationService().showNotification(
+      //           //   2,
+      //           //   'Income',
+      //           //   'Tap to add income',
+      //           //   payload: 'add-income',
+      //           // );
+      //           // SmsService().sendSms('0943656931', 'good morning');
+      //         },
+      //         child: Text('Send Message'),
+      //       ),
       //     ],
-      //     description: 'helluuuu helllooo hallowww',
       //   ),
-      // ),
-      // body: QuotesList(
-      //   quotes: [
-      //     Quote(
-      //       author: 'Abebe Bikila',
-      //       text: 'The best way to predict the future is to create it.',
-      //       source: 'Abraham Lincoln',
-      //       category: 'Motivation',
-      //     ),
-      //     Quote(
-      //       author: 'Kenenisa Bekele',
-      //       text: 'The best way to predict the future is to create it.',
-      //       source: 'Abraham Lincoln',
-      //       category: 'Motivation',
-      //     ),
-      //     Quote(
-      //       author: 'Haile Gebresilassie',
-      //       text: 'The best way to predict the future is to create it.',
-      //       source: 'Abraham Lincoln',
-      //       category: 'Motivation',
-      //     ),
-      //     Quote(
-      //       author: 'Trunesh Dibaba',
-      //       text: 'The best way to predict the future is to create it.',
-      //       source: 'Abraham Lincoln',
-      //       category: 'Motivation',
-      //     ),
-      //     Quote(
-      //       author: 'Gete Wame',
-      //       text: 'The best way to predict the future is to create it.',
-      //       source: 'Abraham Lincoln',
-      //       category: 'Motivation',
-      //     ),
-      //   ],
-      // ),
-      // body: Column(
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   spacing: MediaQuery.of(context).size.height * 0.02,
-      //   children: [
-      //     // FutureBuilder(future: future, builder: builder),
-      //     ElevatedButton(
-      //       onPressed: () {
-      //         // print("Sending notification...");
-      //         NotificationService().showNotification(
-      //           1,
-      //           'Reminder',
-      //           'Time for you task',
-      //         );
-      //       },
-      //       child: Icon(Icons.notification_add),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () {
-      //         // print("Sending timed notification...");
-      //         NotificationService().scheduleNotification(
-      //           id: 1,
-      //           title: 'Todo Reminder',
-      //           body: 'Time for you task in 5',
-      //           time: DateTime.now().add(Duration(seconds: 5)),
-      //         );
-      //       },
-      //       child: Icon(Icons.notification_important),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () {
-      //         AuthService().logout();
-      //         Navigator.push(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => LogInPage()),
-      //         );
-      //       },
-      //       child: Text('Logout'),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () {
-      //         UserRepository().fetchUsers();
-      //       },
-      //       child: Text('Log Users'),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () async {
-      //         HiveService hiveService = HiveService();
-      //         await hiveService.initHive(boxName: 'session');
-      //         dynamic data = await hiveService.getData('user');
-      //         print('----------------- user store in hive -----------------');
-      //         print(jsonEncode(data));
-      //       },
-      //       child: Text('Print Session'),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () async {
-      //         print("Sending expense notification...");
-      //         NotificationService().showNotification(
-      //           -2,
-      //           'Income',
-      //           'Tap to add expense from CBE',
-      //           payload: 'add-expense||200.00',
-      //         );
-      //       },
-      //       child: Text('Expense Notification'),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () async {
-      //         print("Sending income notification...");
-      //         NotificationService().showNotification(
-      //           -2,
-      //           'Income',
-      //           'Tap to add income from CBE',
-      //           payload: 'add-income||300.00',
-      //         );
-      //       },
-      //       child: Text('Income Notification'),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () async {
-      //         print("Sending message...");
-      //         // NotificationService().showNotification(
-      //         //   2,
-      //         //   'Income',
-      //         //   'Tap to add income',
-      //         //   payload: 'add-income',
-      //         // );
-      //         SmsService().sendSms('0943656931', 'good morning');
-      //       },
-      //       child: Text('Send Message'),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () async {
-      //         print("Make payment...");
-      //         // NotificationService().showNotification(
-      //         //   2,
-      //         //   'Income',
-      //         //   'Tap to add income',
-      //         //   payload: 'add-income',
-      //         // );
-      //         ChapaService().makePayment(context);
-      //       },
-      //       child: Text('Make Payment'),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () async {
-      //         print("Verify payment...");
-      //         // NotificationService().showNotification(
-      //         //   2,
-      //         //   'Income',
-      //         //   'Tap to add income',
-      //         //   payload: 'add-income',
-      //         // );
-      //         ChapaService().verifyPayment();
-      //       },
-      //       child: Text('Verify Payment'),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () async {
-      //         print("Getting Quotes...");
-      //         QuoteRepository().fetchAll().then((value) {
-      //           for (var habit in value) {
-      //             print(habit.toJson());
-      //           }
-      //         });
-      //         // NotificationService().showNotification(
-      //         //   2,
-      //         //   'Income',
-      //         //   'Tap to add income',
-      //         //   payload: 'add-income',
-      //         // );
-      //         // ChapaService().verifyPayment();
-      //       },
-      //       child: Text('Get Quotes'),
-      //     ),
-      //   ],
-      // ),
     );
   }
 }
