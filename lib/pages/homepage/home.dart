@@ -3,13 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/drawer/drawerpage.dart';
 import 'package:flutter_application_1/datamanager.dart';
+import 'package:flutter_application_1/entities/daily-task.entity.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/entities/quote.entity.dart';
 import 'package:flutter_application_1/pages/auth/login.dart';
 import 'package:flutter_application_1/pages/habit/components/habit.view.dart';
+import 'package:flutter_application_1/pages/goal/form.goal.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity.dart';
 import 'package:flutter_application_1/pages/quotes/components/quotes-list.dart';
+import 'package:flutter_application_1/pages/todopage/todo-view.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
 import 'package:flutter_application_1/repositories/quote.repository.dart';
@@ -44,52 +47,68 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       drawer: Drawer(child: Drawerpage()),
-      body: QuotesList(
-        quotes: [
-          Quote(
-            author: 'Abebe Bikila',
-            text: 'The best way to predict the future is to create it.',
-            source: 'Abraham Lincoln',
-            category: 'Motivation',
-          ),
-          Quote(
-            author: 'Kenenisa Bekele',
-            text: 'The best way to predict the future is to create it.',
-            source: 'Abraham Lincoln',
-            category: 'Motivation',
-          ),
-          Quote(
-            author: 'Adane Girma',
-            text: 'The best way to predict the future is to create it.',
-            source: 'Abraham Lincoln',
-            category: 'Motivation',
-          ),
-          Quote(
-            author: 'Addis Hntsa',
-            text: 'The best way to predict the future is to create it.',
-            source: 'Abraham Lincoln',
-            category: 'Motivation',
-          ),
-          Quote(
-            author: 'Asrat Megersa',
-            text: 'The best way to predict the future is to create it.',
-            source: 'Abraham Lincoln',
-            category: 'Motivation',
-          ),
-        ],
-      ),
-      // body: HabitView(
-      //   habit: Habit(
-      //     name: 'Books and Music',
-      //     type: 'Everyday',
-      //     repetitions: ['MON', 'FRI', 'SUN'],
-      //     repetitionType: 'Daily',
-      //     date: getDateOnly(DateTime.now()),
-      //     isDone: false,
-      //     streak: 0,
-      //     maxStreak: 0,
-      //     streakDates: [],
+      body: StepperForm(),
+      // body: TodoViewPage(
+      //   dailyTask: DailyTask(
+      //     name: 'Hit The Gym',
+      //     type: 'Must',
+      //     date: '2024-04-03',
+      //     taskTime: '2024-04-03T08:00:00',
+      //     endTime: '2024-04-03T09:00:00',
+      //     reminderTime: '2024-04-03T07:00:00',
+      //     subTasks: [
+      //       {
+      //         'text':
+      //             '''Daily Journal is the first task that has been in this era for a very long period of time''',
+      //         'is_done': true,
+      //       },
+      //       {
+      //         'text':
+      //             '''Daily Journal is the first task that has been in this era for a very long period of time''',
+      //         'is_done': true,
+      //       },
+      //       {
+      //         'text':
+      //             '''Daily Journal is the first task that has been in this era for a very long period of time''',
+      //         'is_done': false,
+      //       },
+      //     ],
+      //     description: 'helluuuu helllooo hallowww',
       //   ),
+      // ),
+      // body: QuotesList(
+      //   quotes: [
+      //     Quote(
+      //       author: 'Abebe Bikila',
+      //       text: 'The best way to predict the future is to create it.',
+      //       source: 'Abraham Lincoln',
+      //       category: 'Motivation',
+      //     ),
+      //     Quote(
+      //       author: 'Kenenisa Bekele',
+      //       text: 'The best way to predict the future is to create it.',
+      //       source: 'Abraham Lincoln',
+      //       category: 'Motivation',
+      //     ),
+      //     Quote(
+      //       author: 'Haile Gebresilassie',
+      //       text: 'The best way to predict the future is to create it.',
+      //       source: 'Abraham Lincoln',
+      //       category: 'Motivation',
+      //     ),
+      //     Quote(
+      //       author: 'Trunesh Dibaba',
+      //       text: 'The best way to predict the future is to create it.',
+      //       source: 'Abraham Lincoln',
+      //       category: 'Motivation',
+      //     ),
+      //     Quote(
+      //       author: 'Gete Wame',
+      //       text: 'The best way to predict the future is to create it.',
+      //       source: 'Abraham Lincoln',
+      //       category: 'Motivation',
+      //     ),
+      //   ],
       // ),
       // body: Column(
       //   crossAxisAlignment: CrossAxisAlignment.start,
