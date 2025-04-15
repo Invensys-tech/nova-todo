@@ -23,6 +23,7 @@ import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_application_1/pages/homepage/dashboard.dart';
 
 class HomePage extends StatefulWidget {
   final Datamanager datamanager;
@@ -47,6 +48,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
+      // body: Dashboard(),
       body: StepperForm(),
       //   body: Column(
       //     crossAxisAlignment: CrossAxisAlignment.start,

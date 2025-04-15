@@ -183,88 +183,88 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   ],
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * .025),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text('Progress', style: TextStyle(fontSize: 12)),
-                      Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        spacing: 8,
-                        children: [
-                          Icon(
-                            Icons.circle,
-                            size: 15,
-                            color:
-                                widget.dailyTask?.completionPercentage == 0
-                                    ? Colors.red
-                                    : widget.dailyTask?.completionPercentage ==
-                                        100
-                                    ? Colors.green
-                                    : Color(0xFFF54900),
-                          ),
-                          Text(
-                            '${widget.dailyTask?.completionPercentage.toString() ?? ''}%',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: addSubTask,
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Color(0xFF27272A), width: 2),
-                      ),
-                      backgroundColor: Color(0xFF09090B).withAlpha(30),
-                    ),
-                    child: Text(
-                      'Done',
-                      style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 14),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: addSubTask,
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Color(0xFF27272A), width: 2),
-                      ),
-                      backgroundColor: Color(0xFF09090B).withAlpha(30),
-                    ),
-                    child: Row(
-                      spacing: 8,
-                      children: [
-                        Stack(
-                          children: [
-                            Icon(
-                              Icons.percent,
-                              color: Color(0xFFD4D4D8),
-                              size: 18,
-                            ),
-                            // Icon(
-                            //   Icons.circle_outlined,
-                            //   color: Color(0xFFD4D4D8),
-                            //   size: 18,
-                            // ),
-                          ],
-                        ),
-                        Text(
-                          'Pick a Percentage',
-                          style: TextStyle(
-                            color: Color(0xFFD4D4D8),
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              // SizedBox(height: MediaQuery.of(context).size.height * .025),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Column(
+              //       children: [
+              //         Text('Progress', style: TextStyle(fontSize: 12)),
+              //         Row(
+              //           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           spacing: 8,
+              //           children: [
+              //             Icon(
+              //               Icons.circle,
+              //               size: 15,
+              //               color:
+              //                   widget.dailyTask?.completionPercentage == 0
+              //                       ? Colors.red
+              //                       : widget.dailyTask?.completionPercentage ==
+              //                           100
+              //                       ? Colors.green
+              //                       : Color(0xFFF54900),
+              //             ),
+              //             Text(
+              //               '${widget.dailyTask?.completionPercentage.toString() ?? ''}%',
+              //               style: TextStyle(fontSize: 16),
+              //             ),
+              //           ],
+              //         ),
+              //       ],
+              //     ),
+              //     ElevatedButton(
+              //       onPressed: addSubTask,
+              //       style: ElevatedButton.styleFrom(
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(10),
+              //           side: BorderSide(color: Color(0xFF27272A), width: 2),
+              //         ),
+              //         backgroundColor: Color(0xFF09090B).withAlpha(30),
+              //       ),
+              //       child: Text(
+              //         'Done',
+              //         style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 14),
+              //       ),
+              //     ),
+              //     ElevatedButton(
+              //       onPressed: addSubTask,
+              //       style: ElevatedButton.styleFrom(
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(10),
+              //           side: BorderSide(color: Color(0xFF27272A), width: 2),
+              //         ),
+              //         backgroundColor: Color(0xFF09090B).withAlpha(30),
+              //       ),
+              //       child: Row(
+              //         spacing: 8,
+              //         children: [
+              //           Stack(
+              //             children: [
+              //               Icon(
+              //                 Icons.percent,
+              //                 color: Color(0xFFD4D4D8),
+              //                 size: 18,
+              //               ),
+              //               // Icon(
+              //               //   Icons.circle_outlined,
+              //               //   color: Color(0xFFD4D4D8),
+              //               //   size: 18,
+              //               // ),
+              //             ],
+              //           ),
+              //           Text(
+              //             'Pick a Percentage',
+              //             style: TextStyle(
+              //               color: Color(0xFFD4D4D8),
+              //               fontSize: 14,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(height: MediaQuery.of(context).size.height * .025),
               SizedBox(
                 width: MediaQuery.of(context).size.width * .95,

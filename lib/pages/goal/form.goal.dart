@@ -92,13 +92,13 @@ class _StepperFormState extends State<StepperForm> {
     },
     "financeImpact": {
       "totalMoney": FormInput(
-        label: "How much will this project",
+        label: "How much do you think this Goal will cost?",
         controller: TextEditingController(),
         type: "0",
         hint: "Enter how much you think this Goal Will Cost",
       ),
       "amountSaved": FormInput(
-        label: "Amount Saved",
+        label: "How much do you think you are going to save?",
         controller: TextEditingController(),
         type: "0",
         hint: "Amount Of Money",
@@ -111,22 +111,29 @@ class _StepperFormState extends State<StepperForm> {
         hint: "Enter Time Saved",
         span: 1.5,
       ),
-      "incomeSource": [
-        FormInputPair(
-          key: FormInput(
-            label: "Source",
-            controller: TextEditingController(),
-            type: "1",
-            hint: "Enter Source",
-          ),
-          value: FormInput(
-            label: "Amount",
-            controller: TextEditingController(),
-            type: "0",
-            hint: "Enter Amount",
-          ),
-        ),
-      ],
+      "incomeSource": FormInput(
+        label: "Time Saved",
+        controller: TextEditingController(),
+        type: "0",
+        hint: "Enter Time Saved",
+        span: 1.5,
+      ),
+      // "incomeSource": [
+      //   FormInputPair(
+      //     key: FormInput(
+      //       label: "Source",
+      //       controller: TextEditingController(),
+      //       type: "1",
+      //       hint: "Enter Source",
+      //     ),
+      //     value: FormInput(
+      //       label: "Amount",
+      //       controller: TextEditingController(),
+      //       type: "0",
+      //       hint: "Enter Amount",
+      //     ),
+      //   ),
+      // ],
     },
   };
 
@@ -189,9 +196,12 @@ class _StepperFormState extends State<StepperForm> {
 
   List<Step> steps() => [
     Step(
-      title: Text('Goal'),
+      title: Text(''),
       content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: MediaQuery.of(context).size.height * 0.02,
         children: [
+          Text('Goal Info', style: TextStyle(fontSize: 16)),
           GoalForm(
             goalName: _controllers["goals"]["name"] as FormInput,
             goalTerms: _controllers["goals"]["term"] as FormInput,
@@ -199,47 +209,69 @@ class _StepperFormState extends State<StepperForm> {
             goalStatus: _controllers["goals"]["status"] as FormInput,
             goalDescription: _controllers["goals"]["description"] as FormInput,
           ),
-          SubGoalsForm(
-            deadline:
-                _controllers["subGoalsWithDeadline"]["deadline"] as FormInput,
-            subGoals:
-                _controllers["subGoalsWithDeadline"]["subGoals"]
-                    as List<FormInputPair>,
-            addSubGoal: addSubGoals,
-          ),
         ],
       ),
       isActive: _currentStep >= 0,
       state: _currentStep <= 0 ? StepState.editing : StepState.complete,
     ),
     Step(
-      title: Text('Motivation'),
-      content: MotivationForm(
-        motivations: _controllers["motivations"] as List<FormInput>,
-        addMotivations: addMotivation,
+      title: Text(''),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: MediaQuery.of(context).size.height * 0.02,
+        children: [
+          Text('Motivation and Purpose', style: TextStyle(fontSize: 16)),
+          MotivationForm(
+            motivations: _controllers["motivations"] as List<FormInput>,
+            addMotivations: addMotivation,
+          ),
+        ],
       ),
       isActive: _currentStep >= 1,
       state: _currentStep <= 1 ? StepState.editing : StepState.complete,
     ),
     Step(
-      title: Text('Finance'),
-      content: FinanceImpactForm(
-        totalMoney: _controllers["financeImpact"]["totalMoney"] as FormInput,
-        amountSaved: _controllers["financeImpact"]["amountSaved"] as FormInput,
-        timeSaved: _controllers["financeImpact"]["timeSaved"] as FormInput,
-        incomeSources:
-            _controllers["financeImpact"]["incomeSource"]
-                as List<FormInputPair>,
-        addIncomeSource: addIncomeSource,
+      title: Text(''),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: MediaQuery.of(context).size.height * 0.02,
+        children: [
+          Text('Finance and Impact', style: TextStyle(fontSize: 16)),
+          FinanceImpactForm(
+            totalMoney:
+                _controllers["financeImpact"]["totalMoney"] as FormInput,
+            amountSaved:
+                _controllers["financeImpact"]["amountSaved"] as FormInput,
+            timeSaved: _controllers["financeImpact"]["timeSaved"] as FormInput,
+            incomeSource:
+                _controllers["financeImpact"]["incomeSource"] as FormInput,
+            // incomeSources:
+            //     _controllers["financeImpact"]["incomeSource"]
+            //         as List<FormInputPair>,
+            addIncomeSource: addIncomeSource,
+          ),
+        ],
       ),
       isActive: _currentStep >= 2,
       state: _currentStep <= 2 ? StepState.editing : StepState.complete,
+    ),
+    Step(
+      title: Text(''),
+      content: SubGoalsForm(
+        deadline: _controllers["subGoalsWithDeadline"]["deadline"] as FormInput,
+        subGoals:
+            _controllers["subGoalsWithDeadline"]["subGoals"]
+                as List<FormInputPair>,
+        addSubGoal: addSubGoals,
+      ),
+      isActive: _currentStep >= 3,
+      state: _currentStep <= 3 ? StepState.editing : StepState.complete,
     ),
   ];
 
   continueStep() {
     setState(() {
-      if (_currentStep < 2) {
+      if (_currentStep < 3) {
         _currentStep += 1;
       }
     });
@@ -263,46 +295,49 @@ class _StepperFormState extends State<StepperForm> {
         onStepContinue: continueStep,
         onStepCancel: cancelStep,
         controlsBuilder: (context, details) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            spacing: MediaQuery.of(context).size.height * 0.02,
-            children: [
-              Expanded(
-                flex: 2,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF27272A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: Color(0xFF27272A), width: 2),
+          return Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              spacing: MediaQuery.of(context).size.height * 0.02,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF27272A),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: Color(0xFF27272A), width: 2),
+                      ),
+                    ),
+                    onPressed: details.onStepCancel,
+                    child: Text(
+                      _currentStep == 0 ? "Cancel" : "Previous",
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  onPressed: details.onStepCancel,
-                  child: const Text(
-                    "Cancel",
-                    style: TextStyle(color: Colors.white),
-                  ),
                 ),
-              ),
-              Expanded(flex: 1, child: SizedBox()),
-              Expanded(
-                flex: 2,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF27272A),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: Color(0xFF009966), width: 2),
+                Expanded(flex: 1, child: SizedBox()),
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF27272A),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: Color(0xFF009966), width: 2),
+                      ),
+                    ),
+                    onPressed: details.onStepContinue,
+                    child: Text(
+                      _currentStep == 2 ? "Save" : "Next",
+                      style: TextStyle(color: Color(0xFF009966)),
                     ),
                   ),
-                  onPressed: details.onStepContinue,
-                  child: Text(
-                    _currentStep == 3 ? "Save" : "Next",
-                    style: TextStyle(color: Color(0xFF009966)),
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),

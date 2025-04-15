@@ -7,6 +7,9 @@ class MyRadioInput extends StatefulWidget {
   final String groupKey;
   final List<String> options;
   final void Function(dynamic value) onChanged;
+  final Color? color;
+  final Color? borderColor;
+
   const MyRadioInput({
     super.key,
     this.label,
@@ -14,6 +17,8 @@ class MyRadioInput extends StatefulWidget {
     required this.groupKey,
     required this.options,
     required this.onChanged,
+    this.color,
+    this.borderColor,
   });
 
   @override
@@ -75,17 +80,19 @@ class MyRadioInputState extends State<MyRadioInput> {
                             onTap: () => selectValue(option),
                             child: Container(
                               decoration: BoxDecoration(
+                                color: widget.color,
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
                                   color:
                                       option == _selectedValue
                                           ? Color(0xFF00D492)
-                                          : Color(0xFFE4E4E7),
+                                          : widget.borderColor ??
+                                              Color(0xFFE4E4E7),
                                 ),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12.0,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 24 / widget.options.length,
                                   vertical: 8.0,
                                 ),
                                 child: Row(
@@ -106,7 +113,7 @@ class MyRadioInputState extends State<MyRadioInput> {
                                     Text(
                                       option,
                                       style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 32 / widget.options.length,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),

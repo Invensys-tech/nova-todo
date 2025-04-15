@@ -157,7 +157,9 @@ class _TodoPageState extends State<TodoPage> {
                                 vertical: 5.0,
                                 horizontal: 15,
                               ),
-                              child: CustomProgressBar(progress: 90 / 100),
+                              child: CustomProgressBar(
+                                progress: snapshot.data! / 100,
+                              ),
                               // new LinearPercentIndicator(
                               //   width: MediaQuery.of(context).size.width * .9,
                               //   animation: true,

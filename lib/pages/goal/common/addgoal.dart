@@ -514,18 +514,19 @@ class _AccordionAxampleState extends State<AddGoal> {
                 },
                 backgroundColor: const Color(0xff2F2F2F),
                 canTapOnHeader: true,
-                body: FinanceImpactForm(
-                  totalMoney:
-                      _controllers["financeImpact"]["totalMoney"] as FormInput,
-                  amountSaved:
-                      _controllers["financeImpact"]["amountSaved"] as FormInput,
-                  timeSaved:
-                      _controllers["financeImpact"]["timeSaved"] as FormInput,
-                  incomeSources:
-                      _controllers["financeImpact"]["incomeSource"]
-                          as List<FormInputPair>,
-                  addIncomeSource: addIncomeSource,
-                ),
+                body: Text('Finance Impact Form'),
+                // body: FinanceImpactForm(
+                //   totalMoney:
+                //       _controllers["financeImpact"]["totalMoney"] as FormInput,
+                //   amountSaved:
+                //       _controllers["financeImpact"]["amountSaved"] as FormInput,
+                //   timeSaved:
+                //       _controllers["financeImpact"]["timeSaved"] as FormInput,
+                //   incomeSources:
+                //       _controllers["financeImpact"]["incomeSource"]
+                //           as List<FormInputPair>,
+                //   addIncomeSource: addIncomeSource,
+                // ),
                 isExpanded: _expandedIndex == 3,
               ),
             ],
