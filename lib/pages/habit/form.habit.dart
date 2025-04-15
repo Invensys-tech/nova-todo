@@ -136,7 +136,7 @@ class _HabitFormState extends State<HabitForm> {
             MyTextInput(
               label: name.label,
               textFields: TextFields(
-                icon: Icons.fingerprint,
+                // icon: Icons.fingerprint,
                 hinttext: name.hint,
                 whatIsInput: name.type,
                 controller: name.controller,

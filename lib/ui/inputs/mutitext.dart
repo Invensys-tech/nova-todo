@@ -94,17 +94,17 @@ class MultiLineTextField extends StatelessWidget {
       style: const TextStyle(color: Colors.white),
       controller: controller,
       keyboardType: TextInputType.multiline,
-      maxLines: 5, // Allows multiple lines
+      maxLines: 3, // Allows multiple lines
       decoration: InputDecoration(
-        prefixIcon: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: const BoxDecoration(
-            border: Border(
-              right: BorderSide(color: Colors.white54, width: 1.0),
-            ),
-          ),
-          child: Icon(icon, color: Colors.white70),
-        ),
+        // prefixIcon: Container(
+        //   padding: const EdgeInsets.symmetric(horizontal: 10),
+        //   decoration: const BoxDecoration(
+        //     border: Border(
+        //       right: BorderSide(color: Colors.white54, width: 1.0),
+        //     ),
+        //   ),
+        //   child: Icon(icon, color: Colors.white70),
+        // ),
         prefixIconConstraints: const BoxConstraints(minWidth: 50),
         hintText: hintText,
         filled: true,

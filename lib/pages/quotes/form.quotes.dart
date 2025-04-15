@@ -101,7 +101,7 @@ class _QuoteFormState extends State<QuoteForm> {
                   hinttext: authorInput.hint,
                   whatIsInput: authorInput.type,
                   controller: authorInput.controller,
-                  icon: Icons.fingerprint,
+                  // icon: Icons.fingerprint,
                 ),
               ),
               MyTextInput(
@@ -110,7 +110,7 @@ class _QuoteFormState extends State<QuoteForm> {
                   hinttext: sourceInput.hint,
                   whatIsInput: sourceInput.type,
                   controller: sourceInput.controller,
-                  icon: Icons.fingerprint,
+                  // icon: Icons.fingerprint,
                 ),
               ),
               Padding(

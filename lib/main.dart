@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:another_telephony/telephony.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -67,16 +68,17 @@ class _MyAppState extends State<MyApp> {
     _checkAndListenSms(); // Call the function here!
   }
 
-  final Telephony telephony = Telephony.instance;
+  // final Telephony telephony = Telephony.instance;
   StreamSubscription<SmsMessage>? _onSmsReceived;
   String _permission = 'Not Requested';
 
   Future<void> _checkAndListenSms() async {
+    if (kIsWeb) return;
     if (Platform.isAndroid) {
       final permissions = await Permission.sms.request();
       if (permissions.isGranted) {
         setState(() => _permission = 'Granted');
-        _startListener();
+        // _startListener();
         print(_permission);
       } else {
         setState(() => _permission = 'Denied');
@@ -87,16 +89,16 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void _startListener() {
-    print('in start listener');
-    telephony.listenIncomingSms(
-      onNewMessage: (SmsMessage msg) {
-        print('New SMS: ${msg.address} - ${msg.body}');
-        SmsService().parseSms(msg);
-      },
-      listenInBackground: false,
-    );
-  }
+  // void _startListener() {
+  //   print('in start listener');
+  //   telephony.listenIncomingSms(
+  //     onNewMessage: (SmsMessage msg) {
+  //       print('New SMS: ${msg.address} - ${msg.body}');
+  //       SmsService().parseSms(msg);
+  //     },
+  //     listenInBackground: false,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -108,13 +110,8 @@ class _MyAppState extends State<MyApp> {
           navigatorKey: navigatorKey,
           title: 'Vita Board',
           theme: theme,
-<<<<<<< HEAD
           // home: const MainScreenPage(),
-          home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
-=======
-          // home: const AuthGate(),
           // home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
->>>>>>> 8a9c9a605a969a47ec80e4141047e9e1be265b93
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
@@ -123,11 +120,11 @@ class _MyAppState extends State<MyApp> {
             FlutterQuillLocalizations.delegate,
           ],
           routes: {
-            '/':
-                (context) =>
-                    widget.isLoggedIn
-                        ? const MainScreenPage()
-                        : const AuthGate(),
+            '/': (context) => const MainScreenPage(),
+            // (context) =>
+            //     widget.isLoggedIn
+            //         ? const MainScreenPage()
+            //         : const AuthGate(),
             '/login': (context) => const AuthGate(),
             '/expense-form':
                 (context) => AddExpense(datamanager: Datamanager()),

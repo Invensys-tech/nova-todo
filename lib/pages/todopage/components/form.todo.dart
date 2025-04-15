@@ -240,7 +240,7 @@ class _TodoFormState extends State<TodoForm> {
               hinttext: widget.name.hint,
               whatIsInput: widget.name.type,
               controller: widget.name.controller,
-              icon: Icons.fingerprint,
+              // icon: Icons.fingerprint,
             ),
           ),
           MySelector(
