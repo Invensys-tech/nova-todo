@@ -5,6 +5,7 @@ import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
+import 'package:flutter_application_1/services/streak.service.dart';
 
 class ProductivityHome extends StatefulWidget {
   const ProductivityHome({super.key});
@@ -14,7 +15,11 @@ class ProductivityHome extends StatefulWidget {
 }
 
 class _HomePageState extends State<ProductivityHome> {
+  // List<Productivity> productivityList = [];
+
   List<Productivity> productivityList = [];
+  final StreakService _streakService = StreakService(); // Add this line
+  Map<int, int> productivityStreaks = {};
 
   @override
   void initState() {
@@ -22,15 +27,100 @@ class _HomePageState extends State<ProductivityHome> {
     fetchProductivity();
   }
 
-  void fetchProductivity() async {
+  // void fetchProductivity() async {
+  //   List<Productivity> productivity =
+  //       await ProductivityRepository().getProductivity();
+  //   setState(() {
+  //     productivityList = productivity;
+  //   });
+  // }
+
+  Future<void> fetchProductivity() async {
     List<Productivity> productivity =
         await ProductivityRepository().getProductivity();
     setState(() {
       productivityList = productivity;
+      productivityStreaks.clear(); // Clear previous streaks
     });
+
+    for (final productivityItem in productivityList) {
+      int maxStreak = 0;
+      if (productivityItem.productivityHabits != null) {
+        for (final habit in productivityItem.productivityHabits!) {
+          final streaks = await _streakService.getStreaksForProductivityHabit(
+            habit.id,
+          );
+          if (streaks.isNotEmpty) {
+            final currentStreakCount = streaks.last['count'] as int? ?? 0;
+            if (currentStreakCount > maxStreak) {
+              maxStreak = currentStreakCount;
+            }
+          }
+        }
+      }
+      // Update the streak count in the map
+      setState(() {
+        productivityStreaks[productivityItem.id] = maxStreak;
+      });
+    }
   }
 
-  Widget productivityCard(Productivity productivity, int streakCount) {
+  // Widget productivityCard(Productivity productivity, int streakCount) {
+  //   IconData icon = Icons.work; // Default icon
+  //   switch (productivity.title.toLowerCase()) {
+  //     case 'sports and gym':
+  //       icon = Icons.fitness_center;
+  //       break;
+  //     case 'books reading':
+  //       icon = Icons.book;
+  //       break;
+  //     case 'self improvement':
+  //       icon = Icons.self_improvement;
+  //       break;
+  //     case 'post on social media':
+  //       icon = Icons.public;
+  //       break;
+  //   }
+
+  //   return Card(
+  //     color: Colors.grey[900],
+  //     margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  //     child: ListTile(
+  //       leading: Icon(icon, color: Colors.white, size: 30),
+  //       title: Text(
+  //         productivity.title,
+  //         style: const TextStyle(color: Colors.white, fontSize: 18),
+  //       ),
+  //       trailing: Row(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           const Icon(
+  //             Icons.local_fire_department,
+  //             color: Colors.orange,
+  //             size: 24,
+  //           ),
+  //           const SizedBox(width: 4),
+  //           Text(
+  //             streakCount.toString(),
+  //             style: const TextStyle(color: Colors.white, fontSize: 18),
+  //           ),
+  //         ],
+  //       ),
+  //       onTap: () {
+  //         // Handle tap action
+  //         Navigator.push(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (context) => ProductivityViewPgae(id: productivity.id),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
+
+  Widget productivityCard(Productivity productivity) {
     IconData icon = Icons.work; // Default icon
     switch (productivity.title.toLowerCase()) {
       case 'sports and gym':
@@ -46,6 +136,10 @@ class _HomePageState extends State<ProductivityHome> {
         icon = Icons.public;
         break;
     }
+
+    final streakCount =
+        productivityStreaks[productivity.id] ??
+        0; // Get streak count, default to 0
 
     return Card(
       color: Colors.grey[900],
@@ -119,7 +213,6 @@ class _HomePageState extends State<ProductivityHome> {
         itemBuilder: (context, index) {
           return productivityCard(
             productivityList[index],
-            10,
           ); // Static streak count for now
         },
       ),

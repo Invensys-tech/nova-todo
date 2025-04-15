@@ -184,7 +184,7 @@ class _IncomeFormState extends State<IncomeForm> {
                 hinttext: name.hint,
                 controller: name.controller,
                 whatIsInput: name.type,
-                icon: Icons.fingerprint,
+                // icon: Icons.fingerprint,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               const Text(
@@ -200,7 +200,7 @@ class _IncomeFormState extends State<IncomeForm> {
                 hinttext: amount.hint,
                 whatIsInput: amount.type,
                 controller: amount.controller,
-                icon: Icons.attach_money,
+                // icon: Icons.attach_money,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               const Text(

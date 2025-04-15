@@ -152,7 +152,7 @@ class _MyAppState extends State<MyApp> {
       final permissions = await Permission.sms.request();
       if (permissions.isGranted) {
         setState(() => _permission = 'Granted');
-        _startListener();
+        // _startListener();
         print(_permission);
       } else {
         setState(() => _permission = 'Denied');
@@ -184,7 +184,7 @@ class _MyAppState extends State<MyApp> {
           navigatorKey: navigatorKey,
           title: 'Vita Board',
           theme: theme,
-          // home: const AuthGate(),
+          // home: const MainScreenPage(),
           // home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [

@@ -178,7 +178,7 @@ class _EditSingleLoanState extends State<EditSingleLoan> {
                     hinttext: '0.0',
                     whatIsInput: '0',
                     controller: _amount,
-                    icon: Icons.attach_money,
+                    // icon: Icons.attach_money,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   const Text(

@@ -6,6 +6,8 @@ import 'package:flutter_application_1/repositories/loan.repository.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
+import 'package:flutter_application_1/ui/inputs/loandate.dart';
+import 'package:flutter_application_1/ui/inputs/loantype.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 
@@ -87,160 +89,169 @@ class _EditLoanState extends State<EditLoan> {
                   horizontal: MediaQuery.of(context).size.width * 0.045,
                 ),
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      _buildLabel("Loaner Name"),
-                      AutoCompleteText(
-                        suggestions: searchItems,
-                        controller: _loanerName,
-                        hintText: "Loaner Name",
-                        icon: Icons.shopping_bag_rounded,
-                        suggestionBuilder: (String text) {
-                          return ListTile(
-                            title: Text(
-                              text,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            subtitle: const Text(
-                              "Tap to select",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          );
-                        },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xff27272A), // Border color
+                        width: 1.0, // Border width
                       ),
-                      _spacer(),
-                      _buildLabel("Phone Number"),
-                      TextFields(
-                        controller: _phoneNumber,
-                        icon: Icons.phone,
-                        hinttext: "Phone",
-                        whatIsInput: '0',
-                      ),
-                      _spacer(),
-                      _buildLabel("Amount"),
-                      TextFields(
-                        controller: _amount,
-                        icon: Icons.attach_money,
-                        hinttext: "Amount",
-                        whatIsInput: '0',
-                      ),
-                      _spacer(),
-                      _buildLabel("Types"),
-                      CustomDropdown(
-                        items: ["Payable", "Receivable"],
-                        controller: _type,
-                        icon: Icons.category,
-                        hintText: "Select a Type",
-                      ),
-                      _spacer(),
-                      _buildLabel("Date"),
-                      DateSelector(
-                        controller: _dateController,
-                        icon: Icons.calendar_today,
-                        hintText: "Pick a date",
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
-                      ),
-                      _spacer(),
-                      _buildLabel("Bank"),
-                      CustomDropdown(
-                        items: [
-                          'Abay Bank',
-                          'Addis International Bank',
-                          'Ahadu Bank',
-                          'Amhara Bank',
-                          'Awash Bank',
-                          'Bank of Abyssinia',
-                          'Berhan Bank',
-                          'Bunna Bank',
-                          'Commercial Bank of Ethiopia',
-                          'Cooperative Bank of Oromia',
-                          'Dashen Bank',
-                          'Development Bank of Ethiopia',
-                          'Gadaa Bank',
-                          'Hibret Bank',
-                          'Lion International Bank',
-                          'NIB International Bank',
-                          'Oromia International Bank',
-                          'Rammis Bank',
-                          'Sidama Bank',
-                          'Siket Bank',
-                          'Tsedey Bank',
-                          'Tsehay Bank',
-                          'Wegagen Bank',
-                          'Zemen Bank',
-                        ],
-                        controller: _bank,
-                        icon: Icons.account_balance,
-                        hintText: "Select a Bank",
-                      ),
-                      _spacer(height: 30),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () => Navigator.pop(context),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.grey,
+                      borderRadius: BorderRadius.circular(8),
+
+                      // Optional: rounded corners
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        TypeSelector(controller: _type),
+
+                        const SizedBox(height: 20),
+                        _buildLabel("Loaner Name"),
+                        AutoCompleteText(
+                          suggestions: searchItems,
+                          controller: _loanerName,
+                          hintText: "Loaner Name",
+                          icon: Icons.shopping_bag_rounded,
+                          suggestionBuilder: (String text) {
+                            return ListTile(
+                              title: Text(
+                                text,
+                                style: const TextStyle(color: Colors.white),
                               ),
-                              child: const Text(
-                                "Cancel",
-                                style: TextStyle(color: Colors.white),
+                              subtitle: const Text(
+                                "Tap to select",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            );
+                          },
+                        ),
+                        _spacer(),
+                        _buildLabel("Phone Number"),
+                        TextFields(
+                          controller: _phoneNumber,
+                          prefixText: '+251',
+
+                          // icon: Icons.phone,
+                          hinttext: "Phone",
+                          whatIsInput: '0',
+                        ),
+                        _spacer(),
+                        _buildLabel("Amount"),
+                        TextFields(
+                          controller: _amount,
+                          // icon: Icons.attach_money,
+                          hinttext: "Amount",
+                          whatIsInput: '0',
+                          prefixText: 'ETB',
+                        ),
+                        _spacer(),
+
+                        _buildLabel("Date"),
+                        CustomLoanDateSelectorRow(
+                          hintText: "Select a date",
+                          controller: _dateController,
+                          icon: Icons.calendar_today,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                          initialDate: DateTime.now(),
+                        ),
+                        _spacer(),
+                        _buildLabel("Bank"),
+                        CustomDropdown(
+                          items: [
+                            'Abay Bank',
+                            'Addis International Bank',
+                            'Ahadu Bank',
+                            'Amhara Bank',
+                            'Awash Bank',
+                            'Bank of Abyssinia',
+                            'Berhan Bank',
+                            'Bunna Bank',
+                            'Commercial Bank of Ethiopia',
+                            'Cooperative Bank of Oromia',
+                            'Dashen Bank',
+                            'Development Bank of Ethiopia',
+                            'Gadaa Bank',
+                            'Hibret Bank',
+                            'Lion International Bank',
+                            'NIB International Bank',
+                            'Oromia International Bank',
+                            'Rammis Bank',
+                            'Sidama Bank',
+                            'Siket Bank',
+                            'Tsedey Bank',
+                            'Tsehay Bank',
+                            'Wegagen Bank',
+                            'Zemen Bank',
+                          ],
+                          controller: _bank,
+                          hintText: "Select a Bank",
+                        ),
+                        _spacer(height: 30),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () => Navigator.pop(context),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey,
+                                ),
+                                child: const Text(
+                                  "Cancel",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                try {
-                                  await supabaseClient
-                                      .from('loan')
-                                      .update({
-                                        'loanerName': _loanerName.text,
-                                        'phoneNumber': _phoneNumber.text,
-                                        'amount': _amount.text,
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  try {
+                                    await supabaseClient
+                                        .from('loan')
+                                        .update({
+                                          'loanerName': _loanerName.text,
+                                          'phoneNumber': _phoneNumber.text,
+                                          'amount': _amount.text,
 
-                                        'type': _type.text,
-                                        'date': _dateController.text,
-                                        'bank': _bank.text,
-                                      })
-                                      .eq('id', widget.loanId);
+                                          'type': _type.text,
+                                          'date': _dateController.text,
+                                          'bank': _bank.text,
+                                        })
+                                        .eq('id', widget.loanId);
 
-                                  final updatedLoans =
-                                      await widget.datamanager.fetchLoan();
+                                    final updatedLoans =
+                                        await widget.datamanager.fetchLoan();
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        "Loan updated successfully!",
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Loan updated successfully!",
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
 
-                                  Navigator.pop(context, updatedLoans);
-                                } catch (e) {
-                                  print("Update error: $e");
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text("Error: $e")),
-                                  );
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                              ),
-                              child: const Text(
-                                "Update Loan",
-                                style: TextStyle(color: Colors.white),
+                                    Navigator.pop(context, updatedLoans);
+                                  } catch (e) {
+                                    print("Update error: $e");
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text("Error: $e")),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                ),
+                                child: const Text(
+                                  "Update Loan",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      _spacer(height: 40),
-                    ],
+                          ],
+                        ),
+                        _spacer(height: 40),
+                      ],
+                    ),
                   ),
                 ),
               ),

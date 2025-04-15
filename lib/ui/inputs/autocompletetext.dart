@@ -35,21 +35,25 @@ class AutoCompleteText extends StatelessWidget {
       // Outer container mimics the TextFields style
       decoration: BoxDecoration(
         color: Colors.black87.withOpacity(.3),
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Colors.green, width: 2),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(5),
+          bottomLeft: Radius.circular(5),
+        ),
+
+        // border: Border.all(color: Colors.green, width: 2),
       ),
       child: Row(
         children: [
           // Prefix icon with a vertical separator
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
-              border: Border(
-                right: BorderSide(color: Colors.white54, width: 1.0),
-              ),
-            ),
-            child: Icon(icon, color: Colors.white70),
-          ),
+          // Container(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10),
+          //   decoration: const BoxDecoration(
+          //     border: Border(
+          //       right: BorderSide(color: Colors.white54, width: 1.0),
+          //     ),
+          //   ),
+          //   child: Icon(icon, color: Colors.white70),
+          // ),
           // The autocomplete field occupies the remaining space
           Expanded(
             child: AdvancedSearch(
