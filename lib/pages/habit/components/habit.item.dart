@@ -50,17 +50,20 @@ class _HabitItemState extends State<HabitItem> {
           //   icon: Icons.sentiment_satisfied,
           //   label: 'Done',
           // ),
-          Container(
-            color: Color(0xFFEC003F),
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () => removeTerm(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF555B59),
-                ),
-                child: Text(
-                  '😔 I didn\'t',
-                  style: TextStyle(color: Color(0xFFF4F4F5)),
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Color(0xFFEC003F),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () => removeTerm(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF555B59),
+                  ),
+                  child: Text(
+                    '😔 I didn\'t',
+                    style: TextStyle(color: Color(0xFFF4F4F5)),
+                  ),
                 ),
               ),
             ),
@@ -77,17 +80,20 @@ class _HabitItemState extends State<HabitItem> {
           //   icon: Icons.sentiment_dissatisfied,
           //   label: 'Not Done',
           // ),
-          Container(
-            color: Color(0xFF009966),
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () => extendStreak(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF555B59),
-                ),
-                child: Text(
-                  '🙂 I did it!',
-                  style: TextStyle(color: Color(0xFFF4F4F5)),
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Color(0xFF009966),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () => extendStreak(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF555B59),
+                  ),
+                  child: Text(
+                    '🙂 I did it!',
+                    style: TextStyle(color: Color(0xFFF4F4F5)),
+                  ),
                 ),
               ),
             ),
