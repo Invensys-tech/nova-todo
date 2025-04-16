@@ -8,6 +8,7 @@ import 'package:flutter_application_1/repositories/income.repository.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
+import 'package:flutter_application_1/ui/inputs/testdate.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 
 class IncomeForm extends StatefulWidget {
@@ -75,7 +76,7 @@ class _IncomeFormState extends State<IncomeForm> {
     Income income = await IncomeRepository().createIncome({
       "name": name.controller.text,
       'category': category.controller.text,
-      'date': formatDate(date.controller.text),
+      'date': (date.controller.text),
       'paid_from': paid_from.controller.text,
       "specific_from": specific_from.controller.text,
       "amount": amount.controller.text,
@@ -167,246 +168,261 @@ class _IncomeFormState extends State<IncomeForm> {
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const Text(
-                "Income Name",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Color(0xff27272A), // Border color
+                width: 1.0, // Border width
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              TextFields(
-                hinttext: name.hint,
-                controller: name.controller,
-                whatIsInput: name.type,
-                // icon: Icons.fingerprint,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const Text(
-                "Amount",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              TextFields(
-                hinttext: amount.hint,
-                whatIsInput: amount.type,
-                controller: amount.controller,
-                // icon: Icons.attach_money,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const Text(
-                "Date",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              DateSelector(
-                hintText: "Select a date",
-                controller: date.controller,
-                icon: Icons.calendar_today,
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
-                initialDate: DateTime.now(),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              FutureBuilder(
-                future:
-                    _paidBySelection == "Partner"
-                        ? widget.datamanager.getLoan()
-                        : _paidBySelection == "Bank"
-                        ? widget.datamanager.getBanks()
-                        : Future.value([]),
-
-                builder: (context, snapshot) {
-                  Map<String, int> partnerMapping = {};
-                  List<String> dynamicItems = [];
-
-                  if (paid_from.controller.text == 'Partner') {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Text(
-                        "Error fetching partner names: ${snapshot.error}",
-                      );
-                    } else if (snapshot.hasData) {
-                      // Assume snapshot.data is List<Loan> for partner
-                      for (Loan loan in snapshot.data as List<Loan>) {
-                        partnerMapping[loan.loanerName] = loan.id;
-                      }
-                      dynamicItems = partnerMapping.keys.toList();
-                    }
-                  } else if (paid_from.controller.text == 'Bank') {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Text("Error fetching banks: ${snapshot.error}");
-                    } else if (snapshot.hasData) {
-                      // Assume snapshot.data is List<Bank> for banks
-                      dynamicItems =
-                          (snapshot.data as List<Bank>)
-                              .map((bank) => bank.accountHolder)
-                              .toList();
-                    }
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      const Text(
-                        "Paid By",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white70,
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      // "Paid By" Dropdown remains as before
-                      // CustomDropdown(
-                      //   hintText: "Select an option",
-                      //   icon: Icons.ac_unit_sharp,
-                      //   items: ["Partner", "Bank"],
-                      //   controller: paid_from.controller,
-                      //   selectedValue: isFromNotification ? 'Bank' : 'Partner',
-                      //   onChanged: (value) {
-                      //     setState(() {
-                      //       _paidBySelection = value;
-                      //       paid_from.controller.text = value ?? '';
-                      //       specific_from.controller
-                      //           .clear(); // Clear previous selection
-                      //       _parentLoanId = null;
-                      //     });
-                      //   },
-                      // ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      const Text(
-                        "Bank Account",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white70,
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      // CustomDropdown(
-                      //   hintText: "Select a specific payer",
-                      //   icon: Icons.account_balance_wallet,
-                      //   items: dynamicItems,
-                      //   controller: specific_from.controller,
-                      //   onChanged: (value) {
-                      //     // If partner is selected, update _parentLoanId based on partnerMapping.
-                      //     if (paid_from.controller.text == 'Partner' &&
-                      //         partnerMapping.containsKey(value!)) {
-                      //       setState(() {
-                      //         _parentLoanId = partnerMapping[value];
-                      //       });
-                      //     }
-                      //   },
-                      // ),
-                    ],
-                  );
-                },
-              ),
-
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const Text(
-                "Description",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              MultiLineTextField(
-                hintText: 'description',
-                controller: description.controller,
-                icon: Icons.description,
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Clear all input controllers
-
-                        setState(() {});
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      child: const Text(
-                        "Cancel",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+              borderRadius: BorderRadius.circular(
+                8,
+              ), // Optional: rounded corners
+            ),
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                const Text(
+                  "Income Name",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white70,
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          // Insert expense
-                          saveIncome();
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                TextFields(
+                  hinttext: name.hint,
+                  controller: name.controller,
+                  whatIsInput: name.type,
+                  // icon: Icons.fingerprint,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                const Text(
+                  "Amount",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                TextFields(
+                  hinttext: amount.hint,
+                  whatIsInput: amount.type,
+                  controller: amount.controller,
+                  prefixText: 'ETB',
+                  // icon: Icons.attach_money,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                const Text(
+                  "Date",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                CustomDateSelectorRow(
+                  hintText: "Select a date",
+                  controller: date.controller,
+                  icon: Icons.calendar_today,
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                  initialDate: DateTime.now(),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                FutureBuilder(
+                  future:
+                      _paidBySelection == "Partner"
+                          ? widget.datamanager.getLoan()
+                          : _paidBySelection == "Bank"
+                          ? widget.datamanager.getBanks()
+                          : Future.value([]),
 
-                          print("Income added successfully!");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Expense added successfully!"),
-                            ),
-                          );
+                  builder: (context, snapshot) {
+                    Map<String, int> partnerMapping = {};
+                    List<String> dynamicItems = [];
 
-                          Navigator.pop(context);
-                        } catch (e) {
-                          print("Error inserting expense: $e");
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text("Error: $e")));
+                    if (paid_from.controller.text == 'Partner') {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text(
+                          "Error fetching partner names: ${snapshot.error}",
+                        );
+                      } else if (snapshot.hasData) {
+                        // Assume snapshot.data is List<Loan> for partner
+                        for (Loan loan in snapshot.data as List<Loan>) {
+                          partnerMapping[loan.loanerName] = loan.id;
                         }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                        dynamicItems = partnerMapping.keys.toList();
+                      }
+                    } else if (paid_from.controller.text == 'Bank') {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text("Error fetching banks: ${snapshot.error}");
+                      } else if (snapshot.hasData) {
+                        // Assume snapshot.data is List<Bank> for banks
+                        dynamicItems =
+                            (snapshot.data as List<Bank>)
+                                .map((bank) => bank.accountHolder)
+                                .toList();
+                      }
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        const Text(
+                          "Paid By",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white70,
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        // "Paid By" Dropdown remains as before
+                        // CustomDropdown(
+                        //   hintText: "Select an option",
+                        //   icon: Icons.ac_unit_sharp,
+                        //   items: ["Partner", "Bank"],
+                        //   controller: paid_from.controller,
+                        //   selectedValue: isFromNotification ? 'Bank' : 'Partner',
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       _paidBySelection = value;
+                        //       paid_from.controller.text = value ?? '';
+                        //       specific_from.controller
+                        //           .clear(); // Clear previous selection
+                        //       _parentLoanId = null;
+                        //     });
+                        //   },
+                        // ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        const Text(
+                          "Bank Account",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white70,
+                          ),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        // CustomDropdown(
+                        //   hintText: "Select a specific payer",
+                        //   icon: Icons.account_balance_wallet,
+                        //   items: dynamicItems,
+                        //   controller: specific_from.controller,
+                        //   onChanged: (value) {
+                        //     // If partner is selected, update _parentLoanId based on partnerMapping.
+                        //     if (paid_from.controller.text == 'Partner' &&
+                        //         partnerMapping.containsKey(value!)) {
+                        //       setState(() {
+                        //         _parentLoanId = partnerMapping[value];
+                        //       });
+                        //     }
+                        //   },
+                        // ),
+                      ],
+                    );
+                  },
+                ),
+
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                const Text(
+                  "Description",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                MultiLineTextField(
+                  hintText: 'description',
+                  controller: description.controller,
+                  icon: Icons.description,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Clear all input controllers
+
+                          setState(() {});
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      child: const Text(
-                        "Add Expense",
-                        style: TextStyle(color: Colors.white),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      flex: 3,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          try {
+                            // Insert expense
+                            saveIncome();
+
+                            print("Income added successfully!");
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Expense added successfully!"),
+                              ),
+                            );
+
+                            Navigator.pop(context);
+                          } catch (e) {
+                            print("Error inserting expense: $e");
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Error: $e")),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        child: const Text(
+                          "Add Expense",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-            ],
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+              ],
+            ),
           ),
         ),
       ),
