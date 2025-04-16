@@ -63,11 +63,12 @@ dependencies:
   drift: ^2.26.0
   easy_localization: ^3.0.7+1
   shared_preferences: ^2.5.3
+  cached_network_image: ^3.4.1
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/Images/Vita.png" # Path to your new icon
+  image_path: "assets/Images/VitaNew.png" # Path to your new icon
   adaptive_icon_background: "#000000" # Background color for adaptive icons (Android)
 
   # The following adds the Cupertino Icons font to your application.

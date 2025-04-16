@@ -22,12 +22,12 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
             },
             child: Container(
 
-             height: MediaQuery.of(context).size.height*.35,
-              child: Center(),
+             height: MediaQuery.of(context).size.height*.41,
+              width: MediaQuery.of(context).size.width*1,
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height*.58,
+            height: MediaQuery.of(context).size.height*.59,
             color: Theme.of(context).scaffoldBackgroundColor,
             padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.035, vertical: MediaQuery.of(context).size.height*.015),
             child: Column(
@@ -164,7 +164,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Addtional Note",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
-                            Text("lorem Ipsume is the one and only in the best way to include int he best way to intemisate but ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+                            Text("lorem Ipsume is the one and only in the best way to include int he best way to intemisate but ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w200),),
                           ],
                         ),
                       ),
@@ -173,7 +173,6 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                     ],
                   ),
                 ),
-                Divider()
               ],
             ),
           )

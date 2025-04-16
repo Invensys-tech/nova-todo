@@ -623,108 +623,114 @@ class _ExpensespageState extends State<Expensespage> {
                                 }
                             )); */
 
-                            Navigator.of(context).push(PageRouteBuilder(
-                                fullscreenDialog: true,
+                            Navigator.of(context, rootNavigator: true).push(
+                              PageRouteBuilder(
                                 opaque: false,
+                                barrierColor: Colors.black.withOpacity(0.5), // optional background blur
                                 pageBuilder: (BuildContext context, _, __) {
-                                  return SingleEpensesFullViewPage(
-
-                                  );
-                                }
-                            ));
+                                  return SingleEpensesFullViewPage();
+                                },
+                              ),
+                            );
                           },
-                          child: Slidable(
-                            key: ValueKey(expense.id),
-                            startActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              children: [
+                          child: Column(
+                            children: [
+                              Slidable(
+                                key: ValueKey(expense.id),
+                                startActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: [
 
-                               SlidableAction(
-                                  onPressed: (context) {
-                                    // Show a confirmation dialog before deleting
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Confirm Delete'),
-                                          content: const Text(
-                                            'Are you sure you want to delete this expense?',
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(
-                                                  context,
-                                                ).pop(); // Dismiss the dialog
-                                              },
-                                              child: const Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                // Place your delete logic here
-                                                _expenseRepository.deleteExpense(
-                                                  expense.id,
-                                                );
-                                                print(
-                                                  'Deleted ${expense.category}',
-                                                );
-                                                Navigator.of(context).pop();
-                                                setState(() {
-                                                  _refreshExpenses();
-                                                }); // Dismiss the dialog
-                                              },
-                                              child: const Text(
-                                                'Delete',
-                                                style: TextStyle(color: Colors.red),
+                                   SlidableAction(
+                                      onPressed: (context) {
+                                        // Show a confirmation dialog before deleting
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text('Confirm Delete'),
+                                              content: const Text(
+                                                'Are you sure you want to delete this expense?',
                                               ),
-                                            ),
-                                          ],
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(
+                                                      context,
+                                                    ).pop(); // Dismiss the dialog
+                                                  },
+                                                  child: const Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    // Place your delete logic here
+                                                    _expenseRepository.deleteExpense(
+                                                      expense.id,
+                                                    );
+                                                    print(
+                                                      'Deleted ${expense.category}',
+                                                    );
+                                                    Navigator.of(context).pop();
+                                                    setState(() {
+                                                      _refreshExpenses();
+                                                    }); // Dismiss the dialog
+                                                  },
+                                                  child: const Text(
+                                                    'Delete',
+                                                    style: TextStyle(color: Colors.red),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
                                         );
                                       },
-                                    );
-                                  },
-                                  backgroundColor: Colors.red,
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                  label: 'Delete',
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.delete,
+                                      label: 'Delete',
+                                    ),
+                                  ],
+                                ), // ensure each expense has a unique id or use index
+                                endActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (context) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => EditExpense(
+                                                  datamanager:
+                                                      widget
+                                                          .datamanager, // make sure it's accessible
+                                                  expenseId: expense.id,
+                                                ),
+                                          ),
+                                        ).then((_) {
+                                          setState(() {
+                                            widget.datamanager.getExpense();
+                                          });
+                                        });
+                                      },
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.edit,
+                                      label: 'Edit',
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ), // ensure each expense has a unique id or use index
-                            endActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (context) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => EditExpense(
-                                              datamanager:
-                                                  widget
-                                                      .datamanager, // make sure it's accessible
-                                              expenseId: expense.id,
-                                            ),
-                                      ),
-                                    ).then((_) {
-                                      setState(() {
-                                        widget.datamanager.getExpense();
-                                      });
-                                    });
-                                  },
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.edit,
-                                  label: 'Edit',
+                                child: ExpenseList(
+                                  amountofexpenses: expense.amount,
+                                  catagoryofexpenses: expense.category,
+                                  titleofExpenses: expense.category,
+                                  typeofexpenses: expense.type,
                                 ),
-                              ],
-                            ),
-                            child: ExpenseList(
-                              amountofexpenses: expense.amount,
-                              catagoryofexpenses: expense.category,
-                              titleofExpenses: expense.category,
-                              typeofexpenses: expense.type,
-                            ),
+                              ),
+
+                              const Divider(),
+                            ],
                           ),
                         );
                       },
@@ -835,7 +841,6 @@ class ExpenseList extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(),
           ],
         ),
       ),
