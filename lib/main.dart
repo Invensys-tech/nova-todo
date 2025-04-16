@@ -63,6 +63,7 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.light,
         primaryColor: Colors.blue,
         primaryColorDark: Colors.white,
+          disabledColor: Color(0xff00D492),
         fontFamily: 'Outfit',
         scaffoldBackgroundColor: Color(0xffF4F4F5)
       ),
@@ -70,12 +71,12 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.light,
         primaryColor: Colors.red,
         scaffoldBackgroundColor: Color(0xffF4F4F5),
-
+        disabledColor: Color(0xff00D492),
         fontFamily: 'Outfit',
       ),
       AppThemes.Dark: ThemeData(
         brightness: Brightness.dark,
-
+        disabledColor: Color(0xff006045),
         fontFamily: 'Outfit',
       ),
     },
