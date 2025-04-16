@@ -98,6 +98,24 @@ class _AddExpenseState extends State<AddExpense> {
     }
   }
 
+  Future<List<dynamic>>? _dataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateFuture();
+  }
+
+  void _updateFuture() {
+    if (_paidByController.text == "Partner") {
+      _dataFuture = widget.datamanager.getLoan();
+    } else if (_paidByController.text == "Bank") {
+      _dataFuture = widget.datamanager.getBanks();
+    } else {
+      _dataFuture = Future.value([]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> specificItems = [];
@@ -218,11 +236,6 @@ class _AddExpenseState extends State<AddExpense> {
                   prefixText: 'ETB', // 👈 This shows the badge
                 ),
 
-                // --- Expense Name Field ---
-
-                // --- Category ---
-
-                // --- Date ---
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                 const Text(
@@ -247,14 +260,8 @@ class _AddExpenseState extends State<AddExpense> {
 
                 FutureBuilder(
                   // Use different futures based on the "Paid By" selection.
-                  future:
-                      _paidByController.text == "Partner"
-                          ? widget.datamanager.getLoan()
-                          : _paidByController.text == "Bank"
-                          ? widget.datamanager.getBanks()
-                          : Future.value(
-                            [],
-                          ), // if nothing selected, return empty list
+                  future: _dataFuture,
+
                   builder: (context, snapshot) {
                     Map<String, int> partnerMapping = {};
                     List<String> dynamicItems = [];
@@ -309,14 +316,13 @@ class _AddExpenseState extends State<AddExpense> {
                           icon: Icons.ac_unit_sharp,
                           items: ["Partner", "Bank"],
                           controller: _paidByController,
-                          selectedValue: isFromNotification ? 'Bank' : null,
                           onChanged: (value) {
                             setState(() {
                               _paidBySelection = value;
                               _paidByController.text = value ?? '';
-                              // Clear payment selection when switching modes.
                               _paymentController.clear();
                               _parentLoanId = null;
+                              _updateFuture(); // update the future based on new selection
                             });
                           },
                         ),

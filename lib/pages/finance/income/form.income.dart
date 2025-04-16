@@ -278,22 +278,22 @@ class _IncomeFormState extends State<IncomeForm> {
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
                       // "Paid By" Dropdown remains as before
-                      CustomDropdown(
-                        hintText: "Select an option",
-                        icon: Icons.ac_unit_sharp,
-                        items: ["Partner", "Bank"],
-                        controller: paid_from.controller,
-                        selectedValue: isFromNotification ? 'Bank' : 'Partner',
-                        onChanged: (value) {
-                          setState(() {
-                            _paidBySelection = value;
-                            paid_from.controller.text = value ?? '';
-                            specific_from.controller
-                                .clear(); // Clear previous selection
-                            _parentLoanId = null;
-                          });
-                        },
-                      ),
+                      // CustomDropdown(
+                      //   hintText: "Select an option",
+                      //   icon: Icons.ac_unit_sharp,
+                      //   items: ["Partner", "Bank"],
+                      //   controller: paid_from.controller,
+                      //   selectedValue: isFromNotification ? 'Bank' : 'Partner',
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       _paidBySelection = value;
+                      //       paid_from.controller.text = value ?? '';
+                      //       specific_from.controller
+                      //           .clear(); // Clear previous selection
+                      //       _parentLoanId = null;
+                      //     });
+                      //   },
+                      // ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
@@ -308,21 +308,21 @@ class _IncomeFormState extends State<IncomeForm> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
-                      CustomDropdown(
-                        hintText: "Select a specific payer",
-                        icon: Icons.account_balance_wallet,
-                        items: dynamicItems,
-                        controller: specific_from.controller,
-                        onChanged: (value) {
-                          // If partner is selected, update _parentLoanId based on partnerMapping.
-                          if (paid_from.controller.text == 'Partner' &&
-                              partnerMapping.containsKey(value!)) {
-                            setState(() {
-                              _parentLoanId = partnerMapping[value];
-                            });
-                          }
-                        },
-                      ),
+                      // CustomDropdown(
+                      //   hintText: "Select a specific payer",
+                      //   icon: Icons.account_balance_wallet,
+                      //   items: dynamicItems,
+                      //   controller: specific_from.controller,
+                      //   onChanged: (value) {
+                      //     // If partner is selected, update _parentLoanId based on partnerMapping.
+                      //     if (paid_from.controller.text == 'Partner' &&
+                      //         partnerMapping.containsKey(value!)) {
+                      //       setState(() {
+                      //         _parentLoanId = partnerMapping[value];
+                      //       });
+                      //     }
+                      //   },
+                      // ),
                     ],
                   );
                 },
