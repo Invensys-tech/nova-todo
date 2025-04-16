@@ -53,6 +53,21 @@ class _TodoItemState extends State<TodoItem> {
     return updated;
   }
 
+  addSubTask(Map<String, dynamic> subTask) {
+    Map<String, dynamic> newSubTask = {
+      ...subTask,
+      'daily_task_id': widget.dailyTask.id,
+    };
+    DailyTaskRepository().addDailySubTask(newSubTask).then((value) {
+      if (value) {
+        widget.dailyTask.subTasks.add(newSubTask);
+        setState(() {
+          widget.setParentState();
+        });
+      }
+    });
+  }
+
   showCompletionPercentageUpdateDialog(BuildContext context) {
     TextEditingController percentageController = TextEditingController(
       text: widget.dailyTask.completionPercentage.toString(),
@@ -159,7 +174,10 @@ class _TodoItemState extends State<TodoItem> {
                 context,
                 MaterialPageRoute(
                   builder:
-                      (context) => TodoViewPage(dailyTask: widget.dailyTask),
+                      (context) => TodoViewPage(
+                        dailyTask: widget.dailyTask,
+                        addSubTask: addSubTask,
+                      ),
                 ),
               );
             },

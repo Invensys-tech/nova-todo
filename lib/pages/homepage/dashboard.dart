@@ -173,6 +173,8 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ],
             ),
+
+            // Financial Overview Section
           ],
         ),
       ),

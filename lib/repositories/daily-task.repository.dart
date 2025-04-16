@@ -99,6 +99,24 @@ class DailyTaskRepository {
     }
   }
 
+  Future<bool> addDailySubTask(Map<String, dynamic> subTask) async {
+    try {
+      final response = await supabaseClient
+          .from(Entities.DAILY_SUBTASK.dbName)
+          .insert(subTask)
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Error creating daily subtask');
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<List<DailyTask>> fetchAll(DateTime date) async {
     // Future<dynamic> fetchAll(DateTime? date) async {
     try {

@@ -6,7 +6,8 @@ import 'package:roundcheckbox/roundcheckbox.dart';
 
 class TodoViewPage extends StatefulWidget {
   final DailyTask? dailyTask;
-  const TodoViewPage({super.key, this.dailyTask});
+  final void Function(Map<String, dynamic>) addSubTask;
+  const TodoViewPage({super.key, this.dailyTask, required this.addSubTask});
 
   @override
   State<TodoViewPage> createState() => _TodoViewPageState();
@@ -30,14 +31,9 @@ class _TodoViewPageState extends State<TodoViewPage> {
 
   final subTaskTextController = TextEditingController();
 
-  addSubTask() {
+  addNewSubTask() {
     setState(() {
-      widget.dailyTask?.subTasks.add({
-        'text': subTaskTextController.text,
-        'is_done': false,
-      });
-
-      subTaskTextController.text = "";
+      widget.addSubTask({'text': subTaskTextController.text, 'is_done': false});
     });
   }
 
@@ -117,7 +113,8 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                 ),
                                 Text(
                                   // "${(widget.dailyTask?.taskTime) ?? ''} - ${widget.dailyTask?.endTime ?? ''}",
-                                  "${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.taskTime))} - ${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.endTime))}",
+                                  // "${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.taskTime))} - ${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.endTime))}",
+                                  "${widget.dailyTask!.taskTime} - ${widget.dailyTask!.endTime}",
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
@@ -214,7 +211,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
               //       ],
               //     ),
               //     ElevatedButton(
-              //       onPressed: addSubTask,
+              //       onPressed: addNewSubTask,
               //       style: ElevatedButton.styleFrom(
               //         shape: RoundedRectangleBorder(
               //           borderRadius: BorderRadius.circular(10),
@@ -228,7 +225,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
               //       ),
               //     ),
               //     ElevatedButton(
-              //       onPressed: addSubTask,
+              //       onPressed: addNewSubTask,
               //       style: ElevatedButton.styleFrom(
               //         shape: RoundedRectangleBorder(
               //           borderRadius: BorderRadius.circular(10),
@@ -407,7 +404,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                       child: SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: addSubTask,
+                          onPressed: addNewSubTask,
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
