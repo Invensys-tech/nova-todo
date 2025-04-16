@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
 import 'package:flutter_application_1/repositories/daily-task.repository.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 class TodoViewPage extends StatefulWidget {
@@ -17,12 +18,26 @@ class _TodoViewPageState extends State<TodoViewPage> {
   }
 
   handleUpdateSubTask(subTask, isDone) {
-    DailyTaskRepository().updateSubTask(subTask['id'], isDone).then((value) {
-      if (value) {
-        setState(() {
-          subTask['is_done'] = isDone;
-        });
-      }
+    // DailyTaskRepository().updateSubTask(subTask['id'], isDone).then((value) {
+    //   if (value) {
+    setState(() {
+      print(isDone);
+      subTask['is_done'] = isDone;
+    });
+    //   }
+    // });
+  }
+
+  final subTaskTextController = TextEditingController();
+
+  addSubTask() {
+    setState(() {
+      widget.dailyTask?.subTasks.add({
+        'text': subTaskTextController.text,
+        'is_done': false,
+      });
+
+      subTaskTextController.text = "";
     });
   }
 
@@ -42,339 +57,380 @@ class _TodoViewPageState extends State<TodoViewPage> {
         elevation: 2,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * .01,
-                horizontal: MediaQuery.of(context).size.width * .025,
-              ),
-              padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * .01,
-                horizontal: MediaQuery.of(context).size.width * .025,
-              ),
-              width: MediaQuery.of(context).size.width * .95,
-              height: MediaQuery.of(context).size.height * .235,
-              decoration: BoxDecoration(
-                color: Color(0xff2D2C2C),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.circle_outlined, size: 30, color: Colors.red),
-                      SizedBox(width: MediaQuery.of(context).size.width * .025),
-                      // Text("Going to GYm",style: TextStyle(fontSize: 18, color: Colors.white,fontWeight: FontWeight.w700),)
-                      Text(
-                        widget.dailyTask?.name ?? '',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * .01,
+                  //   horizontal: MediaQuery.of(context).size.width * .025,
+                ),
+                // padding: EdgeInsets.symmetric(
+                //   vertical: MediaQuery.of(context).size.height * .01,
+                //   horizontal: MediaQuery.of(context).size.width * .025,
+                // ),
+                width: MediaQuery.of(context).size.width * .95,
+                height: MediaQuery.of(context).size.height * .235,
+                // decoration: BoxDecoration(
+                //   color: Color(0xff2D2C2C),
+                //   borderRadius: BorderRadius.circular(10),
+                // ),
+                child: Column(
+                  children: [
+                    Row(
+                      spacing: MediaQuery.of(context).size.width * .025,
+                      children: [
+                        // Icon(Icons.circle_outlined, size: 30, color: Colors.red),
+                        // // Text("Going to GYm",style: TextStyle(fontSize: 18, color: Colors.white,fontWeight: FontWeight.w700),)
+                        Text(
+                          widget.dailyTask?.name ?? '',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * .025),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        // children: [
-                        //   Text("Task Date ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300, color: Colors.white.withOpacity(.75)),),
-                        //   SizedBox(height: MediaQuery.of(context).size.height*.000,),
-                        //   Text("12 - 03 - 2025 ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.white),),
-                        // ],
-                        children: [
-                          Text(
-                            "Task Date ",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white.withOpacity(.75),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * .000,
-                          ),
-                          Text(
-                            widget.dailyTask?.date ?? '',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          // Text("Reminded In ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300, color: Colors.white.withOpacity(.75)),),
-                          // SizedBox(height: MediaQuery.of(context).size.height*.000,),
-                          // Text("Before 10 Min ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.white),),
-                          Text(
-                            "Reminded In ",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white.withOpacity(.75),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * .000,
-                          ),
-                          Text(
-                            widget.dailyTask?.reminderTime ?? '',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          // Text("Task Time ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300, color: Colors.white.withOpacity(.75)),),
-                          // SizedBox(height: MediaQuery.of(context).size.height*.000,),
-                          // Text("3:00 AM - 9:00 AM ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.white),),
-                          Text(
-                            "Task Time ",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white.withOpacity(.75),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * .000,
-                          ),
-                          Text(
-                            "${widget.dailyTask?.taskTime ?? ''} - ${widget.dailyTask?.endTime ?? ''}",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * .025),
-                  // Text(
-                  //   " Description :- Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ",
-                  //   style: TextStyle(
-                  //     fontSize: 13,
-                  //     fontWeight: FontWeight.w300,
-                  //     color: Colors.white.withOpacity(.7),
-                  //   ),
-                  // ),
-                  Text(
-                    widget.dailyTask?.description ?? '',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white.withOpacity(.7),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: MediaQuery.of(context).size.height * .025),
-            Container(
-              margin: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * .01,
-                horizontal: MediaQuery.of(context).size.width * .025,
-              ),
-              padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * .01,
-                horizontal: MediaQuery.of(context).size.width * .025,
-              ),
-              width: MediaQuery.of(context).size.width * .95,
-              height: MediaQuery.of(context).size.height * .335,
-              decoration: BoxDecoration(
-                color: Color(0xff2D2C2C),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                spacing: MediaQuery.of(context).size.height * .015,
-                children: [
-                  Text(
-                    "Sub Tasks To Do ",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                    SizedBox(height: MediaQuery.of(context).size.height * .025),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Task Time ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.white.withOpacity(.75),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * .000,
+                                ),
+                                Text(
+                                  // "${(widget.dailyTask?.taskTime) ?? ''} - ${widget.dailyTask?.endTime ?? ''}",
+                                  "${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.taskTime))} - ${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.endTime))}",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              // children: [
+                              //   Text("Task Date ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300, color: Colors.white.withOpacity(.75)),),
+                              //   SizedBox(height: MediaQuery.of(context).size.height*.000,),
+                              //   Text("12 - 03 - 2025 ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.white),),
+                              // ],
+                              children: [
+                                Text(
+                                  "Task Date ",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.white.withOpacity(.75),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * .000,
+                                ),
+                                Text(
+                                  widget.dailyTask?.date ?? '',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  ...(widget.dailyTask?.subTasks.map((subTask) {
-                        return Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RoundCheckBox(
-                              onTap:
-                                  (isChecked) =>
-                                      handleUpdateSubTask(subTask, isChecked),
-                              checkedWidget: Icon(
-                                Icons.check,
-                                size: 18,
-                                // color: Color(0xff363636),
-                                color: Color(0xff2E8CD3),
-                              ),
-                              disabledColor: Color(0xff2E8CD3),
-                              isChecked: subTask['is_done'],
-                              size: 25,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * .015,
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * .8,
-                              child: Text(
-                                subTask['text'],
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w300,
-                                  decoration:
+                    SizedBox(height: MediaQuery.of(context).size.height * .025),
+                    // SizedBox(
+                    //   width: MediaQuery.of(context).size.width * .95,
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Text(
+                    //         widget.dailyTask?.description ?? '',
+                    //         style: TextStyle(
+                    //           fontSize: 13,
+                    //           fontWeight: FontWeight.w300,
+                    //           color: Colors.white.withOpacity(.7),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+              // SizedBox(height: MediaQuery.of(context).size.height * .025),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Column(
+              //       children: [
+              //         Text('Progress', style: TextStyle(fontSize: 12)),
+              //         Row(
+              //           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           spacing: 8,
+              //           children: [
+              //             Icon(
+              //               Icons.circle,
+              //               size: 15,
+              //               color:
+              //                   widget.dailyTask?.completionPercentage == 0
+              //                       ? Colors.red
+              //                       : widget.dailyTask?.completionPercentage ==
+              //                           100
+              //                       ? Colors.green
+              //                       : Color(0xFFF54900),
+              //             ),
+              //             Text(
+              //               '${widget.dailyTask?.completionPercentage.toString() ?? ''}%',
+              //               style: TextStyle(fontSize: 16),
+              //             ),
+              //           ],
+              //         ),
+              //       ],
+              //     ),
+              //     ElevatedButton(
+              //       onPressed: addSubTask,
+              //       style: ElevatedButton.styleFrom(
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(10),
+              //           side: BorderSide(color: Color(0xFF27272A), width: 2),
+              //         ),
+              //         backgroundColor: Color(0xFF09090B).withAlpha(30),
+              //       ),
+              //       child: Text(
+              //         'Done',
+              //         style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 14),
+              //       ),
+              //     ),
+              //     ElevatedButton(
+              //       onPressed: addSubTask,
+              //       style: ElevatedButton.styleFrom(
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(10),
+              //           side: BorderSide(color: Color(0xFF27272A), width: 2),
+              //         ),
+              //         backgroundColor: Color(0xFF09090B).withAlpha(30),
+              //       ),
+              //       child: Row(
+              //         spacing: 8,
+              //         children: [
+              //           Stack(
+              //             children: [
+              //               Icon(
+              //                 Icons.percent,
+              //                 color: Color(0xFFD4D4D8),
+              //                 size: 18,
+              //               ),
+              //               // Icon(
+              //               //   Icons.circle_outlined,
+              //               //   color: Color(0xFFD4D4D8),
+              //               //   size: 18,
+              //               // ),
+              //             ],
+              //           ),
+              //           Text(
+              //             'Pick a Percentage',
+              //             style: TextStyle(
+              //               color: Color(0xFFD4D4D8),
+              //               fontSize: 14,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              SizedBox(height: MediaQuery.of(context).size.height * .025),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .95,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: MediaQuery.of(context).size.height * .005,
+                  children: [
+                    Text(
+                      "Sub Tasks",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                      ),
+                    ),
+                    ...(widget.dailyTask?.subTasks.map((subTask) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            spacing: 12,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: GestureDetector(
+                                  onTap:
+                                      () => handleUpdateSubTask(
+                                        subTask,
+                                        !subTask['is_done'],
+                                      ),
+                                  child:
                                       subTask['is_done']
-                                          ? TextDecoration.lineThrough
-                                          : TextDecoration.none,
+                                          ? Stack(
+                                            children: [
+                                              Icon(
+                                                Icons.check_box,
+                                                size: 32,
+                                                color: Color(0xFF004F3B),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.all(3.2),
+                                                child: Icon(
+                                                  Icons.check,
+                                                  size: 24,
+                                                  color: Color(0xFFF4F4F5),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                          : Icon(
+                                            Icons.square_outlined,
+                                            size: 32,
+                                            color: Color(0xFF3F3F47),
+                                          ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      }).toList() ??
-                      []),
-
-                  // SizedBox(height: MediaQuery.of(context).size.height * .015),
-                  // Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     RoundCheckBox(
-                  //       onTap: null,
-                  //       checkedWidget: Icon(
-                  //         Icons.check,
-                  //         size: 18,
-                  //         color: Color(0xff363636),
-                  //       ),
-                  //       disabledColor: Color(0xff2E8CD3),
-                  //       isChecked: true,
-                  //       size: 25,
-                  //     ),
-                  //     SizedBox(width: MediaQuery.of(context).size.width * .015),
-                  //     Container(
-                  //       width: MediaQuery.of(context).size.width * .8,
-                  //       child: Text(
-                  //         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ",
-                  //         style: TextStyle(
-                  //           fontSize: 13,
-                  //           fontWeight: FontWeight.w300,
-                  //           decoration: TextDecoration.lineThrough,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-
-                  // SizedBox(height: MediaQuery.of(context).size.height * .015),
-                  // Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     RoundCheckBox(
-                  //       onTap: null,
-                  //       checkedWidget: Icon(
-                  //         Icons.check,
-                  //         size: 18,
-                  //         color: Color(0xff363636),
-                  //       ),
-                  //       disabledColor: Color(0xff2E8CD3),
-                  //       isChecked: true,
-                  //       size: 25,
-                  //     ),
-                  //     SizedBox(width: MediaQuery.of(context).size.width * .015),
-                  //     Container(
-                  //       width: MediaQuery.of(context).size.width * .8,
-                  //       child: Text(
-                  //         "Lorem Ipsum is simply dummy text of the printing and typesetting industry.  ",
-                  //         style: TextStyle(
-                  //           fontSize: 13,
-                  //           fontWeight: FontWeight.w300,
-                  //           decoration: TextDecoration.lineThrough,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-
-                  // SizedBox(height: MediaQuery.of(context).size.height * .015),
-                  // Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     RoundCheckBox(
-                  //       onTap: null,
-                  //       border: Border.all(width: 3, color: Colors.white),
-                  //       checkedWidget: Icon(
-                  //         Icons.check,
-                  //         size: 18,
-                  //         color: Color(0xff363636),
-                  //       ),
-                  //       disabledColor: Color(0xff363636),
-                  //       isChecked: false,
-                  //       size: 25,
-                  //     ),
-                  //     SizedBox(width: MediaQuery.of(context).size.width * .015),
-                  //     Container(
-                  //       width: MediaQuery.of(context).size.width * .8,
-                  //       child: Text(
-                  //         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ",
-                  //         style: TextStyle(
-                  //           fontSize: 13,
-                  //           fontWeight: FontWeight.w300,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-
-                  // SizedBox(height: MediaQuery.of(context).size.height * .015),
-                  // Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     RoundCheckBox(
-                  //       onTap: null,
-
-                  //       border: Border.all(width: 3, color: Colors.white),
-                  //       checkedWidget: Icon(
-                  //         Icons.check,
-                  //         size: 18,
-                  //         color: Color(0xff363636),
-                  //       ),
-                  //       disabledColor: Color(0xff363636),
-                  //       isChecked: false,
-                  //       size: 25,
-                  //     ),
-                  //     SizedBox(width: MediaQuery.of(context).size.width * .015),
-                  //     Container(
-                  //       width: MediaQuery.of(context).size.width * .8,
-                  //       child: Text(
-                  //         "Lorem Ipsum is simply dummy text of the printing and typesetting industry.  ",
-                  //         style: TextStyle(
-                  //           fontSize: 13,
-                  //           fontWeight: FontWeight.w300,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                ],
+                              Expanded(
+                                flex: 11,
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: subTask['text'],
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w300,
+                                      color:
+                                          subTask['is_done']
+                                              ? Color(0xFF004F3B)
+                                              : Color(0xFFE4E4E7),
+                                      decoration:
+                                          subTask['is_done']
+                                              ? TextDecoration.lineThrough
+                                              : TextDecoration.none,
+                                      decorationColor: Color(0xFF004F3B),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }).toList() ??
+                        []),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * .025),
-          ],
+              SizedBox(height: MediaQuery.of(context).size.height * .025),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Color(0xFF27272A)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                width: MediaQuery.of(context).size.width * .95,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: MediaQuery.of(context).size.height * .005,
+                  children: [
+                    Text(
+                      "New Sub Task",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                      ),
+                    ),
+                    TextField(
+                      controller: subTaskTextController,
+                      style: TextStyle(color: Colors.white),
+                      cursorColor: Colors.white,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Color(0xFF27272A),
+                            width: 1,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 20,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Color(0xFF27272A),
+                            width: 1,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Color(0xFF27272A),
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * .005),
+                    Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: addSubTask,
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(
+                                color: Color(0xFF009966),
+                                width: 2,
+                              ),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            backgroundColor: Color(0xFF009966).withAlpha(33),
+                          ),
+                          child: Text(
+                            'Add',
+                            style: TextStyle(color: Color(0xFF009966)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

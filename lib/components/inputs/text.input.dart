@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 
 class MyTextInput extends StatefulWidget {
-  final String label;
+  final String? label;
   final TextFields textFields;
-  const MyTextInput({super.key, required this.label, required this.textFields});
+  const MyTextInput({super.key, this.label, required this.textFields});
 
   @override
   State<MyTextInput> createState() => _MyTextInputState();
@@ -15,11 +15,17 @@ class _MyTextInputState extends State<MyTextInput> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: MediaQuery.of(context).size.height * 0.008,
       children: [
-        Text(
-          widget.label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-        ),
+        widget.label != null
+            ? Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Text(
+                widget.label!,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+              ),
+            )
+            : Container(),
         widget.textFields,
       ],
     );

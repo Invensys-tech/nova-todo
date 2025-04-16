@@ -15,9 +15,11 @@ class HabitItem extends StatefulWidget {
 class _HabitItemState extends State<HabitItem> {
   extendStreak() {
     setState(() {
-      HabitsRepository().extendHabitStreak(widget.habit).then((value) {
+      HabitsRepository().extendHabitStreak(widget.habit, DateTime.now()).then((
+        value,
+      ) {
         if (value) {
-          widget.habit.extendStreak();
+          widget.habit.extendStreak(DateTime.now());
         }
       });
     });
@@ -25,9 +27,9 @@ class _HabitItemState extends State<HabitItem> {
 
   removeTerm() {
     setState(() {
-      HabitsRepository().removeTerm(widget.habit).then((value) {
+      HabitsRepository().removeTerm(widget.habit, DateTime.now()).then((value) {
         if (value) {
-          widget.habit.removeTerm();
+          widget.habit.removeTerm(DateTime.now());
         }
       });
     });
@@ -41,52 +43,137 @@ class _HabitItemState extends State<HabitItem> {
         motion: const ScrollMotion(),
         // dismissible: DismissiblePane(onDismissed: () {}),
         children: [
-          SlidableAction(
-            onPressed: (context) => extendStreak(),
-            backgroundColor: Color(0xFF1D9402),
-            foregroundColor: Colors.white,
-            icon: Icons.sentiment_satisfied,
-            label: 'Done',
+          // SlidableAction(
+          //   onPressed: (context) => extendStreak(),
+          //   backgroundColor: Color(0xFF1D9402),
+          //   foregroundColor: Colors.white,
+          //   icon: Icons.sentiment_satisfied,
+          //   label: 'Done',
+          // ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Color(0xFFEC003F),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () => removeTerm(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF555B59),
+                  ),
+                  child: Text(
+                    '😔 I didn\'t',
+                    style: TextStyle(color: Color(0xFFF4F4F5)),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
-          SlidableAction(
-            onPressed: (context) => removeTerm(),
-            backgroundColor: Color(0xFFFE4A49),
-            foregroundColor: Colors.white,
-            icon: Icons.sentiment_dissatisfied,
-            label: 'Not Done',
+          // SlidableAction(
+          //   onPressed: (context) => removeTerm(),
+          //   backgroundColor: Color(0xFFFE4A49),
+          //   foregroundColor: Colors.white,
+          //   icon: Icons.sentiment_dissatisfied,
+          //   label: 'Not Done',
+          // ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Color(0xFF009966),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () => extendStreak(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF555B59),
+                  ),
+                  child: Text(
+                    '🙂 I did it!',
+                    style: TextStyle(color: Color(0xFFF4F4F5)),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
-      child: Container(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
-        decoration: BoxDecoration(
-          color: Colors.blueGrey.shade900, // Background color
-          borderRadius: BorderRadius.circular(
-            16.0,
-          ), // Rounded corners with a radius of 16
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              spacing: MediaQuery.of(context).size.width * 0.04,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [Icon(Icons.book), Text(widget.habit.name)],
+      child: GestureDetector(
+        onTap: () {
+          print('halluuuu');
+        },
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: MediaQuery.of(context).size.width * .05,
+          ),
+          child: Container(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
+            decoration: BoxDecoration(
+              // color: Colors.blueGrey.shade900,
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: Color(0xFF27272A).withOpacity(.35),
+                width: 2.5,
+              ),
             ),
-            Row(
-              spacing: MediaQuery.of(context).size.width * 0.01,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.local_fire_department, color: Colors.orange),
-                Text(widget.habit.streak.toString()),
+                Column(
+                  spacing: MediaQuery.of(context).size.width * 0.01,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Icon(Icons.book),
+                    Text(
+                      widget.habit.name,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      'Motivation here',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      widget.habit.frequencyPhrase,
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  spacing: MediaQuery.of(context).size.width * 0.01,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Icon(Icons.local_fire_department, color: Colors.orange),
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF27272A),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.favorite_border,
+                        color: Color(0xFF009966),
+                        size: 20,
+                      ),
+                    ),
+                    Text(widget.habit.streak.toString()),
+                    Icon(Icons.keyboard_arrow_right, color: Color(0xFF009966)),
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

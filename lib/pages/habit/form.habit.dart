@@ -22,8 +22,8 @@ class HabitForm extends StatefulWidget {
 
 class _HabitFormState extends State<HabitForm> {
   FormInput name = FormInput(
-    label: 'Name',
-    hint: 'Enter name',
+    label: 'Title',
+    hint: 'eg: Books and Music',
     controller: TextEditingController(),
     type: "1",
   );
@@ -69,6 +69,17 @@ class _HabitFormState extends State<HabitForm> {
     setState(() {
       repetition.controller.text = value;
       customRepetitionItems.clear();
+      if (repetition.controller.text == 'Everyday') {
+        customRepetitionItems = {
+          'MON',
+          'TUE',
+          'WED',
+          'THU',
+          'FRI',
+          'SAT',
+          'SUN',
+        };
+      }
     });
   }
 
@@ -116,7 +127,14 @@ class _HabitFormState extends State<HabitForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Habit"),
+        title: Text(
+          "Add New Habit",
+          style: TextStyle(
+            color: Color(0xFFD4D4D8),
+            fontWeight: FontWeight.w600,
+            fontSize: 16.0,
+          ),
+        ),
         leading: Row(
           spacing: MediaQuery.of(context).size.width * 0.04,
           children: [
@@ -142,18 +160,24 @@ class _HabitFormState extends State<HabitForm> {
                 controller: name.controller,
               ),
             ),
-            MySelector(
-              label: repetition.label,
-              myDropdownItems: repetitionItems,
-              onSelect: selectRepetition,
-              icon: Icons.circle_notifications_sharp,
-              currentValue: repetition.controller.text,
-              controller: repetition.controller,
+            // MySelector(
+            //   label: repetition.label,
+            //   myDropdownItems: repetitionItems,
+            //   onSelect: selectRepetition,
+            //   icon: Icons.circle_notifications_sharp,
+            //   currentValue: repetition.controller.text,
+            //   controller: repetition.controller,
+            // ),
+            MyRadioInput(
+              label: 'Frequency',
+              groupKey: 'frequency',
+              onChanged: selectRepetition,
+              options: ['Everyday', 'Daily', 'Weekly'],
             ),
             // MyRadioInput(
-            //   // label: 'Specific',
+            //   label: 'Specific',
             //   groupKey: 'repetition_type',
-            //   options: ['Specific', 'Random'],
+            //   options: ['Everyday', 'Once a week'],
             //   onChanged: selectRepetitionType,
             //   orientation: 'horizontal',
             // ),
@@ -161,28 +185,36 @@ class _HabitFormState extends State<HabitForm> {
               // spacing: MediaQuery.of(context).size.width * 0.04,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children:
-                  (repetition.controller.text == repetitionItems[0]['value']
-                          ? ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']
+                  (repetition.controller.text == 'Daily' ||
+                              repetition.controller.text == 'Everyday'
+                          ? ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
                           : ['Week1', 'Week2', 'Week3', 'Week4'])
                       .map(
                         (e) => GestureDetector(
                           onTap: () => setRepetitionItem(e),
                           child: Container(
                             width:
-                                repetition.controller.text ==
-                                        repetitionItems[0]['value']
-                                    ? 40.0
-                                    : 80.0,
-                            height: 40.0,
+                                repetition.controller.text == 'Daily' ||
+                                        repetition.controller.text == 'Everyday'
+                                    ? 45.0
+                                    : 70.0,
+                            height: 30.0,
                             decoration: BoxDecoration(
                               color:
-                                  customRepetitionItems.contains(e)
-                                      ? Colors.green.shade800
-                                      : Colors.blueGrey.shade800,
-                              borderRadius: BorderRadius.circular(40.0),
+                                  repetition.controller.text == 'Everyday' ||
+                                          customRepetitionItems.contains(e)
+                                      ? Color(0xFF8B0836)
+                                      : Color(0xFF27272A),
+                              borderRadius: BorderRadius.circular(30.0),
                             ),
                             alignment: Alignment.center,
-                            child: Text(e),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 2.0,
+                                horizontal: 7.0,
+                              ),
+                              child: Text(e, style: TextStyle(fontSize: 11)),
+                            ),
                           ),
                         ),
                       )
@@ -190,35 +222,48 @@ class _HabitFormState extends State<HabitForm> {
             ),
             Padding(
               padding: EdgeInsets.all(
-                MediaQuery.of(context).size.height * 0.02,
+                MediaQuery.of(context).size.height * 0.005,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                spacing: MediaQuery.of(context).size.height * 0.02,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  Expanded(
+                    flex: 3,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF27272A),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                    ),
-                    onPressed: navigateBack,
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(color: Colors.white),
+                      onPressed: navigateBack,
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Outfit',
+                        ),
+                      ),
                     ),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  Expanded(
+                    flex: 7,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF009966),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                    ),
-                    onPressed: saveHabit,
-                    child: const Text(
-                      "Save Habit",
-                      style: TextStyle(color: Colors.white),
+                      onPressed: saveHabit,
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Outfit',
+                        ),
+                      ),
                     ),
                   ),
                 ],

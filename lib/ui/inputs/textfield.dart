@@ -82,6 +82,7 @@ class TextFields extends StatelessWidget {
   final String whatIsInput;
   final TextEditingController controller;
   final String? prefixText;
+  final bool filled;
   final String? Function(String?)? func;
 
   const TextFields({
@@ -90,6 +91,7 @@ class TextFields extends StatelessWidget {
     required this.whatIsInput,
     required this.controller,
     this.prefixText,
+    this.filled = false,
     this.func,
   });
 
@@ -124,50 +126,70 @@ class TextFields extends StatelessWidget {
             controller: controller,
             keyboardType:
                 whatIsInput == "0" ? TextInputType.number : TextInputType.text,
+            // decoration: InputDecoration(
+            //   hintText: hinttext,
+            //   filled: true,
+            //   fillColor: Colors.black87.withOpacity(.3),
+            //   hintStyle: const TextStyle(
+            //     fontSize: 11,
+            //     fontWeight: FontWeight.w200,
+            //     color: Colors.white60,
+            //   ),
+            //   border: OutlineInputBorder(
+            //     borderRadius: BorderRadius.only(
+            //       topRight: const Radius.circular(5),
+            //       bottomRight: const Radius.circular(5),
+            //       topLeft: Radius.circular(prefixText != null ? 0 : 5),
+            //       bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
+            //     ),
+            //     borderSide: const BorderSide(
+            //       width: 2,
+            //       color: Colors.transparent,
+            //     ),
+            //   ),
+            //   focusedBorder: OutlineInputBorder(
+            //     borderRadius: BorderRadius.only(
+            //       topRight: const Radius.circular(5),
+            //       bottomRight: const Radius.circular(5),
+            //       topLeft: Radius.circular(prefixText != null ? 0 : 5),
+            //       bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
+            //     ),
+            //     borderSide: BorderSide(
+            //       color: Colors.green.withOpacity(.3),
+            //       width: 1.0,
+            //     ),
+            //   ),
+            //   enabledBorder: OutlineInputBorder(
+            //     borderRadius: BorderRadius.only(
+            //       topRight: const Radius.circular(5),
+            //       bottomRight: const Radius.circular(5),
+            //       topLeft: Radius.circular(prefixText != null ? 0 : 5),
+            //       bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
+            //     ),
+            //     borderSide: BorderSide(
+            //       color: Colors.black38.withOpacity(.3),
+            //       width: 1.0,
+            //     ),
+            //   ),
+            // ),
             decoration: InputDecoration(
-              hintText: hinttext,
-              filled: true,
-              fillColor: Colors.black87.withOpacity(.3),
-              hintStyle: const TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w200,
-                color: Colors.white60,
-              ),
+              filled: filled,
+              fillColor: Color(0xFF09090B).withAlpha(30),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: const Radius.circular(5),
-                  bottomRight: const Radius.circular(5),
-                  topLeft: Radius.circular(prefixText != null ? 0 : 5),
-                  bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
-                ),
-                borderSide: const BorderSide(
-                  width: 2,
-                  color: Colors.transparent,
-                ),
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Color(0xFF27272A), width: 1),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: const Radius.circular(5),
-                  bottomRight: const Radius.circular(5),
-                  topLeft: Radius.circular(prefixText != null ? 0 : 5),
-                  bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
-                ),
-                borderSide: BorderSide(
-                  color: Colors.green.withOpacity(.3),
-                  width: 1.0,
-                ),
+              contentPadding: EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 20,
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.only(
-                  topRight: const Radius.circular(5),
-                  bottomRight: const Radius.circular(5),
-                  topLeft: Radius.circular(prefixText != null ? 0 : 5),
-                  bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
-                ),
-                borderSide: BorderSide(
-                  color: Colors.black38.withOpacity(.3),
-                  width: 1.0,
-                ),
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Color(0xFF27272A), width: 1),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Color(0xFF27272A), width: 1),
               ),
             ),
             validator: func,
