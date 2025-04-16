@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/inputs/fixed-length-input.dart';
+import 'package:flutter_application_1/components/inputs/radio.input.dart';
 import 'package:flutter_application_1/components/inputs/selector.input.dart';
 import 'package:flutter_application_1/components/inputs/text.input.dart';
 // import 'package:flutter_application_1/components/inputs/time-picker.input.dart';
@@ -45,9 +46,9 @@ class TodoForm extends StatefulWidget {
   });
 
   static const List<Map<String, dynamic>> todoTypes = [
-    {'label': 'Essential', 'value': 'Essential'},
-    {'label': 'Considered', 'value': 'Considered'},
-    {'label': 'Unnecessary', 'value': 'Unnecessary'},
+    {'label': 'Must', 'value': 'Must'},
+    {'label': 'Maybe', 'value': 'Maybe'},
+    {'label': 'Other', 'value': 'Other'},
   ];
 
   static const List<Map<String, dynamic>> notifyMeOptions = [
@@ -64,44 +65,6 @@ class TodoForm extends StatefulWidget {
 class _TodoFormState extends State<TodoForm> {
   bool subTasksIsOpen = false;
 
-  // FormInputPair startTimeInput = FormInputPair(
-  //   key: FormInput(
-  //     label: 'Hours',
-  //     hint: '00',
-  //     type: "0",
-  //     controller: TextEditingController(),
-  //   ),
-  //   value: FormInput(
-  //     label: 'Minutes',
-  //     hint: '00',
-  //     type: "0",
-  //     controller: TextEditingController(),
-  //   ),
-  // );
-
-  // FormInputPair endTimeInput = FormInputPair(
-  //   key: FormInput(
-  //     label: 'Hours',
-  //     hint: '00',
-  //     type: "0",
-  //     controller: TextEditingController(),
-  //   ),
-  //   value: FormInput(
-  //     label: 'Minutes',
-  //     hint: '00',
-  //     type: "0",
-  //     controller: TextEditingController(),
-  //   ),
-  // );
-
-  // setTaskTime(TimeOfDay startTime, TimeOfDay endTime) {
-  //   // widget.time.controller.text = value;.
-  //   setState(() {
-  //     widget.taskTime.text = formatTimeOfDayToString(startTime);
-  //     widget.taskEndTime.text = formatTimeOfDayToString(endTime);
-  //   });
-  // }
-
   final TextStyle _taskTimesStyle = TextStyle(
     fontSize: 10.0,
     fontWeight: FontWeight.w200,
@@ -114,12 +77,6 @@ class _TodoFormState extends State<TodoForm> {
   setNotifyMe(dynamic value) {
     widget.notifyMe.controller.text = value;
   }
-
-  // addSubTask(value) {
-  //   setState(() {
-  //     widget.subTasks.add(value);
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -240,14 +197,23 @@ class _TodoFormState extends State<TodoForm> {
               hinttext: widget.name.hint,
               whatIsInput: widget.name.type,
               controller: widget.name.controller,
-              icon: Icons.fingerprint,
+              // icon: Icons.fingerprint,
             ),
           ),
-          MySelector(
+          // MySelector(
+          //   label: 'Type',
+          //   myDropdownItems: TodoForm.todoTypes,
+          //   onSelect: setTodoTypes,
+          //   currentValue: widget.type.controller.text,
+          // ),
+          MyRadioInput(
             label: 'Type',
-            myDropdownItems: TodoForm.todoTypes,
-            onSelect: setTodoTypes,
-            currentValue: widget.type.controller.text,
+            groupKey: 'todo-types',
+            options:
+                TodoForm.todoTypes
+                    .map((option) => option['label'] as String)
+                    .toList(),
+            onChanged: setTodoTypes,
           ),
           MyDateTimeInput(
             label: 'Date',

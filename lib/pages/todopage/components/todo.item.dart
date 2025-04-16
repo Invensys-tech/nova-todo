@@ -23,6 +23,17 @@ class TodoItem extends StatefulWidget {
 }
 
 class _TodoItemState extends State<TodoItem> {
+  String getCompletionText() {
+    if (widget.dailyTask.completionPercentage == 100) return 'Done';
+    if (widget.dailyTask.completionPercentage == 0) return 'Not Yet';
+    return widget.dailyTask.completionPercentage.toString();
+  }
+
+  Color getCompletionColor() {
+    if (widget.dailyTask.completionPercentage != 100) return Color(0xFFF54900);
+    return Color(0xFF009966);
+  }
+
   Future<bool> updateDailyTaskPercentage(int completionPercentage) async {
     if (completionPercentage > 100 || completionPercentage < 0) {
       return false;
@@ -40,6 +51,21 @@ class _TodoItemState extends State<TodoItem> {
       widget.setParentState();
     }
     return updated;
+  }
+
+  addSubTask(Map<String, dynamic> subTask) {
+    Map<String, dynamic> newSubTask = {
+      ...subTask,
+      'daily_task_id': widget.dailyTask.id,
+    };
+    DailyTaskRepository().addDailySubTask(newSubTask).then((value) {
+      if (value) {
+        widget.dailyTask.subTasks.add(newSubTask);
+        setState(() {
+          widget.setParentState();
+        });
+      }
+    });
   }
 
   showCompletionPercentageUpdateDialog(BuildContext context) {
@@ -148,7 +174,10 @@ class _TodoItemState extends State<TodoItem> {
                 context,
                 MaterialPageRoute(
                   builder:
-                      (context) => TodoViewPage(dailyTask: widget.dailyTask),
+                      (context) => TodoViewPage(
+                        dailyTask: widget.dailyTask,
+                        addSubTask: addSubTask,
+                      ),
                 ),
               );
             },
@@ -156,7 +185,7 @@ class _TodoItemState extends State<TodoItem> {
               padding: EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * .05,
               ),
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
@@ -166,33 +195,51 @@ class _TodoItemState extends State<TodoItem> {
                     ),
                     width: MediaQuery.of(context).size.width * .93,
                     decoration: BoxDecoration(
-                      color: Color(0xff0d805e).withOpacity(.35),
+                      // color: Color(0xff0d805e).withOpacity(.35),
                       borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: Color(0xFF27272A).withOpacity(.35),
+                        width: 2.5,
+                      ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          spacing: MediaQuery.of(context).size.width * .02,
                           children: [
-                            Text(
-                              widget.dailyTask.name,
-                              style: GoogleFonts.lato(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            Icon(
+                              widget.dailyTask.completionPercentage == 100
+                                  ? Icons.check
+                                  : Icons.alarm,
+                              size: 24,
+                              color: getCompletionColor(),
                             ),
-                            Text(
-                              '${widget.dailyTask.taskTime}-${widget.dailyTask.endTime}',
-                              style: GoogleFonts.lato(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white.withOpacity(.75),
-                              ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.dailyTask.name,
+                                  style: GoogleFonts.lato(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFFE4E4E7),
+                                  ),
+                                ),
+                                Text(
+                                  '${widget.dailyTask.taskTime} - ${widget.dailyTask.endTime}',
+                                  style: GoogleFonts.lato(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white.withOpacity(.75),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-
                         SizedBox(
                           height: MediaQuery.of(context).size.height * .0125,
                         ),
@@ -204,48 +251,43 @@ class _TodoItemState extends State<TodoItem> {
                             color: Colors.white.withOpacity(.8),
                           ),
                         ),
-
                         SizedBox(
                           height: MediaQuery.of(context).size.height * .015,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.lock_clock,
-                              size: 20,
-                              color: Colors.white,
-                            ),
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  "Status : ",
-                                  style: GoogleFonts.lato(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
+                                // Text(
+                                //   "Status : ",
+                                //   style: GoogleFonts.lato(
+                                //     fontSize: 13,
+                                //     fontWeight: FontWeight.w500,
+                                //   ),
+                                // ),
                                 Text(
                                   // widget.dailyTask.isDone ? 'Done' : 'Waiting',
-                                  Random().nextBool() ? 'Done' : 'Waiting',
+                                  getCompletionText(),
                                   style: GoogleFonts.lato(
                                     fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.yellow,
+                                    fontWeight: FontWeight.w400,
+                                    color: getCompletionColor(),
                                   ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_right,
+                                  color: Color(0xFF009966),
                                 ),
                               ],
                             ),
                           ],
                         ),
-
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .01,
-                        ),
                       ],
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * .02),
+                  // SizedBox(height: MediaQuery.of(context).size.height * .02),
                 ],
               ),
             ),

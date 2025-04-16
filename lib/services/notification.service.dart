@@ -12,8 +12,12 @@ class NotificationService {
 
   bool get isInitialized => _isInitialized;
 
-  Future<void> initNotifications() async {
+  GlobalKey<NavigatorState>? _navigatorKey; // Add a nullable navigatorKey
+
+  Future<void> initNotifications(GlobalKey<NavigatorState> navigatorKey) async {
     if (_isInitialized) return;
+
+    _navigatorKey = navigatorKey;
 
     const initSettingsAndroid = AndroidInitializationSettings(
       // '@mipmap/ic_launcher',
@@ -38,12 +42,14 @@ class NotificationService {
           if (payload.contains('add-expense')) {
             List<String> parts = payload.split('||');
             String amount = parts[1];
-            print('Amount: $amount');
-            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+            // print('Amount: $amount');
+            print(_navigatorKey);
+            print(_navigatorKey?.currentState);
+            _navigatorKey?.currentState?.pushNamedAndRemoveUntil(
               '/',
               (route) => false,
             );
-            navigatorKey.currentState?.pushNamed(
+            _navigatorKey?.currentState?.pushNamed(
               '/expense-form',
               arguments: amount,
             );
@@ -51,11 +57,11 @@ class NotificationService {
             List<String> parts = payload.split('||');
             String amount = parts[1];
             print('Amount: $amount');
-            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+            _navigatorKey?.currentState?.pushNamedAndRemoveUntil(
               '/',
               (route) => false,
             );
-            navigatorKey.currentState?.pushNamed(
+            _navigatorKey?.currentState?.pushNamed(
               '/income-form',
               arguments: amount,
             );

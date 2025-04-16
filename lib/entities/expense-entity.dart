@@ -5,7 +5,7 @@ class Expense {
   String type;
   DateTime date;
   String paidBy;
-  String bankAccount;
+  String? bankAccount;
   String description;
   num amount;
   Expense({

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_application_1/entities/user.entity.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
+import 'package:flutter_application_1/services/message.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:flutter_application_1/utils/enums.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
@@ -52,6 +53,13 @@ class AuthService {
 
       NotificationService().showNotification(-1, 'OTP', 'Your otp is $otp');
 
+      await sendMessage(
+        token:
+            'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiczA1T2VJTGhMcmlmT2hsakx1eldEUW1ib21HQkFVQU8iLCJleHAiOjE5MDIwNTI5MzksImlhdCI6MTc0NDI4NjUzOSwianRpIjoiZTk3YTQ2NDYtMDM3Ni00Y2FhLWJmOGItNzdiNDA5MjEyNWVkIn0.yEaCgtxpQPzMoA9m5MpjFEx6c7ROWX3NiKj_wyMGZeg',
+        recipient: '0911451079',
+        message: 'Hello from Flutter ${otp}!',
+      );
+
       if (userData == null) {
         UserRepository().createUser(phoneNumber, otp);
         return loginRoutes.SIGNUP;
@@ -85,8 +93,10 @@ class AuthService {
         return false;
       }
 
-      UserEntity user = UserEntity.fromJson(userData);
-      storeSession(user);
+      if (userData['name'] != null) {
+        UserEntity user = UserEntity.fromJson(userData);
+        storeSession(user);
+      }
 
       return true;
     } catch (e) {
@@ -119,6 +129,7 @@ class AuthService {
         phoneNumber,
         name,
         gender,
+        DateTime.now().add(const Duration(minutes: 1)).toIso8601String(),
       );
 
       UserEntity user = UserEntity.fromJson(data);
@@ -159,7 +170,7 @@ class AuthService {
     }
   }
 
-  String generateOTP() => generateRandomString(5);
+  String generateOTP() => generateRandomString(4);
 
   Future<void> logout() async {
     await deleteSession();
@@ -168,8 +179,13 @@ class AuthService {
   Future<Map<String, dynamic>> findSession() async {
     HiveService hiveService = HiveService();
     await hiveService.initHive(boxName: 'session');
-    Map<String, dynamic> session = await hiveService.getData('user');
-    return session;
+
+    final session = await hiveService.getData('user');
+    if (session is Map) {
+      return Map<String, dynamic>.from(session);
+    } else {
+      throw Exception('Invalid session data format');
+    }
   }
 
   Future<void> storeSession(UserEntity user) async {
@@ -182,5 +198,37 @@ class AuthService {
     HiveService hiveService = HiveService();
     await hiveService.initHive(boxName: 'session');
     await hiveService.deleteData('user');
+  }
+
+  Future<bool?> isSubscriptionActive() async {
+    try {
+      dynamic session = await findSession();
+      InitPage initPage = InitPage.AUTH;
+      bool isSubscriptionActive = DateTime.now().isBefore(
+        (await UserRepository().getSubscriptionEndDate(session['phoneNumber'])),
+      );
+
+      if (isSubscriptionActive) {
+        initPage = InitPage.HOME;
+      } else {
+        initPage = InitPage.PAYMENT;
+      }
+
+      return isSubscriptionActive;
+
+      // print('----------------- Is After -----------------');
+      // print(
+      //   DateTime.now().isAfter(
+      //     (await UserRepository().getSubscriptionEndDate(data['phoneNumber'])),
+      //   ),
+      // );
+      // print('----------------- Now -----------------');
+      // print(DateTime.now().toIso8601String());
+      // print('----------------- Subscription End Date -----------------');
+      // print(await UserRepository().getSubscriptionEndDate(data['phoneNumber']));
+    } catch (e) {
+      print('Error getting sub end date initializing Supabase');
+      return null;
+    }
   }
 }

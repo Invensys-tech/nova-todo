@@ -21,7 +21,7 @@ class _HabitsListState extends State<HabitsList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
       child: FutureBuilder(
         future: widget.habits,
         builder: (context, snapshot) {

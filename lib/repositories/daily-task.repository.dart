@@ -1,16 +1,20 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DailyTaskRepository {
+  AuthService authService = AuthService();
+
   Future<DailyTask> addDailyTask(DailyTask dailyTask) async {
     try {
+      final userId = (await authService.findSession())['id'];
       final response = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
-          .insert(dailyTask.toJson())
+          .insert({...dailyTask.toJson(), 'user_id': userId})
           .count(CountOption.exact);
 
       if (response.count == 0) {
@@ -95,7 +99,25 @@ class DailyTaskRepository {
     }
   }
 
-  Future<List<DailyTask>> fetchAll(DateTime? date) async {
+  Future<bool> addDailySubTask(Map<String, dynamic> subTask) async {
+    try {
+      final response = await supabaseClient
+          .from(Entities.DAILY_SUBTASK.dbName)
+          .insert(subTask)
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Error creating daily subtask');
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<List<DailyTask>> fetchAll(DateTime date) async {
     // Future<dynamic> fetchAll(DateTime? date) async {
     try {
       // print('---------- Fetching daily tasks ------------');
@@ -103,7 +125,8 @@ class DailyTaskRepository {
       final data = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
           .select('*, daily_sub_tasks(*)')
-          .eq('date', date!.toIso8601String());
+          .eq('date', date.toIso8601String())
+          .eq('user_id', (await authService.findSession())['id']);
 
       // for (var d in data) {
       //   print(jsonEncode(d));
@@ -121,7 +144,8 @@ class DailyTaskRepository {
       final data = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
           .select('*')
-          .eq('date', date);
+          .eq('date', date)
+          .eq('user_id', (await authService.findSession())['id']);
 
       if (data.isEmpty) {
         return 0;
@@ -151,6 +175,7 @@ class DailyTaskRepository {
               .from(Entities.DAILY_TASK.dbName)
               .select('*')
               .eq('id', id)
+              .eq('user_id', (await authService.findSession())['id'])
               .maybeSingle();
 
       if (data == null) {
@@ -171,6 +196,7 @@ class DailyTaskRepository {
               .from(Entities.DAILY_TASK.dbName)
               .select('*, daily_sub_tasks(*)')
               .eq('id', id)
+              .eq('user_id', (await authService.findSession())['id'])
               .maybeSingle();
 
       if (data == null) {

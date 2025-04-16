@@ -603,13 +603,18 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamanager.dart';
+import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/pages/finance/analytics/analytics.view.dart';
 import 'package:flutter_application_1/pages/finance/common/Expenses.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
 import 'package:flutter_application_1/pages/finance/common/bank.dart';
+import 'package:flutter_application_1/repositories/expense.repository.dart';
 import 'package:slider_bar_chart/slider_bar_chart.dart';
 
 class AnalyticsPage extends StatefulWidget {
-  const AnalyticsPage({super.key});
+  final Datamanager datamanager;
+  const AnalyticsPage({super.key, required this.datamanager});
 
   @override
   State<AnalyticsPage> createState() => _AnalyticsPageState();
@@ -753,6 +758,48 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
             ),
           ],
         ),
+        Column(
+          children: [
+            FutureBuilder(
+              future: widget.datamanager.getBanks(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var banks = snapshot.data as List<Bank>;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    itemCount: banks.length > 3 ? 3 : banks.length,
+
+                    itemBuilder: (context, index) {
+                      final bank = banks[index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          BankWidget(
+                            id: banks[index].id,
+                            accountname: banks[index].accountHolder,
+                            accoutnumber: banks[index].accountNumber,
+                            balance: banks[index].balance,
+                            datamanager: widget.datamanager,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return Text(
+                      "There was an error fetching data ${snapshot.error}",
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                }
+              },
+            ),
+          ],
+        ),
         // BankWidget(
         //   accountname: "Jhon",
         //   balance: 787970,
@@ -788,18 +835,65 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                 color: Colors.white70,
               ),
             ),
-            Text(
-              "See All",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.white70,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) =>
+                            AnalyticsView(datamanager: widget.datamanager),
+                  ),
+                );
+                print("touched");
+              },
+              child: Container(
+                padding: EdgeInsets.all(8), // Give it tappable space
+                child: Text(
+                  "See All",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white70,
+                  ),
+                ),
               ),
             ),
           ],
         ),
-        ExpensesWidget(),
-        ExpensesWidget(),
-        ExpensesWidget(),
+
+        Column(
+          children: [
+            FutureBuilder<Map<String, Map<String, dynamic>>>(
+              future: ExpenseRepository().getExpenseCategoryTotals(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Text(
+                    "Error: ${snapshot.error}",
+                    style: const TextStyle(color: Colors.white),
+                  );
+                }
+                final categoryData = snapshot.data!;
+                return Column(
+                  children:
+                      categoryData.entries.take(3).map((entry) {
+                        return ExpensesWidget(
+                          category: entry.key,
+                          expenseCount: entry.value['count'] ?? 0,
+                          amount: entry.value['totalAmount'] ?? 0.0,
+                        );
+                      }).toList(),
+                );
+              },
+            ),
+          ],
+        ),
+
+        // ExpensesWidget(expenseCount: 5, category: "Food", amount: 5000),
+        // ExpensesWidget(expenseCount: 5, category: "Food", amount: 5000),
+        // ExpensesWidget(expenseCount: 5, category: "Food", amount: 5000),
       ],
     );
   }

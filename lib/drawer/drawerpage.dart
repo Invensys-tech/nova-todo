@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.view.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/habit/habits.dart';
 import 'package:flutter_application_1/pages/quotes/quotes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class Drawerpage extends StatefulWidget {
@@ -33,7 +35,7 @@ class _DrawerpageState extends State<Drawerpage> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * .035,
+        horizontal: MediaQuery.of(context).size.width * .055,
       ),
       height: MediaQuery.of(context).size.height * .8,
       width: MediaQuery.of(context).size.width * .65,
@@ -41,42 +43,48 @@ class _DrawerpageState extends State<Drawerpage> {
         vertical: MediaQuery.of(context).size.width * .175,
       ),
       decoration: BoxDecoration(
-        color: Color(0xff393838),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
+          color:  Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomRight: Radius.circular(20))
       ),
       child: Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * .03),
           Container(
             width: MediaQuery.of(context).size.width * .5,
-            height: MediaQuery.of(context).size.height * .075,
-            child: Image.asset(
-              "assets/Images/VitaImage1.png",
-              fit: BoxFit.contain,
+            height: MediaQuery.of(context).size.height * .05,
+            child: Row(
+
+              children: [
+                Image.asset(
+                  "assets/Images/VitaNew.png",
+                  width: MediaQuery.of(context).size.width*.1,
+                  height: MediaQuery.of(context).size.height*.045,
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width*.005,),
+                Text("Vita",style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600,color: Color(0xff113F6C)),),
+
+                Text(" Board",style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600,color: Color(0xff51BD82)),),
+              ],
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.width * .025),
+          SizedBox(height: MediaQuery.of(context).size.height * .025),
+          Divider(),
+
+          SizedBox(height: MediaQuery.of(context).size.height * .025),
           GestureDetector(
             onTap: routeToHabits,
             child: Row(
               children: [
-                Icon(
-                  Icons.tab_unselected,
-                  size: 25,
-                  color: Colors.white.withOpacity(.7),
-                ),
+                FaIcon(FontAwesomeIcons.refresh,color: Color(0xff00D492),size: 19,),
                 SizedBox(width: MediaQuery.of(context).size.width * .035),
                 Text(
                   "Habits",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                 ),
               ],
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.width * .025),
+          SizedBox(height: MediaQuery.of(context).size.height * .025),
           GestureDetector(
             onTap: () {
               PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
@@ -90,111 +98,162 @@ class _DrawerpageState extends State<Drawerpage> {
             child: Row(
               children: [
                 FaIcon(
-                  FontAwesomeIcons.users,
-                  size: 20,
-                  color: Colors.white.withOpacity(.7),
+                  FontAwesomeIcons.bolt,
+                  color: Color(0xff00D492),size: 19
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * .035),
                 Text(
                   "Productivity",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                 ),
               ],
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.width * .025),
+          SizedBox(height: MediaQuery.of(context).size.height * .025),
           GestureDetector(
             onTap: routeToQuotes,
             child: Row(
               children: [
                 FaIcon(
-                  FontAwesomeIcons.gamepad,
-                  size: 25,
-                  color: Colors.white.withOpacity(.7),
+                  FontAwesomeIcons.quora,
+                  color: Color(0xff00D492),size: 19
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * .035),
                 Text(
                   "Quotes",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                 ),
               ],
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.width * .025),
+          SizedBox(height: MediaQuery.of(context).size.height * .025),
           Row(
             children: [
               FaIcon(
-                FontAwesomeIcons.users,
-                size: 20,
-                color: Colors.white.withOpacity(.7),
+                FontAwesomeIcons.userSecret,
+                color: Color(0xff00D492),size: 19
               ),
               SizedBox(width: MediaQuery.of(context).size.width * .035),
               Text(
                 "Community Challenges",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
               ),
             ],
           ),
-          SizedBox(height: MediaQuery.of(context).size.width * .025),
+          SizedBox(height: MediaQuery.of(context).size.height * .025),
           Row(
             children: [
               FaIcon(
-                FontAwesomeIcons.users,
-                size: 20,
-                color: Colors.white.withOpacity(.7),
+                FontAwesomeIcons.bell,
+                color: Color(0xff00D492),size: 19
               ),
               SizedBox(width: MediaQuery.of(context).size.width * .035),
               Text(
                 "Notification",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
               ),
             ],
           ),
-          SizedBox(height: MediaQuery.of(context).size.width * .025),
+          SizedBox(height: MediaQuery.of(context).size.height * .025),
           Row(
             children: [
               FaIcon(
-                FontAwesomeIcons.users,
-                size: 20,
-                color: Colors.white.withOpacity(.7),
+                FontAwesomeIcons.tags,
+                color: Color(0xff00D492),size: 19
               ),
               SizedBox(width: MediaQuery.of(context).size.width * .035),
               Text(
                 "Prcing",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
               ),
             ],
           ),
-          SizedBox(height: MediaQuery.of(context).size.width * .025),
-          Row(
-            children: [
-              FaIcon(
-                FontAwesomeIcons.users,
-                size: 20,
-                color: Colors.white.withOpacity(.7),
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * .035),
-              Text(
-                "Seeting ",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-              ),
-            ],
+          SizedBox(height: MediaQuery.of(context).size.height * .025),
+          GestureDetector(
+            onTap: (){
+              PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                context,
+                screen: Seetingpage(),
+                withNavBar: false,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
+              );
+            },
+            child: Row(
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.cog,
+                  color: Color(0xff00D492),size: 19
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * .035),
+                Text(
+                  "Seeting ",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                ),
+              ],
+            ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.width * .025),
-          Row(
+          SizedBox(height: MediaQuery.of(context).size.width * .04),
+         /* Row(
             children: [
               FaIcon(
                 FontAwesomeIcons.streetView,
-                size: 20,
-                color: Colors.white.withOpacity(.7),
+                color: Color(0xff00D492),size: 19
               ),
               SizedBox(width: MediaQuery.of(context).size.width * .035),
               Text(
                 "Profile ",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ],
+          ), */
+
+          SizedBox(height: MediaQuery.of(context).size.height*.09,),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025,vertical: MediaQuery.of(context).size.height*.01),
+            height: MediaQuery.of(context).size.height*.11,
+            width: MediaQuery.of(context).size.width*.65,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(width: 2, color: Theme.of(context).secondaryHeaderColor)
+            ),
+            child: Row(
+              children: [
+                FaIcon(FontAwesomeIcons.userCircle,size: 35,),
+                SizedBox(width: MediaQuery.of(context).size.width*.035,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Abebe kebede ",style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),),
+                    SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                    LinearPercentIndicator(
+                      width: MediaQuery.of(context).size.width * .335,
+                      animation: true,
+                      padding: EdgeInsets.all(0),
+                      lineHeight:
+                      MediaQuery.of(context).size.height * .0065,
+                      animationDuration: 2500,
+                      percent:.83,
+                      linearStrokeCap: LinearStrokeCap.round,
+                      progressColor: Color(0xff009966),
+                    ),
+
+                    SizedBox(height: MediaQuery.of(context).size.height*.0015,),
+                    Text("84% Compoleted ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),),
+                  ],
+                ),
+
+                SizedBox(width: MediaQuery.of(context).size.width*.055,),
+                FaIcon(FontAwesomeIcons.chevronRight,size: 20,color: Color(0xff009966),),
+              ],
+            ),
+            
           ),
+
+          SizedBox(height: MediaQuery.of(context).size.height*.015,),
+          Center(
+            child:
+            Text("V1.VitaBoardVer 2023.34-03 ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),),
+          )
         ],
       ),
     );

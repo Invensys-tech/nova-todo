@@ -188,12 +188,17 @@ class _AddTodoPageState extends State<AddTodoPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(Icons.arrow_back, color: Colors.green),
+              icon: const Icon(
+                Icons.keyboard_arrow_left,
+                color: Color(0xFF009966),
+              ),
             ),
           ],
         ),
-        centerTitle: true,
-        title: const Text("Add Todo"),
+        title: const Text(
+          "Add New Todo",
+          style: TextStyle(color: Color(0xFFD4D4D8)),
+        ),
       ),
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),

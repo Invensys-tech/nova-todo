@@ -18,7 +18,7 @@ class Quote {
     category: json['category'],
   );
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toJson() => {
     'text': text,
     'author': author,
     'source': source,

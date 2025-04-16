@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/pages/finance/bank/SingleBankFullviewPage.dart';
@@ -41,7 +42,7 @@ class _BankWidgetState extends State<BankWidget> {
       },
       child: Container(
         margin: EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.height * 0.01,
+          vertical: MediaQuery.of(context).size.height * 0.005,
         ),
         width: MediaQuery.of(context).size.width * 1,
         height: MediaQuery.of(context).size.height * 0.073,
@@ -50,17 +51,26 @@ class _BankWidgetState extends State<BankWidget> {
           vertical: MediaQuery.of(context).size.height * 0.003,
         ),
         decoration: BoxDecoration(
-          color: Color(0xff292929),
+          border: Border.all(width: 1,color: Colors.grey.withOpacity(.4)),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Row(
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.05,
-              width: MediaQuery.of(context).size.height * 0.045,
-              decoration: BoxDecoration(
-                color: Color(0xff8466fc),
-                shape: BoxShape.circle,
+            ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                Colors.grey.withOpacity(0.5), // Choose your color and opacity
+                BlendMode.modulate, // Or try `BlendMode.color` or others
+              ),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.height * 0.045,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey,
+                  image: DecorationImage(image: CachedNetworkImageProvider("https://combanketh.et/cbeapi/uploads/logo_1ae2fb1df4.jpg"),fit: BoxFit.cover)
+                ),
+
+
               ),
             ),
             SizedBox(width: MediaQuery.of(context).size.width * 0.035),
@@ -72,16 +82,14 @@ class _BankWidgetState extends State<BankWidget> {
                   '${widget.accountname}',
                   style: TextStyle(
                     fontSize: 13,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 Text(
                   '${widget.accoutnumber}',
                   style: TextStyle(
                     fontSize: 13,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ],
@@ -91,8 +99,7 @@ class _BankWidgetState extends State<BankWidget> {
               '${widget.balance}',
               style: TextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.w200,
-                color: Colors.white.withOpacity(0.8),
+                fontWeight: FontWeight.w400,
               ),
             ),
           ],

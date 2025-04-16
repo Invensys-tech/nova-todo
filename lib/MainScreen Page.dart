@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/homepage/home.dart';
 import 'package:flutter_application_1/pages/notespage/notes.dart';
 import 'package:flutter_application_1/pages/todopage/todo.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_application_1/pages/goal/goal.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+
+import 'drawer/Seeting Page/SeetingPage.dart';
 
 class MainScreenPage extends StatefulWidget {
   const MainScreenPage({super.key});
@@ -41,23 +44,23 @@ class _MainScreenPageState extends State<MainScreenPage> {
         icon: Icon(Icons.home),
         title: ("Home"),
         iconSize: 24,
-        textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
+        textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff2E783A),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.monetization_on_outlined),
+        icon: FaIcon(FontAwesomeIcons.piggyBank),
         title: ("Finance"),
         iconSize: 24,
-        textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
+        textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.ads_click),
+        icon: FaIcon(FontAwesomeIcons.locationArrow),
         title: ("Vision Board"),
         iconSize: 24,
-        textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
+        textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -65,16 +68,16 @@ class _MainScreenPageState extends State<MainScreenPage> {
         icon: Icon(Icons.assignment_add),
         title: ("ToDoList"),
         iconSize: 24,
-        textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
+        textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.description),
-        title: ("Notes"),
-        iconSize: 24,
+        icon: FaIcon(FontAwesomeIcons.edit),
+        title:  ("Notes"),
+        iconSize: 23,
         contentPadding: 0,
-        textStyle: GoogleFonts.lato(fontSize: 11, fontWeight: FontWeight.w400),
+        textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -97,7 +100,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
           items: _navBarsItems(),
           confineToSafeArea: true,
           margin: EdgeInsets.all(0),
-          backgroundColor: const Color(0xFF2b2d30), // Default is Colors.white.
+          backgroundColor: Theme.of(context).primaryColorDark, // Default is Colors.white.
           handleAndroidBackButtonPress: true, // Default is true.
           resizeToAvoidBottomInset:
               true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
@@ -105,8 +108,11 @@ class _MainScreenPageState extends State<MainScreenPage> {
           hideNavigationBarWhenKeyboardAppears:
               true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
           decoration: NavBarDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            colorBehindNavBar: Colors.black45,
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(10),
+                topLeft: Radius.circular(10)
+            ),
+            colorBehindNavBar: Colors.transparent,
           ),
           animationSettings: const NavBarAnimationSettings(
             navBarItemAnimation: ItemAnimationSettings(
