@@ -48,8 +48,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
-      // body: Dashboard(),
-      body: StepperForm(),
+      body: Dashboard(),
+      // body: StepperForm(),
       //   body: Column(
       //     crossAxisAlignment: CrossAxisAlignment.start,
       //     spacing: MediaQuery.of(context).size.height * 0.02,
