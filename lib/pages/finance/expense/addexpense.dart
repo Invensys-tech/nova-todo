@@ -108,31 +108,29 @@ class _AddExpenseState extends State<AddExpense> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xff2F2F2F),
       appBar: AppBar(
-        backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back,),
         ),
         title: const Text(
           "Add Expense",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.045,
+          horizontal: MediaQuery.of(context).size.width * 0.045, vertical: MediaQuery.of(context).size.height*.015
         ),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: Color(0xff27272A), // Border color
+                color: Colors.grey.withOpacity(.3), // Border color
                 width: 1.0, // Border width
               ),
               borderRadius: BorderRadius.circular(
@@ -149,7 +147,6 @@ class _AddExpenseState extends State<AddExpense> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white70,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -168,7 +165,6 @@ class _AddExpenseState extends State<AddExpense> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white70,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -184,7 +180,6 @@ class _AddExpenseState extends State<AddExpense> {
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: Colors.white,
                         ),
                       ),
                       subtitle: const Text(
@@ -206,7 +201,6 @@ class _AddExpenseState extends State<AddExpense> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white70,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -230,7 +224,6 @@ class _AddExpenseState extends State<AddExpense> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white70,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -297,7 +290,6 @@ class _AddExpenseState extends State<AddExpense> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w300,
-                            color: Colors.white70,
                           ),
                         ),
                         SizedBox(
@@ -328,7 +320,6 @@ class _AddExpenseState extends State<AddExpense> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w300,
-                            color: Colors.white70,
                           ),
                         ),
                         SizedBox(
@@ -360,7 +351,6 @@ class _AddExpenseState extends State<AddExpense> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white70,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),

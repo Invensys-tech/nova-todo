@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class MyExpansionPanelHeader extends StatelessWidget {
@@ -16,7 +17,7 @@ class MyExpansionPanelHeader extends StatelessWidget {
         vertical: MediaQuery.of(context).size.height * 0.01,
         horizontal: MediaQuery.of(context).size.width * 0.02,
       ),
-      color: const Color(0xff2F2F2F),
+      color: Theme.of(context).primaryColorDark,
       child: Row(
         spacing: MediaQuery.of(context).size.width * 0.04,
         children: [icon ?? Container(), Text(title)],
