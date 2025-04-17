@@ -1,20 +1,40 @@
 import 'package:flutter_application_1/entities/income-entity.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 
 class IncomeRepository {
-  Future<List<Income>> getIncome() async {
+  String formatDate(String date) {
+    List<String> parts = date.split('-'); // Split DD-MM-YYYY
+    return '${parts[2]}-${parts[1]}-${parts[0]}'; // Convert to YYYY-MM-DD
+  }
+
+  Future<List<Income>> getIncome(DateTime? dateTime) async {
     try {
-      final data = await supabaseClient
-          .from(Entities.INCOME.dbName)
-          .select("*");
+      final List<dynamic> rawData;
+      print('oooooooooooooooooooooooooooo');
+      print(dateTime);
 
-      print("Fetched Income Data: $data"); // Print raw data for debugging
+      if (dateTime != null) {
+        rawData = await supabaseClient
+            .from(Entities.INCOME.dbName)
+            .select("*")
+            .eq('date', getDateOnly(dateTime));
+      } else {
+        rawData = await supabaseClient.from(Entities.INCOME.dbName).select("*");
+      }
 
-      return data.map((income) => Income.fromJson(income)).toList();
+      print("Fetched Income Data: $rawData");
+
+      final List<Income> incomeList =
+          rawData
+              .map((income) => Income.fromJson(income as Map<String, dynamic>))
+              .toList();
+
+      return incomeList;
     } catch (e, stackTrace) {
-      print('Error in Fetching Income: $e');
-      print('StackTrace: $stackTrace'); // Print stack trace for more details
+      print('Error in Fetching Income my Income He: $e');
+      print('StackTrace: $stackTrace');
       rethrow;
     }
   }

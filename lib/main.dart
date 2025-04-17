@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:another_telephony/telephony.dart';
+import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/pages/auth/payment.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
@@ -206,6 +207,7 @@ class _MyAppState extends State<MyApp> {
             '/expense-form':
                 (context) => AddExpense(datamanager: Datamanager()),
             '/income-form': (context) => IncomeForm(datamanager: Datamanager()),
+            '/productivity-home': (context) => ProductivityHome(),
           },
         );
       },

@@ -185,24 +185,40 @@ class _HomePageState extends State<ProductivityHome> {
 
             // Right section: Icon in circular bg + chevron
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: 45,
-                  height: 45,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF27272A),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(iconData, size: 20, color: Colors.green),
-                ),
-                const SizedBox(width: 8),
                 const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: Colors.green,
+                  Icons.local_fire_department,
+                  color: Colors.orange,
+                  size: 24,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  "${productivity.streak_count}",
+                  // productivity.streak_count as String,
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ],
             ),
+            // Row(
+            //   children: [
+            //     Container(
+            //       width: 45,
+            //       height: 45,
+            //       decoration: const BoxDecoration(
+            //         color: Color(0xFF27272A),
+            //         shape: BoxShape.circle,
+            //       ),
+            //       child: Icon(iconData, size: 20, color: Colors.green),
+            //     ),
+            //     const SizedBox(width: 8),
+            //     const Icon(
+            //       Icons.arrow_forward_ios,
+            //       size: 14,
+            //       color: Colors.green,
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),

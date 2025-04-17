@@ -44,18 +44,17 @@ class _ProductivityFormState extends State<ProductivityForm> {
   );
 
   saveProductivity() async {
-    // Save the productivity data to the database or perform any action
-    // print(frequency.controller.text.runtimeType);
-    Productivity productivity = await ProductivityRepository()
-        .createProductivity({
-          'title': title.controller.text,
-          'frequency': frequency.controller.text,
-          'time': formatDate(time.controller.text),
-          'description': description.controller.text,
-          'user_id': 1,
-        });
+    print("🧪 Step 1: Starting saveProductivity");
 
-    print("Productivity saved!");
+    final productivity = await ProductivityRepository().createProductivity({
+      'title': title.controller.text,
+      'frequency': frequency.controller.text,
+      'time': (time.controller.text),
+      'description': description.controller.text,
+      'user_id': 1,
+    });
+
+    print("✅ Step 2: Productivity created: ${productivity.id}");
   }
 
   @override
@@ -182,19 +181,27 @@ class _ProductivityFormState extends State<ProductivityForm> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Clear all input controllers
-                          saveProductivity();
+                        onPressed: () async {
+                          try {
+                            await saveProductivity();
 
-                          setState(() {});
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Productivity added successfully!"),
-                            ),
-                          );
-
-                          Navigator.pop(context);
+                            setState(() {});
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Productivity added successfully!",
+                                ),
+                              ),
+                            );
+                          } catch (e, stacktrace) {
+                            print("🔥🔥🔥 Crash in saveProductivity: $e");
+                            print(stacktrace); // This helps a lot
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Error: $e")),
+                            );
+                          }
                         },
+
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           padding: const EdgeInsets.symmetric(vertical: 15),

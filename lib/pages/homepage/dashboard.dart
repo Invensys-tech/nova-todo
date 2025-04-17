@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/customized/billboard.dart';
+import 'package:flutter_application_1/services/streak.helper.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -18,6 +19,20 @@ class _DashboardState extends State<Dashboard> {
         child: Column(
           spacing: MediaQuery.of(context).size.height * 0.04,
           children: [
+            ElevatedButton(
+              onPressed: () {
+                simulateContinuingDailyStreak(22);
+              },
+              child: Text("Test Continue"),
+            ),
+
+            ElevatedButton(
+              onPressed: () {
+                simulateBrokenDailyStreak(22);
+              },
+              child: Text("Test Break"),
+            ),
+
             Billboard(
               height: 135,
               child: Container(

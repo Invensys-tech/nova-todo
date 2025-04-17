@@ -1,38 +1,46 @@
 import 'package:flutter/material.dart';
 
-class PaymentInputRow extends StatefulWidget {
-  final TextEditingController leftController;
-  final TextEditingController rightController;
-  final List<String> leftItems;
-  final List<String> rightItems;
+/// This widget shows two dropdowns in one row.
+/// The left dropdown ("Paid By") is static (choices: "Partner", "Bank").
+/// The right dropdown ("Specific From") uses a FutureBuilder to load its items from the database.
+/// When the “Paid By” selection changes, it calls the onPaidByChanged callback (if provided).
+class PaidByAndSpecificFromInput extends StatefulWidget {
+  final TextEditingController paidByController;
+  final TextEditingController specificFromController;
+  final Future<List<dynamic>> dataFuture;
+  final void Function(String newPaidBy)? onPaidByChanged;
 
-  const PaymentInputRow({
+  const PaidByAndSpecificFromInput({
     Key? key,
-    required this.leftController,
-    required this.rightController,
-    required this.leftItems,
-    required this.rightItems,
+    required this.paidByController,
+    required this.specificFromController,
+    required this.dataFuture,
+    this.onPaidByChanged,
   }) : super(key: key);
 
   @override
-  _PaymentInputRowState createState() => _PaymentInputRowState();
+  _PaidByAndSpecificFromInputState createState() =>
+      _PaidByAndSpecificFromInputState();
 }
 
-class _PaymentInputRowState extends State<PaymentInputRow> {
-  String? selectedLeft;
-  String? selectedRight;
+class _PaidByAndSpecificFromInputState
+    extends State<PaidByAndSpecificFromInput> {
+  String? selectedPaidBy;
+  String? selectedSpecificFrom;
+
+  // Used for the Partner option: mapping partner names to their id.
+  Map<String, int> partnerMapping = {};
 
   @override
   void initState() {
     super.initState();
-    // Initialize from the controllers if they already have a value.
-    selectedLeft =
-        widget.leftController.text.isNotEmpty
-            ? widget.leftController.text
+    selectedPaidBy =
+        widget.paidByController.text.isNotEmpty
+            ? widget.paidByController.text
             : null;
-    selectedRight =
-        widget.rightController.text.isNotEmpty
-            ? widget.rightController.text
+    selectedSpecificFrom =
+        widget.specificFromController.text.isNotEmpty
+            ? widget.specificFromController.text
             : null;
   }
 
@@ -40,7 +48,7 @@ class _PaymentInputRowState extends State<PaymentInputRow> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // Left dropdown – styled as a badge.
+        // Left Dropdown: "Paid By"
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: const BoxDecoration(
@@ -53,7 +61,7 @@ class _PaymentInputRowState extends State<PaymentInputRow> {
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               dropdownColor: Colors.black87,
-              value: selectedLeft,
+              value: selectedPaidBy,
               hint: const Text(
                 "Paid By",
                 style: TextStyle(color: Colors.white70, fontSize: 12),
@@ -61,7 +69,7 @@ class _PaymentInputRowState extends State<PaymentInputRow> {
               icon: const Icon(Icons.arrow_drop_down, color: Colors.white60),
               style: const TextStyle(color: Colors.white70, fontSize: 13),
               items:
-                  widget.leftItems.map((String value) {
+                  ["Partner", "Bank"].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -69,54 +77,115 @@ class _PaymentInputRowState extends State<PaymentInputRow> {
                   }).toList(),
               onChanged: (value) {
                 setState(() {
-                  selectedLeft = value;
+                  selectedPaidBy = value;
+                  widget.paidByController.text = value ?? '';
+                  // Clear specific field when Paid By changes
+                  selectedSpecificFrom = null;
+                  widget.specificFromController.clear();
                 });
-                widget.leftController.text = value ?? '';
+                // Notify parent so it can update the future.
+                if (value != null && widget.onPaidByChanged != null) {
+                  widget.onPaidByChanged!(value);
+                }
               },
             ),
           ),
         ),
-        // Right dropdown – for selecting an expense.
+        // Right Dropdown: "Specific From"
         Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              color: Colors.black87.withOpacity(0.3),
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              ),
-              border: Border.all(
-                color: Colors.black38.withOpacity(0.3),
-                width: 1.0,
-              ),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                dropdownColor: Colors.black87,
-                value: selectedRight,
-                hint: const Text(
-                  "Specific Expense",
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
+          child: FutureBuilder<List<dynamic>>(
+            future: widget.dataFuture,
+            builder: (context, snapshot) {
+              List<String> dynamicItems = [];
+              if (selectedPaidBy == "Partner") {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (snapshot.hasError) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Error: ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  partnerMapping.clear();
+                  // Assume each data item is a Loan with loanerName and id.
+                  for (var loan in snapshot.data as List) {
+                    partnerMapping[loan.loanerName] = loan.id;
+                  }
+                  dynamicItems = partnerMapping.keys.toList();
+                }
+              } else if (selectedPaidBy == "Bank") {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (snapshot.hasError) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Error: ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  // Assume each data item is a Bank with an accountHolder property.
+                  dynamicItems =
+                      (snapshot.data as List)
+                          .map((bank) => bank.accountHolder as String)
+                          .toList();
+                }
+              }
+
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.black87.withOpacity(0.3),
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(5),
+                    bottomRight: Radius.circular(5),
+                  ),
+                  border: Border.all(
+                    color: Colors.black38.withOpacity(0.3),
+                    width: 1.0,
+                  ),
                 ),
-                icon: const Icon(Icons.arrow_drop_down, color: Colors.white60),
-                style: const TextStyle(color: Colors.white70, fontSize: 13),
-                isExpanded: true,
-                items:
-                    widget.rightItems.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedRight = value;
-                  });
-                  widget.rightController.text = value ?? '';
-                },
-              ),
-            ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    dropdownColor: Colors.black87,
+                    isExpanded: true,
+                    value: selectedSpecificFrom,
+                    hint: const Text(
+                      "Specific From",
+                      style: TextStyle(color: Colors.white70, fontSize: 12),
+                    ),
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.white60,
+                    ),
+                    style: const TextStyle(color: Colors.white70, fontSize: 13),
+                    items:
+                        dynamicItems.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedSpecificFrom = value;
+                        widget.specificFromController.text = value ?? '';
+                      });
+                    },
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],

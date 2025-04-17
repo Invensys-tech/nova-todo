@@ -27,6 +27,7 @@ class AutoCompleteText extends StatelessWidget {
     required this.controller,
     required this.icon,
     this.onSelect,
+    Null Function(dynamic selectedName)? onSelected,
   }) : super(key: key);
 
   @override
@@ -44,17 +45,6 @@ class AutoCompleteText extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Prefix icon with a vertical separator
-          // Container(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10),
-          //   decoration: const BoxDecoration(
-          //     border: Border(
-          //       right: BorderSide(color: Colors.white54, width: 1.0),
-          //     ),
-          //   ),
-          //   child: Icon(icon, color: Colors.white70),
-          // ),
-          // The autocomplete field occupies the remaining space
           Expanded(
             child: AdvancedSearch(
               searchItems: suggestions,

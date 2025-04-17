@@ -54,6 +54,7 @@ class Productivity {
   String? term; // Add term
   int? frequency; // Add frequency
   List<ProductivityHabit>? productivityHabits;
+  int? streak_count;
 
   Productivity({
     required this.id,
@@ -63,6 +64,7 @@ class Productivity {
     this.term,
     this.frequency,
     this.productivityHabits,
+    this.streak_count,
   });
 
   Map<String, dynamic> toJson() {
@@ -72,6 +74,7 @@ class Productivity {
     data['description'] = description;
     data['time'] = time;
     data['frequency'] = frequency;
+    data['streak_count'] = streak_count;
     return data;
   }
 
@@ -84,6 +87,7 @@ class Productivity {
       description: json['description'] as String,
       time: (json['time'] as String),
       frequency: json['frequency'] as int?, // Add frequency from JSON
+      streak_count: json['streak_count'] as int?,
       productivityHabits:
           json['productivity_habits'] != null
               ? (json['productivity_habits'] as List<dynamic>)
