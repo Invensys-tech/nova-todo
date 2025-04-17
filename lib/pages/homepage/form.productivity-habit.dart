@@ -8,6 +8,7 @@ import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/repositories/habit-list.repositoty.dart';
 import 'package:flutter_application_1/repositories/productivity-habit.repository.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
+import 'package:flutter_application_1/services/streak.helper.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
@@ -201,15 +202,37 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
             });
         print("Habit Title: $title");
 
+        // for (var pair in habit["pairs"]) {
+        //   String keyText = pair.key.controller.text;
+        //   String valueText = pair.value.controller.text;
+        //   print("   Pair -> Frequency: $keyText, Time: $valueText");
+        //   await HabitListRepository().createHabitList({
+        //     'title': keyText,
+        //     'time': valueText,
+        //     'productivity_habit_id': productivityHabit.id,
+        //   });
+        // }
         for (var pair in habit["pairs"]) {
-          String keyText = pair.key.controller.text;
-          String valueText = pair.value.controller.text;
-          print("   Pair -> Frequency: $keyText, Time: $valueText");
-          await HabitListRepository().createHabitList({
-            'title': keyText,
-            'time': valueText,
+          String frequencyValue = pair.key.controller.text;
+          String timeValue = pair.value.controller.text;
+
+          // Create the habit list record.
+          final habitListRecord = await HabitListRepository().createHabitList({
+            'title': frequencyValue,
+            'time': timeValue,
             'productivity_habit_id': productivityHabit.id,
           });
+
+          // Parse the habit date. You can adjust this logic if the date comes from input.
+          DateTime habitDate = DateTime.now();
+
+          // Use the frequency from either the habit or the productivity (if provided).
+          await updateOrCreateStreak(
+            productivityHabitId: productivityHabit.id,
+            habitDate: habitDate,
+            frequency: widget.frequency?.controller.text ?? "daily",
+            habitEntryId: habitListRecord.id,
+          );
         }
       }
     } else {
@@ -223,17 +246,49 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
         print("Habit Title: $title");
 
         for (var pair in habit["pairs"]) {
-          String keyText = pair.key.controller.text;
-          String valueText = pair.value.controller.text;
-          print("   Pair -> Frequency: $keyText, Time: $valueText");
-          await HabitListRepository().createHabitList({
-            'title': keyText,
-            'time': valueText,
+          String frequencyValue = pair.key.controller.text;
+          String timeValue = pair.value.controller.text;
+
+          // Create the habit list record.
+          final habitListRecord = await HabitListRepository().createHabitList({
+            'title': frequencyValue,
+            'time': timeValue,
             'productivity_habit_id': productivityHabit.id,
           });
+
+          DateTime habitDate = DateTime.now();
+          await updateOrCreateStreak(
+            productivityHabitId: productivityHabit.id,
+            habitDate: habitDate,
+            frequency: widget.frequency?.controller.text ?? "daily",
+            habitEntryId: habitListRecord.id,
+          );
         }
       }
     }
+
+    // } else {
+    //   for (var habit in _controller) {
+    //     String title = habit["title"].controller.text;
+    //     var productivityHabit = await ProductivityHabitRepository()
+    //         .createProductivityHabit({
+    //           'title': title,
+    //           'productivity_id': widget.productivity_id,
+    //         });
+    //     print("Habit Title: $title");
+
+    //     for (var pair in habit["pairs"]) {
+    //       String keyText = pair.key.controller.text;
+    //       String valueText = pair.value.controller.text;
+    //       print("   Pair -> Frequency: $keyText, Time: $valueText");
+    //       await HabitListRepository().createHabitList({
+    //         'title': keyText,
+    //         'time': valueText,
+    //         'productivity_habit_id': productivityHabit.id,
+    //       });
+    //     }
+    //   }
+    // }
 
     // Pop until we reach the productivity-home route.
     Navigator.popUntil(context, ModalRoute.withName('/productivity-home'));
@@ -297,117 +352,159 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                                 },
                                 body: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
+
                                   children: [
                                     // For the title field: if a productivity exists, use autocomplete.
                                     widget.productivity_id == null
-                                        ? TextFields(
-                                          hinttext: item['title'].hint,
-                                          controller: item['title'].controller,
-                                          whatIsInput: '0',
+                                        ? Padding(
+                                          padding: EdgeInsets.all(
+                                            MediaQuery.of(context).size.width *
+                                                0.02,
+                                          ),
+                                          child: TextFields(
+                                            hinttext: item['title'].hint,
+                                            controller:
+                                                item['title'].controller,
+                                            whatIsInput: '0',
+                                          ),
                                         )
-                                        : AutoCompleteText(
-                                          onSelect: onTitleSelect,
-                                          suggestions: titlesSet.toList(),
-                                          suggestionBuilder: (String text) {
-                                            return ListTile(
-                                              title: Text(
-                                                text,
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                  color: Colors.white,
+                                        : Padding(
+                                          padding: EdgeInsets.all(
+                                            MediaQuery.of(context).size.width *
+                                                0.02,
+                                          ),
+                                          child: AutoCompleteText(
+                                            onSelect: onTitleSelect,
+                                            suggestions: titlesSet.toList(),
+                                            suggestionBuilder: (String text) {
+                                              return ListTile(
+                                                title: Text(
+                                                  text,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                              ),
-                                              subtitle: const Text(
-                                                "Tap to select",
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.grey,
+                                                subtitle: const Text(
+                                                  "Tap to select",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
-                                              ),
-                                            );
-                                          },
-                                          hintText: "Enter your title",
-                                          controller: item['title'].controller,
-                                          icon: Icons.search,
+                                              );
+                                            },
+                                            hintText: "Enter your title",
+                                            controller:
+                                                item['title'].controller,
+                                            icon: Icons.search,
+                                          ),
                                         ),
                                     // Now for each pair (Frequency and Time)
                                     ...item['pairs']
                                         .map(
-                                          (p) => Row(
-                                            children: [
-                                              Expanded(
-                                                child:
-                                                    widget.productivity_id ==
-                                                            null
-                                                        ? TextFields(
-                                                          hinttext: p.key.hint,
-                                                          whatIsInput:
-                                                              p.key.type,
-                                                          controller:
-                                                              p.key.controller,
-                                                        )
-                                                        : AutoCompleteText(
-                                                          onSelect:
-                                                              onFrequencySelect,
-                                                          suggestions:
-                                                              frequencySet
-                                                                  .toList(),
-                                                          suggestionBuilder: (
-                                                            String text,
-                                                          ) {
-                                                            return ListTile(
-                                                              title: Text(
-                                                                text,
-                                                                style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 16,
-                                                                  color:
-                                                                      Colors
-                                                                          .white,
+                                          (p) => Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  0.02,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child:
+                                                      widget.productivity_id ==
+                                                              null
+                                                          ? TextFields(
+                                                            hinttext:
+                                                                p.key.hint,
+                                                            whatIsInput:
+                                                                p.key.type,
+                                                            controller:
+                                                                p
+                                                                    .key
+                                                                    .controller,
+                                                          )
+                                                          : AutoCompleteText(
+                                                            onSelect:
+                                                                onFrequencySelect,
+                                                            suggestions:
+                                                                frequencySet
+                                                                    .toList(),
+                                                            suggestionBuilder: (
+                                                              String text,
+                                                            ) {
+                                                              return ListTile(
+                                                                title: Text(
+                                                                  text,
+                                                                  style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        16,
+                                                                    color:
+                                                                        Colors
+                                                                            .white,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              subtitle: const Text(
-                                                                "Tap to select",
-                                                                style: TextStyle(
-                                                                  fontSize: 12,
-                                                                  color:
-                                                                      Colors
-                                                                          .grey,
+                                                                subtitle: const Text(
+                                                                  "Tap to select",
+                                                                  style: TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color:
+                                                                        Colors
+                                                                            .grey,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            );
-                                                          },
-                                                          hintText: p.key.hint,
-                                                          controller:
-                                                              p.key.controller,
-                                                          icon: Icons.search,
-                                                        ),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: TextFields(
-                                                  hinttext: p.value.hint,
-                                                  whatIsInput: p.value.type,
-                                                  controller:
-                                                      p.value.controller,
+                                                              );
+                                                            },
+                                                            hintText:
+                                                                p.key.hint,
+                                                            controller:
+                                                                p
+                                                                    .key
+                                                                    .controller,
+                                                            icon: Icons.search,
+                                                          ),
                                                 ),
-                                              ),
-                                            ],
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                  child: TextFields(
+                                                    hinttext: p.value.hint,
+                                                    whatIsInput: p.value.type,
+                                                    controller:
+                                                        p.value.controller,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         )
                                         .toList(),
                                     const SizedBox(height: 10),
-                                    ElevatedButton(
-                                      onPressed: () => _addNewPair(entry.key),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.blue,
-                                      ),
-                                      child: const Text(
-                                        "Add Pair",
-                                        style: TextStyle(color: Colors.white),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0,
+                                        ), // adjust padding as needed
+                                        child: ElevatedButton(
+                                          onPressed:
+                                              () => _addNewPair(entry.key),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blue,
+                                          ),
+                                          child: const Text(
+                                            "Add Pair",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -421,10 +518,11 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
+                            flex: 1,
                             child: ElevatedButton(
                               onPressed: _addNewHabit,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
+                                // backgroundColor: Colors.green,
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 15,
                                 ),
@@ -440,6 +538,7 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                           ),
                           const SizedBox(width: 10),
                           Expanded(
+                            flex: 3,
                             child: ElevatedButton(
                               onPressed: () async {
                                 try {
@@ -452,7 +551,7 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
+                                backgroundColor: Color(0xff009966),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 15,
                                 ),
@@ -461,7 +560,7 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                                 ),
                               ),
                               child: const Text(
-                                "Save and Next",
+                                "Save",
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),

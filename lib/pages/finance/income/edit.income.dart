@@ -8,6 +8,7 @@ import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_application_1/ui/inputs/expense-payment.selector.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 
@@ -68,9 +69,10 @@ class _EditIncomeState extends State<EditIncome> {
     controller: TextEditingController(),
   );
 
+  bool _isLoading = true;
   String? _paidBySelection;
   int? _parentLoanId;
-  bool _isLoading = true;
+  Future<List<dynamic>>? _dataFuture;
 
   // Same bank list as in IncomeForm (used for the "Paid By" dropdown)
   final List<String> banks = [
@@ -103,8 +105,19 @@ class _EditIncomeState extends State<EditIncome> {
   @override
   void initState() {
     super.initState();
+    // Initial selection value based on controller text
     _paidBySelection = paid_from.controller.text;
     _fetchIncome();
+  }
+
+  void _updateFuture() {
+    if (paid_from.controller.text == "Partner") {
+      _dataFuture = widget.datamanager.getLoan();
+    } else if (paid_from.controller.text == "Bank") {
+      _dataFuture = widget.datamanager.getBanks();
+    } else {
+      _dataFuture = Future.value([]);
+    }
   }
 
   Future<void> _fetchIncome() async {
@@ -121,39 +134,33 @@ class _EditIncomeState extends State<EditIncome> {
         name.controller.text = incomeData.name;
         category.controller.text = incomeData.category;
         amount.controller.text = incomeData.amount.toString();
-        // Format date as needed (here, using ISO string split)
+        // Format the date to match your date selector widget (e.g., YYYY-MM-DD)
         date.controller.text =
             incomeData.date.toIso8601String().split("T").first;
         paid_from.controller.text = incomeData.paidBy;
         specific_from.controller.text = incomeData.specificFrom;
         description.controller.text = incomeData.description;
         _isLoading = false;
+        // Initialize future based on the paid_from value now
+        _updateFuture();
       });
     } catch (e) {
       print("Failed to fetch income: $e");
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Error fetching income")));
+      ).showSnackBar(const SnackBar(content: Text("Error fetching income")));
       Navigator.pop(context);
     }
   }
 
-  // Helper to format date if needed
+  // Helper to format date if needed (here assuming input in YYYY-MM-DD)
   String formatDate(String dateStr) {
-    List<String> parts = dateStr.split('-'); // expects DD-MM-YYYY
-    if (parts.length < 3) return dateStr;
-    return '${parts[2]}-${parts[1]}-${parts[0]}';
+    // You can enhance this function if you need a different format
+    return dateStr;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> specificItems = [];
-    Map<String, int> partnerMapping = {};
-    if (paid_from.controller.text == 'Partner') {
-      // partnerMapping logic if needed
-    } else if (paid_from.controller.text == 'Bank') {
-      specificItems = banks;
-    }
     return _isLoading
         ? Scaffold(
           backgroundColor: const Color(0xff2F2F2F),
@@ -175,6 +182,7 @@ class _EditIncomeState extends State<EditIncome> {
           body: const Center(child: CircularProgressIndicator()),
         )
         : Scaffold(
+          backgroundColor: const Color(0xff2F2F2F),
           appBar: AppBar(
             backgroundColor: const Color(0xff2F2F2F),
             leading: IconButton(
@@ -211,7 +219,6 @@ class _EditIncomeState extends State<EditIncome> {
                     hinttext: name.hint,
                     controller: name.controller,
                     whatIsInput: name.type,
-                    // icon: Icons.fingerprint,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   const Text(
@@ -227,131 +234,106 @@ class _EditIncomeState extends State<EditIncome> {
                     hinttext: amount.hint,
                     whatIsInput: amount.type,
                     controller: amount.controller,
-                    // icon: Icons.attach_money,
+                    prefixText: 'ETB',
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Date",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white70,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Category",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.white70,
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            // Optionally you can add an autocomplete widget here like in your add form
+                            TextFields(
+                              hinttext: category.hint,
+                              controller: category.controller,
+                              whatIsInput: category.type,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Date",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.white70,
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.02,
+                            ),
+                            DateSelector(
+                              hintText: "Select a date",
+                              controller: date.controller,
+                              icon: Icons.calendar_today,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                              initialDate: DateTime.now(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  DateSelector(
-                    hintText: "Select a date",
-                    controller: date.controller,
-                    icon: Icons.calendar_today,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                    initialDate: DateTime.now(),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  // Use the same custom widget from add income for "Paid By" and "Specific From"
                   FutureBuilder(
-                    future:
-                        _paidBySelection == "Partner"
-                            ? widget.datamanager.getLoan()
-                            : _paidBySelection == "Bank"
-                            ? widget.datamanager.getBanks()
-                            : Future.value([]),
+                    future: _dataFuture,
                     builder: (context, snapshot) {
-                      Map<String, int> partnerMapping = {};
-                      List<String>? dynamicItems = [];
-                      if (paid_from.controller.text == 'Partner') {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text(
-                            "Error fetching partner names: ${snapshot.error}",
-                          );
-                        } else if (snapshot.hasData) {
-                          for (Loan loan in snapshot.data as List<Loan>) {
-                            partnerMapping[loan.loanerName] = loan.id;
-                          }
-                          dynamicItems = partnerMapping.keys.toList();
-                        }
-                      } else if (paid_from.controller.text == 'Bank') {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text(
-                            "Error fetching banks: ${snapshot.error}",
-                          );
-                        } else if (snapshot.hasData) {
-                          dynamicItems =
-                              (snapshot.data as List)
-                                  .map((bank) => bank.accountHolder)
-                                  .cast<String>()
-                                  .toList();
-                        }
-                      }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          const Text(
-                            "Paid By",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white70,
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          CustomDropdown(
-                            hintText: "Select an option",
-                            icon: Icons.ac_unit_sharp,
-                            items: ["Partner", "Bank"],
-                            controller: paid_from.controller,
-                            onChanged: (value) {
-                              setState(() {
-                                _paidBySelection = value;
-                                paid_from.controller.text = value ?? '';
-                                specific_from.controller.clear();
-                                _parentLoanId = null;
-                              });
-                            },
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          const Text(
-                            "Bank Account",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white70,
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
-                          ),
-                          CustomDropdown(
-                            hintText: "Select a specific payer",
-                            icon: Icons.account_balance_wallet,
-                            items: dynamicItems,
-                            controller: specific_from.controller,
-                            onChanged: (value) {
-                              if (paid_from.controller.text == 'Partner' &&
-                                  partnerMapping.containsKey(value!)) {
-                                setState(() {
-                                  _parentLoanId = partnerMapping[value];
-                                });
-                              }
-                            },
-                          ),
-                        ],
+                      // return Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     SizedBox(
+                      //       height: MediaQuery.of(context).size.height * 0.02,
+                      //     ),
+                      //     PaidByAndSpecificFromInput(
+                      //       paidByController: paid_from.controller,
+                      //       specificFromController: specific_from.controller,
+                      //       dataFuture: _dataFuture ?? Future.value([]),
+                      //       // When Paid By changes, update the future.
+                      //       onPaidByChanged: (newPaidBy) {
+                      //         setState(() {
+                      //           _updateFuture();
+                      //         });
+                      //       },
+                      //     ),
+                      //     SizedBox(
+                      //       height: MediaQuery.of(context).size.height * 0.02,
+                      //     ),
+                      //     // Additional UI elements…
+                      //   ],
+                      // );
+                      // Deal with this later
+                      return PaidByAndSpecificFromInput(
+                        paidByController: paid_from.controller,
+                        specificFromController: specific_from.controller,
+                        dataFuture: _dataFuture ?? Future.value([]),
+                        onPaidByChanged: (newPaidBy) {
+                          setState(() {
+                            paid_from.controller.text = newPaidBy ?? '';
+                            // Clear previous selection when this changes.
+                            specific_from.controller.clear();
+                            _parentLoanId = null;
+                            _updateFuture();
+                          });
+                        },
                       );
                     },
                   ),
@@ -366,7 +348,7 @@ class _EditIncomeState extends State<EditIncome> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   MultiLineTextField(
-                    hintText: 'description',
+                    hintText: description.hint,
                     controller: description.controller,
                     icon: Icons.description,
                   ),
@@ -377,7 +359,7 @@ class _EditIncomeState extends State<EditIncome> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            // Simply pop without saving changes
+                            // Cancel editing
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(

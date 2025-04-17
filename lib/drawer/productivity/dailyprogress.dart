@@ -100,6 +100,7 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
   }
 
   Widget build(BuildContext context) {
+    final Color selectedColor = const Color(0xFF8B0836);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
@@ -122,6 +123,25 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
+            // CalendarTimeline(
+            //   initialDate: ETDateTime.now(),
+            //   firstDate: noww,
+            //   lastDate: DateTime(2027, 11, 20),
+            //   onDateSelected: (date) {
+            //     setState(() {
+            //       // _selectedDate = date;
+            //     });
+            //     print(ETDateFormat("dd-MMM-yyyy HH:mm:ss").format(date));
+            //   },
+            //   leftMargin: 20,
+            //   monthColor: Colors.blueGrey,
+            //   dayColor: Colors.teal[200],
+            //   activeDayColor: Colors.white,
+            //   activeBackgroundDayColor: selectedColor,
+            //   // dotsColor: selectedColor,
+            //   shrink: true,
+            //   locale: 'en_ISO',
+            // ),
             CalendarTimeline(
               initialDate: ETDateTime.now(),
               firstDate: noww,

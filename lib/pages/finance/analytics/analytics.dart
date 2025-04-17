@@ -814,34 +814,34 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
   }
 
   _GraphDesign() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Most Expenses and profit",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.white70,
-              ),
-            ),
-            Text(
-              "See All",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.white70,
-              ),
-            ),
-          ],
-        ),
-        Container(
-          height: MediaQuery.of(context).size.height * .35,
-          width: MediaQuery.of(context).size.width,
-          child: chartToRun(),
-        ),
-      ],
-    );
+    // return Column(
+    //   children: [
+    //     Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //       children: [
+    //         Text(
+    //           "Most Expenses and profit",
+    //           style: TextStyle(
+    //             fontWeight: FontWeight.w500,
+    //             color: Colors.white70,
+    //           ),
+    //         ),
+    //         Text(
+    //           "See All",
+    //           style: TextStyle(
+    //             fontWeight: FontWeight.w500,
+    //             color: Colors.white70,
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //     // Container(
+    //     //   height: MediaQuery.of(context).size.height * .35,
+    //     //   width: MediaQuery.of(context).size.width,
+    //     //   child: chartToRun(),
+    //     // ),
+    //   ],
+    // );
   }
 
   Widget chartToRun() {

@@ -36,6 +36,7 @@ class ProductivityRepository {
 
       return Productivity.fromJson(lastItem);
     } catch (e) {
+      print("Exception creating productivity!");
       print(e);
       rethrow;
     }

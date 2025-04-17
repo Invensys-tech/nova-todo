@@ -119,10 +119,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
     final endDate = DateTime.tryParse(_endDateController.text);
 
     if (startDate != null && endDate != null) {
-      _expensesFuture = widget.datamanager.getExpense(
-        start: startDate,
-        end: endDate,
-      );
+      _expensesFuture = widget.datamanager.getExpense(dateTime: startDate);
     } else {
       _expensesFuture = widget.datamanager.getExpense();
     }

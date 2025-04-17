@@ -104,7 +104,7 @@ class _AddBankState extends State<AddBank> {
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 const Text(
-                  "Bank Account",
+                  "Bank",
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w300,
@@ -112,10 +112,49 @@ class _AddBankState extends State<AddBank> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                BankInput(bankController: _bank, valueController: _accNo),
 
+                AutoCompleteText(
+                  suggestions: banks,
+                  controller: _bank,
+                  hintText: "Banks",
+                  icon: Icons.search,
+                  suggestionBuilder: (String text) {
+                    return ListTile(
+                      title: Text(
+                        text,
+                        style: const TextStyle(
+                          // fontWeight: FontWeight.bold,
+                          // fontSize: 16,
+                          // color: Colors.white,
+                        ),
+                      ),
+                      // subtitle: const Text(
+                      //   "Tap to select",
+                      //   style: TextStyle(fontSize: 12, color: Colors.grey),
+                      // ),
+                    );
+                  },
+                ),
+
+                // BankInput(bankController: _bank, valueController: _accNo),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
+                const Text(
+                  "AccountNumber",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                TextFields(
+                  hinttext: 'Branch',
+                  whatIsInput: '1',
+                  controller: _accNo,
+                  // icon: Icons.attach_money,
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 const Text(
                   "Branch",
                   style: TextStyle(
