@@ -159,6 +159,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
       };
       // clearForm();
 
+      print(jsonEncode(formData));
+
       DailyTask dailyTaskData = DailyTask.fromUserInputJson(formData);
       // DailyTaskRepository().addDailyTaskFromJson(dailyTaskData);
       DailyTaskRepository().addDailyTask(dailyTaskData).then((value) {

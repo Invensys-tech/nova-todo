@@ -1,11 +1,14 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/finance/common/Expenses.dart';
 import 'package:flutter_application_1/pages/goal/common/header.expansion-panel.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_1/repositories/expense.repository.dart';
+import 'package:intl/intl.dart';
 
 class AnalyticsView extends StatefulWidget {
   final Datamanager datamanager;
@@ -17,7 +20,7 @@ class AnalyticsView extends StatefulWidget {
 }
 
 class _AnalyticsViewState extends State<AnalyticsView> {
-  int _expandedIndex = -1;
+  int _expandedIndex = 0;
   late Future<List<Expense>> _expensesFuture;
 
   final TextEditingController _startDateController = TextEditingController();
@@ -56,10 +59,10 @@ class _AnalyticsViewState extends State<AnalyticsView> {
               Icon(Icons.circle_rounded, size: 17, color: color),
               SizedBox(width: MediaQuery.of(context).size.width * 0.05),
               Container(
-                width: MediaQuery.of(context).size.width * 0.55,
+                width: MediaQuery.of(context).size.width * 0.45,
                 child: Text(
                   "$type",
-                  style: GoogleFonts.lato(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
@@ -67,7 +70,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
               ),
               Text(
                 "\$ ${amount.toStringAsFixed(2)} ETB",
-                style: GoogleFonts.lato(
+                style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
                 ),
@@ -125,18 +128,17 @@ class _AnalyticsViewState extends State<AnalyticsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: FaIcon(FontAwesomeIcons.chevronLeft,color: Color(0xff006045),)
         ),
         title: const Text(
           "Analytics",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold,),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -146,33 +148,81 @@ class _AnalyticsViewState extends State<AnalyticsView> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
+
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: DateSelector(
-                      hintText: "Start Date",
-                      controller: _startDateController,
-                      icon: Icons.calendar_today,
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                      initialDate: DateTime.now(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.05, vertical: MediaQuery.of(context).size.height*.01),
+               width: MediaQuery.of(context).size.width*.93,
+               height: MediaQuery.of(context).size.height*.1,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor.withOpacity(.5),
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Text("From"),
+                          SizedBox(height: MediaQuery.of(context).size.height*.0025,),
+                          Container(
+                            height: MediaQuery.of(context).size.height*.045,
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorDark
+                            ),
+                            child: DateSelector(
+                              hintText: "Start Date",
+                              controller: _startDateController,
+                              icon: Icons.calendar_today,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                              initialDate: DateTime.now(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: DateSelector(
-                      hintText: "End Date",
-                      controller: _endDateController,
-                      icon: Icons.calendar_today,
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                      initialDate: DateTime.now(),
+                    Container(
+                      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*.015),
+                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.0075,),
+                      width: MediaQuery.of(context).size.width*.25,
+                      child:   DottedLine(
+                        dashLength: 5,
+                        dashColor: Color(0xff009966),
+                        dashGapLength: 3,
+                        lineThickness: 5,
+                        dashRadius: 16,
+                      ),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: Column(
+
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("To"),
+                          SizedBox(height: MediaQuery.of(context).size.height*.0025,),
+                          Container(
+                            height: MediaQuery.of(context).size.height*.045,
+                            child: DateSelector(
+                              hintText: "Start Date",
+                              controller: _startDateController,
+                              icon: Icons.calendar_today,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                              initialDate: DateTime.now(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
               ExpansionPanelList(
                 materialGapSize: MediaQuery.of(context).size.width * 0.01,
                 expansionCallback: (panelIndex, isExpanded) {
@@ -192,8 +242,8 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                         title: "Importance of Expense",
                       );
                     },
-                    backgroundColor: const Color(0xff2F2F2F),
                     canTapOnHeader: true,
+                    backgroundColor: Theme.of(context).primaryColorDark,
                     body: FutureBuilder<Map<String, dynamic>>(
                       future: ExpenseRepository().getExpenseTypeTotals(),
                       builder: (context, snapshot) {
@@ -244,10 +294,10 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                                   Container(
                                     width:
                                         MediaQuery.of(context).size.width *
-                                        0.55,
+                                        0.45,
                                     child: Text(
                                       "Total Expense",
-                                      style: GoogleFonts.lato(
+                                      style:TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -255,7 +305,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                                   ),
                                   Text(
                                     "\$ ${totalExpense.toStringAsFixed(2)} ETB",
-                                    style: GoogleFonts.lato(
+                                    style:TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -285,7 +335,6 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                         title: "Category of Expense",
                       );
                     },
-                    backgroundColor: const Color(0xff2F2F2F),
                     canTapOnHeader: true,
                     body: FutureBuilder<Map<String, Map<String, dynamic>>>(
                       future: ExpenseRepository().getExpenseCategoryTotals(),
@@ -322,7 +371,6 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                     headerBuilder: (context, isExpanded) {
                       return MyExpansionPanelHeader(title: "List of Expense");
                     },
-                    backgroundColor: const Color(0xff2F2F2F),
                     canTapOnHeader: true,
                     body: FutureBuilder<List<Expense>>(
                       future: _expensesFuture,
@@ -336,7 +384,6 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                         if (snapshot.hasError) {
                           return Text(
                             "Error: ${snapshot.error}",
-                            style: const TextStyle(color: Colors.white),
                           );
                         }
                         final expenses = snapshot.data!;

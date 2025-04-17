@@ -62,16 +62,15 @@ class _BankPageState extends State<BankPage> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.045,
+          horizontal: MediaQuery.of(context).size.width * 0.03,
         ),
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               BankBalance(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
               FutureBuilder(
                 future: widget.datamanager.getBanks(),

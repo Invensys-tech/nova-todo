@@ -1,3 +1,4 @@
+import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
@@ -6,6 +7,11 @@ import 'package:flutter_application_1/pages/finance/common/loaninfo.dart';
 import 'package:flutter_application_1/pages/finance/loan/addloan.dart';
 import 'package:flutter_application_1/pages/finance/loan/editloan.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import '../analytics/analytics.dart';
+import '../bank/bank.dart';
+import '../expenses/ExpnesePgae.dart';
+import '../income/income.view.dart';
 
 class Loanpage extends StatefulWidget {
   final Datamanager datamanager;
@@ -245,6 +251,123 @@ class _LoanpageState extends State<Loanpage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget AllLoans() {
+    return FutureBuilder(
+      future: _loanFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          var loans = snapshot.data as List<Loan>;
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            itemCount: loans.length,
+            itemBuilder: (context, index) {
+              final loan = loans[index];
+
+              return Slidable(
+                key: ValueKey(loan.id),
+                startActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) {
+                        // Show a confirmation dialog before deleting
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Confirm Delete'),
+                              content: const Text(
+                                'Are you sure you want to delete this Loan?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(
+                                      context,
+                                    ).pop(); // Dismiss the dialog
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    // Place your delete logic here
+                                    // _expenseRepository.deleteExpense(
+                                    //   expense.id,
+                                    // );
+                                    print('Deleted ${loan.id}');
+                                    Navigator.of(
+                                      context,
+                                    ).pop(); // Dismiss the dialog
+                                  },
+                                  child: const Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      icon: Icons.delete,
+                      label: 'Delete',
+                    ),
+                  ],
+                ),
+                endActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      onPressed: (context) async {
+                        final updatedLoans = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => EditLoan(
+                                  loanId: loan.id,
+                                  datamanager: widget.datamanager,
+                                ),
+                          ),
+                        );
+
+                        if (updatedLoans != null) {
+                          setState(() {
+                            _loanFuture = Future.value(updatedLoans);
+                          });
+                        }
+                      },
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      icon: Icons.edit,
+                      label: 'Edit',
+                    ),
+                  ],
+                ),
+                child: LoanCard(
+                  name: loans[index].loanerName,
+                  phoneNumber: loans[index].phoneNumber,
+                  loanAmount: loans[index].amount,
+                  id: loans[index].id,
+                  datamanager: widget.datamanager,
+                ),
+              );
+            },
+          );
+        } else {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("There was an error fetching data ${snapshot.error}");
+          } else {
+            return const CircularProgressIndicator();
+          }
+        }
+      },
     );
   }
 }

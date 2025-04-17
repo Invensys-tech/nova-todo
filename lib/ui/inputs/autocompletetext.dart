@@ -35,7 +35,7 @@ class AutoCompleteText extends StatelessWidget {
     return Container(
       // Outer container mimics the TextFields style
       decoration: BoxDecoration(
-        color: Colors.black87.withOpacity(.3),
+        border: Border.all(width: 1, color: Colors.grey.withOpacity(.4)),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(5),
           bottomLeft: Radius.circular(5),

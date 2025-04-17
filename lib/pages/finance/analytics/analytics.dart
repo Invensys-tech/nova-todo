@@ -610,6 +610,7 @@ import 'package:flutter_application_1/pages/finance/common/Expenses.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
 import 'package:flutter_application_1/pages/finance/common/bank.dart';
 import 'package:flutter_application_1/repositories/expense.repository.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:slider_bar_chart/slider_bar_chart.dart';
 
 class AnalyticsPage extends StatefulWidget {
@@ -639,94 +640,14 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               // Balance container
               BankBalance(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               // Income and Expense containers
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Income container
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.43,
-                    decoration: BoxDecoration(
-                      // Remove fixed height
-                      color: Color(0xff202020),
-                      borderRadius: BorderRadius.all(Radius.circular(11)),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.045,
-                      vertical: MediaQuery.of(context).size.height * 0.0095,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Total Income',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w200,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.003,
-                        ),
-                        Text(
-                          '\$ 15,000',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Expense container
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.43,
-                    decoration: BoxDecoration(
-                      // Remove fixed height
-                      color: Color(0xff202020),
-                      borderRadius: BorderRadius.all(Radius.circular(11)),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.045,
-                      vertical: MediaQuery.of(context).size.height * 0.0095,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Total Expense',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.003,
-                        ),
-                        Text(
-                          '\$ -5,000',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               // Add more content to ensure scrolling
               _buildAccountSection(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
               _ExpensesCatagorypage(),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              _GraphDesign(), // Add one more to ensure content overflows
+             // _GraphDesign(), // Add one more to ensure content overflows
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               // Add one more to ensure content overflows
             ],
@@ -746,59 +667,55 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               "Account",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Colors.white70,
               ),
             ),
             Text(
               "See All",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Colors.white70,
               ),
             ),
           ],
         ),
-        Column(
-          children: [
-            FutureBuilder(
-              future: widget.datamanager.getBanks(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  var banks = snapshot.data as List<Bank>;
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    itemCount: banks.length > 3 ? 3 : banks.length,
+        SizedBox(height: MediaQuery.of(context).size.height*.005,),
+        FutureBuilder(
+          future: widget.datamanager.getBanks(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var banks = snapshot.data as List<Bank>;
+              return ListView.builder(
+                padding: EdgeInsets.all(0),
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                itemCount: banks.length > 3 ? 3 : banks.length,
 
-                    itemBuilder: (context, index) {
-                      final bank = banks[index];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          BankWidget(
-                            id: banks[index].id,
-                            accountname: banks[index].accountHolder,
-                            accoutnumber: banks[index].accountNumber,
-                            balance: banks[index].balance,
-                            datamanager: widget.datamanager,
-                          ),
-                        ],
-                      );
-                    },
+                itemBuilder: (context, index) {
+                  final bank = banks[index];
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BankWidget(
+                        id: banks[index].id,
+                        accountname: banks[index].accountHolder,
+                        accoutnumber: banks[index].accountNumber,
+                        balance: banks[index].balance,
+                        datamanager: widget.datamanager,
+                      ),
+                    ],
                   );
-                } else {
-                  if (snapshot.hasError) {
-                    print(snapshot.error);
-                    return Text(
-                      "There was an error fetching data ${snapshot.error}",
-                    );
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                }
-              },
-            ),
-          ],
+                },
+              );
+            } else {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return Text(
+                  "There was an error fetching data ${snapshot.error}",
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            }
+          },
         ),
         // BankWidget(
         //   accountname: "Jhon",
@@ -832,18 +749,16 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               "Expenses Catagory",
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Colors.white70,
               ),
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
+
+                PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                   context,
-                  MaterialPageRoute(
-                    builder:
-                        (context) =>
-                            AnalyticsView(datamanager: widget.datamanager),
-                  ),
+                  screen: AnalyticsView(datamanager: widget.datamanager),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
                 );
                 print("touched");
               },
@@ -853,7 +768,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   "See All",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    color: Colors.white70,
+                    color: Color(0xff009966),
                   ),
                 ),
               ),
