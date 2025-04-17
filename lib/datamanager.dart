@@ -16,29 +16,27 @@
 // }
 
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Datamanager {
-  Future<List<Expense>> fetchExpenseWithDateFilter(
-    DateTime start,
-    DateTime end,
-  ) async {
+  Future<List<Expense>> fetchExpenseWithDateFilter(DateTime dateTime) async {
     final data = await Supabase.instance.client
         .from('expense')
         .select('*')
-        // Assuming your expense date field is named 'date'
-        .gte('date', start.toIso8601String())
-        .lte('date', end.toIso8601String());
+        .eq('date', getDateOnly(dateTime));
+
     return (data as List<dynamic>)
         .map((e) => Expense.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 
-  Future<List<Expense>> getExpense({DateTime? start, DateTime? end}) async {
-    if (start != null && end != null) {
-      return await fetchExpenseWithDateFilter(start, end);
+  Future<List<Expense>> getExpense({DateTime? dateTime}) async {
+    if (dateTime != null) {
+      return await fetchExpenseWithDateFilter(dateTime);
     } else {
-      return await fetchExpense(); // your original fetchExpense
+      return await fetchExpense();
     }
   }
 
@@ -72,6 +70,15 @@ class Datamanager {
     return (data as List<dynamic>)
         .map((e) => ChildLoan.fromJson(e as Map<String, dynamic>))
         .toList();
+  }
+
+  Future<List<Loan>> getLoansByName(String name) async {
+    final response = await supabaseClient
+        .from('loan')
+        .select()
+        .eq('loanerName', name);
+
+    return (response as List).map((e) => Loan.fromJson(e)).toList();
   }
 
   Future<List<Bank>> fetchBanks() async {

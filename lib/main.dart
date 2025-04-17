@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:another_telephony/telephony.dart';
+import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/pages/auth/payment.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
@@ -96,8 +97,8 @@ class _MyAppState extends State<MyApp> {
         primaryColor: Colors.blue,
         primaryColorLight: Colors.black.withOpacity(.7),
         primaryColorDark: Colors.white,
-          cardColor: Color(0xffD4D4D8),
-          disabledColor: Color(0xff00D492),
+        cardColor: Color(0xffD4D4D8),
+        disabledColor: Color(0xff00D492),
         fontFamily: 'Outfit',
         scaffoldBackgroundColor: Color(0xffF4F4F5),
       ),
@@ -126,7 +127,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     loadTheme();
-    _checkAndListenSms(); // Call the function here!
+    _checkAndListenSms();
   }
 
   Future<void> loadTheme() async {
@@ -158,7 +159,7 @@ class _MyAppState extends State<MyApp> {
       final permissions = await Permission.sms.request();
       if (permissions.isGranted) {
         setState(() => _permission = 'Granted');
-         _startListener();
+        _startListener();
         print(_permission);
       } else {
         setState(() => _permission = 'Denied');
@@ -171,13 +172,13 @@ class _MyAppState extends State<MyApp> {
 
   void _startListener() {
     print('in start listener');
-     telephony.listenIncomingSms(
-       onNewMessage: (SmsMessage msg) {
-         print('New SMS: ${msg.address} - ${msg.body}');
-         SmsService().parseSms(msg);
+    telephony.listenIncomingSms(
+      onNewMessage: (SmsMessage msg) {
+        print('New SMS: ${msg.address} - ${msg.body}');
+        SmsService().parseSms(msg);
       },
-       listenInBackground: false,
-     );
+      listenInBackground: false,
+    );
   }
 
   @override
@@ -212,6 +213,7 @@ class _MyAppState extends State<MyApp> {
             '/expense-form':
                 (context) => AddExpense(datamanager: Datamanager()),
             '/income-form': (context) => IncomeForm(datamanager: Datamanager()),
+            '/productivity-home': (context) => ProductivityHome(),
           },
         );
       },

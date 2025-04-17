@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/entities/income-entity.dart';
-import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
-import 'package:flutter_application_1/pages/finance/income/edit.income.dart';
 import 'package:flutter_application_1/pages/finance/income/form.income.dart';
+import 'package:flutter_application_1/pages/finance/income/edit.income.dart';
 import 'package:flutter_application_1/repositories/income.repository.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,54 +21,189 @@ class IncomeView extends StatefulWidget {
 class _IncomeViewState extends State<IncomeView> {
   ETDateTime noww = ETDateTime.now();
   late Future<List<Income>> _incomeList;
+  final DateTime _today = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
+
   @override
-  Widget IncomeList(Income income) {
+  void initState() {
+    super.initState();
+    _loadIncomes();
+  }
+
+  void _loadIncomes() {
+    if (_selectedDate != null) {
+      _incomeList = IncomeRepository().getIncome(_selectedDate);
+    } else {
+      _incomeList = IncomeRepository().getIncome(null);
+    }
+  }
+
+  void _onDateSelected(DateTime date) {
+    setState(() {
+      _selectedDate = date;
+    });
+    _loadIncomes();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF2b2d30),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => IncomeForm(datamanager: widget.datamanager),
+            ),
+          ).then((_) => setState(_loadIncomes));
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height * .015),
+            CalendarTimeline(
+              initialDate: _selectedDate,
+              firstDate: _today,
+              lastDate: DateTime(2027, 11, 20),
+              onDateSelected: _onDateSelected,
+              leftMargin: 20,
+              showYears: false,
+              monthColor: Colors.blueGrey,
+              dayColor: Colors.teal[200],
+              activeDayColor: Colors.white,
+              activeBackgroundDayColor: Colors.grey,
+              shrink: true,
+              locale: 'en_ISO',
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * .025),
+
+            FutureBuilder<List<Income>>(
+              future: _incomeList,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+
+                final incomes = snapshot.data!;
+                // **calculate the total here**
+                final num total = incomes.fold<num>(
+                  0,
+                  (sum, inc) => sum + inc.amount,
+                );
+
+                return Column(
+                  children: [
+                    // ——— Top summary card with dynamic total ———
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * .02,
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * .015,
+                        ),
+                        height: MediaQuery.of(context).size.height * .1175,
+                        width: MediaQuery.of(context).size.width * .9,
+                        decoration: BoxDecoration(
+                          color: Colors.black38,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * .015,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * .22,
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.trending_up_outlined,
+                                    color: Color(0xff0d805e),
+                                    size: 25,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width *
+                                        .035,
+                                  ),
+                                  Text(
+                                    "\$ ${total.toStringAsFixed(2)} ETB",
+                                    style: GoogleFonts.lato(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: MediaQuery.of(context).size.height * .025),
+
+                    // ——— List of incomes ———
+                    Column(
+                      children:
+                          incomes.map((inc) => _buildIncomeItem(inc)).toList(),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// your existing row widget for each income
+  Widget _buildIncomeItem(Income income) {
     return Slidable(
       key: ValueKey(income.id),
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
-          // Left slide (Delete)
           SlidableAction(
             onPressed: (context) {
               showDialog(
                 context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Confirm Delete'),
-                    content: const Text(
-                      'Are you sure you want to delete this income?',
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Cancel
-                        },
-                        child: const Text('Cancel'),
+                builder:
+                    (_) => AlertDialog(
+                      title: const Text('Confirm Delete'),
+                      content: const Text(
+                        'Are you sure you want to delete this income?',
                       ),
-                      TextButton(
-                        onPressed: () async {
-                          try {
-                            await IncomeRepository().deleteIncome(income.id);
-                            Navigator.of(context).pop(); // Close dialog
-                            setState(() {
-                              _incomeList = IncomeRepository().getIncome();
-                            });
-                          } catch (e) {
-                            Navigator.of(context).pop();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $e")),
-                            );
-                          }
-                        },
-                        child: const Text(
-                          'Delete',
-                          style: TextStyle(color: Colors.red),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text('Cancel'),
                         ),
-                      ),
-                    ],
-                  );
-                },
+                        TextButton(
+                          onPressed: () async {
+                            await IncomeRepository().deleteIncome(income.id);
+                            Navigator.of(context).pop();
+                            setState(_loadIncomes);
+                          },
+                          child: const Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
               );
             },
             backgroundColor: Colors.red,
@@ -82,23 +216,18 @@ class _IncomeViewState extends State<IncomeView> {
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
-          // Right slide (Edit)
           SlidableAction(
             onPressed: (context) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder:
-                      (context) => EditIncome(
+                      (_) => EditIncome(
                         datamanager: widget.datamanager,
                         incomeId: income.id,
                       ),
                 ),
-              ).then((value) {
-                setState(() {
-                  _incomeList = IncomeRepository().getIncome();
-                });
-              });
+              ).then((_) => setState(_loadIncomes));
             },
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
@@ -110,20 +239,15 @@ class _IncomeViewState extends State<IncomeView> {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * .035,
-              right: MediaQuery.of(context).size.width * .035,
-              top: MediaQuery.of(context).size.height * .0125,
-              bottom: MediaQuery.of(context).size.height * .0125,
+            padding: EdgeInsets.symmetric(
+              vertical: MediaQuery.of(context).size.height * .0125,
+              horizontal: MediaQuery.of(context).size.width * .035,
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(width: MediaQuery.of(context).size.width * .025),
                 const Icon(Icons.circle_rounded, size: 17, color: Colors.green),
                 SizedBox(width: MediaQuery.of(context).size.width * .05),
-                Container(
-                  width: MediaQuery.of(context).size.width * .55,
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -148,7 +272,7 @@ class _IncomeViewState extends State<IncomeView> {
                   ),
                 ),
                 Text(
-                  "\$ ${income.amount} ETB",
+                  "\$ ${income.amount.toStringAsFixed(2)} ETB",
                   style: GoogleFonts.lato(
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
@@ -159,250 +283,6 @@ class _IncomeViewState extends State<IncomeView> {
           ),
           const Divider(),
         ],
-      ),
-    );
-  }
-
-  void initState() {
-    super.initState();
-    _incomeList = IncomeRepository().getIncome();
-
-    _incomeList
-        .then((incomes) {
-          print("Income List: ${incomes.map((income) => income.toJson())}");
-        })
-        .catchError((error) {
-          print("Error fetching income: $error");
-        });
-  }
-
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        foregroundColor: Colors.white,
-        backgroundColor: Color(0xFF2b2d30),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50), // Rounded corners
-        ),
-        onPressed: () {
-          // Action when pressed
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => IncomeForm(datamanager: widget.datamanager),
-            ), // Navigate to NewScreen
-          );
-          print('Floating Action Button Pressed');
-        },
-        child: Icon(Icons.add), // The icon inside the button
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * .015),
-            CalendarTimeline(
-              initialDate: ETDateTime.now(),
-              firstDate: noww,
-              lastDate: DateTime(2027, 11, 20),
-              onDateSelected: (date) {
-                print(ETDateFormat("dd-MMMM-yyyy HH:mm:ss").format(noww));
-              },
-        
-              leftMargin: 20,
-              showYears: false,
-              monthColor: Colors.blueGrey,
-              dayColor: Colors.teal[200],
-              activeDayColor: Colors.white,
-              activeBackgroundDayColor: Colors.grey,
-              shrink: true,
-              locale: 'en_ISO',
-            ),
-        
-            SizedBox(height: MediaQuery.of(context).size.height * .025),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * .02,
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * .0,
-                      bottom: MediaQuery.of(context).size.height * .015,
-                    ),
-                    height: MediaQuery.of(context).size.height * .1175,
-                    width: MediaQuery.of(context).size.width * .9,
-                    decoration: BoxDecoration(
-                      color: Colors.black38,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          right: -78,
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * .07,
-                            width: MediaQuery.of(context).size.width * .25,
-                            decoration: const BoxDecoration(),
-                          ),
-                        ),
-        
-                        Column(
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * .015,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * .22,
-                              ),
-                              child: Center(
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.trending_up_outlined,
-                                      color: Color(0xff0d805e),
-                                      size: 25,
-                                    ),
-                                    SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width *
-                                          .035,
-                                    ),
-                                    Text(
-                                      "\$ 15,000 ETB",
-                                      style: GoogleFonts.lato(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Divider(color: Colors.white70),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * .005,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * .0155,
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .275,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons
-                                            .do_not_disturb_on_total_silence_outlined,
-                                        size: 15,
-                                        color: Colors.red,
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                            .015,
-                                      ),
-                                      Text(
-                                        "\$ 45,000",
-                                        style: GoogleFonts.lato(
-                                          fontSize: 13,
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-        
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .275,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons
-                                            .do_not_disturb_on_total_silence_outlined,
-                                        size: 15,
-                                        color: Colors.deepOrangeAccent,
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                            .015,
-                                      ),
-                                      Text(
-                                        "\$ 35,000",
-                                        style: GoogleFonts.lato(
-                                          fontSize: 13,
-                                          color: Colors.deepOrangeAccent,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-        
-                                Container(
-                                  width: MediaQuery.of(context).size.width * .275,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons
-                                            .do_not_disturb_on_total_silence_outlined,
-                                        size: 15,
-                                        color: Color(0xff0d805e),
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                            .015,
-                                      ),
-                                      Text(
-                                        "\$ 17,500",
-                                        style: GoogleFonts.lato(
-                                          fontSize: 13,
-                                          color: Color(0xff0d805e),
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * .025),
-              ],
-            ),
-        
-            FutureBuilder(
-              future: _incomeList,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  var data = snapshot.data;
-                  return Column(
-                    children: data!.map((e) => IncomeList(e)).toList(),
-                  );
-                } else {
-                  if (snapshot.hasError) {
-                    print(snapshot.error);
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                }
-              },
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -39,6 +39,7 @@ class SmsService {
         } else if (message.body!.contains('Credited') ||
             message.body!.contains('credited')) {
           print('Credit SMS detected');
+          print(match.group(2));
           NotificationService().showNotification(
             -2,
             'Income',

@@ -33,6 +33,12 @@ class _HabitFormState extends State<HabitForm> {
     controller: TextEditingController(),
     type: "1",
   );
+  FormInput frequency = FormInput(
+    label: 'Frequency',
+    hint: 'Habit Frequency',
+    controller: TextEditingController(),
+    type: "0",
+  );
 
   @override
   void initState() {
@@ -44,6 +50,7 @@ class _HabitFormState extends State<HabitForm> {
 
   List<Map<String, dynamic>> repetitionItems = [
     {'label': 'Daily', 'value': 'Daily'},
+    {'label': 'Weekly', 'value': 'Weekly'},
     {'label': 'Monthly', 'value': 'Monthly'},
   ];
 
@@ -65,21 +72,20 @@ class _HabitFormState extends State<HabitForm> {
   //   });
   // }
 
+  static const days = [
+    {'label': 'MON', 'value': 'Monday'},
+    {'label': 'TUE', 'value': 'Tuesday'},
+    {'label': 'WED', 'value': 'Wednesday'},
+    {'label': 'THU', 'value': 'Thursday'},
+    {'label': 'FRI', 'value': 'Friday'},
+    {'label': 'SAT', 'value': 'Saturday'},
+    {'label': 'SUN', 'value': 'Sunday'},
+  ];
+
   selectRepetition(value) {
     setState(() {
       repetition.controller.text = value;
       customRepetitionItems.clear();
-      if (repetition.controller.text == 'Everyday') {
-        customRepetitionItems = {
-          'MON',
-          'TUE',
-          'WED',
-          'THU',
-          'FRI',
-          'SAT',
-          'SUN',
-        };
-      }
     });
   }
 
@@ -93,15 +99,26 @@ class _HabitFormState extends State<HabitForm> {
     Navigator.pop(context);
   }
 
-  saveHabit() {
-    Habit newHabit = Habit.fromJson({
-      'name': name.controller.text,
-      'type': repetition.controller.text,
-      'date': widget.date ?? getDateOnly(DateTime.now()),
-      'repetition_type': repetitionTypeController.text,
-      'repetitions': customRepetitionItems.toList(),
-      'is_done': false,
+  printDays() {
+    print(getDayFromDateTime(DateTime.now()));
+    print(getDayFromDateTime(DateTime.now().add(Duration(days: 1))));
+    print(getDayFromDateTime(DateTime.now().add(Duration(days: 2))));
+    print(getDayFromDateTime(DateTime.now().add(Duration(days: 3))));
+    print(getDayFromDateTime(DateTime.now().add(Duration(days: 4))));
+    print(getDayFromDateTime(DateTime.now().add(Duration(days: 5))));
+    print(getDayFromDateTime(DateTime.now().add(Duration(days: 6))));
+  }
+
+  resetForm() {
+    setState(() {
+      name.controller.text = '';
+      frequency.controller.text = '';
+      repetition.controller.text = '';
+      customRepetitionItems = {};
     });
+  }
+
+  saveHabit() {
     // Map<String, dynamic> jsonValue = {
     //   'name': name.controller.text,
     //   'type': repetition.controller.text,
@@ -111,10 +128,66 @@ class _HabitFormState extends State<HabitForm> {
     //   'is_done': false,
     // };
 
+    // printDays();
+
+    if (name.controller.text == '') {
+      print('Name is required');
+      return;
+    }
+
+    if (repetition.controller.text == 'Daily' ||
+        repetition.controller.text == 'Monthly') {
+      try {
+        int frequencyValue = int.parse(frequency.controller.text);
+        if (frequencyValue <= 0) {
+          print('Frequency cannot be less than 0');
+          return;
+        }
+      } catch (e) {
+        print(
+          'Frequency needs to be specified for ${repetition.controller.text} habits',
+        );
+        print(e);
+        return;
+      }
+    } else if (repetition.controller.text == 'Weekly') {
+      if (customRepetitionItems.length == 0) {
+        print(
+          'Repetition days must be specified for ${repetition.controller.text} habits',
+        );
+        return;
+      }
+    }
+
+    // if () {
+
+    // }
+
+    Habit newHabit = Habit.fromJson({
+      'name': name.controller.text,
+      'type': repetition.controller.text,
+      'date': widget.date ?? getDateOnly(DateTime.now()),
+      'repetition_type': repetitionTypeController.text,
+      'repetitions': customRepetitionItems.toList(),
+      'is_done': false,
+      'frequency': int.parse(
+        frequency.controller.text == '' ? '0' : frequency.controller.text,
+      ),
+    });
+
+    print(jsonEncode(newHabit));
+
+    // HabitsRepository().fetchHabitsByDate(DateTime.now()).then((habits) {
+    //   for (var habit in habits) {
+    //     print(jsonEncode(habit.toJson()));
+    //   }
+    // });
+
     HabitsRepository().createHabit(newHabit).then((value) {
       if (value) {
         navigateBack();
         widget.refetchData();
+        resetForm();
       }
     });
   }
@@ -160,66 +233,58 @@ class _HabitFormState extends State<HabitForm> {
                 controller: name.controller,
               ),
             ),
-            // MySelector(
-            //   label: repetition.label,
-            //   myDropdownItems: repetitionItems,
-            //   onSelect: selectRepetition,
-            //   icon: Icons.circle_notifications_sharp,
-            //   currentValue: repetition.controller.text,
-            //   controller: repetition.controller,
-            // ),
             MyRadioInput(
-              label: 'Frequency',
-              groupKey: 'frequency',
+              label: 'Repetition',
+              groupKey: 'repetition',
               onChanged: selectRepetition,
-              options: ['Everyday', 'Daily', 'Weekly'],
+              options: ['Daily', 'Weekly', 'Monthly'],
             ),
-            // MyRadioInput(
-            //   label: 'Specific',
-            //   groupKey: 'repetition_type',
-            //   options: ['Everyday', 'Once a week'],
-            //   onChanged: selectRepetitionType,
-            //   orientation: 'horizontal',
-            // ),
-            Row(
-              // spacing: MediaQuery.of(context).size.width * 0.04,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:
-                  (repetition.controller.text == 'Daily' ||
-                              repetition.controller.text == 'Everyday'
-                          ? ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
-                          : ['Week1', 'Week2', 'Week3', 'Week4'])
-                      .map(
-                        (e) => GestureDetector(
-                          onTap: () => setRepetitionItem(e),
-                          child: Container(
-                            width:
-                                repetition.controller.text == 'Daily' ||
-                                        repetition.controller.text == 'Everyday'
-                                    ? 45.0
-                                    : 70.0,
-                            height: 30.0,
-                            decoration: BoxDecoration(
-                              color:
-                                  repetition.controller.text == 'Everyday' ||
-                                          customRepetitionItems.contains(e)
-                                      ? Color(0xFF8B0836)
-                                      : Color(0xFF27272A),
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 2.0,
-                                horizontal: 7.0,
+            repetition.controller.text == 'Weekly'
+                ? Row(
+                  // spacing: MediaQuery.of(context).size.width * 0.04,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children:
+                      days
+                          .map(
+                            (e) => GestureDetector(
+                              onTap: () => setRepetitionItem(e['value']),
+                              child: Container(
+                                width:
+                                    repetition.controller.text == 'Weekly'
+                                        ? 45.0
+                                        : 70.0,
+                                height: 30.0,
+                                decoration: BoxDecoration(
+                                  color:
+                                      customRepetitionItems.contains(e['value'])
+                                          ? Color(0xFF8B0836)
+                                          : Color(0xFF27272A),
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                alignment: Alignment.center,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 2.0,
+                                    horizontal: 7.0,
+                                  ),
+                                  child: Text(
+                                    e['label']!,
+                                    style: TextStyle(fontSize: 11),
+                                  ),
+                                ),
                               ),
-                              child: Text(e, style: TextStyle(fontSize: 11)),
                             ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-            ),
+                          )
+                          .toList(),
+                )
+                : MyTextInput(
+                  label: 'Frequency',
+                  textFields: TextFields(
+                    hinttext: frequency.hint,
+                    whatIsInput: frequency.type,
+                    controller: frequency.controller,
+                  ),
+                ),
             Padding(
               padding: EdgeInsets.all(
                 MediaQuery.of(context).size.height * 0.005,
@@ -237,7 +302,20 @@ class _HabitFormState extends State<HabitForm> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: navigateBack,
+                      // onPressed: navigateBack,
+                      onPressed: () {
+                        HabitsRepository()
+                            .fetchHabitsByDate(DateTime.now())
+                            .then((value) {
+                              if (value.length == 0) {
+                                print('nothing to print');
+                                return;
+                              }
+                              for (var habit in value) {
+                                print(jsonEncode(habit.toJson()));
+                              }
+                            });
+                      },
                       child: const Text(
                         "Cancel",
                         style: TextStyle(

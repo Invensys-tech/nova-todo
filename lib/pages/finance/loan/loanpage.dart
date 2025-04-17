@@ -68,44 +68,185 @@ class _LoanpageState extends State<Loanpage> {
               LoanWidget(),
               SizedBox(height: MediaQuery.of(context).size.height * 0.008),
 
-              Container(
-                height: MediaQuery.of(context).size.height* _loanFuture.toString().length*.07,
-                child: ContainedTabBarView(
-                  tabs: [
-                    Tab(text: "All Loans"),
-                    Tab(text: "Receivable"),
-                    Tab(text: "Payable"),
-                  ],
-                  tabBarProperties: TabBarProperties(
-                    width: MediaQuery.of(context).size.width,
-                    height: 32,
-                    isScrollable: false,
-                    labelPadding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * .035,
-                    ),
-                    background: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              FutureBuilder(
+                future: _loanFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var loans = snapshot.data as List<Loan>;
 
-                      ),
-                    ),
-                    position: TabBarPosition.top,
-                    alignment: TabBarAlignment.start,
-                    indicatorColor: Color(0xff009966),
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    labelStyle: TextStyle(fontSize: 16, color: Color(0xff009966)),
-                    unselectedLabelColor: Theme.of(context).primaryColorLight,
-                    unselectedLabelStyle: TextStyle(fontSize: 13),
-                  ),
-                  views: [
-                    AllLoans(),
-                    AllLoans(),
-                    AllLoans(),
-                  ],
-                ),
+                    // Group and aggregate by loanerName
+                    final Map<String, Map<String, dynamic>> grouped = {};
+
+                    for (var loan in loans) {
+                      final name = loan.loanerName;
+                      final phone = loan.phoneNumber;
+                      final amount =
+                          loan.type == "Receivable"
+                              ? loan.amount
+                              : -loan.amount;
+
+                      if (grouped.containsKey(name)) {
+                        grouped[name]!['amount'] += amount;
+                      } else {
+                        grouped[name] = {
+                          'phoneNumber': phone,
+                          'amount': amount,
+                          'id': loan.id, // Optional: pick first one
+                        };
+                      }
+                    }
+
+                    final distinctLoans =
+                        grouped.entries.map((entry) {
+                          return {
+                            'name': entry.key,
+                            'phoneNumber': entry.value['phoneNumber'],
+                            'amount': entry.value['amount'],
+                            'id': entry.value['id'],
+                          };
+                        }).toList();
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: distinctLoans.length,
+                      itemBuilder: (context, index) {
+                        final loan = distinctLoans[index];
+                        return LoanCard(
+                          name: loan['name'],
+                          phoneNumber: loan['phoneNumber'],
+                          loanAmount: loan['amount'],
+                          id: loan['id'],
+                          datamanager: widget.datamanager,
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text("Error fetching data: ${snapshot.error}");
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
               ),
 
+              // FutureBuilder(
+              //   future: _loanFuture,
+              //   builder: (context, snapshot) {
+              //     if (snapshot.hasData) {
+              //       var loans = snapshot.data as List<Loan>;
+              //       return ListView.builder(
+              //         shrinkWrap: true,
+              //         physics: ClampingScrollPhysics(),
+              //         itemCount: loans.length,
+              //         itemBuilder: (context, index) {
+              //           final loan = loans[index];
+
+              //           return Slidable(
+              //             key: ValueKey(loan.id),
+              //             startActionPane: ActionPane(
+              //               motion: const ScrollMotion(),
+              //               children: [
+              //                 SlidableAction(
+              //                   onPressed: (context) {
+              //                     // Show a confirmation dialog before deleting
+              //                     showDialog(
+              //                       context: context,
+              //                       builder: (BuildContext context) {
+              //                         return AlertDialog(
+              //                           title: const Text('Confirm Delete'),
+              //                           content: const Text(
+              //                             'Are you sure you want to delete this Loan?',
+              //                           ),
+              //                           actions: [
+              //                             TextButton(
+              //                               onPressed: () {
+              //                                 Navigator.of(
+              //                                   context,
+              //                                 ).pop(); // Dismiss the dialog
+              //                               },
+              //                               child: const Text('Cancel'),
+              //                             ),
+              //                             TextButton(
+              //                               onPressed: () {
+              //                                 // Place your delete logic here
+              //                                 // _expenseRepository.deleteExpense(
+              //                                 //   expense.id,
+              //                                 // );
+              //                                 print('Deleted ${loan.id}');
+              //                                 Navigator.of(
+              //                                   context,
+              //                                 ).pop(); // Dismiss the dialog
+              //                               },
+              //                               child: const Text(
+              //                                 'Delete',
+              //                                 style: TextStyle(
+              //                                   color: Colors.red,
+              //                                 ),
+              //                               ),
+              //                             ),
+              //                           ],
+              //                         );
+              //                       },
+              //                     );
+              //                   },
+              //                   backgroundColor: Colors.red,
+              //                   foregroundColor: Colors.white,
+              //                   icon: Icons.delete,
+              //                   label: 'Delete',
+              //                 ),
+              //               ],
+              //             ),
+              //             endActionPane: ActionPane(
+              //               motion: const ScrollMotion(),
+              //               children: [
+              //                 SlidableAction(
+              //                   onPressed: (context) async {
+              //                     final updatedLoans = await Navigator.push(
+              //                       context,
+              //                       MaterialPageRoute(
+              //                         builder:
+              //                             (context) => EditLoan(
+              //                               loanId: loan.id,
+              //                               datamanager: widget.datamanager,
+              //                             ),
+              //                       ),
+              //                     );
+
+              //                     if (updatedLoans != null) {
+              //                       setState(() {
+              //                         _loanFuture = Future.value(updatedLoans);
+              //                       });
+              //                     }
+              //                   },
+              //                   backgroundColor: Colors.blue,
+              //                   foregroundColor: Colors.white,
+              //                   icon: Icons.edit,
+              //                   label: 'Edit',
+              //                 ),
+              //               ],
+              //             ),
+              //             child: LoanCard(
+              //               name: loans[index].loanerName,
+              //               phoneNumber: loans[index].phoneNumber,
+              //               loanAmount: loans[index].amount,
+              //               id: loans[index].id,
+              //               datamanager: widget.datamanager,
+              //             ),
+              //           );
+              //         },
+              //       );
+              //     } else {
+              //       if (snapshot.hasError) {
+              //         print(snapshot.error);
+              //         return Text(
+              //           "There was an error fetching data ${snapshot.error}",
+              //         );
+              //       } else {
+              //         return const CircularProgressIndicator();
+              //       }
+              //     }
+              //   },
+              // ),
             ],
           ),
         ),
@@ -113,11 +254,8 @@ class _LoanpageState extends State<Loanpage> {
     );
   }
 
-
-
-  Widget AllLoans()
-  {
-    return  FutureBuilder(
+  Widget AllLoans() {
+    return FutureBuilder(
       future: _loanFuture,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -167,9 +305,7 @@ class _LoanpageState extends State<Loanpage> {
                                   },
                                   child: const Text(
                                     'Delete',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                    ),
+                                    style: TextStyle(color: Colors.red),
                                   ),
                                 ),
                               ],
@@ -194,9 +330,9 @@ class _LoanpageState extends State<Loanpage> {
                           MaterialPageRoute(
                             builder:
                                 (context) => EditLoan(
-                              loanId: loan.id,
-                              datamanager: widget.datamanager,
-                            ),
+                                  loanId: loan.id,
+                                  datamanager: widget.datamanager,
+                                ),
                           ),
                         );
 
@@ -226,9 +362,7 @@ class _LoanpageState extends State<Loanpage> {
         } else {
           if (snapshot.hasError) {
             print(snapshot.error);
-            return Text(
-              "There was an error fetching data ${snapshot.error}",
-            );
+            return Text("There was an error fetching data ${snapshot.error}");
           } else {
             return const CircularProgressIndicator();
           }

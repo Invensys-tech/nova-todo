@@ -4,6 +4,7 @@ import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
+import 'package:flutter_application_1/ui/inputs/expense-payment.selector.dart';
 import 'package:flutter_application_1/ui/inputs/expensetype.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/testdate.dart';
@@ -98,6 +99,24 @@ class _AddExpenseState extends State<AddExpense> {
     }
   }
 
+  Future<List<dynamic>>? _dataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateFuture();
+  }
+
+  void _updateFuture() {
+    if (_paidByController.text == "Partner") {
+      _dataFuture = widget.datamanager.getLoan();
+    } else if (_paidByController.text == "Bank") {
+      _dataFuture = widget.datamanager.getBanks();
+    } else {
+      _dataFuture = Future.value([]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> specificItems = [];
@@ -113,17 +132,18 @@ class _AddExpenseState extends State<AddExpense> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back,),
+          icon: const Icon(Icons.arrow_back),
         ),
         title: const Text(
           "Add Expense",
-          style: TextStyle(fontWeight: FontWeight.bold, ),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.045, vertical: MediaQuery.of(context).size.height*.015
+          horizontal: MediaQuery.of(context).size.width * 0.045,
+          vertical: MediaQuery.of(context).size.height * .015,
         ),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -142,12 +162,27 @@ class _AddExpenseState extends State<AddExpense> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
                 const Text(
-                  "Expense Name",
+                  "Amount",
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w300,
+                    color: Colors.white70,
                   ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+                TextFields(
+                  hinttext: 'eg: 400',
+                  whatIsInput: '0',
+                  controller: _amountController,
+                  prefixText: 'ETB', // 👈 This shows the badge
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                const Text(
+                  "Expense Name",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 TextFields(
@@ -160,186 +195,129 @@ class _AddExpenseState extends State<AddExpense> {
                 // --- Amount Field ---
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                const Text(
-                  "Category",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                AutoCompleteText(
-                  suggestions: searchItems,
-                  controller: _expenseCategoryController,
-                  hintText: "Search for a Category...",
-                  icon: Icons.search,
-                  suggestionBuilder: (String text) {
-                    return ListTile(
-                      title: Text(
-                        text,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Category",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          AutoCompleteText(
+                            suggestions: searchItems,
+                            controller: _expenseCategoryController,
+                            hintText: "Search for a Category...",
+                            icon: Icons.search,
+                            suggestionBuilder: (String text) {
+                              return ListTile(
+                                title: Text(
+                                  text,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                subtitle: const Text(
+                                  "Tap to select",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
-                      subtitle: const Text(
-                        "Tap to select",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+
+                    SizedBox(width: MediaQuery.of(context).size.width * .05),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Date",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          DateSelector(
+                            hintText: "Select a date",
+                            controller: _dateController,
+                            icon: Icons.calendar_today,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100),
+                            initialDate: DateTime.now(),
+                          ),
+                        ],
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
 
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                 ExpenseTypeSelector(controller: _expenseTypeController),
 
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
+                // CustomDateSelectorRow(
+                //   hintText: "Select a date",
+                //   controller: _dateController,
+                //   icon: Icons.calendar_today,
+                //   firstDate: DateTime(2000),
+                //   lastDate: DateTime(2100),
+                //   initialDate: DateTime.now(),
+                // ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 const Text(
-                  "Amount",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
-                TextFields(
-                  hinttext: 'eg: 400',
-                  whatIsInput: '0',
-                  controller: _amountController,
-                  prefixText: 'ETB', // 👈 This shows the badge
+                  "Description",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                 ),
 
-                // --- Expense Name Field ---
-
-                // --- Category ---
-
-                // --- Date ---
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
-                const Text(
-                  "Date",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                CustomDateSelectorRow(
-                  hintText: "Select a date",
-                  controller: _dateController,
-                  icon: Icons.calendar_today,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                  initialDate: DateTime.now(),
-                ),
-
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
+                // Inside your AddExpense build method...
+                // Inside your AddExpense widget build method (or wherever you include the combined dropdown)
                 FutureBuilder(
-                  // Use different futures based on the "Paid By" selection.
-                  future:
-                      _paidByController.text == "Partner"
-                          ? widget.datamanager.getLoan()
-                          : _paidByController.text == "Bank"
-                          ? widget.datamanager.getBanks()
-                          : Future.value(
-                            [],
-                          ), // if nothing selected, return empty list
+                  future: _dataFuture,
                   builder: (context, snapshot) {
-                    Map<String, int> partnerMapping = {};
-                    List<String> dynamicItems = [];
-
-                    if (_paidByController.text == 'Partner') {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Text(
-                          "Error fetching partner names: ${snapshot.error}",
-                        );
-                      } else if (snapshot.hasData) {
-                        // Assume snapshot.data is List<Loan> for partner
-                        for (Loan loan in snapshot.data as List<Loan>) {
-                          partnerMapping[loan.loanerName] = loan.id;
-                        }
-                        dynamicItems = partnerMapping.keys.toList();
-                      }
-                    } else if (_paidByController.text == 'Bank') {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Text("Error fetching banks: ${snapshot.error}");
-                      } else if (snapshot.hasData) {
-                        // Assume snapshot.data is List<Bank> for banks
-                        dynamicItems =
-                            (snapshot.data as List<Bank>)
-                                .map((bank) => bank.accountHolder)
-                                .toList();
-                      }
-                    }
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
-                        const Text(
-                          "Paid By",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        // "Paid By" Dropdown remains as before
-                        CustomDropdown(
-                          hintText: "Select an option",
-                          icon: Icons.ac_unit_sharp,
-                          items: ["Partner", "Bank"],
-                          controller: _paidByController,
-                          selectedValue: isFromNotification ? 'Bank' : null,
-                          onChanged: (value) {
+                        PaidByAndSpecificFromInput(
+                          paidByController: _paidByController,
+                          specificFromController: _paymentController,
+                          dataFuture: _dataFuture ?? Future.value([]),
+                          // When Paid By changes, update the future.
+                          onPaidByChanged: (newPaidBy) {
                             setState(() {
-                              _paidBySelection = value;
-                              _paidByController.text = value ?? '';
-                              // Clear payment selection when switching modes.
-                              _paymentController.clear();
-                              _parentLoanId = null;
+                              _updateFuture();
                             });
                           },
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02,
                         ),
-                        const Text(
-                          "Bank Account",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        CustomDropdown(
-                          hintText: "Select a specific payer",
-                          icon: Icons.account_balance_wallet,
-                          items: dynamicItems,
-                          controller: _paymentController,
-                          onChanged: (value) {
-                            // If partner is selected, update _parentLoanId based on partnerMapping.
-                            if (_paidByController.text == 'Partner' &&
-                                partnerMapping.containsKey(value!)) {
-                              setState(() {
-                                _parentLoanId = partnerMapping[value];
-                              });
-                            }
-                          },
-                        ),
+                        // Additional UI elements…
                       ],
                     );
                   },
@@ -348,10 +326,7 @@ class _AddExpenseState extends State<AddExpense> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 const Text(
                   "Description",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 MultiLineTextField(
@@ -418,7 +393,7 @@ class _AddExpenseState extends State<AddExpense> {
 
                                   'paidBy': _paidByController.text,
                                   'description': _descriptionController.text,
-                                  'date': (_dateController.text),
+                                  'date': formatDate(_dateController.text),
                                   'userid': 1,
                                 });
                             print(expenseResponse);

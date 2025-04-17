@@ -157,9 +157,6 @@ class _TodoPageState extends State<TodoPage> {
                                 vertical: 5.0,
                                 horizontal: 15,
                               ),
-                              /*child: CustomProgressBar(
-                                progress: snapshot.data! / 100,
-                              ),*/
                               child: LinearPercentIndicator(
                                 width: MediaQuery.of(context).size.width * .9,
                                 animation: true,
@@ -171,6 +168,7 @@ class _TodoPageState extends State<TodoPage> {
                                 progressColor: Color(0xff0d805e),
                               ),
                             ),
+                            Text('${snapshot.data!.toString()} percent done'),
                           ],
                         );
                       } else {

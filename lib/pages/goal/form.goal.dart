@@ -5,14 +5,15 @@ import 'package:flutter_application_1/pages/goal/common/form.motivation.dart';
 import 'package:flutter_application_1/pages/goal/common/form.subgoals.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
 
-class StepperForm extends StatefulWidget {
-  const StepperForm({super.key});
+class GoalStepperForm extends StatefulWidget {
+  final Map<String, dynamic> controllers;
+  const GoalStepperForm({super.key, required this.controllers});
 
   @override
-  State<StepperForm> createState() => _StepperFormState();
+  State<GoalStepperForm> createState() => _GoalStepperFormState();
 }
 
-class _StepperFormState extends State<StepperForm> {
+class _GoalStepperFormState extends State<GoalStepperForm> {
   final Map<String, dynamic> _controllers = {
     "goals": {
       "name": FormInput(
@@ -112,7 +113,7 @@ class _StepperFormState extends State<StepperForm> {
         span: 1.5,
       ),
       "incomeSource": FormInput(
-        label: "Time Saved",
+        label: "Income Source",
         controller: TextEditingController(),
         type: "0",
         hint: "Enter Time Saved",
@@ -203,11 +204,12 @@ class _StepperFormState extends State<StepperForm> {
         children: [
           Text('Goal Info', style: TextStyle(fontSize: 16)),
           GoalForm(
-            goalName: _controllers["goals"]["name"] as FormInput,
-            goalTerms: _controllers["goals"]["term"] as FormInput,
-            goalPriority: _controllers["goals"]["priority"] as FormInput,
-            goalStatus: _controllers["goals"]["status"] as FormInput,
-            goalDescription: _controllers["goals"]["description"] as FormInput,
+            goalName: widget.controllers["goals"]["name"] as FormInput,
+            goalTerms: widget.controllers["goals"]["term"] as FormInput,
+            goalPriority: widget.controllers["goals"]["priority"] as FormInput,
+            goalStatus: widget.controllers["goals"]["status"] as FormInput,
+            goalDescription:
+                widget.controllers["goals"]["description"] as FormInput,
           ),
         ],
       ),
@@ -222,7 +224,7 @@ class _StepperFormState extends State<StepperForm> {
         children: [
           Text('Motivation and Purpose', style: TextStyle(fontSize: 16)),
           MotivationForm(
-            motivations: _controllers["motivations"] as List<FormInput>,
+            motivations: widget.controllers["motivations"] as List<FormInput>,
             addMotivations: addMotivation,
           ),
         ],
@@ -239,14 +241,16 @@ class _StepperFormState extends State<StepperForm> {
           Text('Finance and Impact', style: TextStyle(fontSize: 16)),
           FinanceImpactForm(
             totalMoney:
-                _controllers["financeImpact"]["totalMoney"] as FormInput,
+                widget.controllers["financeImpact"]["totalMoney"] as FormInput,
             amountSaved:
-                _controllers["financeImpact"]["amountSaved"] as FormInput,
-            timeSaved: _controllers["financeImpact"]["timeSaved"] as FormInput,
+                widget.controllers["financeImpact"]["amountSaved"] as FormInput,
+            timeSaved:
+                widget.controllers["financeImpact"]["timeSaved"] as FormInput,
             incomeSource:
-                _controllers["financeImpact"]["incomeSource"] as FormInput,
+                widget.controllers["financeImpact"]["incomeSource"]
+                    as FormInput,
             // incomeSources:
-            //     _controllers["financeImpact"]["incomeSource"]
+            //     widget.controllers["financeImpact"]["incomeSource"]
             //         as List<FormInputPair>,
             addIncomeSource: addIncomeSource,
           ),
@@ -258,9 +262,10 @@ class _StepperFormState extends State<StepperForm> {
     Step(
       title: Text(''),
       content: SubGoalsForm(
-        deadline: _controllers["subGoalsWithDeadline"]["deadline"] as FormInput,
+        deadline:
+            widget.controllers["subGoalsWithDeadline"]["deadline"] as FormInput,
         subGoals:
-            _controllers["subGoalsWithDeadline"]["subGoals"]
+            widget.controllers["subGoalsWithDeadline"]["subGoals"]
                 as List<FormInputPair>,
         addSubGoal: addSubGoals,
       ),
@@ -294,52 +299,53 @@ class _StepperFormState extends State<StepperForm> {
         type: StepperType.horizontal,
         onStepContinue: continueStep,
         onStepCancel: cancelStep,
-        controlsBuilder: (context, details) {
-          return Container(
-            margin: EdgeInsets.only(top: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              spacing: MediaQuery.of(context).size.height * 0.02,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF27272A),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: Color(0xFF27272A), width: 2),
-                      ),
-                    ),
-                    onPressed: details.onStepCancel,
-                    child: Text(
-                      _currentStep == 0 ? "Cancel" : "Previous",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-                Expanded(flex: 1, child: SizedBox()),
-                Expanded(
-                  flex: 2,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF27272A),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: Color(0xFF009966), width: 2),
-                      ),
-                    ),
-                    onPressed: details.onStepContinue,
-                    child: Text(
-                      _currentStep == 2 ? "Save" : "Next",
-                      style: TextStyle(color: Color(0xFF009966)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+
+        // controlsBuilder: (context, details) {
+        //   return Container(
+        //     margin: EdgeInsets.only(top: 20),
+        //     child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //       spacing: MediaQuery.of(context).size.height * 0.02,
+        //       children: [
+        //         Expanded(
+        //           flex: 2,
+        //           child: ElevatedButton(
+        //             style: ElevatedButton.styleFrom(
+        //               backgroundColor: Color(0xFF27272A),
+        //               shape: RoundedRectangleBorder(
+        //                 borderRadius: BorderRadius.circular(8),
+        //                 side: BorderSide(color: Color(0xFF27272A), width: 2),
+        //               ),
+        //             ),
+        //             onPressed: details.onStepCancel,
+        //             child: Text(
+        //               _currentStep == 0 ? "Cancel" : "Previous",
+        //               style: TextStyle(color: Colors.white),
+        //             ),
+        //           ),
+        //         ),
+        //         Expanded(flex: 1, child: SizedBox()),
+        //         Expanded(
+        //           flex: 2,
+        //           child: ElevatedButton(
+        //             style: ElevatedButton.styleFrom(
+        //               backgroundColor: Color(0xFF27272A),
+        //               shape: RoundedRectangleBorder(
+        //                 borderRadius: BorderRadius.circular(8),
+        //                 side: BorderSide(color: Color(0xFF009966), width: 2),
+        //               ),
+        //             ),
+        //             onPressed: details.onStepContinue,
+        //             child: Text(
+        //               _currentStep == 2 ? "Save" : "Next",
+        //               style: TextStyle(color: Color(0xFF009966)),
+        //             ),
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   );
+        // },
       ),
     );
   }

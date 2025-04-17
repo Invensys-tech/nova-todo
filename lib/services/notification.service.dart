@@ -20,7 +20,7 @@ class NotificationService {
     _navigatorKey = navigatorKey;
 
     const initSettingsAndroid = AndroidInitializationSettings(
-       '@mipmap/ic_launcher.png',
+      '@mipmap/ic_launcher.png',
       //'ic_notification',
     );
     const initSettingsIOS = DarwinInitializationSettings(
@@ -97,6 +97,7 @@ class NotificationService {
     String body, {
     String payload = '',
   }) async {
+    print('showing notification...');
     await flutterLocalNotificationsPlugin.show(
       id,
       title,

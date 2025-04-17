@@ -15,8 +15,6 @@ class ProductivityHome extends StatefulWidget {
 }
 
 class _HomePageState extends State<ProductivityHome> {
-  // List<Productivity> productivityList = [];
-
   List<Productivity> productivityList = [];
   final StreakService _streakService = StreakService(); // Add this line
   Map<int, int> productivityStreaks = {};
@@ -26,14 +24,6 @@ class _HomePageState extends State<ProductivityHome> {
     super.initState();
     fetchProductivity();
   }
-
-  // void fetchProductivity() async {
-  //   List<Productivity> productivity =
-  //       await ProductivityRepository().getProductivity();
-  //   setState(() {
-  //     productivityList = productivity;
-  //   });
-  // }
 
   Future<void> fetchProductivity() async {
     List<Productivity> productivity =
@@ -65,7 +55,7 @@ class _HomePageState extends State<ProductivityHome> {
     }
   }
 
-  // Widget productivityCard(Productivity productivity, int streakCount) {
+  // Widget productivityCard(Productivity productivity) {
   //   IconData icon = Icons.work; // Default icon
   //   switch (productivity.title.toLowerCase()) {
   //     case 'sports and gym':
@@ -81,6 +71,10 @@ class _HomePageState extends State<ProductivityHome> {
   //       icon = Icons.public;
   //       break;
   //   }
+
+  //   final streakCount =
+  //       productivityStreaks[productivity.id] ??
+  //       0; // Get streak count, default to 0
 
   //   return Card(
   //     color: Colors.grey[900],
@@ -121,60 +115,112 @@ class _HomePageState extends State<ProductivityHome> {
   // }
 
   Widget productivityCard(Productivity productivity) {
-    IconData icon = Icons.work; // Default icon
+    IconData iconData = Icons.work;
+    String frequencyText = "Every Day";
     switch (productivity.title.toLowerCase()) {
       case 'sports and gym':
-        icon = Icons.fitness_center;
+        iconData = Icons.fitness_center;
+        frequencyText = "Once a Week";
         break;
-      case 'books reading':
-        icon = Icons.book;
+      case 'books and music':
+        iconData = Icons.library_music;
+        frequencyText = "Every Day";
         break;
       case 'self improvement':
-        icon = Icons.self_improvement;
+        iconData = Icons.self_improvement;
+        frequencyText = "Every Day";
         break;
-      case 'post on social media':
-        icon = Icons.public;
+      case 'social medial influence':
+        iconData = Icons.public;
+        frequencyText = "Twice a Week";
         break;
     }
 
-    final streakCount =
-        productivityStreaks[productivity.id] ??
-        0; // Get streak count, default to 0
+    const String motivationText = "Motivation Here";
 
-    return Card(
-      color: Colors.grey[900],
-      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: ListTile(
-        leading: Icon(icon, color: Colors.white, size: 30),
-        title: Text(
-          productivity.title,
-          style: const TextStyle(color: Colors.white, fontSize: 18),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductivityViewPgae(id: productivity.id),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E20), // slightly different from icon bg
+          borderRadius: BorderRadius.circular(10),
         ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
           children: [
-            const Icon(
-              Icons.local_fire_department,
-              color: Colors.orange,
-              size: 24,
+            // Left section: text info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    productivity.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    motivationText,
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade400),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    frequencyText,
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(width: 4),
-            Text(
-              streakCount.toString(),
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+
+            // Right section: Icon in circular bg + chevron
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.local_fire_department,
+                  color: Colors.orange,
+                  size: 24,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  "${productivity.streak_count}",
+                  // productivity.streak_count as String,
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ],
             ),
+            // Row(
+            //   children: [
+            //     Container(
+            //       width: 45,
+            //       height: 45,
+            //       decoration: const BoxDecoration(
+            //         color: Color(0xFF27272A),
+            //         shape: BoxShape.circle,
+            //       ),
+            //       child: Icon(iconData, size: 20, color: Colors.green),
+            //     ),
+            //     const SizedBox(width: 8),
+            //     const Icon(
+            //       Icons.arrow_forward_ios,
+            //       size: 14,
+            //       color: Colors.green,
+            //     ),
+            //   ],
+            // ),
           ],
         ),
-        onTap: () {
-          // Handle tap action
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProductivityViewPgae(id: productivity.id),
-            ),
-          );
-        },
       ),
     );
   }
