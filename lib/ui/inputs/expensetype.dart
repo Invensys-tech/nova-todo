@@ -43,7 +43,6 @@ class _ExpenseTypeSelectorState extends State<ExpenseTypeSelector> {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w300,
-            color: Colors.white70,
           ),
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),

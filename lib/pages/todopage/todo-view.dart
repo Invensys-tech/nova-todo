@@ -41,10 +41,15 @@ class _TodoViewPageState extends State<TodoViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.keyboard_arrow_left,
-          color: Color(0xff0d805e),
-          size: 30,
+        leading: GestureDetector(
+          onTap: (){
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.keyboard_arrow_left,
+            color: Color(0xff0d805e),
+            size: 30,
+          ),
         ),
         title: Text(
           "View Single Daily task",

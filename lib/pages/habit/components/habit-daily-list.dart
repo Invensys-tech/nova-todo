@@ -34,53 +34,56 @@ class _HabitsDailyListState extends State<HabitsDailyList> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
-      child: Column(
-        children: [
-          CalendarTimeline(
-            // initialDate: ETDateTime.now(),
-            key: ValueKey(date),
-            // initialDate: DateTime.now(),
-            initialDate: date,
-            // firstDate: noww,
-            firstDate: DateTime(2020, 11, 20),
-            lastDate: DateTime(2027, 11, 20),
-            onDateSelected: (date) {
-              setDate(date);
-              // print(ETDateFormat("dd-MMMM-yyyy HH:mm:ss").format(noww));
-            },
-            leftMargin: 20,
-            showYears: false,
-            monthColor: Colors.blueGrey,
-            dayColor: Colors.teal[200],
-            activeDayColor: Color(0xFFFAFAFA),
-            activeBackgroundDayColor: Color(0xFF8B0836),
-            shrink: true,
-            locale: 'en_ISO',
-          ),
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            CalendarTimeline(
+              // initialDate: ETDateTime.now(),
+              key: ValueKey(date),
+              // initialDate: DateTime.now(),
+              initialDate: date,
+              // firstDate: noww,
+              firstDate: DateTime(2020, 11, 20),
+              lastDate: DateTime(2027, 11, 20),
+              onDateSelected: (date) {
+                setDate(date);
+                // print(ETDateFormat("dd-MMMM-yyyy HH:mm:ss").format(noww));
+              },
+              leftMargin: 20,
+              showYears: false,
+              monthColor: Colors.blueGrey,
+              dayColor: Colors.teal[200],
+              activeDayColor: Color(0xFFFAFAFA),
+              activeBackgroundDayColor: Color(0xFF8B0836),
+              shrink: true,
+              locale: 'en_ISO',
+            ),
 
-          FutureBuilder(
-            future: habits,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    spacing: MediaQuery.of(context).size.width * 0.04,
-                    children:
-                        snapshot.data!
-                            .map((habit) => HabitItem(habit: habit))
-                            .toList(),
-                  ),
-                );
-              } else {
-                if (snapshot.hasError) {
-                  return const Text('Error fetching habits!');
+            FutureBuilder(
+              future: habits,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      spacing: MediaQuery.of(context).size.width * 0.04,
+                      children:
+                          snapshot.data!
+                              .map((habit) => HabitItem(habit: habit))
+                              .toList(),
+                    ),
+                  );
+                } else {
+                  if (snapshot.hasError) {
+                    return const Text('Error fetching habits!');
+                  }
+                  return Center(child: CircularProgressIndicator());
                 }
-                return Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
-        ],
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

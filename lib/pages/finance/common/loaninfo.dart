@@ -125,14 +125,14 @@ class LoanCard extends StatelessWidget {
           vertical: MediaQuery.of(context).size.height * 0.01,
         ),
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.07,
+        height: MediaQuery.of(context).size.height * 0.08,
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.02,
           vertical: MediaQuery.of(context).size.height * 0.005,
         ),
         decoration: BoxDecoration(
-          color: Color(0xff292929),
           borderRadius: BorderRadius.all(Radius.circular(10)),
+          border: Border.all(width: 1, color: Colors.grey.withOpacity(.3))
         ),
         child: Row(
           children: [
@@ -143,18 +143,16 @@ class LoanCard extends StatelessWidget {
                 Text(
                   name,
                   style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.007),
                 Text(
                   phoneNumber,
                   style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ],
@@ -167,17 +165,16 @@ class LoanCard extends StatelessWidget {
                 Text(
                   '\$${loanAmount.toStringAsFixed(2)}',
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.007),
                 Text(
                   'Payable Loan',
                   style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w200,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
                     color: Colors.red,
                   ),
                 ),

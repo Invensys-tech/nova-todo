@@ -157,24 +157,32 @@ class _TodoPageState extends State<TodoPage> {
                                 vertical: 5.0,
                                 horizontal: 15,
                               ),
-                              child: CustomProgressBar(
-                                progress: snapshot.data! / 100,
+                              child: LinearPercentIndicator(
+                                width: MediaQuery.of(context).size.width * .9,
+                                animation: true,
+                                lineHeight:
+                                MediaQuery.of(context).size.height * .01,
+                                animationDuration: 2500,
+                                percent: snapshot.data! / 100,
+                                linearStrokeCap: LinearStrokeCap.roundAll,
+                                progressColor: Color(0xff0d805e),
                               ),
-                              // new LinearPercentIndicator(
-                              //   width: MediaQuery.of(context).size.width * .9,
-                              //   animation: true,
-                              //   lineHeight:
-                              //       MediaQuery.of(context).size.height * .01,
-                              //   animationDuration: 2500,
-                              //   percent: snapshot.data! / 100,
-                              //   linearStrokeCap: LinearStrokeCap.roundAll,
-                              //   progressColor: Color(0xff0d805e),
-                              // ),
                             ),
+                            Text('${snapshot.data!.toString()} percent done'),
                           ],
                         );
                       } else {
-                        return CustomProgressBar(progress: 0);
+                        return LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width * .9,
+                          animation: true,
+                          lineHeight:
+                          MediaQuery.of(context).size.height * .025,
+                          animationDuration: 2500,
+                          percent: 0,
+                          center: Text("0"),
+                          linearStrokeCap: LinearStrokeCap.roundAll,
+                          progressColor: Color(0xff0d805e),
+                        );
                       }
                     },
                   ),
@@ -325,20 +333,7 @@ class _TodoPageState extends State<TodoPage> {
                                   decoration: BoxDecoration(
                                     color: Color(0xFF27272A).withOpacity(.35),
                                     borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color:
-                                            Colors
-                                                .black, // Shadow color with opacity
-                                        spreadRadius:
-                                            2, // How much the shadow spreads
-                                        blurRadius: 10, // Softens the shadow
-                                        offset: Offset(
-                                          -4,
-                                          0,
-                                        ), // Moves shadow right & down
-                                      ),
-                                    ],
+
                                   ),
                                   child: Column(
                                     children: [

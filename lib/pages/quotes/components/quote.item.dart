@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/quote.entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 
 class QuoteItem extends StatelessWidget {
@@ -24,7 +25,7 @@ class QuoteItem extends StatelessWidget {
   //   50 + Random().nextInt(100),
   // );
 
-  final backgroundColor =
+  final backgroundColorWhite =
       [
         Color(0xFF0B211C),
         Color(0xFF371A12),
@@ -32,6 +33,15 @@ class QuoteItem extends StatelessWidget {
         Color(0xFF0C2524),
         Color(0xFF09090B),
       ][Random().nextInt(5)];
+
+  final backgroundColorBlack  =
+  [
+    Color(0xff5EE9B5),
+    Color(0xffFFB86A),
+    Color(0xffA2F4FD),
+    Color(0xffE4E4E7),
+    Color(0xff5EE9B5),
+  ][Random().nextInt(5)];
 
   Widget _buildSquare(double radius, Color color) {
     return Container(
@@ -53,7 +63,7 @@ class QuoteItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           // color: Colors.grey.shade800,
-          color: backgroundColor,
+          color: isDark ? backgroundColorWhite : backgroundColorBlack,
         ),
         child: Stack(
           children: [
@@ -68,6 +78,7 @@ class QuoteItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: MediaQuery.of(context).size.width * 0.06,
                 children: [
                   Text(
@@ -76,7 +87,6 @@ class QuoteItem extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xFFD4D4D8),
                     ),
                   ),
                   Row(
@@ -96,7 +106,7 @@ class QuoteItem extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           quote.category,
-                          style: TextStyle(color: Colors.white, fontSize: 12),
+                          style: TextStyle(fontSize: 12),
                         ),
                       ),
                       Column(

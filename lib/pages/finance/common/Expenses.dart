@@ -20,7 +20,7 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height * 0.01,
+        vertical: MediaQuery.of(context).size.height * 0.0075,
       ),
       width: MediaQuery.of(context).size.width * 1,
       height: MediaQuery.of(context).size.height * 0.073,
@@ -29,7 +29,7 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
         vertical: MediaQuery.of(context).size.height * 0.003,
       ),
       decoration: BoxDecoration(
-        color: Color(0xff292929),
+        border: Border.all(width: 1, color: Colors.grey.withOpacity(.3)),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Row(
@@ -53,7 +53,6 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w300,
-                  color: Colors.white,
                 ),
               ),
               Text(
@@ -61,7 +60,6 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w200,
-                  color: Colors.white,
                 ),
               ),
             ],
@@ -72,14 +70,12 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w200,
-              color: Colors.white.withOpacity(0.8),
             ),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * .015),
           Icon(
             Icons.chevron_right,
             size: 25,
-            color: Colors.white.withOpacity(.8),
           ),
         ],
       ),

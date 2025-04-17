@@ -112,7 +112,6 @@ class TextFields extends StatelessWidget {
             child: Text(
               prefixText!,
               style: const TextStyle(
-                color: Colors.white70,
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
               ),
@@ -122,7 +121,7 @@ class TextFields extends StatelessWidget {
         // 📝 The actual input field
         Expanded(
           child: TextFormField(
-            style: const TextStyle(color: Colors.white),
+
             controller: controller,
             keyboardType:
                 whatIsInput == "0" ? TextInputType.number : TextInputType.text,
@@ -174,7 +173,6 @@ class TextFields extends StatelessWidget {
             // ),
             decoration: InputDecoration(
               filled: filled,
-              fillColor: Color(0xFF09090B).withAlpha(30),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: Color(0xFF27272A), width: 1),

@@ -46,9 +46,9 @@ class TodoForm extends StatefulWidget {
   });
 
   static const List<Map<String, dynamic>> todoTypes = [
-    {'label': 'Must', 'value': 'Must'},
-    {'label': 'Maybe', 'value': 'Maybe'},
-    {'label': 'Other', 'value': 'Other'},
+    {'label': 'High', 'value': 'High'},
+    {'label': 'Medium', 'value': 'Medium'},
+    {'label': 'Low', 'value': 'Low'},
   ];
 
   static const List<Map<String, dynamic>> notifyMeOptions = [
@@ -207,7 +207,7 @@ class _TodoFormState extends State<TodoForm> {
           //   currentValue: widget.type.controller.text,
           // ),
           MyRadioInput(
-            label: 'Type',
+            label: 'Priority',
             groupKey: 'todo-types',
             options:
                 TodoForm.todoTypes

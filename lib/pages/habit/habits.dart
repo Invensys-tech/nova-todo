@@ -73,6 +73,7 @@ class _HabitsPageState extends State<HabitsPage> {
           length: 2,
           child: Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               bottom: TabBar(
                 tabs: [Tab(text: "Daily"), Tab(text: "General")],
                 labelColor: Colors.green,
