@@ -75,6 +75,7 @@ class DailyTask {
       'type': type,
       'task_time': taskTime,
       'end_time': endTime,
+      'description': description,
       'date': date,
       'reminder_time': reminderTime,
     };

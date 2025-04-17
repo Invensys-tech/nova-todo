@@ -28,8 +28,10 @@ class QuoteRepository {
   Future<List<Quote>> fetchAll() async {
     try {
       int userId = (await AuthService().findSession())['id'];
-      final data = await supabaseClient.from(Entities.QUOTES.dbName).select();
-      // .eq('user_id', userId);
+      final data = await supabaseClient
+          .from(Entities.QUOTES.dbName)
+          .select()
+          .eq('user_id', userId);
 
       List<Quote> quotes =
           data.map((quoteData) {

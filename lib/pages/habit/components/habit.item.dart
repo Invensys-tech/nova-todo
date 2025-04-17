@@ -13,13 +13,21 @@ class HabitItem extends StatefulWidget {
 }
 
 class _HabitItemState extends State<HabitItem> {
+  late Habit habit;
+
+  @override
+  void initState() {
+    super.initState();
+    habit = widget.habit;
+  }
+
   extendStreak() {
     setState(() {
       HabitsRepository().extendHabitStreak(widget.habit, DateTime.now()).then((
         value,
       ) {
         if (value) {
-          widget.habit.extendStreak(DateTime.now());
+          // widget.habit.extendStreak(DateTime.now());
         }
       });
     });
@@ -167,7 +175,18 @@ class _HabitItemState extends State<HabitItem> {
                         size: 20,
                       ),
                     ),
-                    Text(widget.habit.streak.toString()),
+                    Column(
+                      children: [
+                        Text(
+                          widget.habit.streak.toString(),
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        // Text(
+                        //   widget.habit.miniStreak.toString(),
+                        //   style: TextStyle(fontSize: 10),
+                        // ),
+                      ],
+                    ),
                     Icon(Icons.keyboard_arrow_right, color: Color(0xFF009966)),
                   ],
                 ),

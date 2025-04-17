@@ -64,6 +64,7 @@ dependencies:
   easy_localization: ^3.0.7+1
   shared_preferences: ^2.5.3
   cached_network_image: ^3.4.1
+  fl_chart: ^0.71.0
 
 flutter_icons:
   android: true

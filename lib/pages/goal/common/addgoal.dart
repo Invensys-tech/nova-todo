@@ -11,6 +11,7 @@ import 'package:flutter_application_1/pages/goal/common/form.subgoals.dart';
 import 'package:flutter_application_1/pages/goal/common/goalInformationAccordion.dart';
 import 'package:flutter_application_1/pages/goal/common/header.expansion-panel.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
+import 'package:flutter_application_1/pages/goal/form.goal.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
@@ -340,22 +341,29 @@ class _AccordionAxampleState extends State<AddGoal> {
         hint: "Enter Time Saved",
         span: 1.5,
       ),
-      "incomeSource": [
-        FormInputPair(
-          key: FormInput(
-            label: "Source",
-            controller: TextEditingController(),
-            type: "1",
-            hint: "Enter Source",
-          ),
-          value: FormInput(
-            label: "Amount",
-            controller: TextEditingController(),
-            type: "0",
-            hint: "Enter Amount",
-          ),
-        ),
-      ],
+      "incomeSource": FormInput(
+        label: "Time Saved",
+        controller: TextEditingController(),
+        type: "0",
+        hint: "Enter Time Saved",
+        span: 1.5,
+      ),
+      // "incomeSource": [
+      //   FormInputPair(
+      //     key: FormInput(
+      //       label: "Source",
+      //       controller: TextEditingController(),
+      //       type: "1",
+      //       hint: "Enter Source",
+      //     ),
+      //     value: FormInput(
+      //       label: "Amount",
+      //       controller: TextEditingController(),
+      //       type: "0",
+      //       hint: "Enter Amount",
+      //     ),
+      //   ),
+      // ],
     },
   };
 
@@ -446,98 +454,99 @@ class _AccordionAxampleState extends State<AddGoal> {
         ),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
+          child: GoalStepperForm(controllers: _controllers),
           // child: Container(
           // child: Container(
-          child: ExpansionPanelList(
-            materialGapSize: MediaQuery.of(context).size.width * 0,
-            children: [
-              ExpansionPanel(
-                headerBuilder: (context, isExpanded) {
-                  return MyExpansionPanelHeader(
-                    title: "Goal Information",
-                    icon: Icon(Icons.star),
-                  );
-                },
-                backgroundColor: const Color(0xff2F2F2F),
-                canTapOnHeader: true,
-                body: GoalForm(
-                  goalName: _controllers["goals"]["name"] as FormInput,
-                  goalTerms: _controllers["goals"]["term"] as FormInput,
-                  goalPriority: _controllers["goals"]["priority"] as FormInput,
-                  goalStatus: _controllers["goals"]["status"] as FormInput,
-                  goalDescription:
-                      _controllers["goals"]["description"] as FormInput,
-                ),
-                isExpanded: _expandedIndex == 0,
-              ),
-              ExpansionPanel(
-                headerBuilder: (context, isExpanded) {
-                  return MyExpansionPanelHeader(
-                    title: "Motivation and Progress",
-                    icon: Icon(Icons.calendar_today),
-                  );
-                },
-                backgroundColor: const Color(0xff2F2F2F),
-                canTapOnHeader: true,
-                body: MotivationForm(
-                  motivations: _controllers["motivations"] as List<FormInput>,
-                  addMotivations: addMotivation,
-                ),
-                isExpanded: _expandedIndex == 1,
-              ),
-              ExpansionPanel(
-                headerBuilder: (context, isExpanded) {
-                  return MyExpansionPanelHeader(
-                    title: "SubGoals And Deadlines",
-                    icon: Icon(Icons.wallet),
-                  );
-                },
-                backgroundColor: const Color(0xff2F2F2F),
-                canTapOnHeader: true,
-                body: SubGoalsForm(
-                  deadline:
-                      _controllers["subGoalsWithDeadline"]["deadline"]
-                          as FormInput,
-                  subGoals:
-                      _controllers["subGoalsWithDeadline"]["subGoals"]
-                          as List<FormInputPair>,
-                  addSubGoal: addSubGoals,
-                ),
-                isExpanded: _expandedIndex == 2,
-              ),
-              ExpansionPanel(
-                headerBuilder: (context, isExpanded) {
-                  return MyExpansionPanelHeader(
-                    title: "Finance and Impact",
-                    icon: Icon(Icons.circle_outlined),
-                  );
-                },
-                backgroundColor: const Color(0xff2F2F2F),
-                canTapOnHeader: true,
-                body: Text('Finance Impact Form'),
-                // body: FinanceImpactForm(
-                //   totalMoney:
-                //       _controllers["financeImpact"]["totalMoney"] as FormInput,
-                //   amountSaved:
-                //       _controllers["financeImpact"]["amountSaved"] as FormInput,
-                //   timeSaved:
-                //       _controllers["financeImpact"]["timeSaved"] as FormInput,
-                //   incomeSources:
-                //       _controllers["financeImpact"]["incomeSource"]
-                //           as List<FormInputPair>,
-                //   addIncomeSource: addIncomeSource,
-                // ),
-                isExpanded: _expandedIndex == 3,
-              ),
-            ],
-            expansionCallback: (panelIndex, isExpanded) {
-              setState(() {
-                panelIndex == _expandedIndex
-                    ? _expandedIndex = -1
-                    : _expandedIndex = panelIndex;
-              });
-            },
-          ),
+          // child: ExpansionPanelList(
+          //   materialGapSize: MediaQuery.of(context).size.width * 0,
+          //   children: [
+          //     ExpansionPanel(
+          //       headerBuilder: (context, isExpanded) {
+          //         return MyExpansionPanelHeader(
+          //           title: "Goal Information",
+          //           icon: Icon(Icons.star),
+          //         );
+          //       },
+          //       backgroundColor: const Color(0xff2F2F2F),
+          //       canTapOnHeader: true,
+          //       body: GoalForm(
+          //         goalName: _controllers["goals"]["name"] as FormInput,
+          //         goalTerms: _controllers["goals"]["term"] as FormInput,
+          //         goalPriority: _controllers["goals"]["priority"] as FormInput,
+          //         goalStatus: _controllers["goals"]["status"] as FormInput,
+          //         goalDescription:
+          //             _controllers["goals"]["description"] as FormInput,
+          //       ),
+          //       isExpanded: _expandedIndex == 0,
+          //     ),
+          //     ExpansionPanel(
+          //       headerBuilder: (context, isExpanded) {
+          //         return MyExpansionPanelHeader(
+          //           title: "Motivation and Progress",
+          //           icon: Icon(Icons.calendar_today),
+          //         );
+          //       },
+          //       backgroundColor: const Color(0xff2F2F2F),
+          //       canTapOnHeader: true,
+          //       body: MotivationForm(
+          //         motivations: _controllers["motivations"] as List<FormInput>,
+          //         addMotivations: addMotivation,
+          //       ),
+          //       isExpanded: _expandedIndex == 1,
+          //     ),
+          //     ExpansionPanel(
+          //       headerBuilder: (context, isExpanded) {
+          //         return MyExpansionPanelHeader(
+          //           title: "SubGoals And Deadlines",
+          //           icon: Icon(Icons.wallet),
+          //         );
+          //       },
+          //       backgroundColor: const Color(0xff2F2F2F),
+          //       canTapOnHeader: true,
+          //       body: SubGoalsForm(
+          //         deadline:
+          //             _controllers["subGoalsWithDeadline"]["deadline"]
+          //                 as FormInput,
+          //         subGoals:
+          //             _controllers["subGoalsWithDeadline"]["subGoals"]
+          //                 as List<FormInputPair>,
+          //         addSubGoal: addSubGoals,
+          //       ),
+          //       isExpanded: _expandedIndex == 2,
+          //     ),
+          //     ExpansionPanel(
+          //       headerBuilder: (context, isExpanded) {
+          //         return MyExpansionPanelHeader(
+          //           title: "Finance and Impact",
+          //           icon: Icon(Icons.circle_outlined),
+          //         );
+          //       },
+          //       backgroundColor: const Color(0xff2F2F2F),
+          //       canTapOnHeader: true,
+          //       body: Text('Finance Impact Form'),
+          //       // body: FinanceImpactForm(
+          //       //   totalMoney:
+          //       //       _controllers["financeImpact"]["totalMoney"] as FormInput,
+          //       //   amountSaved:
+          //       //       _controllers["financeImpact"]["amountSaved"] as FormInput,
+          //       //   timeSaved:
+          //       //       _controllers["financeImpact"]["timeSaved"] as FormInput,
+          //       //   incomeSources:
+          //       //       _controllers["financeImpact"]["incomeSource"]
+          //       //           as List<FormInputPair>,
+          //       //   addIncomeSource: addIncomeSource,
+          //       // ),
+          //       isExpanded: _expandedIndex == 3,
+          //     ),
+          //   ],
+          //   expansionCallback: (panelIndex, isExpanded) {
+          //     setState(() {
+          //       panelIndex == _expandedIndex
+          //           ? _expandedIndex = -1
+          //           : _expandedIndex = panelIndex;
+          //     });
+          //   },
+          // ),
         ),
       ),
       // ),

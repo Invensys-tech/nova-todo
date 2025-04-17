@@ -10,6 +10,7 @@ import 'package:flutter_application_1/entities/quote.entity.dart';
 import 'package:flutter_application_1/pages/auth/login.dart';
 import 'package:flutter_application_1/pages/habit/components/habit.view.dart';
 import 'package:flutter_application_1/pages/goal/form.goal.dart';
+import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity.dart';
 import 'package:flutter_application_1/pages/quotes/components/quotes-list.dart';
 import 'package:flutter_application_1/pages/todopage/todo-view.dart';
@@ -49,100 +50,101 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
       body: Dashboard(),
+      // body: HabitForm(refetchData: () {}),
       // body: StepperForm(),
-      //   body: Column(
-      //     crossAxisAlignment: CrossAxisAlignment.start,
-      //     spacing: MediaQuery.of(context).size.height * 0.02,
-      //     children: [
-      //       // FutureBuilder(future: future, builder: builder),
-      //       ElevatedButton(
-      //         onPressed: () {
-      //           // print("Sending notification...");
-      //           NotificationService().showNotification(
-      //             1,
-      //             'Reminder',
-      //             'Time for you task',
-      //           );
-      //         },
-      //         child: Icon(Icons.notification_add),
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () {
-      //           // print("Sending timed notification...");
-      //           NotificationService().scheduleNotification(
-      //             id: 1,
-      //             title: 'Todo Reminder',
-      //             body: 'Time for you task in 5',
-      //             time: DateTime.now().add(Duration(seconds: 5)),
-      //           );
-      //         },
-      //         child: Icon(Icons.notification_important),
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () {
-      //           AuthService().logout();
-      //           Navigator.push(
-      //             context,
-      //             MaterialPageRoute(builder: (context) => LogInPage()),
-      //           );
-      //         },
-      //         child: Text('Logout'),
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () {
-      //           UserRepository().fetchUsers();
-      //         },
-      //         child: Text('Log Users'),
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () async {
-      //           HiveService hiveService = HiveService();
-      //           await hiveService.initHive(boxName: 'session');
-      //           dynamic data = await hiveService.getData('user');
-      //           print('----------------- user store in hive -----------------');
-      //           print(jsonEncode(data));
-      //         },
-      //         child: Text('Print Session'),
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () async {
-      //           print("Sending expense notification...");
-      //           NotificationService().showNotification(
-      //             -2,
-      //             'Income',
-      //             'Tap to add expense from CBE',
-      //             payload: 'add-expense||200.00',
-      //           );
-      //         },
-      //         child: Text('Expense Notification'),
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () async {
-      //           print("Sending income notification...");
-      //           NotificationService().showNotification(
-      //             -2,
-      //             'Income',
-      //             'Tap to add income from CBE',
-      //             payload: 'add-income||300.00',
-      //           );
-      //         },
-      //         child: Text('Income Notification'),
-      //       ),
-      //       ElevatedButton(
-      //         onPressed: () async {
-      //           print("Sending message...");
-      //           // NotificationService().showNotification(
-      //           //   2,
-      //           //   'Income',
-      //           //   'Tap to add income',
-      //           //   payload: 'add-income',
-      //           // );
-      //           // SmsService().sendSms('0943656931', 'good morning');
-      //         },
-      //         child: Text('Send Message'),
-      //       ),
-      //     ],
-      //   ),
+      // body: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   spacing: MediaQuery.of(context).size.height * 0.02,
+      //   children: [
+      //     // FutureBuilder(future: future, builder: builder),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         // print("Sending notification...");
+      //         NotificationService().showNotification(
+      //           1,
+      //           'Reminder',
+      //           'Time for you task',
+      //         );
+      //       },
+      //       child: Icon(Icons.notification_add),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         // print("Sending timed notification...");
+      //         NotificationService().scheduleNotification(
+      //           id: 1,
+      //           title: 'Todo Reminder',
+      //           body: 'Time for you task in 5',
+      //           time: DateTime.now().add(Duration(seconds: 5)),
+      //         );
+      //       },
+      //       child: Icon(Icons.notification_important),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         AuthService().logout();
+      //         Navigator.push(
+      //           context,
+      //           MaterialPageRoute(builder: (context) => LogInPage()),
+      //         );
+      //       },
+      //       child: Text('Logout'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         UserRepository().fetchUsers();
+      //       },
+      //       child: Text('Log Users'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         HiveService hiveService = HiveService();
+      //         await hiveService.initHive(boxName: 'session');
+      //         dynamic data = await hiveService.getData('user');
+      //         print('----------------- user store in hive -----------------');
+      //         print(jsonEncode(data));
+      //       },
+      //       child: Text('Print Session'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         print("Sending expense notification...");
+      //         NotificationService().showNotification(
+      //           -2,
+      //           'Income',
+      //           'Tap to add expense from CBE',
+      //           payload: 'add-expense||200.00',
+      //         );
+      //       },
+      //       child: Text('Expense Notification'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         print("Sending income notification...");
+      //         NotificationService().showNotification(
+      //           -2,
+      //           'Income',
+      //           'Tap to add income from CBE',
+      //           payload: 'add-income||300.00',
+      //         );
+      //       },
+      //       child: Text('Income Notification'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         print("Sending message...");
+      //         // NotificationService().showNotification(
+      //         //   2,
+      //         //   'Income',
+      //         //   'Tap to add income',
+      //         //   payload: 'add-income',
+      //         // );
+      //         // SmsService().sendSms('0943656931', 'good morning');
+      //       },
+      //       child: Text('Send Message'),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

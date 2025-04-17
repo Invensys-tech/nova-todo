@@ -9,7 +9,9 @@ class Habit {
   final bool isDone;
   final int? id;
   int streak;
+  int miniStreak;
   int maxStreak;
+  final int frequency;
   List<String> streakDates = [];
 
   Habit({
@@ -20,7 +22,9 @@ class Habit {
     required this.date,
     required this.isDone,
     required this.streak,
+    this.miniStreak = 0,
     required this.maxStreak,
+    this.frequency = 0,
     this.streakDates = const [],
     this.id,
   });
@@ -55,11 +59,13 @@ class Habit {
     name: json['name'],
     type: json['type'],
     repetitionType: json['repetition_type'],
+    frequency: json['frequency'] ?? 0,
     repetitions:
         (json['repetitions'] as List?)?.whereType<String>().toList() ?? [],
     date: json['date'],
     isDone: json['is_done'],
     streak: json['streak'] ?? 0,
+    miniStreak: json['mini_streak'] ?? 0,
     maxStreak: json['max_streak'] ?? 0,
     streakDates:
         json['streak_dates'] != null
@@ -76,64 +82,51 @@ class Habit {
     'date': date,
     'is_done': isDone,
     'streak': streak,
+    'mini_streak': miniStreak,
     'max_streak': maxStreak,
     'streak_dates': streakDates,
+    'frequency': frequency,
   };
 
   String get frequencyPhrase {
     String phrase = 'No frequency';
 
-    if (type == 'Daily') {
+    if (type == 'Weekly') {
       final daysCount = repetitions.length;
       if (daysCount == 7) return 'Everyday';
 
       final suffix = ' a week';
-      String frequency = '';
+      String weeklyFrequency = '';
       switch (daysCount) {
         case 1:
-          frequency = 'Once';
+          weeklyFrequency = 'Once';
           break;
         case 2:
-          frequency = 'Twice';
+          weeklyFrequency = 'Twice';
           break;
         case 3:
-          frequency = 'Three Times';
+          weeklyFrequency = 'Three Times';
           break;
         case 4:
-          frequency = 'Four Times';
+          weeklyFrequency = 'Four Times';
           break;
         case 5:
-          frequency = 'Five Times';
+          weeklyFrequency = 'Five Times';
           break;
         case 6:
-          frequency = 'Six Times';
+          weeklyFrequency = 'Six Times';
           break;
         default:
-          frequency = 'None';
+          weeklyFrequency = 'None';
           break;
       }
 
-      phrase = '$frequency$suffix';
-    } else if (type == 'Weekly') {
+      phrase = '$weeklyFrequency$suffix';
+    } else if (type == 'Daily' || type == 'Monthly') {
       final weeksCount = repetitions.length;
       if (weeksCount == 4) return 'Every Week';
 
-      final suffix = ' a month';
-      String frequency = '';
-      switch (weeksCount) {
-        case 1:
-          frequency = 'Once';
-          break;
-        case 2:
-          frequency = 'Twice';
-          break;
-        case 3:
-          frequency = 'Three Times';
-          break;
-        default:
-          frequency = 'None';
-          break;
-      }
+      final suffix = ' a ${type == 'Daily' ? 'day' : 'month'}';
       phrase = '$frequency$suffix';
     }
 

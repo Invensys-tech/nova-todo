@@ -95,7 +95,7 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.light,
         primaryColor: Colors.blue,
         primaryColorDark: Colors.white,
-          disabledColor: Color(0xff00D492),
+        disabledColor: Color(0xff00D492),
         fontFamily: 'Outfit',
         scaffoldBackgroundColor: Color(0xffF4F4F5),
       ),
@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     loadTheme();
-    _checkAndListenSms(); // Call the function here!
+    _checkAndListenSms();
   }
 
   Future<void> loadTheme() async {
@@ -153,7 +153,7 @@ class _MyAppState extends State<MyApp> {
       final permissions = await Permission.sms.request();
       if (permissions.isGranted) {
         setState(() => _permission = 'Granted');
-        // _startListener();
+        _startListener();
         print(_permission);
       } else {
         setState(() => _permission = 'Denied');
@@ -166,13 +166,13 @@ class _MyAppState extends State<MyApp> {
 
   void _startListener() {
     print('in start listener');
-    // telephony.listenIncomingSms(
-    //   onNewMessage: (SmsMessage msg) {
-    //     print('New SMS: ${msg.address} - ${msg.body}');
-    //     SmsService().parseSms(msg);
-    //   },
-    //   listenInBackground: false,
-    // );
+    telephony.listenIncomingSms(
+      onNewMessage: (SmsMessage msg) {
+        print('New SMS: ${msg.address} - ${msg.body}');
+        SmsService().parseSms(msg);
+      },
+      listenInBackground: false,
+    );
   }
 
   @override
