@@ -52,7 +52,6 @@ class FinanceUi extends StatelessWidget {
               position: TabBarPosition.top,
               alignment: TabBarAlignment.start,
               indicatorColor: Colors.transparent,
-
               labelStyle: TextStyle(fontSize: 16),
               unselectedLabelColor: Colors.grey,
               unselectedLabelStyle: TextStyle(fontSize: 13),

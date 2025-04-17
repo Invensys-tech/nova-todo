@@ -401,7 +401,7 @@ class _ExpensespageState extends State<Expensespage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF2b2d30),
+        backgroundColor: Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () {
           Navigator.push(
@@ -498,7 +498,7 @@ class _ExpensespageState extends State<Expensespage> {
                                 ),
                               ),
                             ),
-                            const Divider(color: Colors.white70),
+                            const Divider(),
                             SizedBox(
                               height: MediaQuery.of(context).size.height * .005,
                             ),
