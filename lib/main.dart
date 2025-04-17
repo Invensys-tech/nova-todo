@@ -70,8 +70,8 @@ void main() async {
     print('Error getting sub end date initializing Supabase');
   }
 
-  // runApp(MyApp(initPage: initPage));
-  runApp(MyApp(initPage: InitPage.HOME));
+  runApp(MyApp(initPage: initPage));
+  // runApp(MyApp(initPage: InitPage.HOME));
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -94,21 +94,26 @@ class _MyAppState extends State<MyApp> {
       AppThemes.LightBlue: ThemeData(
         brightness: Brightness.light,
         primaryColor: Colors.blue,
+        primaryColorLight: Colors.black.withOpacity(.7),
         primaryColorDark: Colors.white,
+        cardColor: Color(0xffD4D4D8),
         disabledColor: Color(0xff00D492),
         fontFamily: 'Outfit',
         scaffoldBackgroundColor: Color(0xffF4F4F5),
       ),
       AppThemes.LightRed: ThemeData(
         brightness: Brightness.light,
+        primaryColorLight: Colors.black.withOpacity(.7),
         primaryColor: Colors.red,
         scaffoldBackgroundColor: Color(0xffF4F4F5),
         disabledColor: Color(0xff00D492),
+        cardColor: Color(0xffD4D4D8),
         fontFamily: 'Outfit',
       ),
       AppThemes.Dark: ThemeData(
         brightness: Brightness.dark,
         disabledColor: Color(0xff006045),
+        cardColor: Color(0xff3F3F47),
         fontFamily: 'Outfit',
       ),
     },

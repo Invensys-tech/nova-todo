@@ -20,8 +20,8 @@ class NotificationService {
     _navigatorKey = navigatorKey;
 
     const initSettingsAndroid = AndroidInitializationSettings(
-      '@mipmap/ic_notification',
-      // '@mipmap/ic_launcher',
+      '@mipmap/ic_launcher.png',
+      //'ic_notification',
     );
     const initSettingsIOS = DarwinInitializationSettings(
       requestAlertPermission: true,

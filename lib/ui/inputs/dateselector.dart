@@ -28,7 +28,6 @@ class DateSelector extends StatelessWidget {
     return TextFormField(
       readOnly: true, // Prevents keyboard from showing
       controller: controller,
-      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         prefixIcon: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
