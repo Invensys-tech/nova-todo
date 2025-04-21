@@ -1,102 +1,7 @@
-// import 'dart:convert';
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_application_1/entities/notes-entity.dart';
-// import 'package:flutter_application_1/pages/notespage/common/form.note.dart';
-// import 'package:flutter_application_1/pages/notespage/common/notes-quil.dart';
-// import 'package:flutter_application_1/repositories/notes.repository.dart';
-// import 'package:flutter_quill/flutter_quill.dart';
-
-// class NotesPage extends StatefulWidget {
-//   late List<Note> notes = [];
-//   NotesPage({super.key}) {
-//     NotesRepository().getNotes().then((fetchedNotes) {
-//       this.notes = notes;
-//     });
-//   }
-
-//   @override
-//   State<NotesPage> createState() => _NotesPageState();
-// }
-
-// class _NotesPageState extends State<NotesPage> {
-//   QuillController controller = QuillController.basic();
-
-//   addNote(Note note) {}
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Color(0xff2F2F2F),
-//       floatingActionButton: FloatingActionButton(
-//         foregroundColor: Colors.white,
-//         backgroundColor: Color(0xFF2b2d30),
-//         shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(50), // Rounded corners
-//         ),
-//         onPressed: () async {
-//           final newGoals = await Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//               builder: (context) => NoteQuil(note: ''),
-//             ), // Navigate to NewScreen
-//           );
-//           // if (newGoals != null) {
-//           //   setState(() {
-//           //     _goalFuture = Future.value(newGoals);
-//           //   });
-//           // }
-//         },
-//         child: Icon(
-//           Icons.add,
-//           color: Colors.white, // White icon color
-//           size: 30, // Adjust size if needed
-//         ),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Column(
-//           children: [
-//             Row(
-//               children: const [
-//                 Icon(Icons.account_tree, color: Colors.white),
-//                 SizedBox(width: 8),
-//                 Text(
-//                   "Notes",
-//                   style: TextStyle(color: Colors.white, fontSize: 16),
-//                 ),
-//               ],
-//             ),
-//             const SizedBox(height: 10),
-//             ...widget.notes.map((note) {
-//               List<dynamic> jsonList = jsonDecode(jsonDecode(note.notes));
-
-//               print("============= JSON =============");
-//               print(jsonList);
-
-//               List<dynamic> dataList =
-//                   jsonList.map((e) => e as Map<String, dynamic>).toList();
-//               Document quillData = Document.fromJson((dataList));
-//               return GestureDetector(
-//                 child: Container(
-//                   padding: EdgeInsets.all(8),
-//                   child: Text(
-//                     quillData.toPlainText(),
-//                     style: TextStyle(color: Colors.white),
-//                   ),
-//                 ),
-//               );
-//             }),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/notes-entity.dart';
+import 'package:flutter_application_1/pages/notespage/common/note-list.dart';
 import 'package:flutter_application_1/pages/notespage/common/notes-quil.dart';
 import 'package:flutter_application_1/repositories/notes.repository.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -221,16 +126,45 @@ class _NotesPageState extends State<NotesPage> {
                           style: TextStyle(color: Colors.white),
                         ),
                       )
-                      : SingleChildScrollView(
-                        child: Wrap(
-                          alignment: WrapAlignment.start,
-                          spacing: 8, // Horizontal spacing
-                          runSpacing: 8, // Vertical spacing
-                          children:
-                              notes.map((note) => buildNoteCard(note)).toList(),
-                        ),
-                      ),
+                      : NotesList(notes: notes),
             ),
+
+            // Expanded(
+            //   child:
+            //       notes.isEmpty
+            //           ? const Center(
+            //             child: Text(
+            //               "No Notes Found",
+            //               style: TextStyle(color: Colors.white),
+            //             ),
+            //           )
+            //           : SingleChildScrollView(
+            //             child: Row(
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: [
+            //                 // Even index notes
+            //                 Expanded(
+            //                   child: Column(
+            //                     children: [
+            //                       for (int i = 0; i < notes.length; i += 2)
+            //                         buildNoteCard(notes[i]),
+            //                     ],
+            //                   ),
+            //                 ),
+            //                 const SizedBox(width: 8),
+            //                 // Odd index notes
+            //                 Expanded(
+            //                   child: Column(
+            //                     children: [
+            //                       for (int i = 1; i < notes.length; i += 2)
+            //                         buildNoteCard(notes[i]),
+            //                     ],
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            // ),
           ],
         ),
       ),

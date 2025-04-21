@@ -55,9 +55,6 @@ class GoalRepository {
               .eq('userId', (await authService.findSession())['id'])
               .maybeSingle();
 
-      // print("-------------------");
-      // print((data?['goal_journal'][0].runtimeType));
-
       if (data == null) {
         throw Error();
       }
