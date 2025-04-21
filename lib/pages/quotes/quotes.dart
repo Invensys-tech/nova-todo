@@ -8,6 +8,7 @@ import 'package:flutter_application_1/pages/quotes/form.quotes.dart';
 import 'package:flutter_application_1/repositories/quote.repository.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuotesPage extends StatefulWidget {
@@ -58,7 +59,18 @@ class _QuotesPageState extends State<QuotesPage> {
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: Text("Quotes"),
+        title: Row(
+          children: [
+            Text("Habits"),
+            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            Container(
+                height: MediaQuery.of(context).size.height*.03,
+                width: MediaQuery.of(context).size.width*.06,
+                child: Image.asset('assets/Gif/Quotes.gif'))
+
+          ],
+        ),
+
         // centerTitle: true,
         leading: Row(
           spacing: MediaQuery.of(context).size.width * 0.04,
@@ -67,7 +79,7 @@ class _QuotesPageState extends State<QuotesPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(Icons.arrow_back, color: Colors.green),
+              icon:  FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
             ),
           ],
         ),

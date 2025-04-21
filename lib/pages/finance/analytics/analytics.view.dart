@@ -444,19 +444,19 @@ class ExpenseList extends StatelessWidget {
             left: MediaQuery.of(context).size.width * .035,
             right: MediaQuery.of(context).size.width * .035,
             top: MediaQuery.of(context).size.height * .0125,
-            bottom: MediaQuery.of(context).size.height * .0125,
+            bottom: MediaQuery.of(context).size.height * .005,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(width: MediaQuery.of(context).size.width * .025),
-              typeofexpenses == "Must Expenses"
+              typeofexpenses == "Must"
                   ? const Icon(
                     Icons.circle_rounded,
                     size: 17,
                     color: Colors.green,
                   )
-                  : typeofexpenses == "MayBe Expenses"
+                  : typeofexpenses == "MayBe"
                   ? const Icon(
                     Icons.circle_rounded,
                     size: 17,
@@ -501,7 +501,6 @@ class ExpenseList extends StatelessWidget {
             ],
           ),
         ),
-        const Divider(),
       ],
     );
   }

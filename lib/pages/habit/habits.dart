@@ -1,3 +1,4 @@
+import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_application_1/pages/habit/components/habits-list.dart';
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HabitsPage extends StatefulWidget {
   const HabitsPage({super.key});
@@ -51,8 +53,18 @@ class _HabitsPageState extends State<HabitsPage> {
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: Text("Habits"),
-        // centerTitle: true,
+        title: Row(
+          children: [
+            Text("Habits"),
+            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            Container(
+              height: MediaQuery.of(context).size.height*.03,
+                width: MediaQuery.of(context).size.width*.06,
+                child: Image.asset('assets/Gif/Habit.gif'))
+
+          ],
+        ),
+         centerTitle: false,
         leading: Row(
           spacing: MediaQuery.of(context).size.width * 0.04,
           children: [
@@ -60,42 +72,83 @@ class _HabitsPageState extends State<HabitsPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(Icons.arrow_back, color: Colors.green),
+              icon:FaIcon(FontAwesomeIcons.chevronLeft,size: 22, color: Color(0xff009966),)
             ),
           ],
         ),
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
       ),
       body: Padding(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+        padding: EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.02),
 
-        child: DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              bottom: TabBar(
-                tabs: [Tab(text: "Daily"), Tab(text: "General")],
-                labelColor: Colors.green,
-                unselectedLabelColor: Colors.white,
-                indicator: BoxDecoration(
-                  // color: Colors.green,
-                  // borderRadius: BorderRadius.circular(10),
-                  border: Border(
-                    bottom: BorderSide(color: Colors.green, width: 2),
+        child: Column(
+          children: [
+            // DefaultTabController(
+            //   length: 2,
+            //   child: Scaffold(
+            //     appBar: AppBar(
+            //       automaticallyImplyLeading: false,
+            //       bottom: TabBar(
+            //         tabs: [Tab(text: "Daily"), Tab(text: "General")],
+            //         labelColor: Colors.green,
+            //         unselectedLabelColor: Colors.white,
+            //         indicator: BoxDecoration(
+            //           // color: Colors.green,
+            //           // borderRadius: BorderRadius.circular(10),
+            //           border: Border(
+            //             bottom: BorderSide(color: Colors.green, width: 2),
+            //           ),
+            //         ),
+            //         indicatorSize: TabBarIndicatorSize.tab,
+            //       ),
+            //     ),
+            //     body: TabBarView(
+            //       children: [
+            //         Container(child: HabitsDailyList()),
+            //         Container(child: HabitsList(date: null, habits: habits)),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+
+            Expanded(
+              child: ContainedTabBarView(
+                tabs: [
+                  Tab(text: "Daily Habit"),
+                  Tab(text: "All Habits"),
+                ],
+                tabBarProperties: TabBarProperties(
+                  width: MediaQuery.of(context).size.width,
+                  height: 32,
+                  isScrollable: false,
+                  labelPadding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * .035,
                   ),
+                  background: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              
+                    ),
+                  ),
+                  position: TabBarPosition.top,
+                  alignment: TabBarAlignment.start,
+                  indicatorColor: Color(0xff009966),
+                  labelStyle: TextStyle(fontSize: 16, color:Color(0xff009966)),
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  unselectedLabelColor: Theme.of(context).primaryColorLight,
+                  unselectedLabelStyle: TextStyle(fontSize: 13),
                 ),
-                indicatorSize: TabBarIndicatorSize.tab,
+                views: [
+                  Container(child: HabitsDailyList()),
+                  Container(child: HabitsList(date: null, habits: habits)),
+                ],
               ),
             ),
-            body: TabBarView(
-              children: [
-                Container(child: HabitsDailyList()),
-                Container(child: HabitsList(date: null, habits: habits)),
-              ],
-            ),
-          ),
+          ],
         ),
+
+
       ),
     );
   }

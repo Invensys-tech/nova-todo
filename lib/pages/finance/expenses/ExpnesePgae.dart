@@ -9,6 +9,7 @@ import 'package:flutter_application_1/pages/finance/expense/editexpense.dart';
 import 'package:flutter_application_1/pages/finance/expenses/SingleExpensesViewPage.dart';
 import 'package:flutter_application_1/repositories/expense.repository.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class Expensespage extends StatefulWidget {
   final Datamanager datamanager;
@@ -66,20 +67,23 @@ class _ExpensespageState extends State<Expensespage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF2b2d30),
+        backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () {
-          Navigator.push(
+
+
+          PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
             context,
-            MaterialPageRoute(
-              builder: (_) => AddExpense(datamanager: widget.datamanager),
-            ),
+            screen: AddExpense(datamanager: widget.datamanager),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
           ).then((_) => setState(_loadExpenses));
         },
         child: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 12),
 
@@ -94,7 +98,7 @@ class _ExpensespageState extends State<Expensespage> {
               monthColor: Colors.blueGrey,
               dayColor: Colors.teal[200],
               activeDayColor: Colors.white,
-              activeBackgroundDayColor: Colors.grey,
+              activeBackgroundDayColor: Theme.of(context).disabledColor,
               shrink: true,
               locale: 'en_ISO',
             ),
@@ -114,10 +118,11 @@ class _ExpensespageState extends State<Expensespage> {
                 final expenses = snap.data!;
 
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // — Summary Card —
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding:  EdgeInsets.symmetric(horizontal: 16),
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -125,9 +130,11 @@ class _ExpensespageState extends State<Expensespage> {
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
+                                SizedBox(width: MediaQuery.of(context).size.width*.25,),
                                 const Icon(
                                   Icons.trending_up_outlined,
                                   color: Color(0xff0d805e),
@@ -137,14 +144,13 @@ class _ExpensespageState extends State<Expensespage> {
                                 Text(
                                   "\$ ${_grandTotal.toStringAsFixed(2)} ETB",
                                   style: const TextStyle(
-                                    color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
                             ),
-                            const Divider(color: Colors.white54),
+                            const Divider(),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -164,61 +170,71 @@ class _ExpensespageState extends State<Expensespage> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    Padding(
+                      padding:  EdgeInsets.only(left: MediaQuery.of(context).size.width*.05, top: MediaQuery.of(context).size.height*.045),
+                      child: Text("Transaction List",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                    ),
 
                     // — Expense List —
                     ListView.builder(
+                      padding: EdgeInsets.all(0),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: expenses.length,
                       itemBuilder: (ctx, i) {
                         final e = expenses[i];
-                        return Slidable(
-                          key: ValueKey(e.id),
-                          startActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (_) {
-                                  _expenseRepository.deleteExpense(e.id);
-                                  setState(_loadExpenses);
-                                },
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
+                        return Column(
+                          children: [
+                            Slidable(
+                              key: ValueKey(e.id),
+                              startActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      _expenseRepository.deleteExpense(e.id);
+                                      setState(_loadExpenses);
+                                    },
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: 'Delete',
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (_) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (_) => EditExpense(
-                                            datamanager: widget.datamanager,
-                                            expenseId: e.id,
-                                          ),
-                                    ),
-                                  ).then((_) => setState(_loadExpenses));
-                                },
-                                backgroundColor: Colors.blue,
-                                foregroundColor: Colors.white,
-                                icon: Icons.edit,
-                                label: 'Edit',
+                              endActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (_) => EditExpense(
+                                                datamanager: widget.datamanager,
+                                                expenseId: e.id,
+                                              ),
+                                        ),
+                                      ).then((_) => setState(_loadExpenses));
+                                    },
+                                    backgroundColor: Colors.blue,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.edit,
+                                    label: 'Edit',
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          child: ExpenseList(
-                            amountofexpenses: e.amount,
-                            catagoryofexpenses: e.category,
-                            titleofExpenses: e.category,
-                            typeofexpenses: e.type,
-                          ),
+                              child: ExpenseList(
+                                amountofexpenses: e.amount,
+                                catagoryofexpenses: e.category,
+                                titleofExpenses: e.category,
+                                typeofexpenses: e.type,
+                              ),
+                            ),
+
+                            const Divider(),
+                          ],
                         );
                       },
                     ),

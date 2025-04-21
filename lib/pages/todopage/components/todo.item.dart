@@ -201,7 +201,7 @@ class _TodoItemState extends State<TodoItem> {
             },
             child: Padding(
               padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * .05,
+                left: MediaQuery.of(context).size.width * .035,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

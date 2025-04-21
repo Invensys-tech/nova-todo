@@ -257,24 +257,24 @@ class HabitsRepository {
 
       String dateString = getDateOnly(dateTime);
 
-      if (habit.streakDates.contains(dateString)) {
-        print('Already extended streak for this date');
-        return false;
-      }
-
-      // final response = await supabaseClient
-      //     .from(Entities.HABITS.dbName)
-      //     .update({
-      //       'streak': habit.streak + 1,
-      //       'max_streak': habit.maxStreak + 1,
-      //       'streak_dates': [...habit.streakDates, dateString],
-      //     })
-      //     .eq('id', habit.id!)
-      //     .count(CountOption.exact);
-
-      // if (response.count == 0) {
-      //   throw Exception('Error extending habit streak');
+      // if (habit.streakDates.contains(dateString)) {
+      //   print('Already extended streak for this date');
+      //   return false;
       // }
+
+      final response = await supabaseClient
+          .from(Entities.HABITS.dbName)
+          .update({
+            'streak': habit.streak + 1,
+            'max_streak': habit.maxStreak + 1,
+            'streak_dates': [...habit.streakDates, dateString],
+          })
+          .eq('id', habit.id!)
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Error extending habit streak');
+      }
 
       return true;
     } catch (e) {

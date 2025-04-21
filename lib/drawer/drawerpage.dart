@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/drawer/Profile/Profile.dart';
 import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.view.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
@@ -18,16 +19,24 @@ class Drawerpage extends StatefulWidget {
 
 class _DrawerpageState extends State<Drawerpage> {
   routeToHabits() {
-    Navigator.push(
+
+    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
-      MaterialPageRoute(builder: (context) => HabitsPage()),
+      screen: HabitsPage(),
+      withNavBar: false,
+      pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
     );
   }
 
   routeToQuotes() {
-    Navigator.push(
+
+
+    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
-      MaterialPageRoute(builder: (context) => QuotesPage()),
+      screen: QuotesPage(),
+      withNavBar: false,
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      settings: const RouteSettings(),
     );
   }
 
@@ -208,45 +217,55 @@ class _DrawerpageState extends State<Drawerpage> {
           ), */
 
           SizedBox(height: MediaQuery.of(context).size.height*.09,),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025,vertical: MediaQuery.of(context).size.height*.01),
-            height: MediaQuery.of(context).size.height*.11,
-            width: MediaQuery.of(context).size.width*.65,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(width: 2, color: Theme.of(context).secondaryHeaderColor)
-            ),
-            child: Row(
-              children: [
-                FaIcon(FontAwesomeIcons.userCircle,size: 35,),
-                SizedBox(width: MediaQuery.of(context).size.width*.035,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Abebe kebede ",style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),),
-                    SizedBox(height: MediaQuery.of(context).size.height*.015,),
-                    LinearPercentIndicator(
-                      width: MediaQuery.of(context).size.width * .335,
-                      animation: true,
-                      padding: EdgeInsets.all(0),
-                      lineHeight:
-                      MediaQuery.of(context).size.height * .0065,
-                      animationDuration: 2500,
-                      percent:.83,
-                      linearStrokeCap: LinearStrokeCap.round,
-                      progressColor: Color(0xff009966),
-                    ),
+          GestureDetector(
+            onTap: (){
+              PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                context,
+                screen: Profile(),
+                withNavBar: false,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025,vertical: MediaQuery.of(context).size.height*.01),
+              height: MediaQuery.of(context).size.height*.11,
+              width: MediaQuery.of(context).size.width*.65,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(width: 2, color: Theme.of(context).secondaryHeaderColor)
+              ),
+              child: Row(
+                children: [
+                  FaIcon(FontAwesomeIcons.userCircle,size: 35,),
+                  SizedBox(width: MediaQuery.of(context).size.width*.035,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Abebe kebede ",style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),),
+                      SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                      LinearPercentIndicator(
+                        width: MediaQuery.of(context).size.width * .335,
+                        animation: true,
+                        padding: EdgeInsets.all(0),
+                        lineHeight:
+                        MediaQuery.of(context).size.height * .0065,
+                        animationDuration: 2500,
+                        percent:.83,
+                        linearStrokeCap: LinearStrokeCap.round,
+                        progressColor: Color(0xff009966),
+                      ),
 
-                    SizedBox(height: MediaQuery.of(context).size.height*.0015,),
-                    Text("84% Compoleted ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),),
-                  ],
-                ),
+                      SizedBox(height: MediaQuery.of(context).size.height*.0015,),
+                      Text("84% Compoleted ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),),
+                    ],
+                  ),
 
-                SizedBox(width: MediaQuery.of(context).size.width*.055,),
-                FaIcon(FontAwesomeIcons.chevronRight,size: 20,color: Color(0xff009966),),
-              ],
+                  SizedBox(width: MediaQuery.of(context).size.width*.055,),
+                  FaIcon(FontAwesomeIcons.chevronRight,size: 20,color: Color(0xff009966),),
+                ],
+              ),
+
             ),
-            
           ),
 
           SizedBox(height: MediaQuery.of(context).size.height*.015,),

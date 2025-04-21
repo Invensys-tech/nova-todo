@@ -77,6 +77,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
+
 class TextFields extends StatelessWidget {
   final String hinttext;
   final String whatIsInput;
@@ -101,96 +103,103 @@ class TextFields extends StatelessWidget {
       children: [
         if (prefixText != null)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+            height: MediaQuery.of(context).size.height*.046,
+            width: MediaQuery.of(context).size.width*.1,
             decoration: BoxDecoration(
-              color: const Color(0xFF3F3F47),
+
+              color: isDark ?  Colors.grey.withOpacity(.4) : Color(0xffD4D4D8),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(5),
                 bottomLeft: Radius.circular(5),
               ),
             ),
-            child: Text(
-              prefixText!,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
+            child: Center(
+              child: Text(
+                prefixText!,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
 
         // 📝 The actual input field
         Expanded(
-          child: TextFormField(
+          child: Container(
+            height: MediaQuery.of(context).size.height*.045,
+            child: TextFormField(
 
-            controller: controller,
-            keyboardType:
-                whatIsInput == "0" ? TextInputType.number : TextInputType.text,
-            // decoration: InputDecoration(
-            //   hintText: hinttext,
-            //   filled: true,
-            //   fillColor: Colors.black87.withOpacity(.3),
-            //   hintStyle: const TextStyle(
-            //     fontSize: 11,
-            //     fontWeight: FontWeight.w200,
-            //     color: Colors.white60,
-            //   ),
-            //   border: OutlineInputBorder(
-            //     borderRadius: BorderRadius.only(
-            //       topRight: const Radius.circular(5),
-            //       bottomRight: const Radius.circular(5),
-            //       topLeft: Radius.circular(prefixText != null ? 0 : 5),
-            //       bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
-            //     ),
-            //     borderSide: const BorderSide(
-            //       width: 2,
-            //       color: Colors.transparent,
-            //     ),
-            //   ),
-            //   focusedBorder: OutlineInputBorder(
-            //     borderRadius: BorderRadius.only(
-            //       topRight: const Radius.circular(5),
-            //       bottomRight: const Radius.circular(5),
-            //       topLeft: Radius.circular(prefixText != null ? 0 : 5),
-            //       bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
-            //     ),
-            //     borderSide: BorderSide(
-            //       color: Colors.green.withOpacity(.3),
-            //       width: 1.0,
-            //     ),
-            //   ),
-            //   enabledBorder: OutlineInputBorder(
-            //     borderRadius: BorderRadius.only(
-            //       topRight: const Radius.circular(5),
-            //       bottomRight: const Radius.circular(5),
-            //       topLeft: Radius.circular(prefixText != null ? 0 : 5),
-            //       bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
-            //     ),
-            //     borderSide: BorderSide(
-            //       color: Colors.black38.withOpacity(.3),
-            //       width: 1.0,
-            //     ),
-            //   ),
-            // ),
-            decoration: InputDecoration(
-              filled: filled,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Color(0xFF27272A), width: 1),
+              controller: controller,
+              keyboardType:
+                  whatIsInput == "0" ? TextInputType.number : TextInputType.text,
+              // decoration: InputDecoration(
+              //   hintText: hinttext,
+              //   filled: true,
+              //   fillColor: Colors.black87.withOpacity(.3),
+              //   hintStyle: const TextStyle(
+              //     fontSize: 11,
+              //     fontWeight: FontWeight.w200,
+              //     color: Colors.white60,
+              //   ),
+              //   border: OutlineInputBorder(
+              //     borderRadius: BorderRadius.only(
+              //       topRight: const Radius.circular(5),
+              //       bottomRight: const Radius.circular(5),
+              //       topLeft: Radius.circular(prefixText != null ? 0 : 5),
+              //       bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
+              //     ),
+              //     borderSide: const BorderSide(
+              //       width: 2,
+              //       color: Colors.transparent,
+              //     ),
+              //   ),
+              //   focusedBorder: OutlineInputBorder(
+              //     borderRadius: BorderRadius.only(
+              //       topRight: const Radius.circular(5),
+              //       bottomRight: const Radius.circular(5),
+              //       topLeft: Radius.circular(prefixText != null ? 0 : 5),
+              //       bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
+              //     ),
+              //     borderSide: BorderSide(
+              //       color: Colors.green.withOpacity(.3),
+              //       width: 1.0,
+              //     ),
+              //   ),
+              //   enabledBorder: OutlineInputBorder(
+              //     borderRadius: BorderRadius.only(
+              //       topRight: const Radius.circular(5),
+              //       bottomRight: const Radius.circular(5),
+              //       topLeft: Radius.circular(prefixText != null ? 0 : 5),
+              //       bottomLeft: Radius.circular(prefixText != null ? 0 : 5),
+              //     ),
+              //     borderSide: BorderSide(
+              //       color: Colors.black38.withOpacity(.3),
+              //       width: 1.0,
+              //     ),
+              //   ),
+              // ),
+              decoration: InputDecoration(
+                filled: filled,
+                border: OutlineInputBorder(
+                  borderRadius: prefixText!=null ?BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)) : BorderRadius.all(Radius.circular(5)),
+                  borderSide:  BorderSide(color: Colors.grey.withOpacity(.4), width: 1),
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 20,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius:   prefixText!=null ?BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)) : BorderRadius.all(Radius.circular(5)),
+                  borderSide: BorderSide(color: Colors.grey.withOpacity(.4), width: 1),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius:  prefixText!=null ?BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)) : BorderRadius.all(Radius.circular(5)),
+                  borderSide:  BorderSide(color: Colors.grey.withOpacity(.4), width: 1),
+                ),
               ),
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 15,
-                horizontal: 20,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Color(0xFF27272A), width: 1),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Color(0xFF27272A), width: 1),
-              ),
+              validator: func,
             ),
-            validator: func,
           ),
         ),
       ],

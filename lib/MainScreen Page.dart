@@ -43,7 +43,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: ("Home"),
-        iconSize: 24,
+        iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff2E783A),
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -51,7 +51,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.piggyBank),
         title: ("Finance"),
-        iconSize: 24,
+        iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -59,7 +59,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.locationArrow),
         title: ("Vision Board"),
-        iconSize: 24,
+        iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -67,7 +67,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.assignment_add),
         title: ("ToDoList"),
-        iconSize: 24,
+        iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -75,7 +75,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.edit),
         title:  ("Notes"),
-        iconSize: 23,
+        iconSize: 22,
         contentPadding: 0,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),

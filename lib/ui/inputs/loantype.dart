@@ -44,7 +44,7 @@ class _TypeSelectorState extends State<TypeSelector> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           border: Border.all(
-            color: isSelected ? activeColor : Colors.white24,
+            color: isSelected ? activeColor : Theme.of(context).primaryColorLight,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(5),
@@ -55,14 +55,14 @@ class _TypeSelectorState extends State<TypeSelector> {
               isSelected
                   ? Icons.radio_button_checked
                   : Icons.radio_button_unchecked,
-              color: isSelected ? activeColor : Colors.white38,
+              color: isSelected ? activeColor :Theme.of(context).primaryColorLight,
               size: 18,
             ),
             const SizedBox(width: 6),
             Text(
               type,
               style: TextStyle(
-                color: isSelected ? activeColor : Colors.white70,
+                color: isSelected ? activeColor : Theme.of(context).primaryColorLight,
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
               ),

@@ -14,6 +14,9 @@ import 'package:flutter_application_1/ui/inputs/expense-payment.selector.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/testdate.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../../main.dart';
 
 class IncomeForm extends StatefulWidget {
   final Datamanager datamanager;
@@ -182,18 +185,17 @@ class _IncomeFormState extends State<IncomeForm> {
     }
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: FaIcon(FontAwesomeIcons.chevronLeft,size: 25, color: Color(0xff006045),),
         ),
         title: const Text(
           "Add Income",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold, ),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: Padding(
         padding: EdgeInsets.all(8),
@@ -202,8 +204,9 @@ class _IncomeFormState extends State<IncomeForm> {
 
           child: Container(
             decoration: BoxDecoration(
+              color: isDark ? Color(0xff27272A) : Color(0xFFF4F4F5),
               border: Border.all(
-                color: Color(0xff27272A), // Border color
+                color: Colors.grey.withOpacity(.3), // Border color
                 width: 1.0, // Border width
               ),
               borderRadius: BorderRadius.circular(
@@ -218,12 +221,11 @@ class _IncomeFormState extends State<IncomeForm> {
                 const Text(
                   "Income Name",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 TextFields(
                   hinttext: name.hint,
                   controller: name.controller,
@@ -234,12 +236,11 @@ class _IncomeFormState extends State<IncomeForm> {
                 const Text(
                   "Amount",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 TextFields(
                   hinttext: amount.hint,
                   whatIsInput: amount.type,
@@ -259,13 +260,12 @@ class _IncomeFormState extends State<IncomeForm> {
                           const Text(
                             "Category",
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white70,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
+                            height: MediaQuery.of(context).size.height * 0.0025,
                           ),
                           AutoCompleteText(
                             suggestions: searchItems,
@@ -278,15 +278,7 @@ class _IncomeFormState extends State<IncomeForm> {
                                   text,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                subtitle: const Text(
-                                  "Tap to select",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
+                                    fontSize: 14,
                                   ),
                                 ),
                               );
@@ -304,21 +296,24 @@ class _IncomeFormState extends State<IncomeForm> {
                           const Text(
                             "Date",
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white70,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02,
+                            height: MediaQuery.of(context).size.height * 0.0025,
                           ),
-                          DateSelector(
-                            hintText: "Select a date",
-                            controller: date.controller,
-                            icon: Icons.calendar_today,
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                            initialDate: DateTime.now(),
+                          Container(
+
+                            height: MediaQuery.of(context).size.height*.05,
+                            child: DateSelector(
+                              hintText: DateTime.now().toString(),
+                              controller: date.controller,
+                              icon: Icons.calendar_today,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                              initialDate: DateTime.now(),
+                            ),
                           ),
                         ],
                       ),
@@ -360,12 +355,11 @@ class _IncomeFormState extends State<IncomeForm> {
                 const Text(
                   "Description",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 MultiLineTextField(
                   hintText: 'description',
                   controller: description.controller,
@@ -384,7 +378,7 @@ class _IncomeFormState extends State<IncomeForm> {
                           setState(() {});
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,
+                          backgroundColor: isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -392,7 +386,6 @@ class _IncomeFormState extends State<IncomeForm> {
                         ),
                         child: const Text(
                           "Cancel",
-                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
@@ -421,7 +414,7 @@ class _IncomeFormState extends State<IncomeForm> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor: Color(0xff009966),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
