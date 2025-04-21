@@ -50,23 +50,23 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
-      // body: Dashboard(),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              changeLocale(context, 'am');
-            },
-            child: Text('Change to amharic'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              changeLocale(context, 'en');
-            },
-            child: Text('Change to english'),
-          ),
-        ],
-      ),
+      body: Dashboard(),
+      // body: Column(
+      //   children: [
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         changeLocale(context, 'am');
+      //       },
+      //       child: Text('Change to amharic'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         changeLocale(context, 'en');
+      //       },
+      //       child: Text('Change to english'),
+      //     ),
+      //   ],
+      // ),
       // body: HabitForm(refetchData: () {}),
       // body: StepperForm(),
       // body: Column(
