@@ -1,6 +1,8 @@
+import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/customized/billboard.dart';
 import 'package:flutter_application_1/pages/homepage/dashboard-components/dashboard.expense.item.dart';
+import 'package:time_interval_picker/time_interval_picker.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -45,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
       'icon': Icons.line_weight,
     },
   ];
-
+  final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -53,49 +55,177 @@ class _DashboardState extends State<Dashboard> {
       child: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
-          spacing: MediaQuery.of(context).size.height * 0.04,
           children: [
-            Billboard(
-              height: 135,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 25, vertical: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 15,
+            SizedBox(height: MediaQuery.of(context).size.height*.035,),
+            Container(
+              child: Row(
+                children: [
+                  Icon(Icons.menu_outlined,size: 28, color: Theme.of(context).primaryColorLight,),
+                  SizedBox(width: MediaQuery.of(context).size.width*.015,),
+                  Text("Jan 23, 2025",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+
+                  SizedBox(width: MediaQuery.of(context).size.width*.35,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text("Good Morning",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                      Text("Abebe",style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height*.03,),
+            Container(
+              height: MediaQuery.of(context).size.height*.2,
+              width: MediaQuery.of(context).size.width*.95,
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025, vertical: MediaQuery.of(context).size.height*.02),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorDark,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  border: Border.all(color: Colors.grey.withOpacity(.2))
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width*.9,
+                    height: MediaQuery.of(context).size.height*.12,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color:Theme.of(context).disabledColor
+                    ),
+                    child:   Stack(
                       children: [
-                        Text('Total Balance', style: TextStyle(fontSize: 14)),
-                        Text(
-                          r'$ 72,000',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w600,
+
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.035, vertical: MediaQuery.of(context).size.height*.01),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                  Text(
+                                    'Total Balance',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(height: MediaQuery.of(context).size.height*.005,),
+                                  Text(
+                                    "\$ 99,000",
+                                    style: TextStyle(
+                                      fontSize: 27,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+
+                                  SizedBox(height: MediaQuery.of(context).size.height*.0075,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    spacing: 4,
+                                    children: [
+                                      Text(
+                                        '45,000 : Banks',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.circle,
+                                        color: Color(0xFF009966),
+                                        size: 13,
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: MediaQuery.of(context).size.height*.0075,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    spacing: 4,
+                                    children: [
+                                      Text(
+                                        '23,000 : Recivable Loan',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.circle,
+                                        color: Color(0xFF009966),
+                                        size: 13,
+                                      ),
+                                    ],
+                                  ),
+
+                                  SizedBox(height: MediaQuery.of(context).size.height*.0075,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    spacing: 4,
+                                    children: [
+                                      Text(
+                                        '5000 : Payable Loan',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.circle,
+                                        color: Color(0xFF8B0836),
+                                        size: 13,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          top: MediaQuery.of(context).size.height*.03,
+                          left: MediaQuery.of(context).size.width*.4,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width*.3,
+                            height: MediaQuery.of(context).size.height*.1,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xff009966).withOpacity(.1)
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: MediaQuery.of(context).size.height*.05,
+                          left: MediaQuery.of(context).size.width*.5,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width*.35,
+                            height: MediaQuery.of(context).size.height*.15,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xffFAFAFA).withOpacity(.1)
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 15,
-                      children: [
-                        Text('Streak', style: TextStyle(fontSize: 14)),
-                        Text(
-                          '23',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                ],
               ),
             ),
 
             // Financial Overview Section
+
+
+            SizedBox(height: MediaQuery.of(context).size.height*.035,),
             Column(
               spacing: MediaQuery.of(context).size.height * .008,
               children: [
@@ -104,7 +234,7 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     Text(
                       'Financial Overview',
-                      style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
+                      style: TextStyle( fontSize: 16),
                     ),
                     Text(
                       'See All',
@@ -116,8 +246,7 @@ class _DashboardState extends State<Dashboard> {
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Color(0xFF3F3F47), width: 1),
-                    color: Color(0xFF27272A),
+                    border: Border.all(color: Colors.grey.withOpacity(.5), width: 1),
                   ),
                   child: Row(
                     children: [
@@ -127,23 +256,22 @@ class _DashboardState extends State<Dashboard> {
                           padding: EdgeInsets.symmetric(vertical: 8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 11,
+
                             children: [
-                              Text('Current Balance'),
+                              Text('Expenses OverView'),
                               Row(
                                 children: [
                                   Text(
                                     '+',
                                     style: TextStyle(
-                                      color: Color(0xFF009966),
                                       fontSize: 24,
                                     ),
                                   ),
                                   Text(
                                     r'$ 65,400',
                                     style: TextStyle(
-                                      color: Color(0xFFF4F4F5),
-                                      fontSize: 24,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold
                                     ),
                                   ),
                                 ],
@@ -152,14 +280,12 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
                       ),
-                      Expanded(flex: 2, child: Text('Circle')),
                       Expanded(
                         flex: 2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           spacing: 8,
                           children: [
-                            Text('This Week'),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               spacing: 4,
@@ -169,10 +295,10 @@ class _DashboardState extends State<Dashboard> {
                                   spacing: 4,
                                   children: [
                                     Text(
-                                      'Total Income',
+                                      '24,500 : Must',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w300,
-                                        fontSize: 10,
+                                        fontSize: 12,
                                       ),
                                     ),
                                     Icon(
@@ -187,15 +313,32 @@ class _DashboardState extends State<Dashboard> {
                                   spacing: 4,
                                   children: [
                                     Text(
-                                      'Total Expense',
+                                      '1,500 : Maybe',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w300,
-                                        fontSize: 10,
+                                        fontSize: 12,
                                       ),
                                     ),
                                     Icon(
                                       Icons.circle,
-                                      color: Color(0xFF8B0836),
+                                      color: Colors.orange,
+                                      size: 8,
+                                    ),
+                                  ],
+                                ), Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  spacing: 4,
+                                  children: [
+                                    Text(
+                                      '5450 : Unwanted',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.circle,
+                                      color: Colors.red,
                                       size: 8,
                                     ),
                                   ],
@@ -208,10 +351,125 @@ class _DashboardState extends State<Dashboard> {
                     ],
                   ),
                 ),
+
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: Colors.grey.withOpacity(.5), width: 1),
+
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+
+                            children: [
+                              Text('Income OverView'),
+                              Row(
+                                children: [
+                                  Text(
+                                    '+',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  Text(
+                                    r'$ 25,200',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          spacing: 8,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              spacing: 4,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  spacing: 4,
+                                  children: [
+                                    Text(
+                                      '24,500 : Compens',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.circle,
+                                      color: Color(0xFF009966),
+                                      size: 8,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  spacing: 4,
+                                  children: [
+                                    Text(
+                                      '1,500 : Salary',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.circle,
+                                      color: Color(0xFF009966),
+                                      size: 8,
+                                    ),
+                                  ],
+                                ), Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  spacing: 4,
+                                  children: [
+                                    Text(
+                                      '5450 : Busine',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.circle,
+                                      color: Color(0xFF009966),
+                                      size: 8,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+
+
               ],
             ),
             // Financial Overview Section.
 
+            SizedBox(height: MediaQuery.of(context).size.height*.035,),
             // Recent Expenses Section
             Column(
               spacing: MediaQuery.of(context).size.height * .008,
@@ -220,8 +478,8 @@ class _DashboardState extends State<Dashboard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Recent Expenses',
-                      style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
+                      'Top Community Challenges',
+                      style: TextStyle( fontSize: 16),
                     ),
                     Text(
                       'See All',
@@ -229,19 +487,71 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ],
                 ),
-                Container(
-                  child: Column(
-                    spacing: MediaQuery.of(context).size.height * .015,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                        expenses
-                            .map(
-                              (expense) =>
-                                  DashboardExpenseItem(expense: expense),
-                            )
-                            .toList(),
-                  ),
-                ),
+
+                Row(
+                  children: [
+                    
+                    Container(
+                      width: MediaQuery.of(context).size.width*.3,
+                      height: MediaQuery.of(context).size.height*.175,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1,color: Colors.grey.withOpacity(.5))
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015,vertical: MediaQuery.of(context).size.height*.012),
+                      child: Column(
+                        children: [
+                          Text("Losse Weight in ",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                          Text("02 - 08 -2025 ",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                          SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                          Container(
+                            color: Theme.of(context).primaryColorLight,
+                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context)),
+                            width: MediaQuery.of(context).size.width*.15,
+                            height: MediaQuery.of(context).size.height*.073,
+                            child: DashedCircularProgressBar.aspectRatio(
+                              aspectRatio: 1, // width ÷ height
+                              valueNotifier: _valueNotifier,
+                              progress: 478,
+                              maxProgress: 670,
+                              corners: StrokeCap.butt,
+                              foregroundColor: Colors.blue,
+                              backgroundColor: const Color(0xffeeeeee),
+                              foregroundStrokeWidth: 36,
+                              backgroundStrokeWidth: 36,
+                              animation: true,
+                              child: Center(
+                                child: ValueListenableBuilder(
+                                  valueListenable: _valueNotifier,
+                                  builder: (_, double value, __) => Text(
+                                    '${value.toInt()}%',
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 60
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                )
+                // Container(
+                //   child: Column(
+                //     spacing: MediaQuery.of(context).size.height * .01,
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children:
+                //         expenses
+                //             .map(
+                //               (expense) =>
+                //                   DashboardExpenseItem(expense: expense),
+                //             )
+                //             .toList(),
+                //   ),
+                // ),
               ],
             ),
             // Recent Expenses Section

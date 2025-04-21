@@ -61,7 +61,7 @@ class _ExpensespageState extends State<Expensespage> {
       _loadExpenses();
     });
   }
-
+  ETDateTime now = ETDateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +100,7 @@ class _ExpensespageState extends State<Expensespage> {
               activeDayColor: Colors.white,
               activeBackgroundDayColor: Theme.of(context).disabledColor,
               shrink: true,
-              locale: 'en_ISO',
+              locale: 'am',
             ),
 
             const SizedBox(height: 24),

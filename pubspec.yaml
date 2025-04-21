@@ -68,6 +68,8 @@ dependencies:
   badges: ^3.1.2
   dotted_line: ^3.2.3
   lottie: ^3.3.1
+  time_interval_picker: ^0.0.3
+  dashed_circular_progress_bar: ^0.0.6
 
 flutter_icons:
   android: true
