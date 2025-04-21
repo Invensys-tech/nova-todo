@@ -505,7 +505,7 @@ class _DashboardState extends State<Dashboard> {
                           SizedBox(height: MediaQuery.of(context).size.height*.015,),
                           Container(
                             color: Theme.of(context).primaryColorLight,
-                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context)),
+
                             width: MediaQuery.of(context).size.width*.15,
                             height: MediaQuery.of(context).size.height*.073,
                             child: DashedCircularProgressBar.aspectRatio(
