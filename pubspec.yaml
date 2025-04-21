@@ -68,6 +68,7 @@ dependencies:
   badges: ^3.1.2
   dotted_line: ^3.2.3
   flutter_translate: ^4.1.0
+  lottie: ^3.3.1
 
 flutter_icons:
   android: true
@@ -109,6 +110,15 @@ flutter:
     - assets/Images/VitaImage1.png
     - assets/Images/VitaNew.png
     - assets/i18n/
+    - assets/Gif/Habit.gif
+    - assets/Gif/Quotes.gif
+    - assets/Gif/Productivity.gif
+    - assets/LottieAnimations/FirstStreak.json
+    - assets/LottieAnimations/ThirdStreak.json
+    - assets/LottieAnimations/FourthStreak.json
+    - assets/LottieAnimations/LastStreak.json
+    - assets/LottieAnimations/Scond2Streak.json
+    - assets/LottieAnimations/ZeroStreak.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -144,6 +154,7 @@ flutter:
         - asset: assets/Fonts/OutFit/static/Outfit-Medium.ttf
         - asset: assets/Fonts/OutFit/static/Outfit-Regular.ttf
         - asset: assets/Fonts/OutFit/static/Outfit-SemiBold.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

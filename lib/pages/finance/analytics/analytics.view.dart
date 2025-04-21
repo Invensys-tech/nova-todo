@@ -135,7 +135,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
           icon: FaIcon(FontAwesomeIcons.chevronLeft,color: Color(0xff006045),)
         ),
         title: const Text(
-          "Analytics",
+          "Expenses Details",
           style: TextStyle(fontWeight: FontWeight.bold,),
         ),
         centerTitle: false,
@@ -265,7 +265,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                             Map<String, double>.from(totalsData["type"]);
                         return Column(
                           children: [
-                            // Grand Total Header Row
+                            // Grand T
                             Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal:
@@ -284,7 +284,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                                   const Icon(
                                     Icons.circle_rounded,
                                     size: 17,
-                                    color: Colors.white,
+                                    color: Colors.grey,
                                   ),
                                   SizedBox(
                                     width:
@@ -313,6 +313,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                                 ],
                               ),
                             ),
+                            Divider(),
                             // Importance rows for each type:
                             Importance("Must", typeTotals["Must"] ?? 0.0),
                             Importance("Maybe", typeTotals["Maybe"] ?? 0.0),
@@ -336,6 +337,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                       );
                     },
                     canTapOnHeader: true,
+                    backgroundColor: Theme.of(context).primaryColorDark,
                     body: FutureBuilder<Map<String, Map<String, dynamic>>>(
                       future: ExpenseRepository().getExpenseCategoryTotals(),
                       builder: (context, snapshot) {
@@ -352,15 +354,18 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                           );
                         }
                         final categoryData = snapshot.data!;
-                        return Column(
-                          children:
-                              categoryData.entries.map((entry) {
-                                return ExpensesWidget(
-                                  category: entry.key,
-                                  expenseCount: entry.value['count'] ?? 0,
-                                  amount: entry.value['totalAmount'] ?? 0.0,
-                                );
-                              }).toList(),
+                        return Padding(
+                          padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015),
+                          child: Column(
+                            children:
+                                categoryData.entries.map((entry) {
+                                  return ExpensesWidget(
+                                    category: entry.key,
+                                    expenseCount: entry.value['count'] ?? 0,
+                                    amount: entry.value['totalAmount'] ?? 0.0,
+                                  );
+                                }).toList(),
+                          ),
                         );
                       },
                     ),
@@ -372,6 +377,8 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                       return MyExpansionPanelHeader(title: "List of Expense");
                     },
                     canTapOnHeader: true,
+
+                    backgroundColor: Theme.of(context).primaryColorDark,
                     body: FutureBuilder<List<Expense>>(
                       future: _expensesFuture,
                       builder: (context, snapshot) {
@@ -437,19 +444,19 @@ class ExpenseList extends StatelessWidget {
             left: MediaQuery.of(context).size.width * .035,
             right: MediaQuery.of(context).size.width * .035,
             top: MediaQuery.of(context).size.height * .0125,
-            bottom: MediaQuery.of(context).size.height * .0125,
+            bottom: MediaQuery.of(context).size.height * .005,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(width: MediaQuery.of(context).size.width * .025),
-              typeofexpenses == "Must Expenses"
+              typeofexpenses == "Must"
                   ? const Icon(
                     Icons.circle_rounded,
                     size: 17,
                     color: Colors.green,
                   )
-                  : typeofexpenses == "MayBe Expenses"
+                  : typeofexpenses == "MayBe"
                   ? const Icon(
                     Icons.circle_rounded,
                     size: 17,
@@ -494,7 +501,6 @@ class ExpenseList extends StatelessWidget {
             ],
           ),
         ),
-        const Divider(),
       ],
     );
   }

@@ -120,6 +120,7 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
         disabledColor: Color(0xff006045),
         cardColor: Color(0xff3F3F47),
+        primaryColorDark: Color(0xff1a1a1a),
         fontFamily: 'Outfit',
       ),
     },
@@ -133,8 +134,15 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     loadTheme();
     _checkAndListenSms();
+    loabThemeApp();
   }
 
+  Future<void> loabThemeApp() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isDark = prefs.getBool('ThemeOfApp')!;
+    });
+  }
   Future<void> loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -199,6 +207,13 @@ class _MyAppState extends State<MyApp> {
             navigatorKey: navigatorKey,
             title: 'Vita Board',
             theme: theme,
+            builder: (context, child) {
+            // 👇 This forces text scale factor to be 1.0 across the app
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: child!,
+            );
+          },
             // home: const MainScreenPage(),
             // home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
             debugShowCheckedModeBanner: false,

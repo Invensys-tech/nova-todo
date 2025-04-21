@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/quote.entity.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class QuoteItem extends StatelessWidget {
   final Quote quote;
@@ -76,26 +77,26 @@ class QuoteItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.035, vertical: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: MediaQuery.of(context).size.width * 0.06,
                 children: [
                   Text(
                     '"${quote.text}"',
                     textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: GoogleFonts.cinzel (
+                      fontSize: 15,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height*.01,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 12.0,
+                          horizontal: MediaQuery.of(context).size.width*.025,
                           vertical: 4.0,
                         ),
                         margin: EdgeInsets.only(bottom: 10.0),

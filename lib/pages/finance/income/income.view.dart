@@ -9,6 +9,7 @@ import 'package:flutter_application_1/pages/finance/income/edit.income.dart';
 import 'package:flutter_application_1/repositories/income.repository.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class IncomeView extends StatefulWidget {
   final Datamanager datamanager;
@@ -50,14 +51,15 @@ class _IncomeViewState extends State<IncomeView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF2b2d30),
+        backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () {
-          Navigator.push(
+
+          PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
             context,
-            MaterialPageRoute(
-              builder: (context) => IncomeForm(datamanager: widget.datamanager),
-            ),
+            screen: IncomeForm(datamanager: widget.datamanager),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
           ).then((_) => setState(_loadIncomes));
         },
         child: const Icon(Icons.add),
@@ -76,7 +78,7 @@ class _IncomeViewState extends State<IncomeView> {
               monthColor: Colors.blueGrey,
               dayColor: Colors.teal[200],
               activeDayColor: Colors.white,
-              activeBackgroundDayColor: Colors.grey,
+              activeBackgroundDayColor: Theme.of(context).disabledColor,
               shrink: true,
               locale: 'en_ISO',
             ),
@@ -108,12 +110,12 @@ class _IncomeViewState extends State<IncomeView> {
                       ),
                       child: Container(
                         padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).size.height * .015,
+                          top: MediaQuery.of(context).size.height * .0075,
                         ),
-                        height: MediaQuery.of(context).size.height * .1175,
+                        height: MediaQuery.of(context).size.height * .075,
                         width: MediaQuery.of(context).size.width * .9,
                         decoration: BoxDecoration(
-                          color: Colors.black38,
+                          color: Theme.of(context).primaryColorDark,
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Column(

@@ -14,7 +14,6 @@ class QuotesList extends StatelessWidget {
     return SingleChildScrollView(
       physics: AlwaysScrollableScrollPhysics(),
       child: Container(
-        padding: EdgeInsets.all(8.0),
         child: Column(
           spacing: MediaQuery.of(context).size.width * 0.07,
           children:

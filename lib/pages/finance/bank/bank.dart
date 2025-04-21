@@ -6,6 +6,7 @@ import 'package:flutter_application_1/pages/finance/bank/editbank.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
 import 'package:flutter_application_1/pages/finance/common/bank.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class BankPage extends StatefulWidget {
   final Datamanager datamanager;
@@ -34,17 +35,21 @@ class _BankPageState extends State<BankPage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: Color(0xFF2b2d30),
+        backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50), // Rounded corners
         ),
         onPressed: () async {
           // Action when pressed
 
-          final newBanks = await Navigator.push(
+          final newBanks = await  PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
             context,
-            MaterialPageRoute(builder: (context) => AddBank()),
+            screen: AddBank(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
           );
+
+
           if (newBanks != null) {
             setState(() {
               _banksFuture = Future.value(newBanks);

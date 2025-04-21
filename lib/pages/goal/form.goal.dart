@@ -300,52 +300,52 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
         onStepContinue: continueStep,
         onStepCancel: cancelStep,
 
-        // controlsBuilder: (context, details) {
-        //   return Container(
-        //     margin: EdgeInsets.only(top: 20),
-        //     child: Row(
-        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //       spacing: MediaQuery.of(context).size.height * 0.02,
-        //       children: [
-        //         Expanded(
-        //           flex: 2,
-        //           child: ElevatedButton(
-        //             style: ElevatedButton.styleFrom(
-        //               backgroundColor: Color(0xFF27272A),
-        //               shape: RoundedRectangleBorder(
-        //                 borderRadius: BorderRadius.circular(8),
-        //                 side: BorderSide(color: Color(0xFF27272A), width: 2),
-        //               ),
-        //             ),
-        //             onPressed: details.onStepCancel,
-        //             child: Text(
-        //               _currentStep == 0 ? "Cancel" : "Previous",
-        //               style: TextStyle(color: Colors.white),
-        //             ),
-        //           ),
-        //         ),
-        //         Expanded(flex: 1, child: SizedBox()),
-        //         Expanded(
-        //           flex: 2,
-        //           child: ElevatedButton(
-        //             style: ElevatedButton.styleFrom(
-        //               backgroundColor: Color(0xFF27272A),
-        //               shape: RoundedRectangleBorder(
-        //                 borderRadius: BorderRadius.circular(8),
-        //                 side: BorderSide(color: Color(0xFF009966), width: 2),
-        //               ),
-        //             ),
-        //             onPressed: details.onStepContinue,
-        //             child: Text(
-        //               _currentStep == 2 ? "Save" : "Next",
-        //               style: TextStyle(color: Color(0xFF009966)),
-        //             ),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   );
-        // },
+        controlsBuilder: (context, details) {
+          return Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              spacing: MediaQuery.of(context).size.height * 0.02,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF27272A),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: Color(0xFF27272A), width: 2),
+                      ),
+                    ),
+                    onPressed: details.onStepCancel,
+                    child: Text(
+                      _currentStep == 0 ? "Cancel" : "Previous",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Expanded(flex: 1, child: SizedBox()),
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF27272A),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: Color(0xFF009966), width: 2),
+                      ),
+                    ),
+                    onPressed: details.onStepContinue,
+                    child: Text(
+                      _currentStep == 2 ? "Save" : "Next",
+                      style: TextStyle(color: Color(0xFF009966)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
