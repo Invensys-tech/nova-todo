@@ -10,6 +10,7 @@ import 'package:flutter_application_1/pages/finance/finance.dart';
 import 'package:flutter_application_1/pages/goal/goal.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import 'drawer/Seeting Page/SeetingPage.dart';
@@ -42,7 +43,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
     return [
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
-        title: ("Home"),
+        title: translate("Home"),
         iconSize: 24,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff2E783A),
@@ -50,7 +51,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       ),
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.piggyBank),
-        title: ("Finance"),
+        title: translate("Finance"),
         iconSize: 24,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
@@ -58,7 +59,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       ),
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.locationArrow),
-        title: ("Vision Board"),
+        title: translate("Vision Board"),
         iconSize: 24,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
@@ -66,7 +67,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.assignment_add),
-        title: ("ToDoList"),
+        title: translate("ToDos"),
         iconSize: 24,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
@@ -74,7 +75,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       ),
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.edit),
-        title:  ("Notes"),
+        title:  translate("Notes"),
         iconSize: 23,
         contentPadding: 0,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
