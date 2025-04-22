@@ -26,7 +26,6 @@ class DateSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       readOnly: true, // Prevents keyboard from showing
       controller: controller,
       decoration: InputDecoration(
@@ -37,18 +36,15 @@ class DateSelector extends StatelessWidget {
               right: BorderSide(color: Colors.white54, width: 1.0),
             ),
           ),
-          child: Icon(icon, size: 20,),
+          child: Icon(icon, size: 20),
         ),
         prefixIconConstraints: const BoxConstraints(minWidth: 50),
         hintText: hintText,
         filled: true,
-        hintStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-        ),
+        hintStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide:  BorderSide(width: 2, color: Colors.grey.withOpacity(.4)),
+          borderSide: BorderSide(width: 2, color: Colors.grey.withOpacity(.4)),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
@@ -76,7 +72,8 @@ class DateSelector extends StatelessWidget {
                 colorScheme: ColorScheme.dark(
                   primary: Colors.green, // header background color
                   onPrimary: Colors.white, // header text color
-                  surface: Theme.of(context).primaryColorLight, // background color
+                  surface:
+                      Theme.of(context).primaryColorLight, // background color
                   onSurface: Colors.white70, // body text color
                 ),
                 dialogBackgroundColor: Colors.black,

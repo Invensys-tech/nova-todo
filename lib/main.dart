@@ -75,7 +75,8 @@ void main() async {
 
   final delegate = await setupLocalization();
 
-  runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
+  // runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
+  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
   // runApp(MyApp(initPage: initPage));
   // runApp(MyApp(initPage: InitPage.HOME));
 }
@@ -143,6 +144,7 @@ class _MyAppState extends State<MyApp> {
       isDark = prefs.getBool('ThemeOfApp')!;
     });
   }
+
   Future<void> loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -208,12 +210,12 @@ class _MyAppState extends State<MyApp> {
             title: 'Vita Board',
             theme: theme,
             builder: (context, child) {
-            // 👇 This forces text scale factor to be 1.0 across the app
-            return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-              child: child!,
-            );
-          },
+              // 👇 This forces text scale factor to be 1.0 across the app
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: child!,
+              );
+            },
             // home: const MainScreenPage(),
             // home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
             debugShowCheckedModeBanner: false,
