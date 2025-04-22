@@ -257,12 +257,12 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
           });
 
           DateTime habitDate = DateTime.now();
-          await updateOrCreateStreak(
-            productivityHabitId: productivityHabit.id,
-            habitDate: habitDate,
-            frequency: widget.frequency?.controller.text ?? "daily",
-            habitEntryId: habitListRecord.id,
-          );
+          // await updateOrCreateStreak(
+          //   productivityHabitId: productivityHabit.id,
+          //   habitDate: habitDate,
+          //   frequency: widget.frequency?.controller.text ?? "daily",
+          //   habitEntryId: habitListRecord.id,
+          // );
         }
       }
     }

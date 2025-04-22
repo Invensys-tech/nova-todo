@@ -15,6 +15,8 @@
 //   }
 // }
 
+import 'dart:convert';
+
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
@@ -113,7 +115,13 @@ class Datamanager {
   }
 
   Future<List<Goal>> fetchGoals() async {
-    final data = await Supabase.instance.client.from('goal').select('*');
+    final data = await Supabase.instance.client
+        .from('goal')
+        .select('*  ,sub_goal(*,  sub_goal_task(*))')
+        .order('created_at', ascending: false);
+    ;
+    print("///////////////////");
+    print(jsonEncode(data));
     return data.map((e) => Goal.fromJson(e)).toList();
   }
 

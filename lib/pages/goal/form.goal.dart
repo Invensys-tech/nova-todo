@@ -7,7 +7,12 @@ import 'package:flutter_application_1/pages/goal/common/types.dart';
 
 class GoalStepperForm extends StatefulWidget {
   final Map<String, dynamic> controllers;
-  const GoalStepperForm({super.key, required this.controllers});
+  final void Function() printAllValues;
+  const GoalStepperForm({
+    super.key,
+    required this.controllers,
+    required this.printAllValues,
+  });
 
   @override
   State<GoalStepperForm> createState() => _GoalStepperFormState();
@@ -153,7 +158,7 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
 
   addSubGoals() {
     setState(() {
-      _controllers["subGoalsWithDeadline"]["subGoals"].add(
+      widget.controllers["subGoalsWithDeadline"]["subGoals"].add(
         FormInputPair(
           key: FormInput(
             label: "Sub goal name",
@@ -210,6 +215,9 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
             goalStatus: widget.controllers["goals"]["status"] as FormInput,
             goalDescription:
                 widget.controllers["goals"]["description"] as FormInput,
+            deadline:
+                widget.controllers['subGoalsWithDeadline']['deadline']
+                    as FormInput,
           ),
         ],
       ),
@@ -278,6 +286,8 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
     setState(() {
       if (_currentStep < 3) {
         _currentStep += 1;
+      } else {
+        widget.printAllValues();
       }
     });
   }
@@ -293,6 +303,7 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height * 0.8,
       child: Stepper(
         steps: steps(),
         currentStep: _currentStep,
@@ -337,7 +348,7 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
                     ),
                     onPressed: details.onStepContinue,
                     child: Text(
-                      _currentStep == 2 ? "Save" : "Next",
+                      _currentStep == 3 ? "Save" : "Next",
                       style: TextStyle(color: Color(0xFF009966)),
                     ),
                   ),

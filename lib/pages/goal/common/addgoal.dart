@@ -107,38 +107,38 @@ class _AccordionAxampleState extends State<AddGoal> {
   // }
 
   void _printAllValues() async {
-    // print("-------- Goals ----------");
-    // print("Goal Name: ${_controllers["goals"]["name"].controller.text}");
-    // print("Goal Term: ${_controllers["goals"]["term"].controller.text}");
-    // print(
-    //   "Goal Priority: ${_controllers["goals"]["priority"].controller.text}",
-    // );
+    print("-------- Goals ----------");
+    print("Goal Name: ${_controllers["goals"]["name"].controller.text}");
+    print("Goal Term: ${_controllers["goals"]["term"].controller.text}");
+    print(
+      "Goal Priority: ${_controllers["goals"]["priority"].controller.text}",
+    );
 
-    // print("----- Motivations -----");
-    // for (int i = 0; i < _controllers["motivations"].length; i++) {
-    //   print(
-    //     "Motivation ${i + 1}: ${_controllers["motivations"][i].controller.text}",
-    //   );
-    // }
+    print("----- Motivations -----");
+    for (int i = 0; i < _controllers["motivations"].length; i++) {
+      print(
+        "Motivation ${i + 1}: ${_controllers["motivations"][i].controller.text}",
+      );
+    }
 
-    // print("----------- Sub goals | DEADLINE -------------");
-    // print(
-    //   "Deadline: ${_controllers["subGoalsWithDeadline"]["deadline"].controller.text}",
-    // );
-    // for (
-    //   var i = 0;
-    //   i < _controllers["subGoalsWithDeadline"]["subGoals"].length;
-    //   i++
-    // ) {
-    //   print(
-    //     "Sub Goal ${i + 1}: ${_controllers["subGoalsWithDeadline"]["subGoals"][i].key.controller.text}, Deadline: ${_controllers["subGoalsWithDeadline"]["subGoals"][i].value.controller.text}",
-    //   );
-    // }
+    print("----------- Sub goals | DEADLINE -------------");
+    print(
+      "Deadline: ${_controllers["subGoalsWithDeadline"]["deadline"].controller.text}",
+    );
+    for (
+      var i = 0;
+      i < _controllers["subGoalsWithDeadline"]["subGoals"].length;
+      i++
+    ) {
+      print(
+        "Sub Goal ${i + 1}: ${_controllers["subGoalsWithDeadline"]["subGoals"][i].key.controller.text}, Deadline: ${_controllers["subGoalsWithDeadline"]["subGoals"][i].value.controller.text}",
+      );
+    }
 
-    // print("---------------------- FINANCE -----------------");
-    // print(_controllers["financeImpact"]["totalMoney"].controller.text);
-    // print(_controllers["financeImpact"]["amountSaved"].controller.text);
-    // print(_controllers["financeImpact"]["timeSaved"].controller.text);
+    print("---------------------- FINANCE -----------------");
+    print(_controllers["financeImpact"]["totalMoney"].controller.text);
+    print(_controllers["financeImpact"]["amountSaved"].controller.text);
+    print(_controllers["financeImpact"]["timeSaved"].controller.text);
 
     try {
       final goalResponse = await Supabase.instance.client.from('goal').insert({
@@ -157,24 +157,30 @@ class _AccordionAxampleState extends State<AddGoal> {
       });
 
       final goals = await Datamanager().getGoals();
-      final goalIdIndex =
-          goals.length - 1; // Fixing index to get the last inserted goal
-      final goalId = goals[goalIdIndex].id;
+      print("Goal INdex Checll");
 
-      // goals.forEach((goal) => print(goal.id));
-      // print("----------- Goal Id ------------");
-      // print(goalId);
+      final goalIdIndex = goals.length - 1;
+      // Fixing index to get the last inserted goal
+      print(goals[goalIdIndex].id);
+      print(goals[0].id);
+
+      final goalId = goals[0].id;
+
+      goals.forEach((goal) => print(goal.id));
+      print("----------- Goal Id ------------");
+      print(goalId);
 
       // // Now insert sub-goals
       await insertSubGoals(goalId);
 
-      // print(goalResponse);
+      print(goalResponse);
       print("Goal added successfully!");
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text("Goal added successfully!")));
       Navigator.pop(context);
     } catch (e) {
+      print('llllllllllllllllllllllllllllll');
       print(e);
       ScaffoldMessenger.of(
         context,
@@ -191,54 +197,98 @@ class _AccordionAxampleState extends State<AddGoal> {
     };
   }
 
-  getSubGoalsJson() {
+  getSubGoalsJson(num goalId) {
     // getSubGoalsJson() {
-    dynamic subGoalsData =
-        _controllers["subGoalsWithDeadline"]["subGoals"].map((subGoal) {
-          Map<String, dynamic> subGoalData = {
-            "goal": subGoal.key.controller.text,
-            "deadline": formatDate(subGoal.value.controller.text),
-          };
+    try {
+      print("kkkkkkkkkkkkkk");
+      print(_controllers["subGoalsWithDeadline"]["subGoals"][0]);
+      dynamic subGoalsData = _controllers["subGoalsWithDeadline"]["subGoals"]
+          .map((subGoal) {
+            Map<String, dynamic> subGoalData = {
+              "goal": subGoal.key.controller.text,
+              "deadline": formatDate(subGoal.value.controller.text),
+              'goalId': goalId,
+            };
 
-          return subGoalData;
-        }).toList();
+            return subGoalData;
+          });
 
-    return subGoalsData;
+      print("subGoalsData is true");
+      print(subGoalsData == null);
+
+      print(subGoalsData);
+
+      return subGoalsData.toList();
+    } catch (e) {
+      print("Isus here");
+      print(e);
+    }
   }
 
   Future<void> insertSubGoals(int goalId) async {
     // List<Map<String, dynamic>> subGoalsData = getSubGoalsJson();
-    List<dynamic> subGoalsData = getSubGoalsJson();
+    List<dynamic> subGoalsData = getSubGoalsJson(goalId);
     // List<Map<String, dynamic>> subGoalsData =
     //     getSubGoalsJson() as List<Map<String, dynamic>>;
 
     if (subGoalsData.isNotEmpty) {
-      await Supabase.instance.client.from('sub_goal').insert(subGoalsData);
+      try {
+        await Supabase.instance.client.from('sub_goal').insert(subGoalsData);
+      } catch (e) {
+        print("Issue in the sub goal");
+        print(e);
+      }
     }
   }
 
+  // Map<String, dynamic> getFinanceJson() {
+  //   try {
+  //     return {
+  //       "finance": {
+  //         "total_money":
+  //             _controllers["financeImpact"]["totalMoney"].controller.text,
+  //         "amount_saved":
+  //             _controllers["financeImpact"]["amountSaved"].controller.text,
+  //         "time_saved":
+  //             _controllers["financeImpact"]["timeSaved"].controller.text,
+  //         "income_sources":
+  //             _controllers["financeImpact"]["incomeSource"].map((incomeSource) {
+  //               if (incomeSource is FormInputPair) {
+  //                 return {
+  //                   "source": (incomeSource).key.controller.text,
+  //                   "amount": (incomeSource).value.controller.text,
+  //                 };
+  //               } else {
+  //                 print('\n\n\n Errorororrokr \n\n\n\n\n\n');
+  //               }
+  //             }).toList(),
+  //       },
+  //     };
+  //   } catch (e) {
+  //     print("Error inside finance");
+  //     print(e);
+  //     rethrow;
+  //   }
+  // }
+
   Map<String, dynamic> getFinanceJson() {
-    return {
-      "finance": {
-        "total_money":
-            _controllers["financeImpact"]["totalMoney"].controller.text,
-        "amount_saved":
-            _controllers["financeImpact"]["amountSaved"].controller.text,
-        "time_saved":
-            _controllers["financeImpact"]["timeSaved"].controller.text,
-        "income_sources":
-            _controllers["financeImpact"]["incomeSource"].map((incomeSource) {
-              if (incomeSource is FormInputPair) {
-                return {
-                  "source": (incomeSource).key.controller.text,
-                  "amount": (incomeSource).value.controller.text,
-                };
-              } else {
-                print('\n\n\n Errorororrokr \n\n\n\n\n\n');
-              }
-            }).toList(),
-      },
-    };
+    try {
+      final fin = _controllers["financeImpact"] as Map<String, dynamic>;
+
+      return {
+        "finance": {
+          "total_money": fin["totalMoney"].controller.text,
+          "amount_saved": fin["amountSaved"].controller.text,
+          "time_saved": fin["timeSaved"].controller.text,
+          // directly read the single controller:
+          "income_source": fin["incomeSource"].controller.text,
+        },
+      };
+    } catch (e) {
+      print("Error inside finance");
+      print(e);
+      rethrow;
+    }
   }
 
   int _expandedIndex = -1;
@@ -452,9 +502,105 @@ class _AccordionAxampleState extends State<AddGoal> {
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.045,
         ),
-        child: Container(
-          height: MediaQuery.of(context).size.height*1,
-            child: GoalStepperForm(controllers: _controllers)),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: GoalStepperForm(
+            controllers: _controllers,
+            printAllValues: _printAllValues,
+          ),
+          // child: Container(
+          // child: Container(
+          // child: ExpansionPanelList(
+          //   materialGapSize: MediaQuery.of(context).size.width * 0,
+          //   children: [
+          //     ExpansionPanel(
+          //       headerBuilder: (context, isExpanded) {
+          //         return MyExpansionPanelHeader(
+          //           title: "Goal Information",
+          //           icon: Icon(Icons.star),
+          //         );
+          //       },
+          //       backgroundColor: const Color(0xff2F2F2F),
+          //       canTapOnHeader: true,
+          //       body: GoalForm(
+          //         goalName: _controllers["goals"]["name"] as FormInput,
+          //         goalTerms: _controllers["goals"]["term"] as FormInput,
+          //         goalPriority: _controllers["goals"]["priority"] as FormInput,
+          //         goalStatus: _controllers["goals"]["status"] as FormInput,
+          //         goalDescription:
+          //             _controllers["goals"]["description"] as FormInput,
+          //       ),
+          //       isExpanded: _expandedIndex == 0,
+          //     ),
+          //     ExpansionPanel(
+          //       headerBuilder: (context, isExpanded) {
+          //         return MyExpansionPanelHeader(
+          //           title: "Motivation and Progress",
+          //           icon: Icon(Icons.calendar_today),
+          //         );
+          //       },
+          //       backgroundColor: const Color(0xff2F2F2F),
+          //       canTapOnHeader: true,
+          //       body: MotivationForm(
+          //         motivations: _controllers["motivations"] as List<FormInput>,
+          //         addMotivations: addMotivation,
+          //       ),
+          //       isExpanded: _expandedIndex == 1,
+          //     ),
+          //     ExpansionPanel(
+          //       headerBuilder: (context, isExpanded) {
+          //         return MyExpansionPanelHeader(
+          //           title: "SubGoals And Deadlines",
+          //           icon: Icon(Icons.wallet),
+          //         );
+          //       },
+          //       backgroundColor: const Color(0xff2F2F2F),
+          //       canTapOnHeader: true,
+          //       body: SubGoalsForm(
+          //         deadline:
+          //             _controllers["subGoalsWithDeadline"]["deadline"]
+          //                 as FormInput,
+          //         subGoals:
+          //             _controllers["subGoalsWithDeadline"]["subGoals"]
+          //                 as List<FormInputPair>,
+          //         addSubGoal: addSubGoals,
+          //       ),
+          //       isExpanded: _expandedIndex == 2,
+          //     ),
+          //     ExpansionPanel(
+          //       headerBuilder: (context, isExpanded) {
+          //         return MyExpansionPanelHeader(
+          //           title: "Finance and Impact",
+          //           icon: Icon(Icons.circle_outlined),
+          //         );
+          //       },
+          //       backgroundColor: const Color(0xff2F2F2F),
+          //       canTapOnHeader: true,
+          //       body: Text('Finance Impact Form'),
+          //       // body: FinanceImpactForm(
+          //       //   totalMoney:
+          //       //       _controllers["financeImpact"]["totalMoney"] as FormInput,
+          //       //   amountSaved:
+          //       //       _controllers["financeImpact"]["amountSaved"] as FormInput,
+          //       //   timeSaved:
+          //       //       _controllers["financeImpact"]["timeSaved"] as FormInput,
+          //       //   incomeSources:
+          //       //       _controllers["financeImpact"]["incomeSource"]
+          //       //           as List<FormInputPair>,
+          //       //   addIncomeSource: addIncomeSource,
+          //       // ),
+          //       isExpanded: _expandedIndex == 3,
+          //     ),
+          //   ],
+          //   expansionCallback: (panelIndex, isExpanded) {
+          //     setState(() {
+          //       panelIndex == _expandedIndex
+          //           ? _expandedIndex = -1
+          //           : _expandedIndex = panelIndex;
+          //     });
+          //   },
+          // ),
+        ),
       ),
       // ),
       // ),

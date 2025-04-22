@@ -28,6 +28,7 @@ class IncomeForm extends StatefulWidget {
 
 class _IncomeFormState extends State<IncomeForm> {
   bool isFromNotification = false;
+  List<Income> _incomeList = [];
 
   final name = FormInput(
     label: "Income Name",
@@ -159,6 +160,12 @@ class _IncomeFormState extends State<IncomeForm> {
   void initState() {
     super.initState();
     _updateFuture();
+    _loadIncomeList();
+  }
+
+  void _loadIncomeList() async {
+    _incomeList = await IncomeRepository().getIncome(null);
+    setState(() {}); // Rebuild to show autocomplete suggestions
   }
 
   void _updateFuture() {
@@ -189,11 +196,15 @@ class _IncomeFormState extends State<IncomeForm> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: FaIcon(FontAwesomeIcons.chevronLeft,size: 25, color: Color(0xff006045),),
+          icon: FaIcon(
+            FontAwesomeIcons.chevronLeft,
+            size: 25,
+            color: Color(0xff006045),
+          ),
         ),
         title: const Text(
           "Add Income",
-          style: TextStyle(fontWeight: FontWeight.bold, ),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
       ),
@@ -220,10 +231,7 @@ class _IncomeFormState extends State<IncomeForm> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 const Text(
                   "Income Name",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 TextFields(
@@ -235,10 +243,7 @@ class _IncomeFormState extends State<IncomeForm> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 const Text(
                   "Amount",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 TextFields(
@@ -267,23 +272,30 @@ class _IncomeFormState extends State<IncomeForm> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.0025,
                           ),
-                          AutoCompleteText(
-                            suggestions: searchItems,
-                            controller: category.controller,
-                            hintText: "Search for a Category...",
-                            icon: Icons.search,
-                            suggestionBuilder: (String text) {
-                              return ListTile(
-                                title: Text(
-                                  text,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                          _incomeList.isEmpty
+                              ? const Center(child: CircularProgressIndicator())
+                              : AutoCompleteText(
+                                suggestions:
+                                    _incomeList
+                                        .map((income) => income.category)
+                                        .toSet()
+                                        .toList(),
+                                controller: category.controller,
+                                hintText: "Search for a Category...",
+                                icon: Icons.search,
+                                suggestionBuilder: (String text) {
+                                  return ListTile(
+                                    title: Text(
+                                      text,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                         ],
                       ),
                     ),
@@ -304,8 +316,7 @@ class _IncomeFormState extends State<IncomeForm> {
                             height: MediaQuery.of(context).size.height * 0.0025,
                           ),
                           Container(
-
-                            height: MediaQuery.of(context).size.height*.05,
+                            height: MediaQuery.of(context).size.height * .05,
                             child: DateSelector(
                               hintText: DateTime.now().toString(),
                               controller: date.controller,
@@ -354,10 +365,7 @@ class _IncomeFormState extends State<IncomeForm> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 const Text(
                   "Description",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 MultiLineTextField(
@@ -378,15 +386,14 @@ class _IncomeFormState extends State<IncomeForm> {
                           setState(() {});
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
+                          backgroundColor:
+                              isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
-                        child: const Text(
-                          "Cancel",
-                        ),
+                        child: const Text("Cancel"),
                       ),
                     ),
                     const SizedBox(width: 10),

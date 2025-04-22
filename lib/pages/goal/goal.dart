@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/pages/finance/common/balance.dart';
 import 'package:flutter_application_1/pages/goal/common/addgoal.dart';
+import 'package:flutter_application_1/pages/goal/common/goal-stat.dart';
 import 'package:flutter_application_1/pages/goal/common/goalwidget.dart';
 
 class GoalPage extends StatefulWidget {
@@ -13,86 +17,132 @@ class GoalPage extends StatefulWidget {
   State<GoalPage> createState() => _GoalPageState();
 }
 
-class _GoalPageState extends State<GoalPage> {
+class _GoalPageState extends State<GoalPage>
+    with SingleTickerProviderStateMixin {
   late Future<List<Goal>> _goalFuture;
+  late TabController _tabController;
+  int _selectedTab = 0;
+
   @override
   void initState() {
     super.initState();
-    _goalFuture = Datamanager().getGoals();
-  }
+    _loadGoals();
 
-  void _refreshLoans() {
-    setState(() {
-      _goalFuture = Datamanager().getGoals();
+    _tabController = TabController(length: 3, vsync: this)..addListener(() {
+      // only update when the animation stops
+      if (!_tabController.indexIsChanging) {
+        setState(() => _selectedTab = _tabController.index);
+      }
     });
   }
 
+  void _loadGoals() {
+    _goalFuture = widget.datamanager.getGoals();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff2F2F2F),
+      backgroundColor: const Color(0xff2F2F2F),
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: Color(0xFF2b2d30),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50), // Rounded corners
-        ),
+        backgroundColor: const Color(0xFF2b2d30),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () async {
-          final newGoals = await Navigator.push(
+          final newGoals = await Navigator.push<List<Goal>>(
             context,
-            MaterialPageRoute(
-              builder: (context) => AddGoal(),
-            ), // Navigate to NewScreen
+            MaterialPageRoute(builder: (_) => AddGoal()),
           );
           if (newGoals != null) {
-            setState(() {
-              _goalFuture = Future.value(newGoals);
-            });
+            setState(() => _goalFuture = Future.value(newGoals));
           }
         },
-        child: Icon(
-          Icons.add,
-          color: Colors.white, // White icon color
-          size: 30, // Adjust size if needed
-        ),
+        child: const Icon(Icons.add, size: 30),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FutureBuilder(
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+              GoalStat(),
+
+              // ─── Tabs ───
+              TabBar(
+                controller: _tabController,
+                indicatorColor: Colors.green,
+                labelColor: Colors.green,
+                unselectedLabelColor: Colors.white70,
+                tabs: const [
+                  Tab(text: 'All'),
+                  Tab(text: 'Short‑term'),
+                  Tab(text: 'Longterm'),
+                ],
+              ),
+
+              const SizedBox(height: 10),
+
+              // ─── Filtered list ───
+              FutureBuilder<List<Goal>>(
                 future: _goalFuture,
                 builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    var goals = snapshot.data as List<Goal>;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: goals.length,
-                      itemBuilder: (context, index) {
-                        return (Column(
-                          children: [
-                            GoalWidget(
-                              description: goals[index].description,
-                              title: goals[index].name,
-                              id: goals[index].id,
-                            ),
-                          ],
-                        ));
-                      },
-                    );
-                  } else {
-                    if (snapshot.hasError) {
-                      print(snapshot.error);
-                      return Text(
-                        "There was an error fetching data ${snapshot.error}",
-                      );
-                    } else {
-                      return const CircularProgressIndicator();
-                    }
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Center(child: CircularProgressIndicator());
                   }
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        "Error loading goals:\n${snapshot.error}",
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
+                    );
+                  }
+
+                  final allGoals = snapshot.data!;
+                  print(jsonEncode(allGoals[0].toJson()));
+
+                  // apply tab‑based filtering
+                  final filtered = <Goal>[
+                    if (_selectedTab == 0) ...allGoals,
+                    if (_selectedTab == 1)
+                      ...allGoals.where((g) => g.term == 'short'),
+                    if (_selectedTab == 2)
+                      ...allGoals.where((g) => g.term == 'long'),
+                  ];
+
+                  if (filtered.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No Goals Found",
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    itemCount: filtered.length,
+                    itemBuilder: (context, i) {
+                      final goal = filtered[i];
+                      return GoalWidget(
+                        id: goal.id,
+                        title: goal.name,
+                        description: goal.description,
+                        percentage: goal.getPercentage,
+                        term: goal.term,
+                        date: goal.deadline,
+                      );
+                    },
+                  );
                 },
               ),
             ],

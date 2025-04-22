@@ -36,6 +36,7 @@ class _AddExpenseState extends State<AddExpense> {
 
   String? _paidBySelection;
   int? _parentLoanId;
+  List<Expense> _expenseList = [];
 
   final List<String> searchNames = [
     "Abebe",
@@ -109,7 +110,36 @@ class _AddExpenseState extends State<AddExpense> {
   void initState() {
     super.initState();
     _updateFuture();
+
+    _dateController.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    _expenseTypeController.text = "Must"; // or any default you want
+
+    Datamanager()
+        .getExpense()
+        .then((expense) {
+          setState(() {
+            _expenseList = expense;
+          });
+        })
+        .catchError((e) {
+          print("Error loading expenses: $e");
+        });
   }
+
+  // void initState() {
+  //   super.initState();
+  //   _updateFuture();
+  //   Datamanager()
+  //       .getExpense()
+  //       .then((expense) {
+  //         setState(() {
+  //           _expenseList = expense;
+  //         });
+  //       })
+  //       .catchError((e) {
+  //         print("Error loading loans: $e");
+  //       });
+  // }
 
   void _updateFuture() {
     if (_paidByController.text == "Partner") {
@@ -136,7 +166,11 @@ class _AddExpenseState extends State<AddExpense> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: FaIcon(FontAwesomeIcons.chevronLeft,size: 25, color: Color(0xff006045),),
+          icon: FaIcon(
+            FontAwesomeIcons.chevronLeft,
+            size: 25,
+            color: Color(0xff006045),
+          ),
         ),
         title: const Text(
           "Add Expense",
@@ -170,10 +204,7 @@ class _AddExpenseState extends State<AddExpense> {
 
                 const Text(
                   "Amount",
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
 
@@ -216,26 +247,30 @@ class _AddExpenseState extends State<AddExpense> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.0025,
                           ),
-                          AutoCompleteText(
-                            suggestions: searchItems,
-                            controller: _expenseCategoryController,
-                            hintText: "Search for a Category...",
-                            icon: Icons.search,
-                            suggestionBuilder: (String text) {
-                              return Container(
-                                child: ListTile(
-                                  title: Text(
-                                    text,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
+                          _expenseList.isEmpty
+                              ? const Center(child: CircularProgressIndicator())
+                              : AutoCompleteText(
+                                suggestions:
+                                    _expenseList
+                                        .map((exp) => exp.category)
+                                        .toSet()
+                                        .toList(),
+                                controller: _expenseCategoryController,
+                                hintText: "Search for a Category...",
+                                icon: Icons.search,
+                                suggestionBuilder: (String text) {
+                                  return ListTile(
+                                    title: Text(
+                                      text,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-
-                                ),
-                              );
-                            },
-                          ),
+                                  );
+                                },
+                              ),
                         ],
                       ),
                     ),
@@ -256,7 +291,7 @@ class _AddExpenseState extends State<AddExpense> {
                             height: MediaQuery.of(context).size.height * 0.0025,
                           ),
                           Container(
-                            height: MediaQuery.of(context).size.height*.05,
+                            height: MediaQuery.of(context).size.height * .05,
                             child: DateSelector(
                               hintText: DateTime.now().toString(),
                               controller: _dateController,
@@ -356,15 +391,14 @@ class _AddExpenseState extends State<AddExpense> {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
+                          backgroundColor:
+                              isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
-                        child: const Text(
-                          "Cancel",
-                        ),
+                        child: const Text("Cancel"),
                       ),
                     ),
                     const SizedBox(width: 10),
