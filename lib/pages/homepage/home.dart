@@ -41,14 +41,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-        ),
-      ),
+      // appBar: AppBar(
+      //   leading: IconButton(
+      //     icon: Icon(Icons.menu),
+      //     onPressed: () {
+      //       _scaffoldKey.currentState?.openDrawer();
+      //     },
+      //   ),
+      // ),
       drawer: Drawer(child: Drawerpage(),  backgroundColor: Colors.transparent),
       body: Dashboard(),
       // body: Column(

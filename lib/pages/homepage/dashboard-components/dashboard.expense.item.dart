@@ -14,15 +14,15 @@ class DashboardExpenseItem extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * .02,
-              vertical: MediaQuery.of(context).size.height * .015,
+              vertical: MediaQuery.of(context).size.height * .01,
             ),
-            width: MediaQuery.of(context).size.width * .93,
+            width: MediaQuery.of(context).size.width * .95,
             decoration: BoxDecoration(
               // color: Color(0xff0d805e).withOpacity(.35),
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: Color(0xFF27272A).withOpacity(.35),
-                width: 2.5,
+                color: Colors.grey.withOpacity(.3),
+                width: 1,
               ),
             ),
             child: Row(
