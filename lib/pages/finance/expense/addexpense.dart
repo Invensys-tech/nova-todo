@@ -110,6 +110,10 @@ class _AddExpenseState extends State<AddExpense> {
   void initState() {
     super.initState();
     _updateFuture();
+
+    _dateController.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    _expenseTypeController.text = "Must"; // or any default you want
+
     Datamanager()
         .getExpense()
         .then((expense) {
@@ -118,9 +122,24 @@ class _AddExpenseState extends State<AddExpense> {
           });
         })
         .catchError((e) {
-          print("Error loading loans: $e");
+          print("Error loading expenses: $e");
         });
   }
+
+  // void initState() {
+  //   super.initState();
+  //   _updateFuture();
+  //   Datamanager()
+  //       .getExpense()
+  //       .then((expense) {
+  //         setState(() {
+  //           _expenseList = expense;
+  //         });
+  //       })
+  //       .catchError((e) {
+  //         print("Error loading loans: $e");
+  //       });
+  // }
 
   void _updateFuture() {
     if (_paidByController.text == "Partner") {
