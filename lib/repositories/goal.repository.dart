@@ -44,25 +44,31 @@ class GoalRepository {
   }
 
   Future<Goal> fetchView(int id) async {
+    print("My Id");
+    print(id);
     try {
       final data =
           await supabaseClient
               .from(Entities.GOAL.dbName)
-              .select(
-                '*, sub_goal(goal, id, goalId, sub_goal_task(*)), goal_journal(journal,created_at,id ,goalId)',
-              )
+              .select('*, sub_goal(* ,sub_goal_task(*)), goal_journal(*)')
               .eq('id', id)
-              .eq('userId', (await authService.findSession())['id'])
+              // .eq(
+              //   'userId',
+              //   25,
+              //   // (await authService.findSession())['id']
+              // )
               .maybeSingle();
 
       if (data == null) {
-        throw Error();
+        throw Exception("No goal found with id $id for user 25");
       }
 
       return Goal.fromJson(data);
-    } catch (e) {
-      print(e);
-      throw Exception("Error getting the goal!");
+    } catch (e, stacktrace) {
+      print("Error goal angel");
+      print(e); // shows the error
+      print(stacktrace); // optional, helps with debugging
+      throw Exception("Error getting the goal! Original error: $e");
     }
   }
 

@@ -25,6 +25,7 @@ class IncomeForm extends StatefulWidget {
 
 class _IncomeFormState extends State<IncomeForm> {
   bool isFromNotification = false;
+  List<Income> _incomeList = [];
 
   final name = FormInput(
     label: "Income Name",
@@ -156,6 +157,12 @@ class _IncomeFormState extends State<IncomeForm> {
   void initState() {
     super.initState();
     _updateFuture();
+    _loadIncomeList();
+  }
+
+  void _loadIncomeList() async {
+    _incomeList = await IncomeRepository().getIncome(null);
+    setState(() {}); // Rebuild to show autocomplete suggestions
   }
 
   void _updateFuture() {
@@ -267,31 +274,30 @@ class _IncomeFormState extends State<IncomeForm> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.02,
                           ),
-                          AutoCompleteText(
-                            suggestions: searchItems,
-                            controller: category.controller,
-                            hintText: "Search for a Category...",
-                            icon: Icons.search,
-                            suggestionBuilder: (String text) {
-                              return ListTile(
-                                title: Text(
-                                  text,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                subtitle: const Text(
-                                  "Tap to select",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                          _incomeList.isEmpty
+                              ? const Center(child: CircularProgressIndicator())
+                              : AutoCompleteText(
+                                suggestions:
+                                    _incomeList
+                                        .map((income) => income.category)
+                                        .toSet()
+                                        .toList(),
+                                controller: category.controller,
+                                hintText: "Search for a Category...",
+                                icon: Icons.search,
+                                suggestionBuilder: (String text) {
+                                  return ListTile(
+                                    title: Text(
+                                      text,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                         ],
                       ),
                     ),

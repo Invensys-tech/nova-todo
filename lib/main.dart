@@ -71,8 +71,8 @@ void main() async {
     print('Error getting sub end date initializing Supabase');
   }
 
-  runApp(MyApp(initPage: initPage));
-  // runApp(MyApp(initPage: InitPage.HOME));
+  // runApp(MyApp(initPage: initPage));
+  runApp(MyApp(initPage: InitPage.HOME));
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

@@ -117,7 +117,9 @@ class Datamanager {
   Future<List<Goal>> fetchGoals() async {
     final data = await Supabase.instance.client
         .from('goal')
-        .select('*  ,sub_goal(*,  sub_goal_task(*))');
+        .select('*  ,sub_goal(*,  sub_goal_task(*))')
+        .order('created_at', ascending: false);
+    ;
     print("///////////////////");
     print(jsonEncode(data));
     return data.map((e) => Goal.fromJson(e)).toList();

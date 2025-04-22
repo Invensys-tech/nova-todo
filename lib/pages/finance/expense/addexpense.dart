@@ -32,6 +32,7 @@ class _AddExpenseState extends State<AddExpense> {
 
   String? _paidBySelection;
   int? _parentLoanId;
+  List<Expense> _expenseList = [];
 
   final List<String> searchNames = [
     "Abebe",
@@ -105,6 +106,16 @@ class _AddExpenseState extends State<AddExpense> {
   void initState() {
     super.initState();
     _updateFuture();
+    Datamanager()
+        .getExpense()
+        .then((expense) {
+          setState(() {
+            _expenseList = expense;
+          });
+        })
+        .catchError((e) {
+          print("Error loading loans: $e");
+        });
   }
 
   void _updateFuture() {
@@ -213,31 +224,30 @@ class _AddExpenseState extends State<AddExpense> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.02,
                           ),
-                          AutoCompleteText(
-                            suggestions: searchItems,
-                            controller: _expenseCategoryController,
-                            hintText: "Search for a Category...",
-                            icon: Icons.search,
-                            suggestionBuilder: (String text) {
-                              return ListTile(
-                                title: Text(
-                                  text,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                subtitle: const Text(
-                                  "Tap to select",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                          _expenseList.isEmpty
+                              ? const Center(child: CircularProgressIndicator())
+                              : AutoCompleteText(
+                                suggestions:
+                                    _expenseList
+                                        .map((exp) => exp.category)
+                                        .toSet()
+                                        .toList(),
+                                controller: _expenseCategoryController,
+                                hintText: "Search for a Category...",
+                                icon: Icons.search,
+                                suggestionBuilder: (String text) {
+                                  return ListTile(
+                                    title: Text(
+                                      text,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                         ],
                       ),
                     ),

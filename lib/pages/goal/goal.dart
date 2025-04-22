@@ -138,6 +138,8 @@ class _GoalPageState extends State<GoalPage>
                         title: goal.name,
                         description: goal.description,
                         percentage: goal.getPercentage,
+                        term: goal.term,
+                        date: goal.deadline,
                       );
                     },
                   );

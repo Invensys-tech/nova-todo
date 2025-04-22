@@ -13,6 +13,7 @@ class GoalForm extends StatefulWidget {
   final FormInput goalPriority;
   final FormInput goalStatus;
   final FormInput goalDescription;
+  final FormInput deadline;
 
   const GoalForm({
     super.key,
@@ -21,6 +22,7 @@ class GoalForm extends StatefulWidget {
     required this.goalStatus,
     required this.goalPriority,
     required this.goalDescription,
+    required this.deadline,
   });
 
   @override
@@ -50,13 +52,19 @@ class _GoalFormState extends State<GoalForm> {
               controller: widget.goalName.controller,
             ),
           ),
-          MyTextInput(
+          // MyTextInput(
+          //   label: 'Term',
+          //   textFields: TextFields(
+          //     hinttext: widget.goalTerms.hint,
+          //     whatIsInput: widget.goalTerms.type,
+          //     controller: widget.goalTerms.controller,
+          //   ),
+          // ),
+          MyRadioInput(
             label: 'Term',
-            textFields: TextFields(
-              hinttext: widget.goalTerms.hint,
-              whatIsInput: widget.goalTerms.type,
-              controller: widget.goalTerms.controller,
-            ),
+            groupKey: 'term',
+            options: ['short', 'long'],
+            onChanged: (value) => widget.goalTerms.controller.text = value,
           ),
           MyRadioInput(
             label: 'Priority',
@@ -82,8 +90,8 @@ class _GoalFormState extends State<GoalForm> {
                 ),
               ),
               DateSelector(
-                // controller: widget.deadline.controller,
-                controller: TextEditingController(),
+                controller: widget.deadline.controller,
+                // controller: TextEditingController(),
                 hintText: 'Date',
                 icon: Icons.calendar_today,
                 firstDate: DateTime(2000),

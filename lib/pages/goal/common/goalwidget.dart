@@ -7,6 +7,7 @@ class GoalWidget extends StatelessWidget {
   final String description;
   final String? date;
   final double percentage;
+  final String term;
 
   const GoalWidget({
     super.key,
@@ -15,6 +16,7 @@ class GoalWidget extends StatelessWidget {
     required this.description,
     this.date,
     this.percentage = 0.0,
+    required this.term,
   });
 
   get fifty => null;
@@ -41,14 +43,20 @@ class GoalWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     margin: const EdgeInsets.only(top: 6.0),
                     child: Icon(
                       Icons.circle,
                       size: 8,
-                      color: Colors.green.shade400,
+                      color:
+                          percentage == 0.0
+                              ? Colors.red
+                              : percentage == 100.00
+                              ? Colors.green
+                              : Colors.grey,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -72,16 +80,18 @@ class GoalWidget extends StatelessWidget {
                             color: Colors.white.withOpacity(0.7),
                           ),
                         ),
-                        if (date != null) ...[
-                          const SizedBox(height: 6),
-                          Text(
-                            'Starting Date: $date',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white.withOpacity(0.6),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            Text(
+                              '${date}: $term',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white.withOpacity(0.6),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ],
                     ),
                   ),
