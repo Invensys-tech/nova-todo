@@ -33,7 +33,7 @@ class AutoCompleteText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // Outer container mimics the TextFields style
+      // Outer container mimics the TextFields style,
       decoration: BoxDecoration(
         border: Border.all(width: 1, color: Colors.grey.withOpacity(.4)),
         borderRadius: const BorderRadius.only(
@@ -49,20 +49,16 @@ class AutoCompleteText extends StatelessWidget {
             child: AdvancedSearch(
               searchItems: suggestions,
               maxElementsToDisplay: 10,
-              singleItemHeight: 50,
               // Remove AdvancedSearch's own border/background so that our container styling is used
               borderColor: Colors.transparent,
               borderRadius: 0.0,
-              selectedTextColor: Colors.white70,
               hintText: hintText,
-              hintTextColor: Colors.white,
               cursorColor: Colors.blueGrey,
               autoCorrect: false,
               focusedBorderColor: Colors.transparent,
               disabledBorderColor: Colors.transparent,
               enabledBorderColor: Colors.transparent,
               enabled: true,
-              searchResultsBgColor: Colors.white,
               caseSensitive: false,
               // Make the text field transparent to show the container’s background
               inputTextFieldBgColor: Colors.transparent,
@@ -71,8 +67,7 @@ class AutoCompleteText extends StatelessWidget {
               searchMode: SearchMode.CONTAINS,
               showListOfResults: true,
               // Set suggestions list text color to white
-              unSelectedTextColor: Colors.white,
-              verticalPadding: 10,
+              verticalPadding: 0,
               horizontalPadding: 10,
               hideHintOnTextInputFocus: true,
               // Use the suggestion builder passed from the caller

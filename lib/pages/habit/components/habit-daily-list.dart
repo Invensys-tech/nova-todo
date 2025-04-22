@@ -54,12 +54,13 @@ class _HabitsDailyListState extends State<HabitsDailyList> {
               showYears: false,
               monthColor: Colors.blueGrey,
               dayColor: Colors.teal[200],
-              activeDayColor: Color(0xFFFAFAFA),
-              activeBackgroundDayColor: Color(0xFF8B0836),
+              activeDayColor: Colors.white,
+              activeBackgroundDayColor: Theme.of(context).disabledColor,
               shrink: true,
               locale: 'en_ISO',
             ),
 
+            SizedBox(height: MediaQuery.of(context).size.height*.02,),
             FutureBuilder(
               future: habits,
               builder: (context, snapshot) {

@@ -7,6 +7,7 @@ import 'package:flutter_application_1/pages/finance/common/loaninfo.dart';
 import 'package:flutter_application_1/pages/finance/loan/addloan.dart';
 import 'package:flutter_application_1/pages/finance/loan/editloan.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import '../analytics/analytics.dart';
 import '../bank/bank.dart';
@@ -40,10 +41,13 @@ class _LoanpageState extends State<Loanpage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final newLoans = await Navigator.push(
+          final newLoans = await  PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
             context,
-            MaterialPageRoute(builder: (context) => AddLoan()),
+            screen: AddLoan(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
           );
+
 
           // If new data is returned, update the UI
           if (newLoans != null) {
@@ -66,67 +70,219 @@ class _LoanpageState extends State<Loanpage> {
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               LoanWidget(),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.008),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
 
-              FutureBuilder(
-                future: _loanFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    var loans = snapshot.data as List<Loan>;
+              Container(
+                height: MediaQuery.of(context).size.height*.7,
+                child: ContainedTabBarView(
+                  tabs: [
+                    Tab(text: "All Loans"),
+                    Tab(text: "Recivable Loans"),
+                    Tab(text: "Payable Loans"),
+                  ],
+                  tabBarProperties: TabBarProperties(
+                    width: MediaQuery.of(context).size.width,
+                    height: 32,
+                    isScrollable: false,
+                    labelPadding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * .035,
+                    ),
+                    background: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
 
-                    // Group and aggregate by loanerName
-                    final Map<String, Map<String, dynamic>> grouped = {};
+                      ),
+                    ),
+                    position: TabBarPosition.top,
+                    alignment: TabBarAlignment.start,
+                    indicatorColor: Color(0xff009966),
+                    labelStyle: TextStyle(fontSize: 16, color:Color(0xff009966)),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    unselectedLabelColor: Theme.of(context).primaryColorLight,
+                    unselectedLabelStyle: TextStyle(fontSize: 13),
+                  ),
+                  views: [
+                    FutureBuilder(
+                      future: _loanFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          var loans = snapshot.data as List<Loan>;
 
-                    for (var loan in loans) {
-                      final name = loan.loanerName;
-                      final phone = loan.phoneNumber;
-                      final amount =
-                          loan.type == "Receivable"
-                              ? loan.amount
-                              : -loan.amount;
+                          // Group and aggregate by loanerName
+                          final Map<String, Map<String, dynamic>> grouped = {};
 
-                      if (grouped.containsKey(name)) {
-                        grouped[name]!['amount'] += amount;
-                      } else {
-                        grouped[name] = {
-                          'phoneNumber': phone,
-                          'amount': amount,
-                          'id': loan.id, // Optional: pick first one
-                        };
-                      }
-                    }
+                          for (var loan in loans) {
+                            final name = loan.loanerName;
+                            final phone = loan.phoneNumber;
+                            final amount =
+                            loan.type == "Receivable"
+                                ? loan.amount
+                                : -loan.amount;
 
-                    final distinctLoans =
-                        grouped.entries.map((entry) {
-                          return {
-                            'name': entry.key,
-                            'phoneNumber': entry.value['phoneNumber'],
-                            'amount': entry.value['amount'],
-                            'id': entry.value['id'],
-                          };
-                        }).toList();
+                            if (grouped.containsKey(name)) {
+                              grouped[name]!['amount'] += amount;
+                            } else {
+                              grouped[name] = {
+                                'phoneNumber': phone,
+                                'amount': amount,
+                                'id': loan.id, // Optional: pick first one
+                              };
+                            }
+                          }
 
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: distinctLoans.length,
-                      itemBuilder: (context, index) {
-                        final loan = distinctLoans[index];
-                        return LoanCard(
-                          name: loan['name'],
-                          phoneNumber: loan['phoneNumber'],
-                          loanAmount: loan['amount'],
-                          id: loan['id'],
-                          datamanager: widget.datamanager,
-                        );
+                          final distinctLoans =
+                          grouped.entries.map((entry) {
+                            return {
+                              'name': entry.key,
+                              'phoneNumber': entry.value['phoneNumber'],
+                              'amount': entry.value['amount'],
+                              'id': entry.value['id'],
+                            };
+                          }).toList();
+
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemCount: distinctLoans.length,
+                            itemBuilder: (context, index) {
+                              final loan = distinctLoans[index];
+                              return LoanCard(
+                                name: loan['name'],
+                                phoneNumber: loan['phoneNumber'],
+                                loanAmount: loan['amount'],
+                                id: loan['id'],
+                                datamanager: widget.datamanager,
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("Error fetching data: ${snapshot.error}");
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
                       },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text("Error fetching data: ${snapshot.error}");
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
+                    ),FutureBuilder(
+                      future: _loanFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          var loans = snapshot.data as List<Loan>;
+
+                          // Group and aggregate by loanerName
+                          final Map<String, Map<String, dynamic>> grouped = {};
+
+                          for (var loan in loans) {
+                            final name = loan.loanerName;
+                            final phone = loan.phoneNumber;
+                            final amount =
+                            loan.type == "Receivable"
+                                ? loan.amount
+                                : -loan.amount;
+
+                            if (grouped.containsKey(name)) {
+                              grouped[name]!['amount'] += amount;
+                            } else {
+                              grouped[name] = {
+                                'phoneNumber': phone,
+                                'amount': amount,
+                                'id': loan.id, // Optional: pick first one
+                              };
+                            }
+                          }
+
+                          final distinctLoans =
+                          grouped.entries.map((entry) {
+                            return {
+                              'name': entry.key,
+                              'phoneNumber': entry.value['phoneNumber'],
+                              'amount': entry.value['amount'],
+                              'id': entry.value['id'],
+                            };
+                          }).toList();
+
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemCount: distinctLoans.length,
+                            itemBuilder: (context, index) {
+                              final loan = distinctLoans[index];
+                              return LoanCard(
+                                name: loan['name'],
+                                phoneNumber: loan['phoneNumber'],
+                                loanAmount: loan['amount'],
+                                id: loan['id'],
+                                datamanager: widget.datamanager,
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("Error fetching data: ${snapshot.error}");
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      },
+                    ),FutureBuilder(
+                      future: _loanFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          var loans = snapshot.data as List<Loan>;
+
+                          // Group and aggregate by loanerName
+                          final Map<String, Map<String, dynamic>> grouped = {};
+
+                          for (var loan in loans) {
+                            final name = loan.loanerName;
+                            final phone = loan.phoneNumber;
+                            final amount =
+                            loan.type == "Receivable"
+                                ? loan.amount
+                                : -loan.amount;
+
+                            if (grouped.containsKey(name)) {
+                              grouped[name]!['amount'] += amount;
+                            } else {
+                              grouped[name] = {
+                                'phoneNumber': phone,
+                                'amount': amount,
+                                'id': loan.id, // Optional: pick first one
+                              };
+                            }
+                          }
+
+                          final distinctLoans =
+                          grouped.entries.map((entry) {
+                            return {
+                              'name': entry.key,
+                              'phoneNumber': entry.value['phoneNumber'],
+                              'amount': entry.value['amount'],
+                              'id': entry.value['id'],
+                            };
+                          }).toList();
+
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemCount: distinctLoans.length,
+                            itemBuilder: (context, index) {
+                              final loan = distinctLoans[index];
+                              return LoanCard(
+                                name: loan['name'],
+                                phoneNumber: loan['phoneNumber'],
+                                loanAmount: loan['amount'],
+                                id: loan['id'],
+                                datamanager: widget.datamanager,
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text("Error fetching data: ${snapshot.error}");
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
 
               // FutureBuilder(
