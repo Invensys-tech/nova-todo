@@ -10,6 +10,7 @@ import 'package:flutter_application_1/pages/finance/finance.dart';
 import 'package:flutter_application_1/pages/goal/goal.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import 'drawer/Seeting Page/SeetingPage.dart';
@@ -43,7 +44,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: ("Home"),
-        iconSize: 24,
+        iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff2E783A),
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -51,7 +52,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.piggyBank),
         title: ("Finance"),
-        iconSize: 24,
+        iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -59,7 +60,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.locationArrow),
         title: ("Vision Board"),
-        iconSize: 24,
+        iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -67,7 +68,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.assignment_add),
         title: ("ToDoList"),
-        iconSize: 24,
+        iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -75,7 +76,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.edit),
         title:  ("Notes"),
-        iconSize: 23,
+        iconSize: 22,
         contentPadding: 0,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),

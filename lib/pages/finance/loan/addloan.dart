@@ -356,7 +356,10 @@ import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/loandate.dart';
 import 'package:flutter_application_1/ui/inputs/loantype.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../main.dart';
 
 class AddLoan extends StatefulWidget {
   const AddLoan({super.key});
@@ -396,16 +399,14 @@ class _AddLoanState extends State<AddLoan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff2F2F2F),
       appBar: AppBar(
-        backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: FaIcon(FontAwesomeIcons.chevronLeft,size: 25, color: Color(0xff006045),),
         ),
         title: const Text(
           "Add Loan",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold,),
         ),
       ),
       body: Padding(
@@ -416,8 +417,14 @@ class _AddLoanState extends State<AddLoan> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xff27272A), width: 1.0),
-              borderRadius: BorderRadius.circular(8),
+              color: isDark ? Color(0xff27272A) : Color(0xFFF4F4F5),
+              border: Border.all(
+                color: Colors.grey.withOpacity(.3), // Border color
+                width: 1.0, // Border width
+              ),
+              borderRadius: BorderRadius.circular(
+                8,
+              ), // Optional: rounded corners
             ),
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -431,12 +438,11 @@ class _AddLoanState extends State<AddLoan> {
                 const Text(
                   "Loaner Name",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: MediaQuery.of(context).size.height*.0025),
                 // Only show autocomplete once our _loanList is loaded:
                 _loanList.isEmpty
                     ? const Center(child: CircularProgressIndicator())
@@ -456,7 +462,6 @@ class _AddLoanState extends State<AddLoan> {
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: Colors.white,
                             ),
                           ),
                         );
@@ -482,18 +487,17 @@ class _AddLoanState extends State<AddLoan> {
                         setState(() {}); // refresh the UI
                       },
                     ),
-                SizedBox(height: 24),
+                SizedBox(height: MediaQuery.of(context).size.height*.02),
 
                 // — Phone number field (now prefilled if matched) —
                 const Text(
                   "Phone Number",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: MediaQuery.of(context).size.height*.0025),
                 TextFields(
                   hinttext: 'Phone Number',
                   whatIsInput: '0',
@@ -506,12 +510,11 @@ class _AddLoanState extends State<AddLoan> {
                 const Text(
                   "Amount",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: MediaQuery.of(context).size.height*.0025),
                 TextFields(
                   hinttext: '0.0',
                   whatIsInput: '0',
@@ -524,12 +527,11 @@ class _AddLoanState extends State<AddLoan> {
                 const Text(
                   "Date",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: MediaQuery.of(context).size.height*.0025),
                 DateSelector(
                   hintText: "Select a date",
                   controller: _dateController,
@@ -544,12 +546,11 @@ class _AddLoanState extends State<AddLoan> {
                 const Text(
                   "Bank",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: MediaQuery.of(context).size.height*.0025),
                 FutureBuilder<List<dynamic>>(
                   future: Datamanager().getBanks(),
                   builder: (context, snapshot) {
@@ -563,31 +564,27 @@ class _AddLoanState extends State<AddLoan> {
                     return Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
-                        color: Colors.black87.withOpacity(0.3),
+                       color: Colors.grey.withOpacity(.4),
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
-                          color: Colors.black38.withOpacity(0.3),
+                          color: Colors.grey.withOpacity(.4),
                           width: 1.0,
                         ),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
-                          dropdownColor: Colors.black87,
                           isExpanded: true,
                           value: _bank.text.isEmpty ? null : _bank.text,
                           hint: const Text(
                             "Select a Bank",
                             style: TextStyle(
-                              color: Colors.white70,
                               fontSize: 12,
                             ),
                           ),
                           icon: const Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.white60,
                           ),
                           style: const TextStyle(
-                            color: Colors.white70,
                             fontSize: 13,
                           ),
                           items:
@@ -626,9 +623,12 @@ class _AddLoanState extends State<AddLoan> {
                           setState(() {});
                           Navigator.pop(context);
                         },
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.white24),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
                         ),
                         child: const Text(
                           "Cancel",
@@ -672,8 +672,11 @@ class _AddLoanState extends State<AddLoan> {
                           // insert your Supabase logic here...
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff009966),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          backgroundColor: Color(0xff009966),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
                         ),
                         child: const Text(
                           "Save",

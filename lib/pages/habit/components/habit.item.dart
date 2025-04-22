@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:lottie/lottie.dart';
 
 class HabitItem extends StatefulWidget {
   final Habit habit;
@@ -66,7 +67,7 @@ class _HabitItemState extends State<HabitItem> {
                 child: ElevatedButton(
                   onPressed: () => removeTerm(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF555B59),
+                    backgroundColor: Colors.grey.withOpacity(.4),
                   ),
                   child: Text(
                     '😔 I didn\'t',
@@ -113,17 +114,18 @@ class _HabitItemState extends State<HabitItem> {
           print('halluuuu');
         },
         child: Padding(
-          padding: EdgeInsets.only(
-            left: MediaQuery.of(context).size.width * .05,
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * .025,
           ),
           child: Container(
+            height: MediaQuery.of(context).size.height*.1,
             padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
             decoration: BoxDecoration(
               // color: Colors.blueGrey.shade900,
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(7),
               border: Border.all(
-                color: Color(0xFF27272A).withOpacity(.35),
-                width: 2.5,
+                color: Colors.grey.withOpacity(.5),
+                width: 1,
               ),
             ),
             child: Row(
@@ -163,20 +165,40 @@ class _HabitItemState extends State<HabitItem> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Icon(Icons.local_fire_department, color: Colors.orange),
-                    Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF27272A),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.favorite_border,
-                        color: Color(0xFF009966),
-                        size: 20,
-                      ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child:Lottie.asset(
+                            widget.habit.streak.toString() == "1" ? 'assets/LottieAnimations/FirstStreak.json':
+                            widget.habit.streak.toString() == "2" ? 'assets/LottieAnimations/Scond2Streak.json':
+                            widget.habit.streak.toString() == "3" ? 'assets/LottieAnimations/ThirdStreak.json':
+                            widget.habit.streak.toString() == "4" ? 'assets/LottieAnimations/FourthStreak.json':
+                            widget.habit.streak.toString() == "5" ? 'assets/LottieAnimations/LastStreak.json':
+                            'assets/LottieAnimations/ZeroStreak.json',
+                            // height: widget.habit.streak.toString() == "1" ? 40:
+                            // widget.habit.streak.toString() == "2" ? 45:
+                            // widget.habit.streak.toString() == "3" ? 50:
+                            // widget.habit.streak.toString() == "4" ? 55:
+                            // widget.habit.streak.toString() == "5" ? 60:40,
+                            // width: widget.habit.streak.toString() == "1" ? 35:
+                            // widget.habit.streak.toString() == "2" ? 40:
+                            // widget.habit.streak.toString() == "3" ? 45:
+                            // widget.habit.streak.toString() == "4" ? 50:
+                            // widget.habit.streak.toString() == "5" ? 55:35,
+                            height: 45,
+                            width: 40,
+                            fit: BoxFit.contain,
+                          )
+                        ),
+
+                      ],
                     ),
                     Column(
                       children: [
+                        SizedBox(height: MediaQuery.of(context).size.height*.015,),
                         Text(
                           widget.habit.streak.toString(),
                           style: TextStyle(fontSize: 20),
@@ -187,7 +209,13 @@ class _HabitItemState extends State<HabitItem> {
                         // ),
                       ],
                     ),
-                    Icon(Icons.keyboard_arrow_right, color: Color(0xFF009966)),
+                    Column(
+                      children: [
+
+                        SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                        Icon(Icons.keyboard_arrow_right, color: Color(0xFF009966)),
+                      ],
+                    ),
                   ],
                 ),
               ],

@@ -8,6 +8,8 @@ import 'package:flutter_application_1/pages/auth/payment.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_application_1/localization/localization_delegate.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +73,11 @@ void main() async {
     print('Error getting sub end date initializing Supabase');
   }
 
-  runApp(MyApp(initPage: initPage));
+  final delegate = await setupLocalization();
+
+  // runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
+  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+  // runApp(MyApp(initPage: initPage));
   // runApp(MyApp(initPage: InitPage.HOME));
 }
 
@@ -115,6 +121,7 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
         disabledColor: Color(0xff006045),
         cardColor: Color(0xff3F3F47),
+        primaryColorDark: Color(0xff1a1a1a),
         fontFamily: 'Outfit',
       ),
     },
@@ -128,6 +135,14 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     loadTheme();
     _checkAndListenSms();
+    loabThemeApp();
+  }
+
+  Future<void> loabThemeApp() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isDark = prefs.getBool('ThemeOfApp')!;
+    });
   }
 
   Future<void> loadTheme() async {
@@ -182,39 +197,51 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext appContext) {
     return DynamicTheme(
       themeCollection: themeCollection,
       defaultThemeId: _currentThemeId, // optional, default id is 0
       builder: (context, theme) {
-        return MaterialApp(
-          navigatorKey: navigatorKey,
-          title: 'Vita Board',
-          theme: theme,
-          // home: const MainScreenPage(),
-          // home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            FlutterQuillLocalizations.delegate,
-          ],
-          routes: {
-            '/':
-                (context) =>
-                    widget.initPage == InitPage.HOME
-                        ? const MainScreenPage()
-                        : widget.initPage == InitPage.PAYMENT
-                        ? PaymentPage(context: context)
-                        : const AuthGate(),
-            // (context) => const MainScreenPage(),
-            '/login': (context) => const AuthGate(),
-            '/expense-form':
-                (context) => AddExpense(datamanager: Datamanager()),
-            '/income-form': (context) => IncomeForm(datamanager: Datamanager()),
-            '/productivity-home': (context) => ProductivityHome(),
-          },
+        return LocalizationProvider(
+          state: LocalizationProvider.of(appContext).state,
+          // state: LocalizedApp.of(context).,
+          child: MaterialApp(
+            navigatorKey: navigatorKey,
+            title: 'Vita Board',
+            theme: theme,
+            builder: (context, child) {
+              // 👇 This forces text scale factor to be 1.0 across the app
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: child!,
+              );
+            },
+            // home: const MainScreenPage(),
+            // home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              FlutterQuillLocalizations.delegate,
+            ],
+            routes: {
+              '/':
+                  (context) =>
+                      widget.initPage == InitPage.HOME
+                          ? const MainScreenPage()
+                          : widget.initPage == InitPage.PAYMENT
+                          ? PaymentPage(context: context)
+                          : const AuthGate(),
+              // (context) => const MainScreenPage(),
+              '/login': (context) => const AuthGate(),
+              '/expense-form':
+                  (context) => AddExpense(datamanager: Datamanager()),
+              '/income-form':
+                  (context) => IncomeForm(datamanager: Datamanager()),
+              '/productivity-home': (context) => ProductivityHome(),
+            },
+          ),
         );
       },
     );

@@ -17,7 +17,7 @@ class _ExpenseTypeSelectorState extends State<ExpenseTypeSelector> {
   void initState() {
     super.initState();
     _selectedOption =
-        widget.controller.text.isNotEmpty ? widget.controller.text : null;
+        widget.controller.text.isNotEmpty ? widget.controller.text : "Must";
   }
 
   Color _getColor(String option) {
@@ -25,7 +25,7 @@ class _ExpenseTypeSelectorState extends State<ExpenseTypeSelector> {
       case "Must":
         return Colors.green;
       case "Maybe":
-        return Colors.yellow;
+        return Colors.orange;
       case "Unwanted":
         return Colors.red;
       default:
@@ -38,31 +38,31 @@ class _ExpenseTypeSelectorState extends State<ExpenseTypeSelector> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+         Text(
           "Types of Expenses",
           style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w300,
+            fontSize: 13,fontWeight: FontWeight.w300
           ),
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.005),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:
               _options.map((option) {
                 final isSelected = _selectedOption == option;
-                final color = isSelected ? _getColor(option) : Colors.white30;
+                final color = isSelected ? _getColor(option) : Colors.grey.withOpacity(.5);
 
                 return Expanded(
                   child: Container(
+                    height: MediaQuery.of(context).size.height*.05,
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
+                      horizontal: 0,
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(color: color),
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: InkWell(
                       onTap: () {
@@ -72,18 +72,20 @@ class _ExpenseTypeSelectorState extends State<ExpenseTypeSelector> {
                         });
                       },
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Radio<String>(
-                            value: option,
-                            groupValue: _selectedOption,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedOption = value!;
-                                widget.controller.text = value;
-                              });
-                            },
-                            fillColor: MaterialStateProperty.all(color),
+                          Container(
+                            width: MediaQuery.of(context).size.width*.085,
+                            child: Radio<String>(
+                              value: option,
+                              groupValue: _selectedOption,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedOption = value!;
+                                  widget.controller.text = value;
+                                });
+                              },
+                              fillColor: MaterialStateProperty.all(color),
+                            ),
                           ),
                           Text(option, style: TextStyle(color: color)),
                         ],

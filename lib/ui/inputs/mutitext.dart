@@ -90,44 +90,45 @@ class MultiLineTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      style: const TextStyle(color: Colors.white),
-      controller: controller,
-      keyboardType: TextInputType.multiline,
-      maxLines: 3, // Allows multiple lines
-      decoration: InputDecoration(
-        // prefixIcon: Container(
-        //   padding: const EdgeInsets.symmetric(horizontal: 10),
-        //   decoration: const BoxDecoration(
-        //     border: Border(
-        //       right: BorderSide(color: Colors.white54, width: 1.0),
-        //     ),
-        //   ),
-        //   child: Icon(icon, color: Colors.white70),
-        // ),
-        prefixIconConstraints: const BoxConstraints(minWidth: 50),
-        hintText: hintText,
-        filled: true,
-        fillColor: Colors.black87.withOpacity(.3),
-        hintStyle: const TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w200,
-          color: Colors.white60,
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
-          borderSide: const BorderSide(width: 2, color: Colors.green),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.green.withOpacity(.3),
-            width: 1.0,
+    return Container(
+      height: MediaQuery.of(context).size.height*.08,
+      child: TextFormField(
+        controller: controller,
+        keyboardType: TextInputType.multiline,
+        maxLines: 3, // Allows multiple lines
+        decoration: InputDecoration(
+          // prefixIcon: Container(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10),
+          //   decoration: const BoxDecoration(
+          //     border: Border(
+          //       right: BorderSide(color: Colors.white54, width: 1.0),
+          //     ),
+          //   ),
+          //   child: Icon(icon, color: Colors.white70),
+          // ),
+          prefixIconConstraints: const BoxConstraints(minWidth: 50),
+          hintText: hintText,
+          filled: true,
+          fillColor: Colors.transparent,
+          hintStyle: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w200,
           ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black38.withOpacity(.3),
-            width: 1.0,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: const BorderSide(width: 2, color: Colors.green),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.green.withOpacity(.3),
+              width: 1.0,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.grey.withOpacity(.4),
+              width: 1.0,
+            ),
           ),
         ),
       ),

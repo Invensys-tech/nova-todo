@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/components/inputs/radio.input.dart';
 import 'package:flutter_application_1/components/inputs/selector.input.dart';
+import 'package:flutter_application_1/components/inputs/scroll.selector.dart';
 import 'package:flutter_application_1/components/inputs/text.input.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
@@ -95,19 +96,25 @@ class _HabitFormState extends State<HabitForm> {
     });
   }
 
+  selectFrequency(value) {
+    setState(() {
+      frequency.controller.text = value;
+    });
+  }
+
   navigateBack() {
     Navigator.pop(context);
   }
 
-  printDays() {
-    print(getDayFromDateTime(DateTime.now()));
-    print(getDayFromDateTime(DateTime.now().add(Duration(days: 1))));
-    print(getDayFromDateTime(DateTime.now().add(Duration(days: 2))));
-    print(getDayFromDateTime(DateTime.now().add(Duration(days: 3))));
-    print(getDayFromDateTime(DateTime.now().add(Duration(days: 4))));
-    print(getDayFromDateTime(DateTime.now().add(Duration(days: 5))));
-    print(getDayFromDateTime(DateTime.now().add(Duration(days: 6))));
-  }
+  // printDays() {
+  //   print(getDayFromDateTime(DateTime.now()));
+  //   print(getDayFromDateTime(DateTime.now().add(Duration(days: 1))));
+  //   print(getDayFromDateTime(DateTime.now().add(Duration(days: 2))));
+  //   print(getDayFromDateTime(DateTime.now().add(Duration(days: 3))));
+  //   print(getDayFromDateTime(DateTime.now().add(Duration(days: 4))));
+  //   print(getDayFromDateTime(DateTime.now().add(Duration(days: 5))));
+  //   print(getDayFromDateTime(DateTime.now().add(Duration(days: 6))));
+  // }
 
   resetForm() {
     setState(() {
@@ -238,6 +245,7 @@ class _HabitFormState extends State<HabitForm> {
               groupKey: 'repetition',
               onChanged: selectRepetition,
               options: ['Daily', 'Weekly', 'Monthly'],
+              // value: 'Daily',
             ),
             repetition.controller.text == 'Weekly'
                 ? Row(
@@ -277,13 +285,60 @@ class _HabitFormState extends State<HabitForm> {
                           )
                           .toList(),
                 )
-                : MyTextInput(
-                  label: 'Frequency',
-                  textFields: TextFields(
-                    hinttext: frequency.hint,
-                    whatIsInput: frequency.type,
-                    controller: frequency.controller,
-                  ),
+                // : MyTextInput(
+                //   label: 'Frequency',
+                //   textFields: TextFields(
+                //     hinttext: frequency.hint,
+                //     whatIsInput: frequency.type,
+                //     controller: frequency.controller,
+                //   ),
+                // ),
+                // : MyScrollSelector(
+                //   label: 'Frequency',
+                //   items: List.generate(25, (index) => index.toString()),
+                //   onChange: selectFrequency,
+                //   selectedItem: frequency.controller.text,
+                // ),
+                : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: MediaQuery.of(context).size.height * 0.008,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Frequency',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      spacing: MediaQuery.of(context).size.width * 0.01,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            if (int.parse(frequency.controller.text) > 1) {
+                              frequency.controller.text =
+                                  (int.parse(frequency.controller.text) - 1)
+                                      .toString();
+                            }
+                          },
+                          child: Text('-'),
+                        ),
+                        Text(frequency.controller.text),
+                        ElevatedButton(
+                          onPressed: () {
+                            frequency.controller.text =
+                                (int.parse(frequency.controller.text) + 1)
+                                    .toString();
+                          },
+                          child: Text('+'),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
             Padding(
               padding: EdgeInsets.all(
@@ -302,20 +357,7 @@ class _HabitFormState extends State<HabitForm> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      // onPressed: navigateBack,
-                      onPressed: () {
-                        HabitsRepository()
-                            .fetchHabitsByDate(DateTime.now())
-                            .then((value) {
-                              if (value.length == 0) {
-                                print('nothing to print');
-                                return;
-                              }
-                              for (var habit in value) {
-                                print(jsonEncode(habit.toJson()));
-                              }
-                            });
-                      },
+                      onPressed: navigateBack,
                       child: const Text(
                         "Cancel",
                         style: TextStyle(

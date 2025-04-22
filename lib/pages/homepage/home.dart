@@ -25,6 +25,7 @@ import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/pages/homepage/dashboard.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class HomePage extends StatefulWidget {
   final Datamanager datamanager;
@@ -40,16 +41,32 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-        ),
-      ),
-      drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
+      // appBar: AppBar(
+      //   leading: IconButton(
+      //     icon: Icon(Icons.menu),
+      //     onPressed: () {
+      //       _scaffoldKey.currentState?.openDrawer();
+      //     },
+      //   ),
+      // ),
+      drawer: Drawer(child: Drawerpage(),  backgroundColor: Colors.transparent),
       body: Dashboard(),
+      // body: Column(
+      //   children: [
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         changeLocale(context, 'am');
+      //       },
+      //       child: Text('Change to amharic'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         changeLocale(context, 'en');
+      //       },
+      //       child: Text('Change to english'),
+      //     ),
+      //   ],
+      // ),
       // body: HabitForm(refetchData: () {}),
       // body: StepperForm(),
       // body: Column(
