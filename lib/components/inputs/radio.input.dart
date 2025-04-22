@@ -9,6 +9,7 @@ class MyRadioInput extends StatefulWidget {
   final void Function(dynamic value) onChanged;
   final Color? color;
   final Color? borderColor;
+  final String? value;
 
   const MyRadioInput({
     super.key,
@@ -19,6 +20,7 @@ class MyRadioInput extends StatefulWidget {
     required this.onChanged,
     this.color,
     this.borderColor,
+    this.value,
   });
 
   @override
@@ -27,6 +29,17 @@ class MyRadioInput extends StatefulWidget {
 
 class MyRadioInputState extends State<MyRadioInput> {
   String _selectedValue = '';
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.value != null) {
+      setState(() {
+        _selectedValue = widget.value ?? '';
+        widget.onChanged(widget.value);
+      });
+    }
+  }
 
   void selectValue(value) {
     setState(() {

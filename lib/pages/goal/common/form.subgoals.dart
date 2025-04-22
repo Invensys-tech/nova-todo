@@ -5,6 +5,7 @@ import 'package:flutter_application_1/components/inputs/text.input.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
 
 class SubGoalsForm extends StatefulWidget {
   final FormInput deadline;
@@ -76,8 +77,45 @@ class _SubGoalsFormState extends State<SubGoalsForm> {
                     label: 'Deadline Date',
                     groupKey: 'subgoal-name-$_subGoalCounter',
                     options: ['1 Week', '1 Month'],
-                    onChanged: (value) => subGoal.key.controller.text = value,
+                    onChanged: (value) {
+                      final now = DateTime.now();
+                      DateTime deadline;
+
+                      if (value == '1 Week') {
+                        deadline = now.add(const Duration(days: 7));
+                      } else if (value == '1 Month') {
+                        // add one month while preserving day
+                        deadline = DateTime(now.year, now.month + 1, now.day);
+                      } else {
+                        // fallback: treat "N Week(s)" or "N Month(s)"
+                        final parts = value.split(' ');
+                        final amount = int.tryParse(parts[0]) ?? 0;
+                        if (parts[1].toLowerCase().startsWith('week')) {
+                          deadline = now.add(Duration(days: amount * 7));
+                        } else {
+                          deadline = DateTime(
+                            now.year,
+                            now.month + amount,
+                            now.day,
+                          );
+                        }
+                      }
+
+                      // write the formatted date into your sub-goal's deadline field
+                      subGoal.value.controller.text = formatDate(
+                        deadline.toString(),
+                      );
+                    },
                   ),
+
+                  // MyRadioInput(
+                  //   color: Color(0xFF09090B).withAlpha(30),
+                  //   borderColor: Color(0xFF27272A),
+                  //   label: 'Deadline Date',
+                  //   groupKey: 'subgoal-name-$_subGoalCounter',
+                  //   options: ['1 Week', '1 Month'],
+                  //   onChanged: (value) => subGoal.value.controller.text = value,
+                  // ),
                   // Row(
                   //   spacing: MediaQuery.of(context).size.width * 0.04,
                   //   children: [

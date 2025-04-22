@@ -35,8 +35,8 @@ class HabitsRepository {
       final allHabitsData = await supabaseClient
           .from(Entities.HABITS.dbName)
           .select()
-          // .eq('user_id', userId);
           .eq('user_id', userId);
+          // .eq('user_id', 25);
 
       final allHabits = allHabitsData.map<Habit>((habit) {
         return Habit.fromJson(habit);
@@ -170,8 +170,8 @@ class HabitsRepository {
           .insert({
             ...habit.toJson(),
             'id': totalHabits + 100,
-            // 'user_id': userId,
             'user_id': userId,
+            // 'user_id': 25,
           })
           .count(CountOption.exact);
 
@@ -213,7 +213,8 @@ class HabitsRepository {
         final habitDates = habit.streakDates.where(
           (streakDate) => streakDate == getDateOnly(dateTime),
         );
-        if (habitDates.length == habit.frequency) {
+        print(habitDates.length);
+        if (habitDates.length >= habit.frequency) {
           print('Already extended streak for this date');
           return false;
         }
@@ -265,9 +266,9 @@ class HabitsRepository {
       final response = await supabaseClient
           .from(Entities.HABITS.dbName)
           .update({
-            'streak': habit.streak + 1,
-            'max_streak': habit.maxStreak + 1,
-            'streak_dates': [...habit.streakDates, dateString],
+            'streak': habit.streak,
+            'max_streak': habit.maxStreak,
+            'streak_dates': habit.streakDates,
           })
           .eq('id', habit.id!)
           .count(CountOption.exact);

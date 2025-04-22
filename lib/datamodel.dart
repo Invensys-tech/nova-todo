@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/src/widgets/framework.dart';
+
 class User {
   int id;
   DateTime createdAt;
@@ -224,6 +226,18 @@ class Goal {
                   .toList(),
     );
   }
+
+  double get getPercentage {
+    final allTasks = subGoals.expand((sg) => sg.tasks).toList();
+
+    if (allTasks.isEmpty) return 0;
+
+    final completedTasks = allTasks.where((task) => task.status).length;
+
+    return (completedTasks / allTasks.length) * 100;
+  }
+
+  Widget? get isShortTerm => null;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

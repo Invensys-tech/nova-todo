@@ -200,25 +200,16 @@ class _HomePageState extends State<ProductivityHome> {
                 ),
               ],
             ),
-            // Row(
-            //   children: [
-            //     Container(
-            //       width: 45,
-            //       height: 45,
-            //       decoration: const BoxDecoration(
-            //         color: Color(0xFF27272A),
-            //         shape: BoxShape.circle,
-            //       ),
-            //       child: Icon(iconData, size: 20, color: Colors.green),
-            //     ),
-            //     const SizedBox(width: 8),
-            //     const Icon(
-            //       Icons.arrow_forward_ios,
-            //       size: 14,
-            //       color: Colors.green,
-            //     ),
-            //   ],
-            // ),
+            Row(
+              children: [
+                const SizedBox(width: 8),
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 14,
+                  color: Colors.green,
+                ),
+              ],
+            ),
           ],
         ),
       ),

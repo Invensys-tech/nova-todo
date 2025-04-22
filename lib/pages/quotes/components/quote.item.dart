@@ -10,22 +10,6 @@ class QuoteItem extends StatelessWidget {
   final Quote quote;
   QuoteItem({super.key, required this.quote});
 
-  // final Random random = Random();
-  // final bgColors = [
-  //   Color(0xFF0B211C),
-  //   Color(0xFF371A12),
-  //   Color(0xFF39143B),
-  //   Color(0xFF0C2524),
-  //   Color(0xFF09090B),
-  // ];
-
-  // final Color backgroundColor = Color.fromARGB(
-  //   255,
-  //   100 + Random().nextInt(100),
-  //   50 + Random().nextInt(100),
-  //   50 + Random().nextInt(100),
-  // );
-
   final backgroundColorWhite =
       [
         Color(0xFF0B211C),
@@ -35,14 +19,14 @@ class QuoteItem extends StatelessWidget {
         Color(0xFF09090B),
       ][Random().nextInt(5)];
 
-  final backgroundColorBlack  =
-  [
-    Color(0xff5EE9B5),
-    Color(0xffFFB86A),
-    Color(0xffA2F4FD),
-    Color(0xffE4E4E7),
-    Color(0xff5EE9B5),
-  ][Random().nextInt(5)];
+  final backgroundColorBlack =
+      [
+        Color(0xff5EE9B5),
+        Color(0xffFFB86A),
+        Color(0xffA2F4FD),
+        Color(0xffE4E4E7),
+        Color(0xff5EE9B5),
+      ][Random().nextInt(5)];
 
   Widget _buildSquare(double radius, Color color) {
     return Container(
@@ -77,26 +61,29 @@ class QuoteItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.035, vertical: 20.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * .035,
+                vertical: 20.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     '"${quote.text}"',
                     textAlign: TextAlign.left,
-                    style: GoogleFonts.cinzel (
+                    style: GoogleFonts.cinzel(
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                  SizedBox(height: MediaQuery.of(context).size.height * .01),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width*.025,
+                          horizontal: MediaQuery.of(context).size.width * .025,
                           vertical: 4.0,
                         ),
                         margin: EdgeInsets.only(bottom: 10.0),
@@ -140,77 +127,6 @@ class QuoteItem extends StatelessWidget {
         ),
       ),
     );
-    // return Container(
-    //   margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-    //   child: Stack(
-    //     children: [
-    //       // Main Ticket Body with Curved Right Edge
-    //       ClipPath(
-    //         clipper: TicketClipper(),
-    //         child: Container(
-    //           width: double.infinity,
-    //           padding: const EdgeInsets.all(16.0),
-    //           decoration: BoxDecoration(
-    //             color: backgroundColor,
-    //             borderRadius: BorderRadius.circular(8.0),
-    //           ),
-    //           child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             children: [
-    //               Text(
-    //                 quote.text,
-    //                 style: const TextStyle(color: Colors.white, fontSize: 16.0),
-    //               ),
-    //               const SizedBox(height: 12.0),
-    //               Row(
-    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                 children: [
-    //                   Text(
-    //                     quote.source,
-    //                     style: const TextStyle(
-    //                       color: Colors.white70,
-    //                       fontSize: 12.0,
-    //                     ),
-    //                   ),
-    //                   Column(
-    //                     crossAxisAlignment: CrossAxisAlignment.end,
-    //                     children: [
-    //                       Text(
-    //                         quote.author,
-    //                         style: const TextStyle(
-    //                           color: Colors.white,
-    //                           fontSize: 14.0,
-    //                           fontWeight: FontWeight.bold,
-    //                         ),
-    //                       ),
-    //                       Text(
-    //                         quote.source,
-    //                         style: const TextStyle(
-    //                           color: Colors.white70,
-    //                           fontSize: 12.0,
-    //                         ),
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //       // Optional: Subtle Shadow for the Curve
-    //       Positioned(
-    //         top: 0,
-    //         bottom: 0,
-    //         right: 0,
-    //         width: 10, // Adjust shadow width as needed
-    //         child: CustomPaint(
-    //           painter: CurveShadowPainter(backgroundColor.withOpacity(0.3)),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }
 
