@@ -12,9 +12,6 @@ class MyExpansionPanelHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          // margin: EdgeInsets.symmetric(
-          //   vertical: MediaQuery.of(context).size.height * 0.01,
-          // ),
           padding: EdgeInsets.symmetric(
             vertical: MediaQuery.of(context).size.height * 0.01,
             horizontal: MediaQuery.of(context).size.width * 0.02,
@@ -22,10 +19,9 @@ class MyExpansionPanelHeader extends StatelessWidget {
           color: Theme.of(context).primaryColorDark,
           child: Row(
             spacing: MediaQuery.of(context).size.width * 0.04,
-            children: [icon ?? Container(), Text(title)],
+            children: [icon ?? Container(), Text("p")],
           ),
         ),
-
       ],
     );
   }

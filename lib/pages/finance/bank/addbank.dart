@@ -49,6 +49,8 @@ class _AddBankState extends State<AddBank> {
     'Wegagen Bank',
     'Zemen Bank',
   ];
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,11 +59,15 @@ class _AddBankState extends State<AddBank> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: FaIcon(FontAwesomeIcons.chevronLeft,size: 25, color: Color(0xff006045),),
+          icon: FaIcon(
+            FontAwesomeIcons.chevronLeft,
+            size: 25,
+            color: Color(0xff006045),
+          ),
         ),
         title: const Text(
           "Add Bank",
-          style: TextStyle(fontWeight: FontWeight.bold, ),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         // centerTitle: true,
       ),
@@ -84,212 +90,238 @@ class _AddBankState extends State<AddBank> {
             ),
             padding: const EdgeInsets.all(10),
 
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                const Text(
-                  "Account Owner",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  const Text(
+                    "Account Owner",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
 
-                TextFields(
-                  hinttext: 'eg: Abebe Tesfaye',
-                  whatIsInput: '1',
-                  controller: _accHolder,
-                  // icon: Icons.attach_money,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                const Text(
-                  "Bank",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
+                  TextFields(
+                    hinttext: 'eg: Abebe Tesfaye',
+                    whatIsInput: '1',
+                    controller: _accHolder,
+                    func: (v) {
+                      if (v!.isEmpty || v == null) {
+                        return "Account holder name is required";
+                      }
+                    },
+                    // icon: Icons.attach_money,
                   ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
-
-                AutoCompleteText(
-                  suggestions: banks,
-                  controller: _bank,
-                  hintText: "Banks",
-                  icon: Icons.search,
-                  suggestionBuilder: (String text) {
-                    return ListTile(
-                      title: Text(
-                        text,
-                        style: const TextStyle(
-                          // fontWeight: FontWeight.bold,
-                          // fontSize: 16,
-                          // color: Colors.white,
-                        ),
-                      ),
-                      // subtitle: const Text(
-                      //   "Tap to select",
-                      //   style: TextStyle(fontSize: 12, color: Colors.grey),
-                      // ),
-                    );
-                  },
-                ),
-
-                // BankInput(bankController: _bank, valueController: _accNo),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
-                const Text(
-                  "AccountNumber",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  const Text(
+                    "Bank",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
-                TextFields(
-                  hinttext: 'Branch',
-                  whatIsInput: '1',
-                  controller: _accNo,
-                  // icon: Icons.attach_money,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                const Text(
-                  "Branch",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
-                TextFields(
-                  hinttext: 'Branch',
-                  whatIsInput: '1',
-                  controller: _branch,
-                  // icon: Icons.attach_money,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
 
-                // Text(
-                //   "Account type",
-                //   style: TextStyle(
-                //     fontSize: 13,
-                //     fontWeight: FontWeight.w400,
-                //   ),
-                // ),
-                // SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
-                // CustomDropdown(
-                //   hintText: "Eg, Saving or Check",
-                //   // icon: Icons.local_mall,
-                //   items: ["Savings", "Check"],
-                //   controller: _type,
-                // ),
-               // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Text(
-                  "Balance",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
-                TextFields(
-                  hinttext: 'Balance',
-                  whatIsInput: '0',
-                  controller: _balance,
-                  // icon: Icons.attach_money,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Clear all input controllers
-                          _accHolder.clear();
-                          _bank.clear();
-                          _balance.clear();
-                          _accNo.clear();
-                          _type.clear();
-                          _branch.clear();
-                          setState(() {});
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                  AutoCompleteText(
+                    suggestions: banks,
+                    controller: _bank,
+                    hintText: "Banks",
+                    icon: Icons.search,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a Bank';
+                      }
+                      return null;
+                    },
+                    suggestionBuilder: (String text) {
+                      return ListTile(
+                        title: Text(
+                          text,
+                          style: const TextStyle(
+                            // fontWeight: FontWeight.bold,
+                            // fontSize: 16,
+                            // color: Colors.white,
                           ),
                         ),
-                        child: const Text(
-                          "Cancel",
+                        // subtitle: const Text(
+                        //   "Tap to select",
+                        //   style: TextStyle(fontSize: 12, color: Colors.grey),
+                        // ),
+                      );
+                    },
+                  ),
+
+                  // BankInput(bankController: _bank, valueController: _accNo),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+                  const Text(
+                    "AccountNumber",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
+                  TextFields(
+                    hinttext: 'Account Number',
+                    whatIsInput: '1',
+                    controller: _accNo,
+                    func: (value) {
+                      if (value == null || value.isEmpty)
+                        return 'Account Number is required';
+                      final amount = double.tryParse(value);
+                      if (amount == null || amount <= 0)
+                        return 'Enter a valid amount';
+                      return null;
+                    },
+
+                    // icon: Icons.attach_money,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  const Text(
+                    "Branch",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
+                  TextFields(
+                    hinttext: 'Branch',
+                    whatIsInput: '1',
+                    controller: _branch,
+                    func: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Branch name is required';
+                      }
+                    },
+
+                    // icon: Icons.attach_money,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+                  // Text(
+                  //   "Account type",
+                  //   style: TextStyle(
+                  //     fontSize: 13,
+                  //     fontWeight: FontWeight.w400,
+                  //   ),
+                  // ),
+                  // SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
+                  // CustomDropdown(
+                  //   hintText: "Eg, Saving or Check",
+                  //   // icon: Icons.local_mall,
+                  //   items: ["Savings", "Check"],
+                  //   controller: _type,
+                  // ),
+                  // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  Text(
+                    "Balance",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
+                  TextFields(
+                    hinttext: 'Balance',
+                    whatIsInput: '0',
+                    controller: _balance,
+                    prefixText: 'ETB',
+                    func: (value) {
+                      if (value == null || value.isEmpty)
+                        return 'Balance is required';
+                      final amount = double.tryParse(value);
+                      if (amount == null || amount <= 0)
+                        return 'Enter a valid amount';
+                      return null;
+                    },
+
+                    // icon: Icons.attach_money,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Clear all input controllers
+                            _accHolder.clear();
+                            _bank.clear();
+                            _balance.clear();
+                            _accNo.clear();
+                            _type.clear();
+                            _branch.clear();
+                            setState(() {});
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: const Text("Cancel"),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      flex: 3,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          try {
-                            final response = await Supabase.instance.client
-                                .from('bank')
-                                .insert({
-                                  'balance': _balance.text,
-                                  'accountHolder': _accHolder.text,
-                                  'accountNumber': _accNo.text,
-                                  'accountBank': _bank.text,
-                                  'branch': _branch.text,
-                                  'userId': 1,
-                                  'accountType': _type.text,
-                                });
+                      const SizedBox(width: 10),
+                      Expanded(
+                        flex: 3,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              try {
+                                final response = await Supabase.instance.client
+                                    .from('bank')
+                                    .insert({
+                                      'balance': _balance.text,
+                                      'accountHolder': _accHolder.text,
+                                      'accountNumber': _accNo.text,
+                                      'accountBank': _bank.text,
+                                      'branch': _branch.text,
+                                      'userId': 1,
+                                      'accountType': _type.text,
+                                    });
 
-                            print(response);
+                                print(response);
 
-                            print("Bank added successfully!");
-                            final updatedBanks =
-                                await Datamanager().fetchBanks();
+                                print("Bank added successfully!");
+                                final updatedBanks =
+                                    await Datamanager().fetchBanks();
 
-                            // Show success message
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Bank added successfully!"),
-                              ),
-                            );
+                                // Show success message
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Bank added successfully!"),
+                                  ),
+                                );
 
-                            // Pass the updated loan data back before popping the screen
-                            Navigator.pop(context, updatedBanks);
-                          } catch (e) {
-                            print("Error inserting expense: $e");
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $e")),
-                            );
-                          }
-                        },
+                                // Pass the updated loan data back before popping the screen
+                                Navigator.pop(context, updatedBanks);
+                              } catch (e) {
+                                print("Error inserting expense: $e");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Error: $e")),
+                                );
+                              }
+                            }
+                            ;
+                          },
 
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(
-                            0xff009966,
-                          ), // Green background
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(
+                              0xff009966,
+                            ), // Green background
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: const Text(
+                            "Save",
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
-                        child: const Text(
-                          "Save",
-                          style: TextStyle(color: Colors.white),
-                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-              ],
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+                ],
+              ),
             ),
           ),
         ),
