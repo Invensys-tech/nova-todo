@@ -572,7 +572,6 @@ class _TodoPageState extends State<TodoPage> {
                   SizedBox(height: MediaQuery.of(context).size.height * .025),
                   Container(
                     child: Column(
-                      spacing: MediaQuery.of(context).size.height * 0,
                       children:
                           // filterTodos(snapshot.data ?? [], 'Completed')
                           snapshot.data!

@@ -215,20 +215,20 @@ class _TodoItemState extends State<TodoItem> {
                     decoration: BoxDecoration(
                       color:
                           widget.dailyTask.type == 'High'
-                              ? Color(0xff0d805e).withOpacity(.35)
+                              ? Color(0xff0d805e)
                               : widget.dailyTask.type == 'Medium'
                               ? Color.fromARGB(
                                 255,
                                 128,
                                 120,
                                 13,
-                              ).withOpacity(.35)
+                              )
                               : Color.fromARGB(
                                 255,
                                 128,
                                 13,
                                 13,
-                              ).withOpacity(.35),
+                              ),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
@@ -313,7 +313,6 @@ class _TodoItemState extends State<TodoItem> {
             ),
           ),
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * .02),
       ],
     );
   }

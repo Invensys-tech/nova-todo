@@ -100,7 +100,7 @@ class MyRadioInputState extends State<MyRadioInput> {
                                       option == _selectedValue
                                           ? Color(0xFF00D492)
                                           : widget.borderColor ??
-                                              Color(0xFFE4E4E7),
+                                              Color(0xFF27272A),
                                 ),
                               ),
                               child: Padding(

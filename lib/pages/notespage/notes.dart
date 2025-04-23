@@ -6,6 +6,8 @@ import 'package:flutter_application_1/pages/notespage/common/notes-quil.dart';
 import 'package:flutter_application_1/repositories/notes.repository.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 
+import '../../drawer/drawerpage.dart';
+
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
 
@@ -82,13 +84,31 @@ class _NotesPageState extends State<NotesPage> {
     }
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff2F2F2F),
+      appBar: AppBar(
+        leading: GestureDetector(
+            onTap: (){
+              _scaffoldKey.currentState?.openDrawer();
+            },
+            child: Icon(Icons.menu, size: 27, )),
+        title: Row(
+          children: [
+            Text("Notes"),
+            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            Container(
+                height: MediaQuery.of(context).size.height*.03,
+                width: MediaQuery.of(context).size.width*.06,
+                child: Image.asset('assets/Gif/Quotes.gif'))
+
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF2b2d30),
+        backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () async {
           await Navigator.push(
@@ -102,21 +122,12 @@ class _NotesPageState extends State<NotesPage> {
         child: const Icon(Icons.add, color: Colors.white, size: 30),
       ),
 
+      drawer: Drawer(child: Drawerpage(),  backgroundColor: Colors.transparent),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Row(
-              children: const [
-                Icon(Icons.account_tree, color: Colors.white),
-                SizedBox(width: 8),
-                Text(
-                  "Notes",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
+
             Expanded(
               child:
                   notes.isEmpty

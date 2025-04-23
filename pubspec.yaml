@@ -72,6 +72,7 @@ dependencies:
   basic_selector: ^0.1.2
   time_interval_picker: ^0.0.3
   dashed_circular_progress_bar: ^0.0.6
+  intl_phone_number_input: ^0.7.4
 
 flutter_icons:
   android: true
