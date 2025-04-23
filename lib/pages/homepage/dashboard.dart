@@ -16,45 +16,10 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
 
-
-
-
-  List<dynamic> expenses = [
-    {
-      'title': 'Electric Bill',
-      'date': 'Yesterday',
-      'amount': '2300',
-      'icon': Icons.thunderstorm,
-    },
-    {
-      'title': 'Groceries',
-      'date': '2025-04-13',
-      'amount': '2000',
-      'icon': Icons.shopping_cart,
-    },
-    {
-      'title': 'Rent',
-      'date': '2025-04-07',
-      'amount': '23000',
-      'icon': Icons.house_outlined,
-    },
-  ];
-
-  List<dynamic> habits = [
-    {
-      'title': 'Books and Music',
-      'frequency': 'Everyday',
-      'streak': '4',
-      'icon': Icons.book,
-    },
-    {
-      'title': 'Sports and Gym',
-      'frequency': 'Once A Week',
-      'streak': '4',
-      'icon': Icons.line_weight,
-    },
-  ];
   final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
+
+
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
