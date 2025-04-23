@@ -146,9 +146,9 @@ class _GoalViewState extends State<GoalView> {
   late Future<Goal> goal;
 
   final motivationTitles = [
-    "Personal Growth",
-    "Family Support",
-    "Financial Freedom",
+    "This goal important to you Because",
+    "When you achieve this goal",
+    "If you don’t achieve this goal",
   ];
 
   void initState() {
@@ -214,7 +214,6 @@ class _GoalViewState extends State<GoalView> {
                     ],
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.07),
-                  const SizedBox(height: 20),
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.009),
                   Text(

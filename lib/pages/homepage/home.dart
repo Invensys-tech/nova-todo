@@ -50,8 +50,8 @@ class _HomePageState extends State<HomePage> {
       //     },
       //   ),
       // ),
-      drawer: Drawer(child: Drawerpage(),  backgroundColor: Colors.transparent),
-     // body: Dashboard(),
+      drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
+      body: Dashboard(),
       // body: Column(
       //   children: [
       //     ElevatedButton(
@@ -70,125 +70,125 @@ class _HomePageState extends State<HomePage> {
       // ),
       // body: HabitForm(refetchData: () {}),
       // body: StepperForm(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: MediaQuery.of(context).size.height*.005,
-        children: [
-          // FutureBuilder(future: future, builder: builder),
-          SizedBox(height: MediaQuery.of(context).size.height*.1,),
-          ElevatedButton(
-            onPressed: () {
-              // print("Sending notification...");
-              NotificationService().showNotification(
-                1,
-                'Reminder',
-                'Time for you task',
-              );
-            },
-            child: Icon(Icons.notification_add),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      // body: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   spacing: MediaQuery.of(context).size.height*.005,
+      //   children: [
+      //     // FutureBuilder(future: future, builder: builder),
+      //     SizedBox(height: MediaQuery.of(context).size.height*.1,),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         // print("Sending notification...");
+      //         NotificationService().showNotification(
+      //           1,
+      //           'Reminder',
+      //           'Time for you task',
+      //         );
+      //       },
+      //       child: Icon(Icons.notification_add),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-              const AndroidInitializationSettings initializationSettingsAndroid =
-              AndroidInitializationSettings('ic_notification');
+      //         const AndroidInitializationSettings initializationSettingsAndroid =
+      //         AndroidInitializationSettings('ic_notification');
 
-              const InitializationSettings initializationSettings =
-              InitializationSettings(android: initializationSettingsAndroid);
+      //         const InitializationSettings initializationSettings =
+      //         InitializationSettings(android: initializationSettingsAndroid);
 
-              await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+      //         await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-              const AndroidNotificationDetails androidPlatformChannelSpecifics =
-              AndroidNotificationDetails(
-                'test_channel_id',
-                'Test Channel',
-                channelDescription: 'Test Description',
-                importance: Importance.max,
-                priority: Priority.high,
-                playSound: true,
-                enableVibration: true,
-                icon: 'ic_notification',
-              );
+      //         const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      //         AndroidNotificationDetails(
+      //           'test_channel_id',
+      //           'Test Channel',
+      //           channelDescription: 'Test Description',
+      //           importance: Importance.max,
+      //           priority: Priority.high,
+      //           playSound: true,
+      //           enableVibration: true,
+      //           icon: 'ic_notification',
+      //         );
 
-              const NotificationDetails platformChannelSpecifics =
-              NotificationDetails(android: androidPlatformChannelSpecifics);
+      //         const NotificationDetails platformChannelSpecifics =
+      //         NotificationDetails(android: androidPlatformChannelSpecifics);
 
-              await flutterLocalNotificationsPlugin.show(
-                0,
-                'Hello!',
-                'This is a test notification',
-                platformChannelSpecifics,
-                payload: 'test',
-              );
-            },
-            child: Icon(Icons.notification_important),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              AuthService().logout();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LogInPage()),
-              );
-            },
-            child: Text('Logout'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              UserRepository().fetchUsers();
-            },
-            child: Text('Log Users'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              HiveService hiveService = HiveService();
-              await hiveService.initHive(boxName: 'session');
-              dynamic data = await hiveService.getData('user');
-              print('----------------- user store in hive -----------------');
-              print(jsonEncode(data));
-            },
-            child: Text('Print Session'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              print("Sending expense notification...");
-              NotificationService().showNotification(
-                -2,
-                'Income',
-                'Tap to add expense from CBE',
-                payload: 'add-expense||200.00',
-              );
-            },
-            child: Text('Expense Notification'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              print("Sending income notification...");
-              NotificationService().showNotification(
-                -2,
-                'Income',
-                'Tap to add income from CBE',
-                payload: 'add-income||300.00',
-              );
-            },
-            child: Text('Income Notification'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              print("Sending message...");
-              // NotificationService().showNotification(
-              //   2,
-              //   'Income',
-              //   'Tap to add income',
-              //   payload: 'add-income',
-              // );
-              // SmsService().sendSms('0943656931', 'good morning');
-            },
-            child: Text('Send Message'),
-          ),
-        ],
-      ),
+      //         await flutterLocalNotificationsPlugin.show(
+      //           0,
+      //           'Hello!',
+      //           'This is a test notification',
+      //           platformChannelSpecifics,
+      //           payload: 'test',
+      //         );
+      //       },
+      //       child: Icon(Icons.notification_important),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         AuthService().logout();
+      //         Navigator.push(
+      //           context,
+      //           MaterialPageRoute(builder: (context) => LogInPage()),
+      //         );
+      //       },
+      //       child: Text('Logout'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () {
+      //         UserRepository().fetchUsers();
+      //       },
+      //       child: Text('Log Users'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         HiveService hiveService = HiveService();
+      //         await hiveService.initHive(boxName: 'session');
+      //         dynamic data = await hiveService.getData('user');
+      //         print('----------------- user store in hive -----------------');
+      //         print(jsonEncode(data));
+      //       },
+      //       child: Text('Print Session'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         print("Sending expense notification...");
+      //         NotificationService().showNotification(
+      //           -2,
+      //           'Income',
+      //           'Tap to add expense from CBE',
+      //           payload: 'add-expense||200.00',
+      //         );
+      //       },
+      //       child: Text('Expense Notification'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         print("Sending income notification...");
+      //         NotificationService().showNotification(
+      //           -2,
+      //           'Income',
+      //           'Tap to add income from CBE',
+      //           payload: 'add-income||300.00',
+      //         );
+      //       },
+      //       child: Text('Income Notification'),
+      //     ),
+      //     ElevatedButton(
+      //       onPressed: () async {
+      //         print("Sending message...");
+      //         // NotificationService().showNotification(
+      //         //   2,
+      //         //   'Income',
+      //         //   'Tap to add income',
+      //         //   payload: 'add-income',
+      //         // );
+      //         // SmsService().sendSms('0943656931', 'good morning');
+      //       },
+      //       child: Text('Send Message'),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }
