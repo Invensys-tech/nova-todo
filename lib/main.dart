@@ -76,7 +76,7 @@ void main() async {
   final delegate = await setupLocalization();
 
   // runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
-  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.AUTH)));
   // runApp(MyApp(initPage: initPage));
   // runApp(MyApp(initPage: InitPage.HOME));
 }
