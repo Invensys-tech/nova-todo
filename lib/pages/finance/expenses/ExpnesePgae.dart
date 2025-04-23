@@ -185,51 +185,63 @@ class _ExpensespageState extends State<Expensespage> {
                         final e = expenses[i];
                         return Column(
                           children: [
-                            Slidable(
-                              key: ValueKey(e.id),
-                              startActionPane: ActionPane(
-                                motion: const ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (_) {
-                                      _expenseRepository.deleteExpense(e.id);
-                                      setState(_loadExpenses);
-                                    },
-                                    backgroundColor: Colors.red,
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.delete,
-                                    label: 'Delete',
-                                  ),
-                                ],
-                              ),
-                              endActionPane: ActionPane(
-                                motion: const ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (_) {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (_) => EditExpense(
-                                                datamanager: widget.datamanager,
-                                                expenseId: e.id,
-                                              ),
-                                        ),
-                                      ).then((_) => setState(_loadExpenses));
-                                    },
-                                    backgroundColor: Colors.blue,
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.edit,
-                                    label: 'Edit',
-                                  ),
-                                ],
-                              ),
-                              child: ExpenseList(
-                                amountofexpenses: e.amount,
-                                catagoryofexpenses: e.category,
-                                titleofExpenses: e.category,
-                                typeofexpenses: e.type,
+                            GestureDetector(
+                              onTap:(){
+                                Navigator.of(context).push(PageRouteBuilder(
+                                    opaque: false,
+                                    pageBuilder: (BuildContext context, _, __) {
+                                      return SingleEpensesFullViewPage(
+
+                                      );
+                                    }
+                                ));
+                              },
+                              child: Slidable(
+                                key: ValueKey(e.id),
+                                startActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (_) {
+                                        _expenseRepository.deleteExpense(e.id);
+                                        setState(_loadExpenses);
+                                      },
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.delete,
+                                      label: 'Delete',
+                                    ),
+                                  ],
+                                ),
+                                endActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (_) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (_) => EditExpense(
+                                                  datamanager: widget.datamanager,
+                                                  expenseId: e.id,
+                                                ),
+                                          ),
+                                        ).then((_) => setState(_loadExpenses));
+                                      },
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.edit,
+                                      label: 'Edit',
+                                    ),
+                                  ],
+                                ),
+                                child: ExpenseList(
+                                  amountofexpenses: e.amount,
+                                  catagoryofexpenses: e.category,
+                                  titleofExpenses: e.category,
+                                  typeofexpenses: e.type,
+                                ),
                               ),
                             ),
 

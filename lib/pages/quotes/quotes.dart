@@ -61,7 +61,7 @@ class _QuotesPageState extends State<QuotesPage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Habits"),
+            Text("Quotes"),
             SizedBox(width: MediaQuery.of(context).size.width*.015,),
             Container(
                 height: MediaQuery.of(context).size.height*.03,
