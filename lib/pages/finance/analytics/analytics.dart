@@ -639,7 +639,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               // Balance container
-              BankBalance(),
+              BankBalance(total: 34.0, expense: 10.0, income: 90.8),
               // Income and Expense containers
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               // Add more content to ensure scrolling
@@ -647,7 +647,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.04),
               _ExpensesCatagorypage(),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-             // _GraphDesign(), // Add one more to ensure content overflows
+              // _GraphDesign(), // Add one more to ensure content overflows
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               // Add one more to ensure content overflows
             ],
@@ -663,21 +663,11 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "Account",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            Text(
-              "See All",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            Text("Account", style: TextStyle(fontWeight: FontWeight.w500)),
+            Text("See All", style: TextStyle(fontWeight: FontWeight.w500)),
           ],
         ),
-        SizedBox(height: MediaQuery.of(context).size.height*.005,),
+        SizedBox(height: MediaQuery.of(context).size.height * .005),
         FutureBuilder(
           future: widget.datamanager.getBanks(),
           builder: (context, snapshot) {
@@ -747,18 +737,16 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
           children: [
             Text(
               "Expenses Catagory",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(fontWeight: FontWeight.w500),
             ),
             GestureDetector(
               onTap: () {
-
                 PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                   context,
                   screen: AnalyticsView(datamanager: widget.datamanager),
                   withNavBar: false,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  settings: const RouteSettings(),
                 );
                 print("touched");
               },
