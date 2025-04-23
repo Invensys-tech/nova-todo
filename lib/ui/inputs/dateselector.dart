@@ -60,7 +60,12 @@ class DateSelector extends StatelessWidget {
         ),
       ),
       onTap: () async {
-        DateTime initDate = initialDate ?? DateTime.now();
+        DateTime initDate =
+            controller.text.isNotEmpty
+                ? dateFormat.parse(controller.text)
+                : (initialDate ?? DateTime.now());
+
+        // DateTime initDate = initialDate ?? DateTime.now();
         DateTime? pickedDate = await showDatePicker(
           context: context,
           initialDate: initDate,

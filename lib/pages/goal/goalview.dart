@@ -145,6 +145,12 @@ class GoalView extends StatefulWidget {
 class _GoalViewState extends State<GoalView> {
   late Future<Goal> goal;
 
+  final motivationTitles = [
+    "Personal Growth",
+    "Family Support",
+    "Financial Freedom",
+  ];
+
   void initState() {
     super.initState();
     goal = GoalRepository().fetchView(widget.id);
@@ -154,12 +160,6 @@ class _GoalViewState extends State<GoalView> {
 
   @override
   Widget build(BuildContext context) {
-    // For demonstration, we create three sub-goals with the same title.
-    // List<Widget> subGoalWidgets = List.generate(
-    //   3,
-    //   (index) => TaskAccordion(title: "Learn Flutter"),
-    // );
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff2F2F2F),
@@ -189,153 +189,6 @@ class _GoalViewState extends State<GoalView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Other content above can be placed here.
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
-                  Text(
-                    'We want you to remember this',
-                    style: TextStyle(color: Colors.green),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * 0.005,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ...goal.motivation["motivations"]
-                            .map(
-                              (motivation) => Row(
-                                children: [
-                                  Icon(Icons.arrow_right),
-                                  Text(
-                                    motivation as String,
-                                    style: TextStyle(color: Colors.white70),
-                                    softWrap: true,
-                                  ),
-                                ],
-                              ),
-                            )
-                            .toList(),
-                      ],
-                    ),
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.43,
-                        // height: MediaQuery.of(context).size.height * 0.03,
-                        color: Color(0xff444444),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "First Text",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Second Text",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.43,
-                        // height: MediaQuery.of(context).size.height * 0.03,
-                        color: Color(0xff444444),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "First Text",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Second Text",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.43,
-                        // height: MediaQuery.of(context).size.height * 0.03,
-                        color: Color(0xff444444),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "First Text",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Second Text",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.43,
-                        // height: MediaQuery.of(context).size.height * 0.03,
-                        color: Color(0xff444444),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "First Text",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Second Text",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
                   Column(
@@ -362,7 +215,61 @@ class _GoalViewState extends State<GoalView> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.07),
                   const SizedBox(height: 20),
-                  // "Sub-Goals" title
+
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
+                  Text(
+                    'Remember This',
+                    style: TextStyle(color: Color(0xff009966)),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.005,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        ...List.generate(
+                          goal.motivation["motivations"].length,
+                          (index) {
+                            final motivation =
+                                goal.motivation["motivations"][index] as String;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  motivationTitles[index],
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Container(
+                                  width: double.infinity,
+                                  margin: const EdgeInsets.only(bottom: 12),
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white30),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    motivation,
+                                    style: TextStyle(color: Colors.white70),
+                                    softWrap: true,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     color: Color(0xff353535),
                     child: Padding(
@@ -370,7 +277,6 @@ class _GoalViewState extends State<GoalView> {
                       child: Column(
                         children: [
                           const SizedBox(height: 10),
-                          // Multiple sub-goal widgets.
                           Column(
                             children: [
                               SubGoalsContainer(subGoals: goal.subGoals),
@@ -388,7 +294,6 @@ class _GoalViewState extends State<GoalView> {
                       child: Column(
                         children: [
                           const SizedBox(height: 10),
-                          // Multiple sub-goal widgets.
                           Column(
                             children: [
                               JournalContainer(
@@ -403,10 +308,6 @@ class _GoalViewState extends State<GoalView> {
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.07),
-
-                  // QuilExample(),
-
-                  // QuillEditorExample(),
                 ],
               );
             } else {

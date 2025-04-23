@@ -10,7 +10,7 @@ class GoalWidget extends StatelessWidget {
   final double percentage;
   final String term;
 
-   GoalWidget({
+  const GoalWidget({
     super.key,
     required this.id,
     required this.title,
@@ -22,7 +22,6 @@ class GoalWidget extends StatelessWidget {
 
   get fifty => null;
 
-  final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
   @override
   Widget build(BuildContext context) {
     print(percentage);
@@ -38,7 +37,7 @@ class GoalWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         decoration: BoxDecoration(
-          border: Border.all(width: 1,color: Colors.grey.withOpacity(.3)),
+          color: const Color(0xFF424242),
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Row(
@@ -52,7 +51,7 @@ class GoalWidget extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 6.0),
                     child: Icon(
                       Icons.circle,
-                      size: 15,
+                      size: 8,
                       color:
                           percentage == 0.0
                               ? Colors.red
@@ -69,16 +68,17 @@ class GoalWidget extends StatelessWidget {
                         Text(
                           title,
                           style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white.withOpacity(0.9),
                           ),
                         ),
                         const SizedBox(height: 6),
                         Text(
                           description,
                           style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400
+                            fontSize: 13,
+                            color: Colors.white.withOpacity(0.7),
                           ),
                         ),
                         const SizedBox(height: 6),
@@ -87,8 +87,8 @@ class GoalWidget extends StatelessWidget {
                             Text(
                               '${date}: $term',
                               style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w300
+                                fontSize: 12,
+                                color: Colors.white.withOpacity(0.6),
                               ),
                             ),
                           ],
@@ -102,85 +102,32 @@ class GoalWidget extends StatelessWidget {
 
             const SizedBox(width: 16),
 
-            // SizedBox(
-            //   width: 50.0,
-            //   height: 50.0,
-            //   child: Stack(
-            //     fit: StackFit.expand,
-            //     children: [
-            //       CircularProgressIndicator(
-            //         value: (percentage / 100).clamp(0.0, 1.0),
-            //         strokeWidth: 4,
-            //         backgroundColor: Colors.white24,
-            //         valueColor: AlwaysStoppedAnimation(Colors.green),
-            //       ),
-            //
-            //       Center(
-            //         child: Text(
-            //           '${percentage.round()}%',
-            //           style: const TextStyle(
-            //             color: Colors.white,
-            //             fontSize: 12,
-            //             fontWeight: FontWeight.bold,
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-
-
-
-            Container(
-              width: MediaQuery.of(context).size.width*.2,
-              height: MediaQuery.of(context).size.height*.1,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).primaryColorDark,
-              ),
-              child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015),
-                  width: MediaQuery.of(context).size.width*.175,
-                  height: MediaQuery.of(context).size.height*.075,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).primaryColorDark,
+            SizedBox(
+              width: 50.0,
+              height: 50.0,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  CircularProgressIndicator(
+                    value: (percentage / 100).clamp(0.0, 1.0),
+                    strokeWidth: 4,
+                    backgroundColor: Colors.white24,
+                    valueColor: AlwaysStoppedAnimation(Colors.green),
                   ),
-                  child: DashedCircularProgressBar.aspectRatio(
-                    aspectRatio: 1, // width ÷ height
-                    valueNotifier: _valueNotifier,
-                    progress: percentage,
-                    startAngle: 360,
-                    sweepAngle: -360,
-                    foregroundColor: Color(0xff0FF009966),
-                    backgroundColor: Theme.of(context).primaryColorDark,
-                    foregroundStrokeWidth: 15,
-                    backgroundStrokeWidth: 15,
-                    animation: true,
-                    seekSize: 6,
-                    seekColor: const Color(0xffeeeeee),
-                    child: Center(
-                      child: ValueListenableBuilder(
-                          valueListenable: _valueNotifier,
-                          builder: (_, double value, __) => Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                '${percentage.round()}%',
-                                style:  TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12
-                                ),
-                              ),
 
-                            ],
-                          )
+                  Center(
+                    child: Text(
+                      '${percentage.round()}%',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )
+                  ),
+                ],
               ),
             ),
-
 
             const SizedBox(width: 12),
 

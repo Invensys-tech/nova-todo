@@ -15,6 +15,7 @@ import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/testdate.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 import '../../../main.dart';
 
@@ -121,10 +122,11 @@ class _IncomeFormState extends State<IncomeForm> {
     'Zemen Bank',
   ];
 
-  @override
+  // @override
   // void initState() {
   //   super.initState();
-  //   _paidBySelection = paid_from.controller.text;
+  //   date.controller.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  //   // _paidBySelection = paid_from.controller.text;
   // }
   @override
   void didChangeDependencies() {
@@ -161,6 +163,7 @@ class _IncomeFormState extends State<IncomeForm> {
     super.initState();
     _updateFuture();
     _loadIncomeList();
+    date.controller.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
   }
 
   void _loadIncomeList() async {
@@ -177,6 +180,8 @@ class _IncomeFormState extends State<IncomeForm> {
       _dataFuture = Future.value([]);
     }
   }
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -225,218 +230,249 @@ class _IncomeFormState extends State<IncomeForm> {
               ), // Optional: rounded corners
             ),
             padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                const Text(
-                  "Income Name",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
-                TextFields(
-                  hinttext: name.hint,
-                  controller: name.controller,
-                  whatIsInput: name.type,
-                  // icon: Icons.fingerprint,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                const Text(
-                  "Amount",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
-                TextFields(
-                  hinttext: amount.hint,
-                  whatIsInput: amount.type,
-                  controller: amount.controller,
-                  prefixText: 'ETB',
-                  // icon: Icons.attach_money,
-                ),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  const Text(
+                    "Income Name",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
+                  TextFields(
+                    hinttext: name.hint,
+                    controller: name.controller,
+                    whatIsInput: name.type,
+                    func: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Income name is required';
+                      }
+                    },
 
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Category",
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
+                    // icon: Icons.fingerprint,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  const Text(
+                    "Amount",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
+                  TextFields(
+                    hinttext: amount.hint,
+                    whatIsInput: amount.type,
+                    controller: amount.controller,
+                    prefixText: 'ETB',
+                    func: (value) {
+                      if (value == null || value.isEmpty)
+                        return 'Amount is required';
+                      final amount = double.tryParse(value);
+                      if (amount == null || amount <= 0)
+                        return 'Enter a valid amount';
+                      return null;
+                    },
+                    // icon: Icons.attach_money,
+                  ),
+
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Category",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.0025,
-                          ),
-                          _incomeList.isEmpty
-                              ? const Center(child: CircularProgressIndicator())
-                              : AutoCompleteText(
-                                suggestions:
-                                    _incomeList
-                                        .map((income) => income.category)
-                                        .toSet()
-                                        .toList(),
-                                controller: category.controller,
-                                hintText: "Search for a Category...",
-                                icon: Icons.search,
-                                suggestionBuilder: (String text) {
-                                  return ListTile(
-                                    title: Text(
-                                      text,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        color: Colors.white,
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.0025,
+                            ),
+                            _incomeList.isEmpty
+                                ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                                : AutoCompleteText(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please select a Category';
+                                    }
+                                    return null;
+                                  },
+                                  suggestions:
+                                      _incomeList
+                                          .map((income) => income.category)
+                                          .toSet()
+                                          .toList(),
+                                  controller: category.controller,
+                                  hintText: "Search for a Category...",
+                                  icon: Icons.search,
+                                  suggestionBuilder: (String text) {
+                                    return ListTile(
+                                      title: Text(
+                                        text,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              ),
-                        ],
+                                    );
+                                  },
+                                ),
+                          ],
+                        ),
                       ),
-                    ),
 
-                    SizedBox(width: MediaQuery.of(context).size.width * .05),
-                    Expanded(
-                      child: Column(
+                      SizedBox(width: MediaQuery.of(context).size.width * .05),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Date",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.0025,
+                            ),
+                            Container(
+                              height: MediaQuery.of(context).size.height * .05,
+                              child: DateSelector(
+                                hintText: DateTime.now().toString(),
+                                controller: date.controller,
+                                icon: Icons.calendar_today,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                                initialDate: DateTime.now(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
+                  FutureBuilder(
+                    future: _dataFuture,
+                    builder: (context, snapshot) {
+                      return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Date",
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                            ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          PaidByAndSpecificFromInput(
+                            paidByController: paid_from.controller,
+                            specificFromController: specific_from.controller,
+                            dataFuture: _dataFuture ?? Future.value([]),
+                            // When Paid By changes, update the future.
+                            onPaidByChanged: (newPaidBy) {
+                              setState(() {
+                                _updateFuture();
+                              });
+                            },
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.0025,
+                            height: MediaQuery.of(context).size.height * 0.02,
                           ),
-                          Container(
-                            height: MediaQuery.of(context).size.height * .05,
-                            child: DateSelector(
-                              hintText: DateTime.now().toString(),
-                              controller: date.controller,
-                              icon: Icons.calendar_today,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime(2100),
-                              initialDate: DateTime.now(),
+                          // Additional UI elements…
+                        ],
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  const Text(
+                    "Description",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
+                  MultiLineTextField(
+                    hintText: 'description',
+                    controller: description.controller,
+                    icon: Icons.description,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Clear all input controllers
+
+                            setState(() {});
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
-                FutureBuilder(
-                  future: _dataFuture,
-                  builder: (context, snapshot) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
+                          child: const Text("Cancel"),
                         ),
-                        PaidByAndSpecificFromInput(
-                          paidByController: paid_from.controller,
-                          specificFromController: specific_from.controller,
-                          dataFuture: _dataFuture ?? Future.value([]),
-                          // When Paid By changes, update the future.
-                          onPaidByChanged: (newPaidBy) {
-                            setState(() {
-                              _updateFuture();
-                            });
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        flex: 3,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (!_formKey.currentState!.validate()) {
+                              try {
+                                // Insert expense
+                                saveIncome();
+
+                                print("Income added successfully!");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      "Expense added successfully!",
+                                    ),
+                                  ),
+                                );
+
+                                Navigator.pop(context);
+                              } catch (e) {
+                                print("Error inserting expense: $e");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Error: $e")),
+                                );
+                              }
+                            }
                           },
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                        // Additional UI elements…
-                      ],
-                    );
-                  },
-                ),
-
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                const Text(
-                  "Description",
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
-                MultiLineTextField(
-                  hintText: 'description',
-                  controller: description.controller,
-                  icon: Icons.description,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Clear all input controllers
-
-                          setState(() {});
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff009966),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: const Text(
+                            "Add Expense",
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
-                        child: const Text("Cancel"),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      flex: 3,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          try {
-                            // Insert expense
-                            saveIncome();
-
-                            print("Income added successfully!");
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Expense added successfully!"),
-                              ),
-                            );
-
-                            Navigator.pop(context);
-                          } catch (e) {
-                            print("Error inserting expense: $e");
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $e")),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff009966),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: const Text(
-                          "Add Expense",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-              ],
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+                ],
+              ),
             ),
           ),
         ),
