@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/customized/billboard.dart';
 import 'package:flutter_application_1/pages/homepage/dashboard-components/dashboard.expense.item.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:time_interval_picker/time_interval_picker.dart';
 
 class Dashboard extends StatefulWidget {
@@ -12,6 +15,10 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+
+
+
   List<dynamic> expenses = [
     {
       'title': 'Electric Bill',
@@ -76,6 +83,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height*.03,),
+
             Container(
               height: MediaQuery.of(context).size.height*.2,
               width: MediaQuery.of(context).size.width*.95,
@@ -237,7 +245,7 @@ class _DashboardState extends State<Dashboard> {
                       style: TextStyle( fontSize: 16),
                     ),
                     Text(
-                      'See All',
+                      'This Month',
                       style: TextStyle(color: Color(0xFF009966), fontSize: 12),
                     ),
                   ],
@@ -469,8 +477,9 @@ class _DashboardState extends State<Dashboard> {
             ),
             // Financial Overview Section.
 
-            SizedBox(height: MediaQuery.of(context).size.height*.035,),
-            // Recent Expenses Section
+            SizedBox(height: MediaQuery.of(context).size.height*.05,),
+
+            //Recent Expenses Section
             Column(
               spacing: MediaQuery.of(context).size.height * .008,
               children: [
@@ -488,56 +497,220 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
 
-                Row(
-                  children: [
-                    
-                    Container(
-                      width: MediaQuery.of(context).size.width*.3,
-                      height: MediaQuery.of(context).size.height*.175,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1,color: Colors.grey.withOpacity(.5))
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015,vertical: MediaQuery.of(context).size.height*.012),
-                      child: Column(
-                        children: [
-                          Text("Losse Weight in ",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
-                          Text("02 - 08 -2025 ",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
-                          SizedBox(height: MediaQuery.of(context).size.height*.015,),
-                          Container(
-                            color: Theme.of(context).primaryColorLight,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
 
-                            width: MediaQuery.of(context).size.width*.15,
-                            height: MediaQuery.of(context).size.height*.073,
-                            child: DashedCircularProgressBar.aspectRatio(
-                              aspectRatio: 1, // width ÷ height
-                              valueNotifier: _valueNotifier,
-                              progress: 478,
-                              maxProgress: 670,
-                              corners: StrokeCap.butt,
-                              foregroundColor: Colors.blue,
-                              backgroundColor: const Color(0xffeeeeee),
-                              foregroundStrokeWidth: 36,
-                              backgroundStrokeWidth: 36,
-                              animation: true,
-                              child: Center(
-                                child: ValueListenableBuilder(
-                                  valueListenable: _valueNotifier,
-                                  builder: (_, double value, __) => Text(
-                                    '${value.toInt()}%',
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 60
-                                    ),
+                      Container(
+                        width: MediaQuery.of(context).size.width*.3,
+                        height: MediaQuery.of(context).size.height*.2,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(width: 1,color: Colors.grey.withOpacity(.5))
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015,vertical: MediaQuery.of(context).size.height*.012),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Losse Weight in ",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400),),
+                            Text("02 - 08 -2025 ",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w300),),
+                            SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                            Center(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width*.2,
+                                height: MediaQuery.of(context).size.height*.1,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015),
+                                  width: MediaQuery.of(context).size.width*.175,
+                                  height: MediaQuery.of(context).size.height*.075,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).primaryColorDark,
                                   ),
+                                  child: DashedCircularProgressBar.aspectRatio(
+                                    aspectRatio: 1, // width ÷ height
+                                    valueNotifier: _valueNotifier,
+                                    progress: 55,
+                                    startAngle: 360,
+                                    sweepAngle: -360,
+                                    foregroundColor: Color(0xff0FF009966),
+                                    backgroundColor: Theme.of(context).primaryColorDark,
+                                    foregroundStrokeWidth: 15,
+                                    backgroundStrokeWidth: 15,
+                                    animation: true,
+                                    seekSize: 6,
+                                    seekColor: const Color(0xffeeeeee),
+                                    child: Center(
+                                      child: ValueListenableBuilder(
+                                          valueListenable: _valueNotifier,
+                                          builder: (_, double value, __) => Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                '${value.toInt()}%',
+                                                style:  TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12
+                                                ),
+                                              ),
+
+                                            ],
+                                          )
+                                      ),
+                                    ),
+                                  )
                                 ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+
+                      SizedBox(width: MediaQuery.of(context).size.width*.035,),
+                      Container(
+                        width: MediaQuery.of(context).size.width*.3,
+                        height: MediaQuery.of(context).size.height*.2,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(width: 1,color: Colors.grey.withOpacity(.5))
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015,vertical: MediaQuery.of(context).size.height*.012),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Study Hard ",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),),
+                            Text("02 - 08 -2025 ",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w300),),
+                            SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                            Center(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width*.2,
+                                height: MediaQuery.of(context).size.height*.1,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                                child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015),
+                                    width: MediaQuery.of(context).size.width*.175,
+                                    height: MediaQuery.of(context).size.height*.075,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
+                                    child: DashedCircularProgressBar.aspectRatio(
+                                      aspectRatio: 1, // width ÷ height
+                                      valueNotifier: _valueNotifier,
+                                      progress: 40,
+                                      startAngle: 360,
+                                      sweepAngle: -360,
+                                      foregroundColor: Color(0xff0FF009966),
+                                      backgroundColor: Theme.of(context).primaryColorDark,
+                                      foregroundStrokeWidth: 15,
+                                      backgroundStrokeWidth: 15,
+                                      animation: true,
+                                      seekSize: 6,
+                                      seekColor: const Color(0xffeeeeee),
+                                      child: Center(
+                                        child: ValueListenableBuilder(
+                                            valueListenable: _valueNotifier,
+                                            builder: (_, double value, __) => Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  '${value.toInt()}%',
+                                                  style:  TextStyle(
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 12
+                                                  ),
+                                                ),
+
+                                              ],
+                                            )
+                                        ),
+                                      ),
+                                    )
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: MediaQuery.of(context).size.width*.035,),
+                      Container(
+                        width: MediaQuery.of(context).size.width*.3,
+                        height: MediaQuery.of(context).size.height*.2,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(width: 1,color: Colors.grey.withOpacity(.5))
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015,vertical: MediaQuery.of(context).size.height*.012),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Going to Chu ",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),),
+                            Text("02 - 08 -2025 ",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w300),),
+                            SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                            Center(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width*.2,
+                                height: MediaQuery.of(context).size.height*.1,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                                child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015),
+                                    width: MediaQuery.of(context).size.width*.175,
+                                    height: MediaQuery.of(context).size.height*.075,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
+                                    child: DashedCircularProgressBar.aspectRatio(
+                                      aspectRatio: 1, // width ÷ height
+                                      valueNotifier: _valueNotifier,
+                                      progress: 85,
+                                      startAngle: 360,
+                                      sweepAngle: -360,
+                                      foregroundColor: Color(0xff0FF009966),
+                                      backgroundColor: Theme.of(context).primaryColorDark,
+                                      foregroundStrokeWidth: 15,
+                                      backgroundStrokeWidth: 15,
+                                      animation: true,
+                                      seekSize: 6,
+                                      seekColor: const Color(0xffeeeeee),
+                                      child: Center(
+                                        child: ValueListenableBuilder(
+                                            valueListenable: _valueNotifier,
+                                            builder: (_, double value, __) => Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  '${value.toInt()}%',
+                                                  style:  TextStyle(
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 12
+                                                  ),
+                                                ),
+
+                                              ],
+                                            )
+                                        ),
+                                      ),
+                                    )
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 )
                 // Container(
                 //   child: Column(
@@ -554,242 +727,244 @@ class _DashboardState extends State<Dashboard> {
                 // ),
               ],
             ),
-            // Recent Expenses Section
+           // Recent Expenses Section
 
-            // Todays Habits Section
-            Column(
-              spacing: MediaQuery.of(context).size.height * .008,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Today's Habits",
-                      style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
-                    ),
-                    Text(
-                      'See All',
-                      style: TextStyle(color: Color(0xFF009966), fontSize: 12),
-                    ),
-                  ],
-                ),
-                Container(
-                  child: Column(
-                    spacing: MediaQuery.of(context).size.height * .008,
-                    children:
-                        habits
-                            .map((habit) => DashboardHabitItem(habit: habit))
-                            .toList(),
-                  ),
-                ),
-              ],
-            ),
-            // Todays Habits Section
+         //   Todays Habits Section
 
-            // Board below todays habits and above the chart
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * .03,
-                vertical: MediaQuery.of(context).size.height * .025,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: Color(0xFF27272A).withOpacity(.35),
-                  width: 2.5,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Weekly Completion',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      Text(
-                        'Apr 12 - Apr 19',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        '12',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Icon(
-                        Icons.local_fire_department,
-                        color: Color(0xFFE36810),
-                        size: 16,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    spacing: 4,
-                    children: [
-                      Row(
-                        spacing: 4,
-                        children: [
-                          Icon(Icons.circle, color: Color(0xFF009966), size: 8),
-                          Text(
-                            'This Week',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        spacing: 4,
-                        children: [
-                          Icon(Icons.circle, color: Color(0xFF3F3F47), size: 8),
-                          Text(
-                            'Last Week',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            // Board below todays habits and above the chart
-
-            // Top community challenges
-            Column(
-              spacing: MediaQuery.of(context).size.height * .008,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Top Community Challenges",
-                      style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
-                    ),
-                    Text(
-                      'See All',
-                      style: TextStyle(color: Color(0xFF009966), fontSize: 12),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 4.0,
-                  ),
-                  margin: EdgeInsets.only(bottom: 10.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF27272A).withValues(alpha: .5),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  // Container(
-                  //       padding: EdgeInsets.symmetric(
-                  //         horizontal: 12.0,
-                  //         vertical: 4.0,
-                  //       ),
-                  //       margin: EdgeInsets.only(bottom: 10.0),
-                  //       decoration: BoxDecoration(
-                  //         color: Color(0xFF27272A).withValues(alpha: .5),
-                  //         borderRadius: BorderRadius.circular(40.0),
-                  //       ),
-                  //       alignment: Alignment.center,
-                  //       child: Text(
-                  //         quote.category,
-                  //         style: TextStyle(color: Colors.white, fontSize: 12),
-                  //       ),
-                  //     ),
-                  child: Column(
-                    spacing: MediaQuery.of(context).size.height * .008,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('60 Days Active Body Transformation'),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12.0,
-                              vertical: 4.0,
-                            ),
-                            margin: EdgeInsets.only(bottom: 10.0),
-                            decoration: BoxDecoration(
-                              color: Color(0xFF00D492).withValues(alpha: .5),
-                              borderRadius: BorderRadius.circular(40.0),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Active',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12.0,
-                              vertical: 4.0,
-                            ),
-                            margin: EdgeInsets.only(bottom: 10.0),
-                            decoration: BoxDecoration(
-                              color: Color(0xFF27272A).withValues(alpha: .5),
-                              borderRadius: BorderRadius.circular(40.0),
-                            ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Fitness',
-                              style: TextStyle(
-                                // color: Color(0xFF27272A),
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            spacing: MediaQuery.of(context).size.width * 0.02,
-                            children: [Icon(Icons.people, size: 16), Text('4')],
-                          ),
-                          Row(
-                            spacing: MediaQuery.of(context).size.width * 0.02,
-                            children: [
-                              Icon(Icons.calendar_today, size: 16),
-                              Text('April 12'),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            // SizedBox(height: MediaQuery.of(context).size.height*.035,),
+            // Column(
+            //   spacing: MediaQuery.of(context).size.height * .008,
+            //   children: [
+            //     Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         Text(
+            //           "Today's Habits",
+            //           style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
+            //         ),
+            //         Text(
+            //           'See All',
+            //           style: TextStyle(color: Color(0xFF009966), fontSize: 12),
+            //         ),
+            //       ],
+            //     ),
+            //     Container(
+            //       child: Column(
+            //         spacing: MediaQuery.of(context).size.height * .008,
+            //         children:
+            //             habits
+            //                 .map((habit) => DashboardHabitItem(habit: habit))
+            //                 .toList(),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // // Todays Habits Section
+            //
+            // // Board below todays habits and above the chart
+            // Container(
+            //   margin: EdgeInsets.symmetric(horizontal: 10),
+            //   padding: EdgeInsets.symmetric(
+            //     horizontal: MediaQuery.of(context).size.width * .03,
+            //     vertical: MediaQuery.of(context).size.height * .025,
+            //   ),
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(15),
+            //     border: Border.all(
+            //       color: Color(0xFF27272A).withOpacity(.35),
+            //       width: 2.5,
+            //     ),
+            //   ),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Text(
+            //             'Weekly Completion',
+            //             style: TextStyle(
+            //               fontSize: 14,
+            //               fontWeight: FontWeight.w300,
+            //             ),
+            //           ),
+            //           Text(
+            //             'Apr 12 - Apr 19',
+            //             style: TextStyle(
+            //               fontSize: 10,
+            //               fontWeight: FontWeight.w300,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //       Row(
+            //         children: [
+            //           Text(
+            //             '12',
+            //             style: TextStyle(
+            //               fontSize: 16,
+            //               fontWeight: FontWeight.w400,
+            //             ),
+            //           ),
+            //           Icon(
+            //             Icons.local_fire_department,
+            //             color: Color(0xFFE36810),
+            //             size: 16,
+            //           ),
+            //         ],
+            //       ),
+            //       Column(
+            //         crossAxisAlignment: CrossAxisAlignment.end,
+            //         spacing: 4,
+            //         children: [
+            //           Row(
+            //             spacing: 4,
+            //             children: [
+            //               Icon(Icons.circle, color: Color(0xFF009966), size: 8),
+            //               Text(
+            //                 'This Week',
+            //                 style: TextStyle(
+            //                   fontSize: 10,
+            //                   fontWeight: FontWeight.w300,
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //           Row(
+            //             spacing: 4,
+            //             children: [
+            //               Icon(Icons.circle, color: Color(0xFF3F3F47), size: 8),
+            //               Text(
+            //                 'Last Week',
+            //                 style: TextStyle(
+            //                   fontSize: 10,
+            //                   fontWeight: FontWeight.w300,
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // // Board below todays habits and above the chart
+            //
+            // // Top community challenges
+            // Column(
+            //   spacing: MediaQuery.of(context).size.height * .008,
+            //   children: [
+            //     Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         Text(
+            //           "Top Community Challenges",
+            //           style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
+            //         ),
+            //         Text(
+            //           'See All',
+            //           style: TextStyle(color: Color(0xFF009966), fontSize: 12),
+            //         ),
+            //       ],
+            //     ),
+            //     Container(
+            //       padding: EdgeInsets.symmetric(
+            //         horizontal: 20.0,
+            //         vertical: 4.0,
+            //       ),
+            //       margin: EdgeInsets.only(bottom: 10.0),
+            //       decoration: BoxDecoration(
+            //         color: Color(0xFF27272A).withValues(alpha: .5),
+            //         borderRadius: BorderRadius.circular(10.0),
+            //       ),
+            //       // Container(
+            //       //       padding: EdgeInsets.symmetric(
+            //       //         horizontal: 12.0,
+            //       //         vertical: 4.0,
+            //       //       ),
+            //       //       margin: EdgeInsets.only(bottom: 10.0),
+            //       //       decoration: BoxDecoration(
+            //       //         color: Color(0xFF27272A).withValues(alpha: .5),
+            //       //         borderRadius: BorderRadius.circular(40.0),
+            //       //       ),
+            //       //       alignment: Alignment.center,
+            //       //       child: Text(
+            //       //         quote.category,
+            //       //         style: TextStyle(color: Colors.white, fontSize: 12),
+            //       //       ),
+            //       //     ),
+            //       child: Column(
+            //         spacing: MediaQuery.of(context).size.height * .008,
+            //         children: [
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             crossAxisAlignment: CrossAxisAlignment.center,
+            //             children: [
+            //               Text('60 Days Active Body Transformation'),
+            //               Container(
+            //                 padding: EdgeInsets.symmetric(
+            //                   horizontal: 12.0,
+            //                   vertical: 4.0,
+            //                 ),
+            //                 margin: EdgeInsets.only(bottom: 10.0),
+            //                 decoration: BoxDecoration(
+            //                   color: Color(0xFF00D492).withValues(alpha: .5),
+            //                   borderRadius: BorderRadius.circular(40.0),
+            //                 ),
+            //                 alignment: Alignment.center,
+            //                 child: Text(
+            //                   'Active',
+            //                   style: TextStyle(
+            //                     color: Colors.white,
+            //                     fontSize: 12,
+            //                   ),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             crossAxisAlignment: CrossAxisAlignment.center,
+            //             children: [
+            //               Container(
+            //                 padding: EdgeInsets.symmetric(
+            //                   horizontal: 12.0,
+            //                   vertical: 4.0,
+            //                 ),
+            //                 margin: EdgeInsets.only(bottom: 10.0),
+            //                 decoration: BoxDecoration(
+            //                   color: Color(0xFF27272A).withValues(alpha: .5),
+            //                   borderRadius: BorderRadius.circular(40.0),
+            //                 ),
+            //                 alignment: Alignment.center,
+            //                 child: Text(
+            //                   'Fitness',
+            //                   style: TextStyle(
+            //                     // color: Color(0xFF27272A),
+            //                     fontSize: 12,
+            //                   ),
+            //                 ),
+            //               ),
+            //               Row(
+            //                 spacing: MediaQuery.of(context).size.width * 0.02,
+            //                 children: [Icon(Icons.people, size: 16), Text('4')],
+            //               ),
+            //               Row(
+            //                 spacing: MediaQuery.of(context).size.width * 0.02,
+            //                 children: [
+            //                   Icon(Icons.calendar_today, size: 16),
+            //                   Text('April 12'),
+            //                 ],
+            //               ),
+            //             ],
+            //           ),
+            //           Row(),
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),z
           ],
         ),
       ),

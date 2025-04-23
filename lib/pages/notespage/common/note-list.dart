@@ -20,7 +20,7 @@ class NotesList extends StatelessWidget {
 
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(8),
+      padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.01),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
