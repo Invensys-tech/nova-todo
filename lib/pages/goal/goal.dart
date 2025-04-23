@@ -49,13 +49,10 @@ class _GoalPageState extends State<GoalPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.menu,size: 28,),
-        title: Text("Vision Board",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
-      ),
+      backgroundColor: const Color(0xff2F2F2F),
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: const Color(0xff009966),
+        backgroundColor: const Color(0xFF2b2d30),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () async {
           final newGoals = await Navigator.push<List<Goal>>(
@@ -76,11 +73,22 @@ class _GoalPageState extends State<GoalPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-
+              GoalStat(),
 
               // ─── Tabs ───
+              TabBar(
+                controller: _tabController,
+                indicatorColor: Colors.green,
+                labelColor: Colors.green,
+                unselectedLabelColor: Colors.white70,
+                tabs: const [
+                  Tab(text: 'All'),
+                  Tab(text: 'Short‑term'),
+                  Tab(text: 'Longterm'),
+                ],
+              ),
 
-
+              const SizedBox(height: 10),
 
               // ─── Filtered list ───
               FutureBuilder<List<Goal>>(

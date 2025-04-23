@@ -357,6 +357,7 @@ import 'package:flutter_application_1/ui/inputs/loandate.dart';
 import 'package:flutter_application_1/ui/inputs/loantype.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../main.dart';
@@ -379,9 +380,12 @@ class _AddLoanState extends State<AddLoan> {
   // we'll stash the fetched Loan objects here:
   List<Loan> _loanList = [];
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
+    _dateController.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
     // pre‐fetch the loans once up front
     Datamanager()
         .getLoan()
@@ -402,11 +406,15 @@ class _AddLoanState extends State<AddLoan> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: FaIcon(FontAwesomeIcons.chevronLeft,size: 25, color: Color(0xff006045),),
+          icon: FaIcon(
+            FontAwesomeIcons.chevronLeft,
+            size: 25,
+            color: Color(0xff006045),
+          ),
         ),
         title: const Text(
           "Add Loan",
-          style: TextStyle(fontWeight: FontWeight.bold,),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
@@ -427,267 +435,274 @@ class _AddLoanState extends State<AddLoan> {
               ), // Optional: rounded corners
             ),
             padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // — Loan type selector —
-                TypeSelector(controller: _type),
-                SizedBox(height: 24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // — Loan type selector —
+                  TypeSelector(controller: _type),
+                  SizedBox(height: 24),
 
-                // — Loaner Name + autocomplete —
-                const Text(
-                  "Loaner Name",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
+                  // — Loaner Name + autocomplete —
+                  const Text(
+                    "Loaner Name",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*.0025),
-                // Only show autocomplete once our _loanList is loaded:
-                _loanList.isEmpty
-                    ? const Center(child: CircularProgressIndicator())
-                    : AutoCompleteText(
-                      suggestions:
-                          _loanList
-                              .map((loan) => loan.loanerName)
-                              .toSet()
-                              .toList(),
-                      controller: _loanerName,
-                      hintText: "Loaner Name",
-                      icon: Icons.person,
-                      suggestionBuilder: (String text) {
-                        return ListTile(
-                          title: Text(
-                            text,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        );
-                      },
-                      onSelect: (selectedName) {
-                        // find that Loan and auto‐fill its phone #
-                        final loan = _loanList.firstWhere(
-                          (l) => l.loanerName == selectedName,
-                          orElse:
-                              () => Loan(
-                                id: 0,
-                                loanerName: selectedName,
-                                phoneNumber: '',
-                                amount: 0,
-                                date: DateTime.now(),
-                                type: '',
-                                bank: '',
-                                userId: 0,
-                              ),
-                        );
-                        print(loan);
-                        _phoneNumber.text = loan.phoneNumber ?? '';
-                        setState(() {}); // refresh the UI
-                      },
-                    ),
-                SizedBox(height: MediaQuery.of(context).size.height*.02),
-
-                // — Phone number field (now prefilled if matched) —
-                const Text(
-                  "Phone Number",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*.0025),
-                TextFields(
-                  hinttext: 'Phone Number',
-                  whatIsInput: '0',
-                  controller: _phoneNumber,
-                  prefixText: '+251',
-                ),
-                SizedBox(height: 24),
-
-                // — Amount —
-                const Text(
-                  "Amount",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*.0025),
-                TextFields(
-                  hinttext: '0.0',
-                  whatIsInput: '0',
-                  controller: _amount,
-                  prefixText: 'ETB',
-                ),
-                SizedBox(height: 24),
-
-                // — Date —
-                const Text(
-                  "Date",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*.0025),
-                DateSelector(
-                  hintText: "Select a date",
-                  controller: _dateController,
-                  icon: Icons.calendar_today,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                  initialDate: DateTime.now(),
-                ),
-                SizedBox(height: 24),
-
-                // — Bank dropdown (as before) —
-                const Text(
-                  "Bank",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height*.0025),
-                FutureBuilder<List<dynamic>>(
-                  future: Datamanager().getBanks(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    final bankNames =
-                        (snapshot.data!)
-                            .map((b) => b.accountHolder as String)
-                            .toList();
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                       color: Colors.grey.withOpacity(.4),
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: Colors.grey.withOpacity(.4),
-                          width: 1.0,
-                        ),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          value: _bank.text.isEmpty ? null : _bank.text,
-                          hint: const Text(
-                            "Select a Bank",
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                          icon: const Icon(
-                            Icons.arrow_drop_down,
-                          ),
-                          style: const TextStyle(
-                            fontSize: 13,
-                          ),
-                          items:
-                              bankNames
-                                  .map(
-                                    (value) => DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    ),
-                                  )
-                                  .toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _bank.text = value ?? "";
-                            });
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                ),
-
-                SizedBox(height: 48),
-                // — Cancel / Save buttons (unchanged) —
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          _loanerName.clear();
-                          _phoneNumber.clear();
-                          _amount.clear();
-                          _type.clear();
-                          _dateController.clear();
-                          _bank.clear();
-                          setState(() {});
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: const Text(
-                          "Cancel",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          try {
-                            final response = await Supabase.instance.client
-                                .from('loan')
-                                .insert({
-                                  'amount':
-                                      double.tryParse(_amount.text) ?? 0.0,
-                                  'loanerName': _loanerName.text,
-                                  'type': _type.text,
-                                  'bank': _bank.text,
-                                  'phoneNumber': _phoneNumber.text,
-                                  'userId': 1,
-                                  'date': formatDate(_dateController.text),
-                                });
-                            print(response);
-                            print("Loan added successfully!");
-                            final updatedLoans =
-                                await Datamanager().fetchLoan();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Loan added successfully!"),
-                              ),
-                            );
-                            Navigator.pop(context, updatedLoans);
-                          } catch (e) {
-                            print("Error inserting loan: $e");
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $e")),
-                            );
+                  SizedBox(height: MediaQuery.of(context).size.height * .0025),
+                  // Only show autocomplete once our _loanList is loaded:
+                  _loanList.isEmpty
+                      ? const Center(child: CircularProgressIndicator())
+                      : AutoCompleteText(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a Category';
                           }
-                          // insert your Supabase logic here...
+                          return null;
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff009966),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                        suggestions:
+                            _loanList
+                                .map((loan) => loan.loanerName)
+                                .toSet()
+                                .toList(),
+                        controller: _loanerName,
+                        hintText: "Loaner Name",
+                        icon: Icons.person,
+                        suggestionBuilder: (String text) {
+                          return ListTile(
+                            title: Text(
+                              text,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          );
+                        },
+
+                        onSelect: (selectedName) {
+                          // find that Loan and auto‐fill its phone #
+                          final loan = _loanList.firstWhere(
+                            (l) => l.loanerName == selectedName,
+                            orElse:
+                                () => Loan(
+                                  id: 0,
+                                  loanerName: selectedName,
+                                  phoneNumber: '',
+                                  amount: 0,
+                                  date: DateTime.now(),
+                                  type: '',
+                                  bank: '',
+                                  userId: 0,
+                                ),
+                          );
+                          print(loan);
+                          _phoneNumber.text = loan.phoneNumber ?? '';
+                          setState(() {}); // refresh the UI
+                        },
+                      ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .02),
+
+                  // — Phone number field (now prefilled if matched) —
+                  const Text(
+                    "Phone Number",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .0025),
+                  TextFields(
+                    hinttext: 'Phone Number',
+                    whatIsInput: '0',
+                    controller: _phoneNumber,
+                    prefixText: '+251',
+                    func: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a phone number';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 24),
+
+                  // — Amount —
+                  const Text(
+                    "Amount",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .0025),
+                  TextFields(
+                    hinttext: '0.0',
+                    whatIsInput: '0',
+                    controller: _amount,
+                    prefixText: 'ETB',
+                    func: (value) {
+                      if (value == null || value.isEmpty)
+                        return 'Amount is required';
+                      final amount = double.tryParse(value);
+                      if (amount == null || amount <= 0)
+                        return 'Enter a valid amount';
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 24),
+
+                  // — Date —
+                  const Text(
+                    "Date",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .0025),
+                  DateSelector(
+                    hintText: "Select a date",
+                    controller: _dateController,
+                    icon: Icons.calendar_today,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                    initialDate: DateTime.now(),
+                  ),
+                  SizedBox(height: 24),
+
+                  // — Bank dropdown (as before) —
+                  const Text(
+                    "Bank",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .0025),
+                  FutureBuilder<List<dynamic>>(
+                    future: Datamanager().getBanks(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      final bankNames =
+                          (snapshot.data!)
+                              .map((b) => b.accountHolder as String)
+                              .toList();
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(.4),
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: Colors.grey.withOpacity(.4),
+                            width: 1.0,
                           ),
                         ),
-                        child: const Text(
-                          "Save",
-                          style: TextStyle(color: Colors.white),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            value: _bank.text.isEmpty ? null : _bank.text,
+                            hint: const Text(
+                              "Select a Bank",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            icon: const Icon(Icons.arrow_drop_down),
+                            style: const TextStyle(fontSize: 13),
+                            items:
+                                bankNames
+                                    .map(
+                                      (value) => DropdownMenuItem(
+                                        value: value,
+                                        child: Text(value),
+                                      ),
+                                    )
+                                    .toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _bank.text = value ?? "";
+                              });
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: 48),
+                  // — Cancel / Save buttons (unchanged) —
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {
+                            _loanerName.clear();
+                            _phoneNumber.clear();
+                            _amount.clear();
+                            _type.clear();
+                            _dateController.clear();
+                            _bank.clear();
+                            setState(() {});
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: const Text(
+                            "Cancel",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-              ],
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              try {
+                                final response = await Supabase.instance.client
+                                    .from('loan')
+                                    .insert({
+                                      'amount':
+                                          double.tryParse(_amount.text) ?? 0.0,
+                                      'loanerName': _loanerName.text,
+                                      'type': _type.text,
+                                      'bank': _bank.text,
+                                      'phoneNumber': _phoneNumber.text,
+                                      'userId': 1,
+                                      'date': formatDate(_dateController.text),
+                                    });
+                                print(response);
+                                print("Loan added successfully!");
+                                final updatedLoans =
+                                    await Datamanager().fetchLoan();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Loan added successfully!"),
+                                  ),
+                                );
+                                Navigator.pop(context, updatedLoans);
+                              } catch (e) {
+                                print("Error inserting loan: $e");
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Error: $e")),
+                                );
+                              }
+                            }
+
+                            // insert your Supabase logic here...
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xff009966),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                          child: const Text(
+                            "Save",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
           ),
         ),

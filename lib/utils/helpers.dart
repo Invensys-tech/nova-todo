@@ -172,3 +172,11 @@ List<DateTime> getDatesBetween(DateTime start, DateTime end) {
 
   return dates;
 }
+
+String formatPhoneNumberToShowable(String phoneNumber) {
+  if (phoneNumber.length < 10) {
+    throw Exception('Wrong phone number format');
+  }
+
+  return '${phoneNumber.substring(0, 4)} ${phoneNumber.substring(4, 7)}-${phoneNumber.substring(7, 9)}-${phoneNumber.substring(9)}';
+}
