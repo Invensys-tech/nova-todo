@@ -92,6 +92,7 @@ class LoanCard extends StatelessWidget {
   final String phoneNumber;
   final num loanAmount;
   final int id;
+  final String type;
 
   const LoanCard({
     Key? key,
@@ -100,6 +101,7 @@ class LoanCard extends StatelessWidget {
     required this.loanAmount,
     required this.id,
     required this.datamanager,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -132,7 +134,7 @@ class LoanCard extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          border: Border.all(width: 1, color: Colors.grey.withOpacity(.3))
+          border: Border.all(width: 1, color: Colors.grey.withOpacity(.3)),
         ),
         child: Row(
           children: [
@@ -142,18 +144,12 @@ class LoanCard extends StatelessWidget {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 Text(
                   name,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.007),
                 Text(
                   phoneNumber,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 ),
               ],
             ),
@@ -164,18 +160,15 @@ class LoanCard extends StatelessWidget {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 Text(
                   '\$${loanAmount.toStringAsFixed(2)}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.007),
                 Text(
-                  'Payable Loan',
+                  type,
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: Colors.red,
+                    color: type == 'Receivable' ? Colors.green : Colors.red,
                   ),
                 ),
               ],

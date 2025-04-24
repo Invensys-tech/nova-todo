@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application_1/drawer/drawerpage.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
@@ -52,32 +53,6 @@ class _HomePageState extends State<HomePage> {
       // ),
       drawer: Drawer(child: Drawerpage(),  backgroundColor: Colors.transparent),
       body: Dashboard(),
-      // body: HabitView(
-      //     habit: Habit(
-      //         name: 'new habit',
-      //       date: '2025-04-21',
-      //       isDone: true,
-      //       maxStreak: 5,
-      //       repetitions: [],
-      //       // repetitions: [
-      //       //   '2024-12-01',
-      //       //   '2024-12-02',
-      //       //   '2024-12-03',
-      //       //   '2024-12-04',
-      //       // ],
-      //       repetitionType: 'Daily',
-      //       streak: 4,
-      //       type: 'Daily',
-      //       frequency: 2,
-      //       id: 1,
-      //       streakDates: [
-      //         '2025-04-21',
-      //         '2025-04-22',
-      //         // '2025-04-23',
-      //         // '2025-04-24',
-      //       ],
-      //     ),
-      // ),
       // body: Column(
       //   children: [
       //     ElevatedButton(
@@ -112,43 +87,6 @@ class _HomePageState extends State<HomePage> {
       //         );
       //       },
       //       child: Icon(Icons.notification_add),
-      //     ),
-      //     ElevatedButton(
-      //       onPressed: () async {
-      //         final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-      //
-      //         const AndroidInitializationSettings initializationSettingsAndroid =
-      //         AndroidInitializationSettings('ic_notification');
-      //
-      //         const InitializationSettings initializationSettings =
-      //         InitializationSettings(android: initializationSettingsAndroid);
-      //
-      //         await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-      //
-      //         const AndroidNotificationDetails androidPlatformChannelSpecifics =
-      //         AndroidNotificationDetails(
-      //           'test_channel_id',
-      //           'Test Channel',
-      //           channelDescription: 'Test Description',
-      //           importance: Importance.max,
-      //           priority: Priority.high,
-      //           playSound: true,
-      //           enableVibration: true,
-      //           icon: 'ic_notification',
-      //         );
-      //
-      //         const NotificationDetails platformChannelSpecifics =
-      //         NotificationDetails(android: androidPlatformChannelSpecifics);
-      //
-      //         await flutterLocalNotificationsPlugin.show(
-      //           0,
-      //           'Hello!',
-      //           'This is a test notification',
-      //           platformChannelSpecifics,
-      //           payload: 'test',
-      //         );
-      //       },
-      //       child: Icon(Icons.notification_important),
       //     ),
       //     ElevatedButton(
       //       onPressed: () {

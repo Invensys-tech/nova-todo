@@ -48,7 +48,7 @@ class _SubGoalExpansionState extends State<SubGoalExpansion> {
       padding: EdgeInsets.all(MediaQuery.of(context).size.width) * 0.05,
       child: Column(
         children: [
-          Text(widget.title),
+          // Text(widget.title),
           ...widget.tasks.map(
             (task) => Row(
               children: [

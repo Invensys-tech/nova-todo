@@ -2,22 +2,18 @@ import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/goal/goalview.dart';
 
-class GoalWidget extends StatelessWidget {
-  final int id;
+class SubGoalCardWidget extends StatelessWidget {
   final String title;
-  final String description;
+  final String status;
   final String? date;
   final double percentage;
-  final String term;
 
-  const GoalWidget({
+  const SubGoalCardWidget({
     super.key,
-    required this.id,
     required this.title,
-    required this.description,
+    required this.status,
     this.date,
     this.percentage = 0.0,
-    required this.term,
   });
 
   get fifty => null;
@@ -26,12 +22,6 @@ class GoalWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     print(percentage);
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => GoalView(id: id)),
-        );
-      },
       child: Container(
         width: double.infinity,
         margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -47,19 +37,6 @@ class GoalWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 6.0),
-                    child: Icon(
-                      Icons.circle,
-                      size: 8,
-                      color:
-                          percentage == 0.0
-                              ? Colors.red
-                              : percentage == 100.00
-                              ? Colors.green
-                              : Colors.grey,
-                    ),
-                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -75,23 +52,19 @@ class GoalWidget extends StatelessWidget {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          description,
+                          status,
                           style: TextStyle(
                             fontSize: 13,
                             color: Colors.white.withOpacity(0.7),
                           ),
                         ),
                         const SizedBox(height: 6),
-                        Row(
-                          children: [
-                            Text(
-                              '${date}: $term',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.white.withOpacity(0.6),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          date ?? '',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
                         ),
                       ],
                     ),

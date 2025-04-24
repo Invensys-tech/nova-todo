@@ -57,7 +57,9 @@ class _DashboardState extends State<Dashboard> {
       'icon': Icons.line_weight,
     },
   ];
+
   final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
