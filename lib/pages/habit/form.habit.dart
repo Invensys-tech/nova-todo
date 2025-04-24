@@ -45,6 +45,7 @@ class _HabitFormState extends State<HabitForm> {
   void initState() {
     super.initState();
     repetition.controller.text = 'Daily';
+    frequency.controller.text = '0';
   }
 
   TextEditingController repetitionTypeController = TextEditingController();
@@ -320,9 +321,11 @@ class _HabitFormState extends State<HabitForm> {
                         ElevatedButton(
                           onPressed: () {
                             if (int.parse(frequency.controller.text) > 1) {
-                              frequency.controller.text =
-                                  (int.parse(frequency.controller.text) - 1)
-                                      .toString();
+                              setState(() {
+                                frequency.controller.text =
+                                    (int.parse(frequency.controller.text) - 1)
+                                        .toString();
+                              });
                             }
                           },
                           child: Text('-'),
@@ -330,9 +333,11 @@ class _HabitFormState extends State<HabitForm> {
                         Text(frequency.controller.text),
                         ElevatedButton(
                           onPressed: () {
-                            frequency.controller.text =
-                                (int.parse(frequency.controller.text) + 1)
-                                    .toString();
+                            setState(() {
+                              frequency.controller.text =
+                                  (int.parse(frequency.controller.text) + 1)
+                                      .toString();
+                            });
                           },
                           child: Text('+'),
                         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
+import 'package:flutter_application_1/pages/habit/components/habit.view.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lottie/lottie.dart';
@@ -111,7 +112,13 @@ class _HabitItemState extends State<HabitItem> {
       ),
       child: GestureDetector(
         onTap: () {
-          print('halluuuu');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+              (context) => HabitView(habit: habit),
+            ),
+          );
         },
         child: Padding(
           padding: EdgeInsets.symmetric(

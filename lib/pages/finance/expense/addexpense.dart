@@ -12,6 +12,7 @@ import 'package:flutter_application_1/ui/inputs/expensetype.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/testdate.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -161,8 +162,8 @@ class _AddExpenseState extends State<AddExpense> {
             color: Color(0xff006045),
           ),
         ),
-        title: const Text(
-          "Add Expense",
+        title:  Text(
+          translate("Finance"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,

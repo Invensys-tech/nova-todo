@@ -43,7 +43,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
     return [
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
-        title: ("Home"),
+        title: translate("Home"),
         iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff2E783A),
@@ -51,7 +51,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       ),
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.piggyBank),
-        title: ("Finance"),
+        title: translate("Finance"),
         iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
@@ -59,7 +59,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       ),
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.locationArrow),
-        title: ("Vision Board"),
+        title: translate("Vision Board"),
         iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
@@ -67,7 +67,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.assignment_add),
-        title: ("ToDoList"),
+        title: translate("ToDoList"),
         iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),
@@ -75,7 +75,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       ),
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.edit),
-        title:  ("Notes"),
+        title:  translate("Notes"),
         iconSize: 22,
         contentPadding: 0,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),

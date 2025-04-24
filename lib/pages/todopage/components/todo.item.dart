@@ -195,6 +195,7 @@ class _TodoItemState extends State<TodoItem> {
                       (context) => TodoViewPage(
                         dailyTask: widget.dailyTask,
                         addSubTask: addSubTask,
+                        resetList: widget.setParentState,
                       ),
                 ),
               );

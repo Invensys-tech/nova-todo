@@ -1,6 +1,12 @@
 // import 'package:flutter/material.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -124,5 +130,57 @@ class NotificationService {
       notificationDetails(),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
+  }
+
+  checkSetNotification() async {
+    final hiveService = HiveService();
+    await hiveService.initHive(boxName: 'notification');
+    final lastQuoteNotificationDate = await hiveService.getData('last-quote-notification-date');
+    DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
+    if (
+      lastQuoteNotificationDate == null
+          || lastQuoteNotificationDate != getDateOnly(DateTime.now())
+      ) {
+      int userId = (await AuthService().findSession())['id'];
+      final quotes = await supabaseClient
+          .from('quotes')
+          .select('text')
+          .eq('user_id', userId);
+
+      final notificationService = NotificationService();
+      if (lastQuoteNotificationDate != getDateOnly(yesterday)) {
+        if (quotes.isNotEmpty) {
+          final random = Random();
+          String randomQuote = quotes[random.nextInt(quotes.length)]['quote'];
+          notificationService.showNotification(-23, 'Daily Quote', randomQuote);
+        } 
+      }
+
+      if (quotes.isNotEmpty) {
+        final random = Random();
+        String randomQuote = quotes[random.nextInt(quotes.length)]['quote'];
+        await notificationService.showNotification(-23, 'Daily Quote', randomQuote);
+
+        DateTime tomorrow = DateTime.now().add(Duration(days: 1));
+        await notificationService.scheduleNotification(id: -23, title: 'Daily Quote', body: randomQuote, time: getStartOfDay(tomorrow));
+        await hiveService.upsertData('last-quote-notification-date', getDateOnly(DateTime.now()));
+      }
+    }
+  }
+
+  sendQuoteNotification() async {
+    int userId = (await AuthService().findSession())['id'];
+
+    final quotes = await supabaseClient
+        .from('quotes')
+        .select('text')
+        .eq('user_id', userId);
+
+    final notificationService = NotificationService();
+      if (quotes.isNotEmpty) {
+        final random = Random();
+        String randomQuote = quotes[random.nextInt(quotes.length)]['quote'];
+        notificationService.showNotification(-23, 'Daily Quote', randomQuote);
+      }
   }
 }
