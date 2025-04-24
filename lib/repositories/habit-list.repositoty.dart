@@ -39,4 +39,27 @@ class HabitListRepository {
       rethrow;
     }
   }
+
+  Future<HabitList> updateHabitList(
+    int id,
+    Map<String, dynamic> updates,
+  ) async {
+    try {
+      // Perform the update on the row with the given id
+      final response =
+          await supabaseClient
+              .from(Entities.HABIT_LIST.dbName)
+              .update(updates)
+              .eq('id', id)
+              .select()
+              .single();
+
+      // response is now a Map<String, dynamic> for the updated row
+      return HabitList.fromJson(response);
+    } catch (e) {
+      print("Error updating habit list with id=$id");
+      print(e);
+      rethrow;
+    }
+  }
 }

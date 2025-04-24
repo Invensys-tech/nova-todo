@@ -42,6 +42,26 @@ class ProductivityRepository {
     }
   }
 
+  Future<Productivity> updateProductivity(
+    int id,
+    Map<String, dynamic> updates,
+  ) async {
+    try {
+      final data =
+          await supabaseClient
+              .from(Entities.PRODUCTIVITY.dbName)
+              .update(updates)
+              .eq('id', id)
+              .select();
+
+      return Productivity.fromJson(data[0]);
+    } catch (e) {
+      print("Exception updating productivity!");
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<Productivity> fetchView(int id) async {
     try {
       final data =
@@ -59,6 +79,20 @@ class ProductivityRepository {
     } catch (e) {
       print(e);
       throw Exception("Error getting the productivity!");
+    }
+  }
+
+  Future<dynamic> deleteProductivity(int id) async {
+    try {
+      print("ID");
+      print(id);
+      final data = await supabaseClient
+          .from(Entities.PRODUCTIVITY.dbName)
+          .delete()
+          .eq('id', id);
+      print(data);
+    } catch (e) {
+      throw Exception('Failed to delete productivity: $e');
     }
   }
 }

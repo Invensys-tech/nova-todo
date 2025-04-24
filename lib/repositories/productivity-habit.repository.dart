@@ -66,4 +66,17 @@ class ProductivityHabitRepository {
       rethrow;
     }
   }
+
+  Future<dynamic> deleteProductivityHabit(int id) async {
+    try {
+      print("qqqqqqqqqqqqqqqqqqqqqqqqqqq");
+      print(id);
+      final data = await supabaseClient
+          .from(Entities.PRODUCTIVITY_HABIT.dbName)
+          .delete()
+          .eq('id', id);
+    } catch (e) {
+      throw Exception('Failed to delete productivity habit: $e');
+    }
+  }
 }

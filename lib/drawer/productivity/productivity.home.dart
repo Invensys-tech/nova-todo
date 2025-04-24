@@ -3,9 +3,11 @@ import 'package:flutter_application_1/drawer/drawerpage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.view.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
+import 'package:flutter_application_1/pages/homepage/edit.productivity.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
 import 'package:flutter_application_1/services/streak.service.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ProductivityHome extends StatefulWidget {
   const ProductivityHome({super.key});
@@ -16,7 +18,7 @@ class ProductivityHome extends StatefulWidget {
 
 class _HomePageState extends State<ProductivityHome> {
   List<Productivity> productivityList = [];
-  final StreakService _streakService = StreakService(); // Add this line
+  final StreakService _streakService = StreakService();
   Map<int, int> productivityStreaks = {};
 
   @override
@@ -55,65 +57,6 @@ class _HomePageState extends State<ProductivityHome> {
     }
   }
 
-  // Widget productivityCard(Productivity productivity) {
-  //   IconData icon = Icons.work; // Default icon
-  //   switch (productivity.title.toLowerCase()) {
-  //     case 'sports and gym':
-  //       icon = Icons.fitness_center;
-  //       break;
-  //     case 'books reading':
-  //       icon = Icons.book;
-  //       break;
-  //     case 'self improvement':
-  //       icon = Icons.self_improvement;
-  //       break;
-  //     case 'post on social media':
-  //       icon = Icons.public;
-  //       break;
-  //   }
-
-  //   final streakCount =
-  //       productivityStreaks[productivity.id] ??
-  //       0; // Get streak count, default to 0
-
-  //   return Card(
-  //     color: Colors.grey[900],
-  //     margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-  //     child: ListTile(
-  //       leading: Icon(icon, color: Colors.white, size: 30),
-  //       title: Text(
-  //         productivity.title,
-  //         style: const TextStyle(color: Colors.white, fontSize: 18),
-  //       ),
-  //       trailing: Row(
-  //         mainAxisSize: MainAxisSize.min,
-  //         children: [
-  //           const Icon(
-  //             Icons.local_fire_department,
-  //             color: Colors.orange,
-  //             size: 24,
-  //           ),
-  //           const SizedBox(width: 4),
-  //           Text(
-  //             streakCount.toString(),
-  //             style: const TextStyle(color: Colors.white, fontSize: 18),
-  //           ),
-  //         ],
-  //       ),
-  //       onTap: () {
-  //         // Handle tap action
-  //         Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => ProductivityViewPgae(id: productivity.id),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
   Widget productivityCard(Productivity productivity) {
     IconData iconData = Icons.work;
     String frequencyText = "Every Day";
@@ -147,70 +90,117 @@ class _HomePageState extends State<ProductivityHome> {
           ),
         );
       },
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E1E20), // slightly different from icon bg
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
+      child: Slidable(
+        key: ValueKey(productivity.id),
+        startActionPane: ActionPane(
+          motion: const ScrollMotion(),
           children: [
-            // Left section: text info
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    productivity.title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+            SlidableAction(
+              onPressed: (_) {
+                ProductivityRepository().deleteProductivity(productivity.id);
+                setState(() {
+                  productivityList.remove(productivity);
+                });
+              },
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              icon: Icons.delete,
+              label: 'Delete',
+            ),
+          ],
+        ),
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (_) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) =>
+                            EditProductivity(productivity: productivity),
+                  ),
+                );
+              },
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              icon: Icons.edit,
+              label: 'Edit',
+            ),
+          ],
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E1E20), // slightly different from icon bg
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              // Left section: text info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      productivity.title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
+                    const SizedBox(height: 4),
+                    Text(
+                      motivationText,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      frequencyText,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Right section: Icon in circular bg + chevron
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.local_fire_department,
+                    color: Colors.orange,
+                    size: 24,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(width: 4),
                   Text(
-                    motivationText,
-                    style: TextStyle(fontSize: 14, color: Colors.grey.shade400),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    frequencyText,
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+                    "${productivity.streak_count}",
+                    // productivity.streak_count as String,
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
               ),
-            ),
-
-            // Right section: Icon in circular bg + chevron
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.local_fire_department,
-                  color: Colors.orange,
-                  size: 24,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  "${productivity.streak_count}",
-                  // productivity.streak_count as String,
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const SizedBox(width: 8),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 14,
-                  color: Colors.green,
-                ),
-              ],
-            ),
-          ],
+              Row(
+                children: [
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14,
+                    color: Colors.green,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

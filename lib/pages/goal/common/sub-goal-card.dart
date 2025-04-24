@@ -27,7 +27,7 @@ class SubGoalCardWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         decoration: BoxDecoration(
-          color: const Color(0xFF424242),
+          // color: const Color(0xFF424242),
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Row(
@@ -103,8 +103,6 @@ class SubGoalCardWidget extends StatelessWidget {
             ),
 
             const SizedBox(width: 12),
-
-            const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.green),
           ],
         ),
       ),

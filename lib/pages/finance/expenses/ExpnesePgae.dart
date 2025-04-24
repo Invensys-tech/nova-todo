@@ -61,6 +61,7 @@ class _ExpensespageState extends State<Expensespage> {
       _loadExpenses();
     });
   }
+
   ETDateTime now = ETDateTime.now();
   @override
   Widget build(BuildContext context) {
@@ -70,13 +71,12 @@ class _ExpensespageState extends State<Expensespage> {
         backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () {
-
-
           PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
             context,
             screen: AddExpense(datamanager: widget.datamanager),
             withNavBar: false,
-            pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+            settings: const RouteSettings(),
           ).then((_) => setState(_loadExpenses));
         },
         child: const Icon(Icons.add),
@@ -122,7 +122,7 @@ class _ExpensespageState extends State<Expensespage> {
                   children: [
                     // — Summary Card —
                     Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.symmetric(horizontal: 16),
                       child: Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -134,7 +134,10 @@ class _ExpensespageState extends State<Expensespage> {
                           children: [
                             Row(
                               children: [
-                                SizedBox(width: MediaQuery.of(context).size.width*.25,),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * .25,
+                                ),
                                 const Icon(
                                   Icons.trending_up_outlined,
                                   color: Color(0xff0d805e),
@@ -171,8 +174,17 @@ class _ExpensespageState extends State<Expensespage> {
                     ),
 
                     Padding(
-                      padding:  EdgeInsets.only(left: MediaQuery.of(context).size.width*.05, top: MediaQuery.of(context).size.height*.045),
-                      child: Text("Transaction List",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                      padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * .05,
+                        top: MediaQuery.of(context).size.height * .045,
+                      ),
+                      child: Text(
+                        "Transaction List",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
 
                     // — Expense List —
@@ -186,15 +198,15 @@ class _ExpensespageState extends State<Expensespage> {
                         return Column(
                           children: [
                             GestureDetector(
-                              onTap:(){
-                                Navigator.of(context).push(PageRouteBuilder(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  PageRouteBuilder(
                                     opaque: false,
                                     pageBuilder: (BuildContext context, _, __) {
-                                      return SingleEpensesFullViewPage(
-
-                                      );
-                                    }
-                                ));
+                                      return SingleEpensesFullViewPage();
+                                    },
+                                  ),
+                                );
                               },
                               child: Slidable(
                                 key: ValueKey(e.id),
@@ -223,7 +235,8 @@ class _ExpensespageState extends State<Expensespage> {
                                           MaterialPageRoute(
                                             builder:
                                                 (_) => EditExpense(
-                                                  datamanager: widget.datamanager,
+                                                  datamanager:
+                                                      widget.datamanager,
                                                   expenseId: e.id,
                                                 ),
                                           ),
