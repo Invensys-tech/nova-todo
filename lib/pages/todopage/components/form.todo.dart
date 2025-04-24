@@ -31,6 +31,7 @@ class TodoForm extends StatefulWidget {
   final FormInputPair startTimeInput;
   final FormInputPair endTimeInput;
   final void Function(dynamic) addSubTask;
+  final bool isEditing;
 
   const TodoForm({
     super.key,
@@ -46,6 +47,7 @@ class TodoForm extends StatefulWidget {
     required this.startTimeInput,
     required this.endTimeInput,
     required this.addSubTask,
+    this.isEditing = false,
   });
 
   static const List<Map<String, dynamic>> todoTypes = [
@@ -73,8 +75,9 @@ class _TodoFormState extends State<TodoForm> {
     widget.date.controller.text = DateFormat(
       'dd-MM-yyyy',
     ).format(DateTime.now());
-    widget.type.controller.text = 'High';
-    // widget.type.controller.text = 'High';
+    if (!widget.isEditing) {
+      widget.type.controller.text = 'High';
+    }
   }
 
   bool subTasksIsOpen = false;

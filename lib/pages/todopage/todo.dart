@@ -236,6 +236,7 @@ class _TodoPageState extends State<TodoPage> {
                           //             } else {
                           //               return Center(
                           //                 child: CircularProgressIndicator(),
+                          //                 child: CircularProgressIndicator(),
                           //               );
                           //             }
                           //           }

@@ -258,6 +258,29 @@ class DailyTaskRepository {
     }
   }
 
+  Future<bool> updateDailyTask(Map<String, dynamic> dailyTaskData, int id) async {
+    try {
+      final response = await supabaseClient
+          .from(Entities.DAILY_TASK.dbName)
+          .update({
+            'name': dailyTaskData['name'],
+            'type': dailyTaskData['type'],
+            'description': dailyTaskData['description'],
+          })
+          .eq('id', id)
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Daily task not updated!');
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<bool> deleteById(int id) async {
     try {
       final response = await supabaseClient

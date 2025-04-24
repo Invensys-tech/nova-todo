@@ -9,8 +9,15 @@ import 'package:flutter_application_1/utils/helpers.dart';
 
 class AddTodoPage extends StatefulWidget {
   final void Function() refetchData;
+  final bool isEditing;
+  final DailyTask? dailyTask;
 
-  const AddTodoPage({super.key, required this.refetchData});
+  const AddTodoPage({
+    super.key,
+    required this.refetchData,
+    this.isEditing = false,
+    this.dailyTask,
+  });
 
   @override
   State<AddTodoPage> createState() => _AddTodoPageState();
@@ -140,12 +147,33 @@ class _AddTodoPageState extends State<AddTodoPage> {
   }
 
   saveTodo() {
-    bool parsedCorrectly = parseStartEndTime();
-    if (!parsedCorrectly) {
-      return;
-    }
-
     setState(() {
+      if (widget.isEditing && widget.dailyTask != null) {
+        final updatedData = {
+          'name': name.controller.text,
+          'type': type.controller.text,
+          'description': description.controller.text,
+        };
+
+        DailyTaskRepository().updateDailyTask(
+            updatedData,
+            widget.dailyTask!.id!,
+        ).then((value) {
+          if (value) {
+            clearForm();
+            widget.refetchData();
+            Navigator.pop(context);
+          }
+        });
+
+        return;
+      }
+
+      bool parsedCorrectly = parseStartEndTime();
+      if (!parsedCorrectly) {
+        return;
+      }
+
       Map<String, dynamic> formData = {
         'name': name.controller.text,
         // 'time': formatDate(time.controller.text),
@@ -177,6 +205,21 @@ class _AddTodoPageState extends State<AddTodoPage> {
     setState(() {
       subTasks.add(subTask);
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.isEditing && widget.dailyTask != null) {
+      name.controller.text = widget.dailyTask!.name;
+      // 'time': formatDate(time.controller.text),
+      type.controller.text = widget.dailyTask!.type;
+      // notifyMe.controller.text = widget.dailyTask.;
+      // taskTimeController.text;
+      // taskEndTimeController.text;
+      description.controller.text = widget.dailyTask!.description;
+    }
   }
 
   @override

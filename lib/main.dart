@@ -75,8 +75,8 @@ void main() async {
 
   final delegate = await setupLocalization();
 
-  runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
-  // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+  // runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
+  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
