@@ -9,9 +9,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class HabitsRepository {
   Future<List<Habit>> fetchHabits() async {
     try {
-      // int userId = (await AuthService().findSession())['id'];
-      final data = await supabaseClient.from(Entities.HABITS.dbName).select();
-      // .eq('user_id', userId);
+      int userId = (await AuthService().findSession())['id'];
+      final data = await supabaseClient.from(Entities.HABITS.dbName)
+          .select()
+          .eq('user_id', userId);
 
       List<Habit> habits =
           data.map<Habit>((habit) {
@@ -313,6 +314,44 @@ class HabitsRepository {
 
       if (response.count == 0) {
         throw Exception('Error removing habit day');
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<bool> updateById(Habit habit, int id) async {
+    try {
+      final response = await supabaseClient
+          .from(Entities.HABITS.dbName)
+          .update(habit.toJson())
+          .eq('id', id)
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Habit not updated!');
+      }
+
+      return true;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<bool> deleteById(int id) async {
+    try {
+      final response = await supabaseClient
+          .from(Entities.HABITS.dbName)
+          .delete()
+          .eq('id', id)
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Habit not found!');
       }
 
       return true;

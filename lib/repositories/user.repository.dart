@@ -118,7 +118,7 @@ class UserRepository {
 
       final createdAtDateTime = DateTime.parse(createdAt);
       final subscriptionEndDateTime = createdAtDateTime.add(
-        Duration(days: days ?? 90),
+        Duration(days: 90),
       );
 
       final response = await supabaseClient

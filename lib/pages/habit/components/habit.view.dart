@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/habit/components/habit.missed.item.dart';
+import 'package:flutter_application_1/repositories/habits.repository.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
 
 class HabitView extends StatelessWidget {
   final Habit habit;
@@ -13,6 +15,37 @@ class HabitView extends StatelessWidget {
       decoration: BoxDecoration(shape: BoxShape.circle, color: color),
     );
   }
+
+  _showAlertDialog(BuildContext pageContext) {
+    showDialog(
+      context: pageContext,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Alert"),
+          content: Text("Would you like to delete this task?"),
+          actions: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Delete", style: TextStyle(color: Color(0xFFEC003F))),
+              onPressed: () async {
+                  final deleted = await HabitsRepository().deleteById(habit!.id!);
+                  if (deleted) {
+                    Navigator.of(context).pop();
+                    Navigator.of(pageContext).pop();
+                  }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +86,7 @@ class HabitView extends StatelessWidget {
                     style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 14),
                   ),
                   Text(
-                    'Created At: ${habit.date}',
+                    'Created At: ${getDateOnly(DateTime.parse(habit.date))}',
                     style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 12),
                   ),
                 ],
@@ -224,7 +257,7 @@ class HabitView extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '${habit.goingOnFor - (habit.streakDates.length + 1)} Days',
+                                      '${habit.goingOnFor - (habit.streakDates.length)} Days',
                                       style: TextStyle(
                                         color: Color(0xFFF4F4F5),
                                         fontSize: 20,
@@ -280,6 +313,29 @@ class HabitView extends StatelessWidget {
                             .toList(),
                   ),
                 ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF27272A),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide(color: Color(0xFFEC003F), width: 2),
+                        ),
+                      ),
+                      onPressed: () {
+                        print('delete...');
+                        _showAlertDialog(context);
+                      },
+                      child: Text(
+                        "Delete",
+                        style: TextStyle(color: Color(0xFFEC003F)),
+                      ),
+                    ),
+                  ]
+                )
               ],
             )),
           ),

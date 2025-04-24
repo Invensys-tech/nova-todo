@@ -138,7 +138,7 @@ class Habit {
   }
 
   List<String> get missedDates {
-    final List<String> missedDates =
+    List<String> missedDates =
         getDatesBetween(DateTime.parse(date), DateTime.now())
             .map((existingDate) => getDateOnly(existingDate))
             .where(
@@ -149,6 +149,10 @@ class Habit {
                   ].contains(existingDate),
             )
             .toList();
+
+    if (!streakDates.contains(date) && getDateOnly(DateTime.parse(date)) != getDateOnly(DateTime.now())) {
+      missedDates = [date, ...missedDates];
+    }
 
     return missedDates;
   }
