@@ -1,18 +1,17 @@
 import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/pages/goal/common/goal-view-stat.dart';
 import 'package:flutter_application_1/pages/goal/journal.container.dart';
 import 'package:flutter_application_1/pages/goal/subgoals.container.dart';
 import 'package:flutter_application_1/repositories/goal.repository.dart';
 
-/// Model for an individual task.
 class Task {
   String text;
   bool isDone;
   Task({required this.text, this.isDone = false});
 }
 
-/// The reusable widget for a sub-goal task list.
 class TaskAccordion extends StatefulWidget {
   final String title;
   const TaskAccordion({super.key, required this.title});
@@ -68,7 +67,6 @@ class _TaskAccordionState extends State<TaskAccordion> {
           ),
           content: Column(
             children: [
-              // Display list of tasks
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -93,7 +91,6 @@ class _TaskAccordionState extends State<TaskAccordion> {
                   );
                 },
               ),
-              // Input to add a new task
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 1.0,
@@ -132,7 +129,6 @@ class _TaskAccordionState extends State<TaskAccordion> {
   }
 }
 
-/// The main view that reuses the same sub-goal widget multiple times.
 class GoalView extends StatefulWidget {
   final int id;
 
@@ -144,6 +140,20 @@ class GoalView extends StatefulWidget {
 
 class _GoalViewState extends State<GoalView> {
   late Future<Goal> goal;
+
+  List<double> percentageArr = [];
+  double? totPercentage;
+
+  void handleDataFromChild(List<double> newItems) {
+    // setState(() {
+    percentageArr = newItems;
+    // });
+    print("Data from child: $percentageArr");
+    // setState(() {
+    totPercentage =
+        percentageArr.reduce((a, b) => a + b) / percentageArr.length;
+    // });
+  }
 
   final motivationTitles = [
     "This goal important to you Because",
@@ -189,6 +199,13 @@ class _GoalViewState extends State<GoalView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Other content above can be placed here.
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+
+                  GoalViewStat(
+                    average: totPercentage ?? 0,
+                    budget: 10000,
+                    date: 'Jan 31 2025',
+                  ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
                   Column(
@@ -270,15 +287,18 @@ class _GoalViewState extends State<GoalView> {
                     ),
                   ),
                   Container(
-                    color: Color(0xff353535),
+                    // color: Color(0xff353535),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(0),
                       child: Column(
                         children: [
                           const SizedBox(height: 10),
                           Column(
                             children: [
-                              SubGoalsContainer(subGoals: goal.subGoals),
+                              SubGoalsContainer(
+                                subGoals: goal.subGoals,
+                                onDataChanged: handleDataFromChild,
+                              ),
                             ],
                           ),
                           const SizedBox(height: 20),
@@ -286,10 +306,12 @@ class _GoalViewState extends State<GoalView> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+
                   Container(
-                    color: Color(0xff353535),
+                    // color: Color(0xff353535),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(0.0),
                       child: Column(
                         children: [
                           const SizedBox(height: 10),

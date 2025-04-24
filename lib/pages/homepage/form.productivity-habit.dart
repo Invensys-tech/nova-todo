@@ -202,16 +202,6 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
             });
         print("Habit Title: $title");
 
-        // for (var pair in habit["pairs"]) {
-        //   String keyText = pair.key.controller.text;
-        //   String valueText = pair.value.controller.text;
-        //   print("   Pair -> Frequency: $keyText, Time: $valueText");
-        //   await HabitListRepository().createHabitList({
-        //     'title': keyText,
-        //     'time': valueText,
-        //     'productivity_habit_id': productivityHabit.id,
-        //   });
-        // }
         for (var pair in habit["pairs"]) {
           String frequencyValue = pair.key.controller.text;
           String timeValue = pair.value.controller.text;
@@ -257,38 +247,9 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
           });
 
           DateTime habitDate = DateTime.now();
-          // await updateOrCreateStreak(
-          //   productivityHabitId: productivityHabit.id,
-          //   habitDate: habitDate,
-          //   frequency: widget.frequency?.controller.text ?? "daily",
-          //   habitEntryId: habitListRecord.id,
-          // );
         }
       }
     }
-
-    // } else {
-    //   for (var habit in _controller) {
-    //     String title = habit["title"].controller.text;
-    //     var productivityHabit = await ProductivityHabitRepository()
-    //         .createProductivityHabit({
-    //           'title': title,
-    //           'productivity_id': widget.productivity_id,
-    //         });
-    //     print("Habit Title: $title");
-
-    //     for (var pair in habit["pairs"]) {
-    //       String keyText = pair.key.controller.text;
-    //       String valueText = pair.value.controller.text;
-    //       print("   Pair -> Frequency: $keyText, Time: $valueText");
-    //       await HabitListRepository().createHabitList({
-    //         'title': keyText,
-    //         'time': valueText,
-    //         'productivity_habit_id': productivityHabit.id,
-    //       });
-    //     }
-    //   }
-    // }
 
     // Pop until we reach the productivity-home route.
     Navigator.popUntil(context, ModalRoute.withName('/productivity-home'));

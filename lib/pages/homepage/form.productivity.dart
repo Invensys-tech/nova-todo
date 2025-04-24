@@ -44,7 +44,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
   );
 
   saveProductivity() async {
-    print("🧪 Step 1: Starting saveProductivity");
+    print(" Step 1: Starting saveProductivity");
 
     final productivity = await ProductivityRepository().createProductivity({
       'title': title.controller.text,
@@ -54,7 +54,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
       'user_id': 1,
     });
 
-    print("✅ Step 2: Productivity created: ${productivity.id}");
+    print(" Step 2: Productivity created: ${productivity.id}");
   }
 
   @override
@@ -125,39 +125,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
                   whatIsInput: frequency.type,
                   controller: frequency.controller,
                 ),
-                // Row(
-                //   spacing: MediaQuery.of(context).size.width * 0.04,
-                //   children: [
-                //     Expanded(
-                //       child: TextFields(
-                //         hinttext: frequency.hint,
-                //         whatIsInput: frequency.type,
-                //         controller: frequency.controller,
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: CustomDropdown(
-                //         hintText: "Term",
-                //         icon: Icons.local_mall,
-                //         items: ["Daily", "Weekely", "Monthly"],
-                //         controller: time.controller,
-                //       ),
-                //       // child: DateSelector(
-                //       //   hintText: time.hint,
-                //       //   controller: time.controller,
-                //       //   icon: Icons.calendar_today,
-                //       //   firstDate: DateTime(2000),
-                //       //   lastDate: DateTime(2100),
-                //       //   initialDate: DateTime.now(),
-                //       // ),
-                //       // child: TextFields(
-                //       //   hinttext: time.hint,
-                //       //   whatIsInput: time.type,
-                //       //   controller: time.controller,
-                //       // ),
-                //     ),
-                //   ],
-                // ),
+
                 SizedBox(height: MediaQuery.of(context).size.height * 0.019),
                 const Text(
                   "Description",
@@ -194,7 +162,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
                               ),
                             );
                           } catch (e, stacktrace) {
-                            print("🔥🔥🔥 Crash in saveProductivity: $e");
+                            print(" Crash in saveProductivity: $e");
                             print(stacktrace); // This helps a lot
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text("Error: $e")),
@@ -233,14 +201,6 @@ class _ProductivityFormState extends State<ProductivityForm> {
                                     ),
                               ),
                             );
-                            // print("Expense added successfully!");
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //   const SnackBar(
-                            //     content: Text("Expense added successfully!"),
-                            //   ),
-                            // );
-
-                            // Navigator.pop(context);
                           } catch (e) {
                             print("Error inserting expense: $e");
                             ScaffoldMessenger.of(context).showSnackBar(

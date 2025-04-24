@@ -37,18 +37,36 @@ class _JournalContainerState extends State<JournalContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xff353535),
+      // color: Color(0xff353535),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(0.0),
         child: Column(
           children: [
             Row(
-              children: const [
-                Icon(Icons.account_tree, color: Colors.white),
-                SizedBox(width: 8),
-                Text(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
                   "Journals",
                   style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => QuilExample(
+                              journal: '',
+                              goalId: widget.goalId,
+                              addJournal: addJournal,
+                            ),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    "Add Journal",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
@@ -56,8 +74,8 @@ class _JournalContainerState extends State<JournalContainer> {
             ...widget.journals.map((journal) {
               List<dynamic> jsonList = jsonDecode(jsonDecode(journal.journal));
 
-              print("============= JSON =============");
-              print(jsonList);
+              // print("============= JSON =============");
+              // print(jsonList);
 
               // Convert List<dynamic> to List<Map<String, dynamic>>
               List<dynamic> dataList =
@@ -79,7 +97,14 @@ class _JournalContainerState extends State<JournalContainer> {
                   );
                 },
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white30),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  // padding: EdgeInsets.all(8.0),
                   child: Text(quillData.toPlainText()),
                 ),
               );

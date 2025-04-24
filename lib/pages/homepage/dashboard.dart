@@ -15,10 +15,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
-
-
-
   List<dynamic> expenses = [
     {
       'title': 'Electric Bill',
@@ -63,57 +59,86 @@ class _DashboardState extends State<Dashboard> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height*.035,),
+            SizedBox(height: MediaQuery.of(context).size.height * .035),
             Container(
               child: Row(
                 children: [
-                  Icon(Icons.menu_outlined,size: 28, color: Theme.of(context).primaryColorLight,),
-                  SizedBox(width: MediaQuery.of(context).size.width*.015,),
-                  Text("Jan 23, 2025",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                  Icon(
+                    Icons.menu_outlined,
+                    size: 28,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
+                  SizedBox(width: MediaQuery.of(context).size.width * .015),
+                  Text(
+                    "Jan 23, 2025",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                  ),
 
-                  SizedBox(width: MediaQuery.of(context).size.width*.35,),
+                  SizedBox(width: MediaQuery.of(context).size.width * .35),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text("Good Morning",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
-                      Text("Abebe",style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),),
+                      Text(
+                        "Good Morning",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Text(
+                        "Abebe",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height*.03,),
+            SizedBox(height: MediaQuery.of(context).size.height * .03),
 
             Container(
-              height: MediaQuery.of(context).size.height*.2,
-              width: MediaQuery.of(context).size.width*.95,
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025, vertical: MediaQuery.of(context).size.height*.02),
+              height: MediaQuery.of(context).size.height * .2,
+              width: MediaQuery.of(context).size.width * .95,
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * .025,
+                vertical: MediaQuery.of(context).size.height * .02,
+              ),
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorDark,
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  border: Border.all(color: Colors.grey.withOpacity(.2))
+                color: Theme.of(context).primaryColorDark,
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+                border: Border.all(color: Colors.grey.withOpacity(.2)),
               ),
               child: Column(
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width*.9,
-                    height: MediaQuery.of(context).size.height*.12,
+                    width: MediaQuery.of(context).size.width * .9,
+                    height: MediaQuery.of(context).size.height * .12,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color:Theme.of(context).disabledColor
+                      borderRadius: BorderRadius.circular(15),
+                      color: Theme.of(context).disabledColor,
                     ),
-                    child:   Stack(
+                    child: Stack(
                       children: [
-
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.035, vertical: MediaQuery.of(context).size.height*.01),
+                          padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * .035,
+                            vertical: MediaQuery.of(context).size.height * .01,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height: MediaQuery.of(context).size.height*.01,),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        .01,
+                                  ),
                                   Text(
                                     'Total Balance',
                                     style: TextStyle(
@@ -121,7 +146,11 @@ class _DashboardState extends State<Dashboard> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  SizedBox(height: MediaQuery.of(context).size.height*.005,),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        .005,
+                                  ),
                                   Text(
                                     "\$ 99,000",
                                     style: TextStyle(
@@ -134,8 +163,11 @@ class _DashboardState extends State<Dashboard> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-
-                                  SizedBox(height: MediaQuery.of(context).size.height*.0075,),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        .0075,
+                                  ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     spacing: 4,
@@ -154,7 +186,11 @@ class _DashboardState extends State<Dashboard> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: MediaQuery.of(context).size.height*.0075,),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        .0075,
+                                  ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     spacing: 4,
@@ -174,7 +210,11 @@ class _DashboardState extends State<Dashboard> {
                                     ],
                                   ),
 
-                                  SizedBox(height: MediaQuery.of(context).size.height*.0075,),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        .0075,
+                                  ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     spacing: 4,
@@ -194,56 +234,51 @@ class _DashboardState extends State<Dashboard> {
                                     ],
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
                         Positioned(
-                          top: MediaQuery.of(context).size.height*.03,
-                          left: MediaQuery.of(context).size.width*.4,
+                          top: MediaQuery.of(context).size.height * .03,
+                          left: MediaQuery.of(context).size.width * .4,
                           child: Container(
-                            width: MediaQuery.of(context).size.width*.3,
-                            height: MediaQuery.of(context).size.height*.1,
+                            width: MediaQuery.of(context).size.width * .3,
+                            height: MediaQuery.of(context).size.height * .1,
                             decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xff009966).withOpacity(.1)
+                              shape: BoxShape.circle,
+                              color: Color(0xff009966).withOpacity(.1),
                             ),
                           ),
                         ),
                         Positioned(
-                          top: MediaQuery.of(context).size.height*.05,
-                          left: MediaQuery.of(context).size.width*.5,
+                          top: MediaQuery.of(context).size.height * .05,
+                          left: MediaQuery.of(context).size.width * .5,
                           child: Container(
-                            width: MediaQuery.of(context).size.width*.35,
-                            height: MediaQuery.of(context).size.height*.15,
+                            width: MediaQuery.of(context).size.width * .35,
+                            height: MediaQuery.of(context).size.height * .15,
                             decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xffFAFAFA).withOpacity(.1)
+                              shape: BoxShape.circle,
+                              color: Color(0xffFAFAFA).withOpacity(.1),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                  SizedBox(height: MediaQuery.of(context).size.height * .015),
                 ],
               ),
             ),
 
             // Financial Overview Section
-
-
-            SizedBox(height: MediaQuery.of(context).size.height*.035,),
+            SizedBox(height: MediaQuery.of(context).size.height * .035),
             Column(
               spacing: MediaQuery.of(context).size.height * .008,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Financial Overview',
-                      style: TextStyle( fontSize: 16),
-                    ),
+                    Text('Financial Overview', style: TextStyle(fontSize: 16)),
                     Text(
                       'This Month',
                       style: TextStyle(color: Color(0xFF009966), fontSize: 12),
@@ -254,7 +289,10 @@ class _DashboardState extends State<Dashboard> {
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.grey.withOpacity(.5), width: 1),
+                    border: Border.all(
+                      color: Colors.grey.withOpacity(.5),
+                      width: 1,
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -269,17 +307,12 @@ class _DashboardState extends State<Dashboard> {
                               Text('Expenses OverView'),
                               Row(
                                 children: [
-                                  Text(
-                                    '+',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                    ),
-                                  ),
+                                  Text('+', style: TextStyle(fontSize: 24)),
                                   Text(
                                     r'$ 65,400',
                                     style: TextStyle(
                                       fontSize: 20,
-                                      fontWeight: FontWeight.bold
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -333,7 +366,8 @@ class _DashboardState extends State<Dashboard> {
                                       size: 8,
                                     ),
                                   ],
-                                ), Row(
+                                ),
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   spacing: 4,
                                   children: [
@@ -364,8 +398,10 @@ class _DashboardState extends State<Dashboard> {
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.grey.withOpacity(.5), width: 1),
-
+                    border: Border.all(
+                      color: Colors.grey.withOpacity(.5),
+                      width: 1,
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -380,17 +416,12 @@ class _DashboardState extends State<Dashboard> {
                               Text('Income OverView'),
                               Row(
                                 children: [
-                                  Text(
-                                    '+',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                    ),
-                                  ),
+                                  Text('+', style: TextStyle(fontSize: 24)),
                                   Text(
                                     r'$ 25,200',
                                     style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
@@ -444,7 +475,8 @@ class _DashboardState extends State<Dashboard> {
                                       size: 8,
                                     ),
                                   ],
-                                ), Row(
+                                ),
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   spacing: 4,
                                   children: [
@@ -470,14 +502,11 @@ class _DashboardState extends State<Dashboard> {
                     ],
                   ),
                 ),
-
-
-
               ],
             ),
-            // Financial Overview Section.
 
-            SizedBox(height: MediaQuery.of(context).size.height*.05,),
+            // Financial Overview Section.
+            SizedBox(height: MediaQuery.of(context).size.height * .05),
 
             //Recent Expenses Section
             Column(
@@ -488,7 +517,7 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     Text(
                       'Top Community Challenges',
-                      style: TextStyle( fontSize: 16),
+                      style: TextStyle(fontSize: 16),
                     ),
                     Text(
                       'See All',
@@ -501,33 +530,58 @@ class _DashboardState extends State<Dashboard> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-
                       Container(
-                        width: MediaQuery.of(context).size.width*.3,
-                        height: MediaQuery.of(context).size.height*.2,
+                        width: MediaQuery.of(context).size.width * .3,
+                        height: MediaQuery.of(context).size.height * .2,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(width: 1,color: Colors.grey.withOpacity(.5))
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey.withOpacity(.5),
+                          ),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015,vertical: MediaQuery.of(context).size.height*.012),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * .015,
+                          vertical: MediaQuery.of(context).size.height * .012,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Losse Weight in ",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400),),
-                            Text("02 - 08 -2025 ",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w300),),
-                            SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                            Text(
+                              "Losse Weight in ",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Text(
+                              "02 - 08 -2025 ",
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * .015,
+                            ),
                             Center(
                               child: Container(
-                                width: MediaQuery.of(context).size.width*.2,
-                                height: MediaQuery.of(context).size.height*.1,
+                                width: MediaQuery.of(context).size.width * .2,
+                                height: MediaQuery.of(context).size.height * .1,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Theme.of(context).primaryColorDark,
                                 ),
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015),
-                                  width: MediaQuery.of(context).size.width*.175,
-                                  height: MediaQuery.of(context).size.height*.075,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                        .015,
+                                  ),
+                                  width:
+                                      MediaQuery.of(context).size.width * .175,
+                                  height:
+                                      MediaQuery.of(context).size.height * .075,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Theme.of(context).primaryColorDark,
@@ -539,7 +593,8 @@ class _DashboardState extends State<Dashboard> {
                                     startAngle: 360,
                                     sweepAngle: -360,
                                     foregroundColor: Color(0xff0FF009966),
-                                    backgroundColor: Theme.of(context).primaryColorDark,
+                                    backgroundColor:
+                                        Theme.of(context).primaryColorDark,
                                     foregroundStrokeWidth: 15,
                                     backgroundStrokeWidth: 15,
                                     animation: true,
@@ -547,171 +602,225 @@ class _DashboardState extends State<Dashboard> {
                                     seekColor: const Color(0xffeeeeee),
                                     child: Center(
                                       child: ValueListenableBuilder(
-                                          valueListenable: _valueNotifier,
-                                          builder: (_, double value, __) => Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                '${value.toInt()}%',
-                                                style:  TextStyle(
+                                        valueListenable: _valueNotifier,
+                                        builder:
+                                            (_, double value, __) => Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  '${value.toInt()}%',
+                                                  style: TextStyle(
                                                     fontWeight: FontWeight.w500,
-                                                    fontSize: 12
+                                                    fontSize: 12,
+                                                  ),
                                                 ),
-                                              ),
-
-                                            ],
-                                          )
+                                              ],
+                                            ),
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
 
-                      SizedBox(width: MediaQuery.of(context).size.width*.035,),
+                      SizedBox(width: MediaQuery.of(context).size.width * .035),
                       Container(
-                        width: MediaQuery.of(context).size.width*.3,
-                        height: MediaQuery.of(context).size.height*.2,
+                        width: MediaQuery.of(context).size.width * .3,
+                        height: MediaQuery.of(context).size.height * .2,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 1,color: Colors.grey.withOpacity(.5))
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey.withOpacity(.5),
+                          ),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015,vertical: MediaQuery.of(context).size.height*.012),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * .015,
+                          vertical: MediaQuery.of(context).size.height * .012,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Study Hard ",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),),
-                            Text("02 - 08 -2025 ",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w300),),
-                            SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                            Text(
+                              "Study Hard ",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Text(
+                              "02 - 08 -2025 ",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * .015,
+                            ),
                             Center(
                               child: Container(
-                                width: MediaQuery.of(context).size.width*.2,
-                                height: MediaQuery.of(context).size.height*.1,
+                                width: MediaQuery.of(context).size.width * .2,
+                                height: MediaQuery.of(context).size.height * .1,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Theme.of(context).primaryColorDark,
                                 ),
                                 child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015),
-                                    width: MediaQuery.of(context).size.width*.175,
-                                    height: MediaQuery.of(context).size.height*.075,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Theme.of(context).primaryColorDark,
-                                    ),
-                                    child: DashedCircularProgressBar.aspectRatio(
-                                      aspectRatio: 1, // width ÷ height
-                                      valueNotifier: _valueNotifier,
-                                      progress: 40,
-                                      startAngle: 360,
-                                      sweepAngle: -360,
-                                      foregroundColor: Color(0xff0FF009966),
-                                      backgroundColor: Theme.of(context).primaryColorDark,
-                                      foregroundStrokeWidth: 15,
-                                      backgroundStrokeWidth: 15,
-                                      animation: true,
-                                      seekSize: 6,
-                                      seekColor: const Color(0xffeeeeee),
-                                      child: Center(
-                                        child: ValueListenableBuilder(
-                                            valueListenable: _valueNotifier,
-                                            builder: (_, double value, __) => Column(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                        .015,
+                                  ),
+                                  width:
+                                      MediaQuery.of(context).size.width * .175,
+                                  height:
+                                      MediaQuery.of(context).size.height * .075,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  child: DashedCircularProgressBar.aspectRatio(
+                                    aspectRatio: 1, // width ÷ height
+                                    valueNotifier: _valueNotifier,
+                                    progress: 40,
+                                    startAngle: 360,
+                                    sweepAngle: -360,
+                                    foregroundColor: Color(0xff0FF009966),
+                                    backgroundColor:
+                                        Theme.of(context).primaryColorDark,
+                                    foregroundStrokeWidth: 15,
+                                    backgroundStrokeWidth: 15,
+                                    animation: true,
+                                    seekSize: 6,
+                                    seekColor: const Color(0xffeeeeee),
+                                    child: Center(
+                                      child: ValueListenableBuilder(
+                                        valueListenable: _valueNotifier,
+                                        builder:
+                                            (_, double value, __) => Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Text(
                                                   '${value.toInt()}%',
-                                                  style:  TextStyle(
-                                                      fontWeight: FontWeight.w500,
-                                                      fontSize: 12
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
                                                   ),
                                                 ),
-
                                               ],
-                                            )
-                                        ),
+                                            ),
                                       ),
-                                    )
+                                    ),
+                                  ),
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
-                      SizedBox(width: MediaQuery.of(context).size.width*.035,),
+                      SizedBox(width: MediaQuery.of(context).size.width * .035),
                       Container(
-                        width: MediaQuery.of(context).size.width*.3,
-                        height: MediaQuery.of(context).size.height*.2,
+                        width: MediaQuery.of(context).size.width * .3,
+                        height: MediaQuery.of(context).size.height * .2,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(width: 1,color: Colors.grey.withOpacity(.5))
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey.withOpacity(.5),
+                          ),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015,vertical: MediaQuery.of(context).size.height*.012),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * .015,
+                          vertical: MediaQuery.of(context).size.height * .012,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Going to Chu ",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400),),
-                            Text("02 - 08 -2025 ",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w300),),
-                            SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                            Text(
+                              "Going to Chu ",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Text(
+                              "02 - 08 -2025 ",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * .015,
+                            ),
                             Center(
                               child: Container(
-                                width: MediaQuery.of(context).size.width*.2,
-                                height: MediaQuery.of(context).size.height*.1,
+                                width: MediaQuery.of(context).size.width * .2,
+                                height: MediaQuery.of(context).size.height * .1,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Theme.of(context).primaryColorDark,
                                 ),
                                 child: Container(
-                                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015),
-                                    width: MediaQuery.of(context).size.width*.175,
-                                    height: MediaQuery.of(context).size.height*.075,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Theme.of(context).primaryColorDark,
-                                    ),
-                                    child: DashedCircularProgressBar.aspectRatio(
-                                      aspectRatio: 1, // width ÷ height
-                                      valueNotifier: _valueNotifier,
-                                      progress: 85,
-                                      startAngle: 360,
-                                      sweepAngle: -360,
-                                      foregroundColor: Color(0xff0FF009966),
-                                      backgroundColor: Theme.of(context).primaryColorDark,
-                                      foregroundStrokeWidth: 15,
-                                      backgroundStrokeWidth: 15,
-                                      animation: true,
-                                      seekSize: 6,
-                                      seekColor: const Color(0xffeeeeee),
-                                      child: Center(
-                                        child: ValueListenableBuilder(
-                                            valueListenable: _valueNotifier,
-                                            builder: (_, double value, __) => Column(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                        .015,
+                                  ),
+                                  width:
+                                      MediaQuery.of(context).size.width * .175,
+                                  height:
+                                      MediaQuery.of(context).size.height * .075,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  child: DashedCircularProgressBar.aspectRatio(
+                                    aspectRatio: 1, // width ÷ height
+                                    valueNotifier: _valueNotifier,
+                                    progress: 85,
+                                    startAngle: 360,
+                                    sweepAngle: -360,
+                                    foregroundColor: Color(0xff0FF009966),
+                                    backgroundColor:
+                                        Theme.of(context).primaryColorDark,
+                                    foregroundStrokeWidth: 15,
+                                    backgroundStrokeWidth: 15,
+                                    animation: true,
+                                    seekSize: 6,
+                                    seekColor: const Color(0xffeeeeee),
+                                    child: Center(
+                                      child: ValueListenableBuilder(
+                                        valueListenable: _valueNotifier,
+                                        builder:
+                                            (_, double value, __) => Column(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Text(
                                                   '${value.toInt()}%',
-                                                  style:  TextStyle(
-                                                      fontWeight: FontWeight.w500,
-                                                      fontSize: 12
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
                                                   ),
                                                 ),
-
                                               ],
-                                            )
-                                        ),
+                                            ),
                                       ),
-                                    )
+                                    ),
+                                  ),
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                )
+                ),
                 // Container(
                 //   child: Column(
                 //     spacing: MediaQuery.of(context).size.height * .01,
@@ -727,9 +836,9 @@ class _DashboardState extends State<Dashboard> {
                 // ),
               ],
             ),
-           // Recent Expenses Section
+            // Recent Expenses Section
 
-         //   Todays Habits Section
+            //   Todays Habits Section
 
             // SizedBox(height: MediaQuery.of(context).size.height*.035,),
             // Column(
