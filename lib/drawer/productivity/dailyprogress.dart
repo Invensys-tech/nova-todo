@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/habit-list.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/entities/productivity-habit-entity.dart';
+import 'package:flutter_application_1/pages/homepage/edit.productivity-habit.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity-habit.dart';
+import 'package:flutter_application_1/repositories/productivity-habit.repository.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class DailyprogressLists extends StatefulWidget {
   final Future<Productivity> productivityFuture;
@@ -18,39 +21,86 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
   ETDateTime noww = ETDateTime.now();
   @override
   late int productivity_id;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Widget buildContainer(ProductivityHabit p) {
     try {
       print(p);
-      return Container(
-        margin: EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.height * .015,
-          horizontal: MediaQuery.of(context).size.width * .025,
-        ),
-        padding: EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.height * .015,
-          horizontal: MediaQuery.of(context).size.width * .045,
-        ),
-        height: MediaQuery.of(context).size.height * .25,
-        width: MediaQuery.of(context).size.width * .925,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Color(0xff626262).withOpacity(.5),
-          border: Border.all(width: 1, color: Colors.white.withOpacity(.3)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      return Slidable(
+        key: ValueKey(p.id),
+        startActionPane: ActionPane(
+          motion: const ScrollMotion(),
           children: [
-            Text(
-              p.title,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * .01),
-            Column(
-              children: [
-                ...?p.habitList?.map((e) => smallListBuilder(e)).toList() ?? [],
-              ],
+            SlidableAction(
+              onPressed: (_) {
+                ProductivityHabitRepository().deleteProductivityHabit(p.id);
+              },
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              icon: Icons.delete,
+              label: 'Delete',
             ),
           ],
+        ),
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (_) async {
+                final changed = await Navigator.push<bool>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => EditProductivityHabitForm(habit: p),
+                  ),
+                );
+                if (changed == true)
+                  setState(() {
+                    /* refresh your list */
+                  });
+              },
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              icon: Icons.edit,
+              label: 'Edit',
+            ),
+          ],
+        ),
+        child: Container(
+          margin: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * .015,
+            horizontal: MediaQuery.of(context).size.width * .025,
+          ),
+          padding: EdgeInsets.symmetric(
+            vertical: MediaQuery.of(context).size.height * .015,
+            horizontal: MediaQuery.of(context).size.width * .045,
+          ),
+          height: MediaQuery.of(context).size.height * .25,
+          width: MediaQuery.of(context).size.width * .925,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color(0xff626262).withOpacity(.5),
+            border: Border.all(width: 1, color: Colors.white.withOpacity(.3)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                p.title,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * .01),
+              Column(
+                children: [
+                  ...?p.habitList?.map((e) => smallListBuilder(e)).toList() ??
+                      [],
+                ],
+              ),
+            ],
+          ),
         ),
       );
     } catch (e) {
@@ -123,25 +173,6 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
-            // CalendarTimeline(
-            //   initialDate: ETDateTime.now(),
-            //   firstDate: noww,
-            //   lastDate: DateTime(2027, 11, 20),
-            //   onDateSelected: (date) {
-            //     setState(() {
-            //       // _selectedDate = date;
-            //     });
-            //     print(ETDateFormat("dd-MMM-yyyy HH:mm:ss").format(date));
-            //   },
-            //   leftMargin: 20,
-            //   monthColor: Colors.blueGrey,
-            //   dayColor: Colors.teal[200],
-            //   activeDayColor: Colors.white,
-            //   activeBackgroundDayColor: selectedColor,
-            //   // dotsColor: selectedColor,
-            //   shrink: true,
-            //   locale: 'en_ISO',
-            // ),
             CalendarTimeline(
               initialDate: ETDateTime.now(),
               firstDate: noww,

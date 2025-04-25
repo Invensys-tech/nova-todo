@@ -5,6 +5,7 @@ import 'package:flutter_application_1/drawer/productivity/productivity.view.dart
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/habit/habits.dart';
+import 'package:flutter_application_1/pages/pricing/pricing.dart';
 import 'package:flutter_application_1/pages/quotes/quotes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -20,18 +21,26 @@ class Drawerpage extends StatefulWidget {
 
 class _DrawerpageState extends State<Drawerpage> {
   routeToHabits() {
-
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
       screen: HabitsPage(),
       withNavBar: false,
-      pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      settings: const RouteSettings(),
+    );
+  }
+
+  routeToPricing() {
+    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+      context,
+      screen: PricingScreen(),
+      withNavBar: false,
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      settings: const RouteSettings(),
     );
   }
 
   routeToQuotes() {
-
-
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
       screen: QuotesPage(),
@@ -185,15 +194,22 @@ class _DrawerpageState extends State<Drawerpage> {
             ],
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .025),
-          Row(
-            children: [
-              FaIcon(FontAwesomeIcons.tags, color: Color(0xff00D492), size: 19),
-              SizedBox(width: MediaQuery.of(context).size.width * .035),
-              Text(
-                translate("Pricing"),
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-              ),
-            ],
+          GestureDetector(
+            onTap: routeToPricing,
+            child: Row(
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.tags,
+                  color: Color(0xff00D492),
+                  size: 19,
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * .035),
+                Text(
+                  translate("Pricing"),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .025),
           GestureDetector(
@@ -236,52 +252,78 @@ class _DrawerpageState extends State<Drawerpage> {
               ),
             ],
           ), */
-          SizedBox(height: MediaQuery.of(context).size.height*.09,),
+          SizedBox(height: MediaQuery.of(context).size.height * .09),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                 context,
                 screen: Profile(),
                 withNavBar: false,
-                pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                settings: const RouteSettings(),
               );
             },
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025,vertical: MediaQuery.of(context).size.height*.01),
-              height: MediaQuery.of(context).size.height*.11,
-              width: MediaQuery.of(context).size.width*.65,
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * .025,
+                vertical: MediaQuery.of(context).size.height * .01,
+              ),
+              height: MediaQuery.of(context).size.height * .11,
+              width: MediaQuery.of(context).size.width * .65,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(width: 2, color: Theme.of(context).secondaryHeaderColor)
+                border: Border.all(
+                  width: 2,
+                  color: Theme.of(context).secondaryHeaderColor,
+                ),
               ),
               child: Row(
                 children: [
-                  FaIcon(FontAwesomeIcons.userCircle,size: 35,),
-                  SizedBox(width: MediaQuery.of(context).size.width*.035,),
+                  FaIcon(FontAwesomeIcons.userCircle, size: 35),
+                  SizedBox(width: MediaQuery.of(context).size.width * .035),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Abebe kebede ",style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),),
-                      SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                      Text(
+                        "Abebe kebede ",
+                        style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .015,
+                      ),
                       LinearPercentIndicator(
                         width: MediaQuery.of(context).size.width * .335,
                         animation: true,
                         padding: EdgeInsets.all(0),
-                        lineHeight:
-                        MediaQuery.of(context).size.height * .0065,
+                        lineHeight: MediaQuery.of(context).size.height * .0065,
                         animationDuration: 2500,
-                        percent:.83,
+                        percent: .83,
                         linearStrokeCap: LinearStrokeCap.round,
                         progressColor: Color(0xff009966),
                       ),
 
-                      SizedBox(height: MediaQuery.of(context).size.height*.0015,),
-                      Text("84% Compoleted ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .0015,
+                      ),
+                      Text(
+                        "84% Compoleted ",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ],
                   ),
 
-                  SizedBox(width: MediaQuery.of(context).size.width*.055,),
-                  FaIcon(FontAwesomeIcons.chevronRight,size: 20,color: Color(0xff009966),),
+                  SizedBox(width: MediaQuery.of(context).size.width * .055),
+                  FaIcon(
+                    FontAwesomeIcons.chevronRight,
+                    size: 20,
+                    color: Color(0xff009966),
+                  ),
                 ],
               ),
             ),
