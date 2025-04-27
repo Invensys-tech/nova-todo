@@ -152,6 +152,15 @@ class AnalyticsService {
       rethrow;
     }
   }
+
+  static Future<List<dynamic>> getDailyExpenseSummary() async {
+    try {
+      return Future<List<int>>.value([10, 20, 30]);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
 }
 
 class TotalBanksAnalytics {

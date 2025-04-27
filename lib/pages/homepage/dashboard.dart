@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/customized/billboard.dart';
+import 'package:flutter_application_1/pages/homepage/daily-report.dart';
 import 'package:flutter_application_1/pages/homepage/dashboard-components/dashboard.expense.item.dart';
 import 'package:flutter_application_1/services/analytics.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
@@ -106,7 +107,40 @@ class _DashboardState extends State<Dashboard> {
                 ],
               ),
             ),
+            SizedBox(height: MediaQuery.of(context).size.height * .002),
 
+            Padding(
+              padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.03),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF27272A),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: Color(0xFF27272A), width: 2),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => DailyReport(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "Daily Report",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: MediaQuery.of(context).size.height * .015),
             // ElevatedButton(
             //   onPressed: () {
             //     print('scheduled notification');

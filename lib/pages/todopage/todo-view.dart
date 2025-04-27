@@ -226,7 +226,6 @@ class _TodoViewPageState extends State<TodoViewPage> {
                             ),
                           ),
                         );
-                        print('editing...');
                       },
                       child: Text(
                         "Edit",

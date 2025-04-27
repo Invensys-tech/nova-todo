@@ -11,6 +11,7 @@ class MyCustomTextInput extends StatelessWidget {
   final bool? hasError;
   final String? errorMessage;
   final String? Function(String?)? validator;
+  final int? limit;
 
   const MyCustomTextInput({
     super.key,
@@ -23,6 +24,7 @@ class MyCustomTextInput extends StatelessWidget {
     required this.controller,
     this.icon,
     this.validator,
+    this.limit,
   });
 
   @override
@@ -42,6 +44,11 @@ class MyCustomTextInput extends StatelessWidget {
           keyboardType: whatIsInput,
           maxLength: maxLength,
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
+          onChanged: (value) {
+            if (limit != null && value.length == limit) {
+              FocusScope.of(context).nextFocus();
+            }
+          },
           buildCounter: (
             context, {
             required currentLength,

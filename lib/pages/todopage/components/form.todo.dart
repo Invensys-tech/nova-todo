@@ -3,6 +3,7 @@ import 'package:flutter_application_1/components/inputs/fixed-length-input.dart'
 import 'package:flutter_application_1/components/inputs/radio.input.dart';
 import 'package:flutter_application_1/components/inputs/selector.input.dart';
 import 'package:flutter_application_1/components/inputs/text.input.dart';
+
 // import 'package:flutter_application_1/components/inputs/time-picker.input.dart';
 import 'package:flutter_application_1/components/inputs/time-span-picker.input.dart';
 import 'package:flutter_application_1/pages/goal/common/header.expansion-panel.dart';
@@ -26,6 +27,7 @@ class TodoForm extends StatefulWidget {
   final FormInput notifyMe;
   final FormInput description;
   final List<dynamic> subTasks;
+
   // final TextEditingController taskTime;
   // final TextEditingController taskEndTime;
   final FormInputPair startTimeInput;
@@ -113,136 +115,90 @@ class _TodoFormState extends State<TodoForm> {
               // Row(
               Column(
                 spacing: MediaQuery.of(context).size.width * 0.08,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Expanded(
-                  //   child:
-                  // Expanded(
-                  //   child: Row(
-                  //     spacing: MediaQuery.of(context).size.width * 0.01,
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                        // TimeIntervalPicker(
-                        //   // includeMidnight: false,
-                        //   endLimit: null,
-                        //   startLimit: null,
-                        //   onChanged: (
-                        //     DateTime? startTime,
-                        //     DateTime? endTime,
-                        //     bool isAllDay,
-                        //   ) {
-                        //     if (startTime != null) {
-                        //       widget.startTimeInput.key.controller.text =
-                        //           (startTime.hour < 10
-                        //               ? '0${startTime.hour}'
-                        //               : startTime.hour.toString());
-                        //       widget.startTimeInput.value.controller.text =
-                        //           (startTime.minute < 10
-                        //               ? '0${startTime.minute}'
-                        //               : startTime.minute.toString());
-                        //     }
-                        //
-                        //     if (endTime != null) {
-                        //       widget.endTimeInput.key.controller.text =
-                        //           endTime.hour < 10
-                        //               ? '0${endTime.hour}'
-                        //               : endTime.hour.toString();
-                        //       widget.endTimeInput.value.controller.text =
-                        //           endTime.minute < 10
-                        //               ? '0${endTime.minute}'
-                        //               : endTime.minute.toString();
-                        //     }
-                        //   },
-                        // ),
-                        // Expanded(
-                        //   child: Row(
-                        //     spacing: MediaQuery.of(context).size.width * 0.01,
-                        //     children: [
-                        //       Expanded(
-                        //   child: MyCustomTextInput(
-                        //     maxLength: 2,
-                        //     hintText: widget.startTimeInput.key.hint,
-                        //     whatIsInput: TextInputType.numberWithOptions(
-                        //       decimal: false,
-                        //       signed: false,
-                        //     ),
-                        //     controller:
-                        //         widget.startTimeInput.key.controller,
-                        //     hasError: widget.startTimeInput.key.hasError,
-                        //     errorMessage:
-                        //         widget.startTimeInput.key.errorMessage,
-                        //   ),
-                        //
-                        //   ),
-                  //         Text(':'),
-                  //         Expanded(
-                  //         child: MyCustomTextInput(
-                  //           maxLength: 2,
-                  //           hintText: widget.startTimeInput.value.hint,
-                  //           whatIsInput: TextInputType.numberWithOptions(
-                  //             decimal: false,
-                  //             signed: false,
-                  //           ),
-                  //           controller:
-                  //               widget.startTimeInput.value.controller,
-                  //           hasError: widget.startTimeInput.value.hasError,
-                  //           errorMessage:
-                  //               widget.startTimeInput.value.errorMessage,
-                  //         ),
-                  //
-                  //             ),
-                  //             // startTimeInput
-                  //           ],
-                  //         ),
-                  //       ),
-                  //       Text('Start-Time', style: _taskTimesStyle),
-                  //     ],
-                  //   ),
-                  // // ),
-                  // // ),
-
+                    Row(
+                      spacing: MediaQuery.of(context).size.width * 0.01,
+                      children: [
+                        Expanded(
+                          child: MyCustomTextInput(
+                            maxLength: 2,
+                            hintText: widget.startTimeInput.key.hint,
+                            whatIsInput: TextInputType.numberWithOptions(
+                              decimal: false,
+                              signed: false,
+                            ),
+                            controller: widget.startTimeInput.key.controller,
+                            hasError: widget.startTimeInput.key.hasError,
+                            errorMessage:
+                                widget.startTimeInput.key.errorMessage,
+                            limit: 2,
+                          ),
+                        ),
+                        Text(':'),
+                        Expanded(
+                          child: MyCustomTextInput(
+                            maxLength: 2,
+                            hintText: widget.startTimeInput.value.hint,
+                            whatIsInput: TextInputType.numberWithOptions(
+                              decimal: false,
+                              signed: false,
+                            ),
+                            controller: widget.startTimeInput.value.controller,
+                            hasError: widget.startTimeInput.value.hasError,
+                            errorMessage:
+                                widget.startTimeInput.value.errorMessage,
+                            limit: 2,
+                          ),
+                        ),
+                        // startTimeInput
+                      ],
+                    ),
+                  // ),
+                  Text('Start-Time', style: _taskTimesStyle),
+                ],
+              ),
+              Column(
+                spacing: MediaQuery.of(context).size.width * 0.04,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Row(
                     spacing: MediaQuery.of(context).size.width * 0.01,
                     children: [
-                  Expanded(
-                  child: MyCustomTextInput(
-                    maxLength: 2,
-                    hintText: widget.endTimeInput.key.hint,
-                    whatIsInput: TextInputType.numberWithOptions(
-                      decimal: false,
-                      signed: false,
-                    ),
-                    controller: widget.endTimeInput.key.controller,
-                    hasError: widget.endTimeInput.key.hasError,
-                    errorMessage:
-                        widget.endTimeInput.key.errorMessage,
-                  ),
-
-                  ),
-                  Text(':'),
-                  Expanded(
-                  child: MyCustomTextInput(
-                    maxLength: 2,
-                    hintText: widget.endTimeInput.value.hint,
-                    whatIsInput: TextInputType.numberWithOptions(
-                      decimal: false,
-                      signed: false,
-                    ),
-                    controller:
-                        widget.endTimeInput.value.controller,
-                    hasError: widget.endTimeInput.value.hasError,
-                    errorMessage:
-                        widget.endTimeInput.value.errorMessage,
-                  ),
-
-                  ),
+                      Expanded(
+                        child: MyCustomTextInput(
+                          maxLength: 2,
+                          hintText: widget.endTimeInput.key.hint,
+                          whatIsInput: TextInputType.numberWithOptions(
+                            decimal: false,
+                            signed: false,
+                          ),
+                          controller: widget.endTimeInput.key.controller,
+                          hasError: widget.endTimeInput.key.hasError,
+                          errorMessage: widget.endTimeInput.key.errorMessage,
+                          limit: 2,
+                        ),
+                      ),
+                      Text(':'),
+                      Expanded(
+                        child: MyCustomTextInput(
+                          maxLength: 2,
+                          hintText: widget.endTimeInput.value.hint,
+                          whatIsInput: TextInputType.numberWithOptions(
+                            decimal: false,
+                            signed: false,
+                          ),
+                          controller: widget.endTimeInput.value.controller,
+                          hasError: widget.endTimeInput.value.hasError,
+                          errorMessage: widget.endTimeInput.value.errorMessage,
+                          limit: 2,
+                        ),
+                      ),
                     ],
                   ),
-                     Text('End-Time', style: _taskTimesStyle),
-                  //   ],
-                  // ),
-                  // ),
+                  Text('End-Time', style: _taskTimesStyle),
                 ],
-              ),
+              )
             ],
           ),
           MyTextInput(
@@ -254,12 +210,6 @@ class _TodoFormState extends State<TodoForm> {
               // icon: Icons.fingerprint,
             ),
           ),
-          // MySelector(
-          //   label: 'Type',
-          //   myDropdownItems: TodoForm.todoTypes,
-          //   onSelect: setTodoTypes,
-          //   currentValue: widget.type.controller.text,
-          // ),
           MyRadioInput(
             label: 'Priority',
             groupKey: 'todo-types',
@@ -324,3 +274,46 @@ class _TodoFormState extends State<TodoForm> {
     );
   }
 }
+
+
+// ! If time interval picket is needed later
+
+// Expanded(
+//   child:
+// Expanded(
+//   child: Row(
+//     spacing: MediaQuery.of(context).size.width * 0.01,
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+// TimeIntervalPicker(
+//   // includeMidnight: false,
+//   endLimit: null,
+//   startLimit: null,
+//   onChanged: (
+//     DateTime? startTime,
+//     DateTime? endTime,
+//     bool isAllDay,
+//   ) {
+//     if (startTime != null) {
+//       widget.startTimeInput.key.controller.text =
+//           (startTime.hour < 10
+//               ? '0${startTime.hour}'
+//               : startTime.hour.toString());
+//       widget.startTimeInput.value.controller.text =
+//           (startTime.minute < 10
+//               ? '0${startTime.minute}'
+//               : startTime.minute.toString());
+//     }
+//
+//     if (endTime != null) {
+//       widget.endTimeInput.key.controller.text =
+//           endTime.hour < 10
+//               ? '0${endTime.hour}'
+//               : endTime.hour.toString();
+//       widget.endTimeInput.value.controller.text =
+//           endTime.minute < 10
+//               ? '0${endTime.minute}'
+//               : endTime.minute.toString();
+//     }
+//   },
+// ),

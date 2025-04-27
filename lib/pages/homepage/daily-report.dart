@@ -1,0 +1,499 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+class DailyReport extends StatefulWidget {
+  const DailyReport({super.key});
+
+  @override
+  State<DailyReport> createState() => _DailyReportState();
+}
+
+class _DailyReportState extends State<DailyReport> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: FaIcon(
+            FontAwesomeIcons.chevronLeft,
+            size: 25,
+            color: Color(0xff006045),
+          ),
+        ),
+        title: const Text(
+          "Daily Report",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: MediaQuery.of(context).size.height * .03,
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                width: MediaQuery.of(context).size.width * .95,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8,
+                  children: [
+                    Text(
+                      translate('Success Rate'),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+
+                    LinearProgressIndicator(
+                      value: .4,
+                      minHeight: 8,
+                      borderRadius: BorderRadius.circular(4),
+                      backgroundColor: Color(0xFF3F3F47),
+                      color: Color(0xFF009966),
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          '40 % of the work done',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                width: MediaQuery.of(context).size.width * .95,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          translate('Expenses'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          '\$ 105,000',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    LinearProgressIndicator(
+                      value: .4,
+                      minHeight: 8,
+                      borderRadius: BorderRadius.circular(4),
+                      backgroundColor: Color(0xFF3F3F47),
+                      color: Color(0xFF009966),
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      spacing: 8,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              gradient: LinearGradient(
+                                colors: [Color(0xFF27272A), Color(0xFF18181B)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Column(
+                              spacing: 2,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Must',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF009966),
+                                  ),
+                                ),
+                                Text(
+                                  '55k',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              gradient: LinearGradient(
+                                colors: [Color(0xFF27272A), Color(0xFF18181B)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Column(
+                              spacing: 2,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Maybe',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFFD4D4D8),
+                                  ),
+                                ),
+                                Text(
+                                  '43.2k',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              gradient: LinearGradient(
+                                colors: [Color(0xFF27272A), Color(0xFF18181B)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: Column(
+                              spacing: 2,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Unwanted',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFFEC003F),
+                                  ),
+                                ),
+                                Text(
+                                  '26k',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                width: MediaQuery.of(context).size.width * .95,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      translate('Income'),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      translate('\$ 34,500'),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                width: MediaQuery.of(context).size.width * .95,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Column(
+                  spacing: 10,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          translate('Habit Summary'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          translate('3/4'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    ...[
+                      {'title': 'Did this did that', 'isDone': true},
+                      {'title': 'Did this did that', 'isDone': true},
+                      {'title': 'Did this did that', 'isDone': true},
+                      {'title': 'Did this did that', 'isDone': false},
+                    ].map(
+                      (habit) => Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        spacing: 16,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFF27272A),
+                            ),
+                            child:
+                                habit['isDone'] as bool
+                                    ? Icon(
+                                      Icons.check,
+                                      color: Color(0xFF00D492),
+                                    )
+                                    : Icon(
+                                      Icons.close,
+                                      color: Color(0xFFEC003F),
+                                    ),
+                          ),
+
+                          Text(habit['title'] as String),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                width: MediaQuery.of(context).size.width * .95,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Column(
+                  spacing: 10,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          translate('Productivity Summary'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          translate('7/10'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      spacing: 16,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF8B0836),
+                          ),
+                          child: Text('☹️', style: TextStyle(fontSize: 24)),
+                        ),
+                        Expanded(
+                          child: Text(
+                            'You need to make improvements. You Got It',
+                            softWrap: true,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                width: MediaQuery.of(context).size.width * .95,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8,
+                  children: [
+                    Text(
+                      'Share',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFFF637E).withAlpha(20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(color: Color(0xFFFF637E), width: 2),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Icon(
+                            Icons.camera,
+                            color: Color(0xFFFF637E),
+                          ),
+                        ),
+
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white.withAlpha(20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(color: Colors.white, width: 2),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Icon(
+                            Icons.music_note,
+                            color: Colors.white,
+                          ),
+                        ),
+
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF00D492).withAlpha(20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(color: Color(0xFF00D492), width: 2),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Icon(
+                            Icons.share,
+                            color: Color(0xFF00D492),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 5),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
