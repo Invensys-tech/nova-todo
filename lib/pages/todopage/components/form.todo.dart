@@ -97,106 +97,155 @@ class _TodoFormState extends State<TodoForm> {
     widget.notifyMe.controller.text = value;
   }
 
+  // setTimePeriod(value) {
+  //   if (value == 'am') {
+  //
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.02),
+      padding: EdgeInsets.all(MediaQuery
+          .of(context)
+          .size
+          .height * 0.02),
       color: const Color(0x00000000),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: MediaQuery.of(context).size.width * 0.04,
+        spacing: MediaQuery
+            .of(context)
+            .size
+            .width * 0.04,
         children: [
           // MyTimeSpanPicker(label: 'Task Time', onChange: setTaskTime),
           Column(
-            spacing: MediaQuery.of(context).size.width * 0.04,
+            spacing: MediaQuery
+                .of(context)
+                .size
+                .width * 0.04,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Task Time'),
               // Row(
-              Column(
-                spacing: MediaQuery.of(context).size.width * 0.08,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                spacing: 10,
                 children: [
-                    Row(
-                      spacing: MediaQuery.of(context).size.width * 0.01,
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      spacing: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.08,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: MyCustomTextInput(
-                            maxLength: 2,
-                            hintText: widget.startTimeInput.key.hint,
-                            whatIsInput: TextInputType.numberWithOptions(
-                              decimal: false,
-                              signed: false,
-                            ),
-                            controller: widget.startTimeInput.key.controller,
-                            hasError: widget.startTimeInput.key.hasError,
-                            errorMessage:
+                        Row(
+                          spacing: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.01,
+                          children: [
+                            Expanded(
+                              child: MyCustomTextInput(
+                                maxLength: 2,
+                                hintText: widget.startTimeInput.key.hint,
+                                whatIsInput: TextInputType.numberWithOptions(
+                                  decimal: false,
+                                  signed: false,
+                                ),
+                                controller: widget.startTimeInput.key
+                                    .controller,
+                                hasError: widget.startTimeInput.key.hasError,
+                                errorMessage:
                                 widget.startTimeInput.key.errorMessage,
-                            limit: 2,
-                          ),
-                        ),
-                        Text(':'),
-                        Expanded(
-                          child: MyCustomTextInput(
-                            maxLength: 2,
-                            hintText: widget.startTimeInput.value.hint,
-                            whatIsInput: TextInputType.numberWithOptions(
-                              decimal: false,
-                              signed: false,
+                                maxValue: 11,
+                              ),
                             ),
-                            controller: widget.startTimeInput.value.controller,
-                            hasError: widget.startTimeInput.value.hasError,
-                            errorMessage:
+                            Text(':'),
+                            Expanded(
+                              child: MyCustomTextInput(
+                                maxLength: 2,
+                                hintText: widget.startTimeInput.value.hint,
+                                whatIsInput: TextInputType.numberWithOptions(
+                                  decimal: false,
+                                  signed: false,
+                                ),
+                                controller: widget.startTimeInput.value
+                                    .controller,
+                                hasError: widget.startTimeInput.value.hasError,
+                                errorMessage:
                                 widget.startTimeInput.value.errorMessage,
-                            limit: 2,
-                          ),
+                                maxValue: 59,
+                              ),
+                            ),
+                            // startTimeInput
+                          ],
                         ),
-                        // startTimeInput
+                        // ),
+                        Text('Start-Time', style: _taskTimesStyle),
                       ],
                     ),
-                  // ),
-                  Text('Start-Time', style: _taskTimesStyle),
-                ],
-              ),
-              Column(
-                spacing: MediaQuery.of(context).size.width * 0.04,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    spacing: MediaQuery.of(context).size.width * 0.01,
-                    children: [
-                      Expanded(
-                        child: MyCustomTextInput(
-                          maxLength: 2,
-                          hintText: widget.endTimeInput.key.hint,
-                          whatIsInput: TextInputType.numberWithOptions(
-                            decimal: false,
-                            signed: false,
-                          ),
-                          controller: widget.endTimeInput.key.controller,
-                          hasError: widget.endTimeInput.key.hasError,
-                          errorMessage: widget.endTimeInput.key.errorMessage,
-                          limit: 2,
-                        ),
-                      ),
-                      Text(':'),
-                      Expanded(
-                        child: MyCustomTextInput(
-                          maxLength: 2,
-                          hintText: widget.endTimeInput.value.hint,
-                          whatIsInput: TextInputType.numberWithOptions(
-                            decimal: false,
-                            signed: false,
-                          ),
-                          controller: widget.endTimeInput.value.controller,
-                          hasError: widget.endTimeInput.value.hasError,
-                          errorMessage: widget.endTimeInput.value.errorMessage,
-                          limit: 2,
-                        ),
-                      ),
-                    ],
                   ),
-                  Text('End-Time', style: _taskTimesStyle),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      spacing: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.08,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          spacing: MediaQuery
+                              .of(context)
+                              .size
+                              .width * 0.01,
+                          children: [
+                            Expanded(
+                              child: MyCustomTextInput(
+                                maxLength: 2,
+                                hintText: widget.endTimeInput.key.hint,
+                                whatIsInput: TextInputType.numberWithOptions(
+                                  decimal: false,
+                                  signed: false,
+                                ),
+                                controller: widget.endTimeInput.key.controller,
+                                hasError: widget.endTimeInput.key.hasError,
+                                errorMessage: widget.endTimeInput.key
+                                    .errorMessage,
+                                maxValue: 11,
+                              ),
+                            ),
+                            Text(':'),
+                            Expanded(
+                              child: MyCustomTextInput(
+                                maxLength: 2,
+                                hintText: widget.endTimeInput.value.hint,
+                                whatIsInput: TextInputType.numberWithOptions(
+                                  decimal: false,
+                                  signed: false,
+                                ),
+                                controller: widget.endTimeInput.value
+                                    .controller,
+                                hasError: widget.endTimeInput.value.hasError,
+                                errorMessage: widget.endTimeInput.value
+                                    .errorMessage,
+                                maxValue: 59,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text('End-Time', style: _taskTimesStyle),
+                      ],
+                    ),
+                  ),
+                  Expanded(flex: 1,
+                      child: MySelector(myDropdownItems: [
+                        {'label': 'AM', 'value': 'am'},
+                        {'label': 'PM', 'value': 'pm'}
+                      ], onSelect: (value) {}, label: '', currentValue: ''))
                 ],
               )
             ],
@@ -214,9 +263,9 @@ class _TodoFormState extends State<TodoForm> {
             label: 'Priority',
             groupKey: 'todo-types',
             options:
-                TodoForm.todoTypes
-                    .map((option) => option['label'] as String)
-                    .toList(),
+            TodoForm.todoTypes
+                .map((option) => option['label'] as String)
+                .toList(),
             onChanged: setTodoTypes,
             value: 'High',
           ),
@@ -246,7 +295,10 @@ class _TodoFormState extends State<TodoForm> {
             ),
           ),
           ExpansionPanelList(
-            materialGapSize: MediaQuery.of(context).size.width * 0.01,
+            materialGapSize: MediaQuery
+                .of(context)
+                .size
+                .width * 0.01,
             expansionCallback: (panelIndex, isExpanded) {
               setState(() {
                 subTasksIsOpen = !subTasksIsOpen;
@@ -255,7 +307,8 @@ class _TodoFormState extends State<TodoForm> {
             children: [
               ExpansionPanel(
                 headerBuilder:
-                    (context, isExpanded) => MyExpansionPanelHeader(
+                    (context, isExpanded) =>
+                    MyExpansionPanelHeader(
                       title: 'Sub tasks you got in mind',
                     ),
                 isExpanded: subTasksIsOpen,

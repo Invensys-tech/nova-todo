@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MyCustomTextInput extends StatelessWidget {
+class MyCustomTextInput extends StatefulWidget {
   final String hintText;
   final TextInputType whatIsInput;
   final TextEditingController controller;
@@ -11,7 +11,7 @@ class MyCustomTextInput extends StatelessWidget {
   final bool? hasError;
   final String? errorMessage;
   final String? Function(String?)? validator;
-  final int? limit;
+  final int? maxValue;
 
   const MyCustomTextInput({
     super.key,
@@ -24,29 +24,40 @@ class MyCustomTextInput extends StatelessWidget {
     required this.controller,
     this.icon,
     this.validator,
-    this.limit,
+    this.maxValue,
   });
 
+  @override
+  State<MyCustomTextInput> createState() => _MyCustomTextInputState();
+}
+
+class _MyCustomTextInputState extends State<MyCustomTextInput> {
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        label != null
+        widget.label != null
             ? Text(
-              label!,
+              widget.label!,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
             )
             : Container(),
         TextFormField(
           style: const TextStyle(color: Colors.white),
-          controller: controller,
-          keyboardType: whatIsInput,
-          maxLength: maxLength,
+          controller: widget.controller,
+          keyboardType: widget.whatIsInput,
+          maxLength: widget.maxLength,
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
           onChanged: (value) {
-            if (limit != null && value.length == limit) {
+            if (widget.maxLength != null && value.length == widget.maxLength) {
               FocusScope.of(context).nextFocus();
+              if (widget.maxValue != null && int.parse(value) > widget.maxValue!) {
+                setState(() {
+                  value = widget.maxValue!.toString();
+                  widget.controller.text = widget.maxValue!.toString();
+                });
+              }
             }
           },
           buildCounter: (
@@ -55,16 +66,16 @@ class MyCustomTextInput extends StatelessWidget {
             required isFocused,
             required maxLength,
           }) {
-            return hasError != null && hasError!
+            return widget.hasError != null && widget.hasError!
                 ? Text(
-                  '$errorMessage',
+                  '${widget.errorMessage}',
                   style: TextStyle(fontSize: 8, color: Colors.red.shade800),
                 )
                 : Container();
           },
           decoration: InputDecoration(
             prefixIcon:
-                icon != null
+                widget.icon != null
                     ? Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       decoration: BoxDecoration(
@@ -76,7 +87,7 @@ class MyCustomTextInput extends StatelessWidget {
                         ),
                       ),
                       child: Icon(
-                        icon, // Display the icon
+                        widget.icon, // Display the icon
                         color: Colors.white70, // Icon color
                       ),
                     )
@@ -84,7 +95,7 @@ class MyCustomTextInput extends StatelessWidget {
             prefixIconConstraints: const BoxConstraints(
               minWidth: 50,
             ), // Ensure spacing
-            hintText: hintText,
+            hintText: widget.hintText,
             filled: true,
             fillColor: Colors.black87.withOpacity(.3),
             hintStyle: const TextStyle(
@@ -109,7 +120,7 @@ class MyCustomTextInput extends StatelessWidget {
               ),
             ),
           ),
-          validator: validator,
+          validator: widget.validator,
         ),
       ],
     );
