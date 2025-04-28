@@ -72,6 +72,7 @@ class _SubGoalsFormState extends State<SubGoalsForm> {
                     ),
                   ),
                   MyRadioInput(
+                    value: mapDeadlineToOption(subGoal.value.controller.text),
                     color: Color(0xFF09090B).withAlpha(30),
                     borderColor: Color(0xFF27272A),
                     label: 'Deadline Date',
@@ -174,5 +175,26 @@ class _SubGoalsFormState extends State<SubGoalsForm> {
         ],
       ),
     );
+  }
+}
+
+String? mapDeadlineToOption(String savedDeadlineText) {
+  if (savedDeadlineText.isEmpty) return null;
+
+  try {
+    final savedDeadline = DateTime.parse(savedDeadlineText);
+    final now = DateTime.now();
+
+    final difference = savedDeadline.difference(now).inDays;
+
+    if ((difference - 7).abs() <= 1) {
+      return '1 Week';
+    } else if ((difference - 30).abs() <= 3) {
+      return '1 Month';
+    } else {
+      return null; // no match
+    }
+  } catch (e) {
+    return null; // invalid date format
   }
 }

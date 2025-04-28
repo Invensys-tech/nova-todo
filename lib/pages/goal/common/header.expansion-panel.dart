@@ -32,7 +32,7 @@ class MyExpansionPanelHeader extends StatelessWidget {
           color: Theme.of(context).primaryColorDark,
           child: Row(
             spacing: MediaQuery.of(context).size.width * 0.04,
-            children: [icon ?? Container(), Text("p")],
+            children: [icon ?? Container(), Text(title)],
           ),
         ),
         // GoalWidget(id: 1, title: title, description: "description", term: "t"),

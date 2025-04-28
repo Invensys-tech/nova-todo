@@ -5,8 +5,10 @@ import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
 import 'package:flutter_application_1/pages/goal/common/addgoal.dart';
+import 'package:flutter_application_1/pages/goal/common/editgoal.dart';
 import 'package:flutter_application_1/pages/goal/common/goal-stat.dart';
 import 'package:flutter_application_1/pages/goal/common/goalwidget.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class GoalPage extends StatefulWidget {
   final Datamanager datamanager;
@@ -128,18 +130,57 @@ class _GoalPageState extends State<GoalPage>
                   }
 
                   return ListView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     itemCount: filtered.length,
                     itemBuilder: (context, i) {
                       final goal = filtered[i];
-                      return GoalWidget(
-                        id: goal.id,
-                        title: goal.name,
-                        description: goal.description,
-                        percentage: goal.getPercentage,
-                        term: goal.term,
-                        date: goal.deadline,
+                      return Column(
+                        children: [
+                          Slidable(
+                            key: ValueKey(goal.id),
+                            startActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (_) {},
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
+                                ),
+                              ],
+                            ),
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (_) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => EditGoal(goal: goal),
+                                      ),
+                                    );
+                                  },
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.edit,
+                                  label: 'Edit',
+                                ),
+                              ],
+                            ),
+                            child: GoalWidget(
+                              id: goal.id,
+                              title: goal.name,
+                              description: goal.description,
+                              percentage: goal.getPercentage,
+                              term: goal.term,
+                              date: goal.deadline,
+                            ),
+                          ),
+                        ],
                       );
                     },
                   );

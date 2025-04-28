@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:another_telephony/telephony.dart';
+import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/pages/auth/payment.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
@@ -33,6 +34,13 @@ void main() async {
   await Hive.initFlutter();
   HiveService hiveService = HiveService();
   await hiveService.initHive(boxName: 'session');
+  HiveService hiveService2 = HiveService();
+  await hiveService2.initHive(boxName: "dateTime");
+  await hiveService2.upsertData("dateTime", "Gregorian");
+
+  HiveService hiveService3 = HiveService();
+  await hiveService3.initHive(boxName: "dateTime");
+
   dynamic data = await hiveService.getData('user');
   print('----------------- user store in hive -----------------');
   print(jsonEncode(data));
@@ -134,6 +142,24 @@ class _MyAppState extends State<MyApp> {
     loadTheme();
     _checkAndListenSms();
     loabThemeApp();
+  }
+
+  Future<void> initAll() async {
+    HiveService hiveService3 = HiveService();
+    await hiveService3.initHive(boxName: "dateTime");
+    final stored = await hiveService3.getData('dateType');
+    setState(() {
+      stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
+      if (stored == "Ethiopian") {
+        setState(() {
+          eth = true;
+        });
+      } else {
+        setState(() {
+          eth = false;
+        });
+      }
+    });
   }
 
   Future<void> loabThemeApp() async {

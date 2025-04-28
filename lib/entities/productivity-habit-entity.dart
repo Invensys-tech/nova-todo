@@ -5,12 +5,14 @@ class ProductivityHabit {
   String title;
   int productivity_id;
   List<HabitList>? habitList;
+  dynamic? created_at;
 
   ProductivityHabit({
     required this.id,
     required this.title,
     required this.productivity_id,
     this.habitList,
+    this.created_at,
   });
 
   Map<String, dynamic> toJson() {
@@ -30,6 +32,7 @@ class ProductivityHabit {
           (json['productivity_habit_lists'] as List<dynamic>?)
               ?.map((e) => HabitList.fromJson(e))
               .toList(),
+      created_at: json['created_at'] as String,
     );
   }
 }

@@ -1,5 +1,7 @@
+import 'package:ethiopian_datetime/ethiopian_datetime.dart';
 import 'package:flutter_application_1/entities/income-entity.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 
@@ -10,16 +12,31 @@ class IncomeRepository {
   }
 
   Future<List<Income>> getIncome(DateTime? dateTime) async {
+    final HiveService _hiveService = HiveService();
+
+    await _hiveService.initHive(boxName: 'dateTime');
+    final stored = await _hiveService.getData('dateType');
+    final isEthiopian = stored == 'Ethiopian';
+
     try {
       final List<dynamic> rawData;
-      print('oooooooooooooooooooooooooooo');
-      print(dateTime);
+      print('Original dateTime: $dateTime');
 
-      if (dateTime != null) {
+      DateTime? queryDate = dateTime;
+
+      if (isEthiopian && dateTime != null) {
+        // Convert Ethiopian to Gregorian
+        final etDate = ETDateTime(dateTime.year, dateTime.month, dateTime.day);
+        final gregorian = etDate.convertToGregorian();
+        queryDate = DateTime(gregorian.year, gregorian.month, gregorian.day);
+        print('Converted to Gregorian: $queryDate');
+      }
+
+      if (queryDate != null) {
         rawData = await supabaseClient
             .from(Entities.INCOME.dbName)
             .select("*")
-            .eq('date', getDateOnly(dateTime));
+            .eq('date', getDateOnly(queryDate));
       } else {
         rawData = await supabaseClient.from(Entities.INCOME.dbName).select("*");
       }
@@ -33,11 +50,46 @@ class IncomeRepository {
 
       return incomeList;
     } catch (e, stackTrace) {
-      print('Error in Fetching Income my Income He: $e');
+      print('Error in Fetching Income: $e');
       print('StackTrace: $stackTrace');
       rethrow;
     }
   }
+
+  // Future<List<Income>> getIncome(DateTime? dateTime) async {
+  //   final HiveService _hiveService = HiveService();
+
+  //   await _hiveService.initHive(boxName: 'dateTime');
+
+  //   final stored = await _hiveService.getData('dateType');
+  //   try {
+  //     final List<dynamic> rawData;
+  //     print('oooooooooooooooooooooooooooo');
+  //     print(dateTime);
+
+  //     if (dateTime != null) {
+  //       rawData = await supabaseClient
+  //           .from(Entities.INCOME.dbName)
+  //           .select("*")
+  //           .eq('date', getDateOnly(dateTime));
+  //     } else {
+  //       rawData = await supabaseClient.from(Entities.INCOME.dbName).select("*");
+  //     }
+
+  //     print("Fetched Income Data: $rawData");
+
+  //     final List<Income> incomeList =
+  //         rawData
+  //             .map((income) => Income.fromJson(income as Map<String, dynamic>))
+  //             .toList();
+
+  //     return incomeList;
+  //   } catch (e, stackTrace) {
+  //     print('Error in Fetching Income my Income He: $e');
+  //     print('StackTrace: $stackTrace');
+  //     rethrow;
+  //   }
+  // }
 
   Future<Income> createIncome(Map<String, dynamic> income) async {
     try {

@@ -3,10 +3,12 @@ import 'package:ethiopian_datetime/ethiopian_datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/entities/income-entity.dart';
 import 'package:flutter_application_1/pages/finance/income/form.income.dart';
 import 'package:flutter_application_1/pages/finance/income/edit.income.dart';
 import 'package:flutter_application_1/repositories/income.repository.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
@@ -24,11 +26,36 @@ class _IncomeViewState extends State<IncomeView> {
   late Future<List<Income>> _incomeList;
   final DateTime _today = DateTime.now();
   DateTime _selectedDate = DateTime.now();
+  final HiveService _hiveService = HiveService();
+  String _dateType = 'Gregorian';
 
   @override
   void initState() {
     super.initState();
     _loadIncomes();
+    checkDate();
+    //initAll();
+  }
+
+  checkDate() {
+    if (eth == true) {
+      setState(() {
+        _selectedDate = noww;
+      });
+    }
+  }
+
+  Future<void> initAll() async {
+    await _hiveService.initHive(boxName: 'dateTime');
+    final stored = await _hiveService.getData('dateType');
+    setState(() {
+      _dateType = stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
+      if (stored == "Ethiopian") {
+        setState(() {
+          _selectedDate = noww;
+        });
+      }
+    });
   }
 
   void _loadIncomes() {
@@ -40,6 +67,8 @@ class _IncomeViewState extends State<IncomeView> {
   }
 
   void _onDateSelected(DateTime date) {
+    print("What is this hit");
+    print(date);
     setState(() {
       _selectedDate = date;
     });
@@ -54,12 +83,12 @@ class _IncomeViewState extends State<IncomeView> {
         backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () {
-
           PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
             context,
             screen: IncomeForm(datamanager: widget.datamanager),
             withNavBar: false,
-            pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+            settings: const RouteSettings(),
           ).then((_) => setState(_loadIncomes));
         },
         child: const Icon(Icons.add),
@@ -70,7 +99,7 @@ class _IncomeViewState extends State<IncomeView> {
             SizedBox(height: MediaQuery.of(context).size.height * .015),
             CalendarTimeline(
               initialDate: _selectedDate,
-              firstDate: _today,
+              firstDate: DateTime(2000, 1, 1),
               lastDate: DateTime(2027, 11, 20),
               onDateSelected: _onDateSelected,
               leftMargin: 20,
@@ -80,6 +109,7 @@ class _IncomeViewState extends State<IncomeView> {
               activeDayColor: Colors.white,
               activeBackgroundDayColor: Theme.of(context).disabledColor,
               shrink: true,
+
               locale: 'en_ISO',
             ),
             SizedBox(height: MediaQuery.of(context).size.height * .025),
