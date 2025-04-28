@@ -13,6 +13,7 @@ class DailyReport extends StatefulWidget {
 class _DailyReportState extends State<DailyReport> {
   final incomeAnalytics = AnalyticsService.getIncome();
   final expenseAnalytics = AnalyticsService.getExpense();
+  final habits = AnalyticsService.getHabitAnalytics();
 
   @override
   Widget build(BuildContext context) {
@@ -390,38 +391,49 @@ class _DailyReportState extends State<DailyReport> {
                       ],
                     ),
 
-                    ...[
-                      {'title': 'Did this did that', 'isDone': true},
-                      {'title': 'Did this did that', 'isDone': true},
-                      {'title': 'Did this did that', 'isDone': true},
-                      {'title': 'Did this did that', 'isDone': false},
-                    ].map(
-                      (habit) => Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        spacing: 16,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFF27272A),
-                            ),
-                            child:
-                                habit['isDone'] as bool
-                                    ? Icon(
+                    FutureBuilder(future: habits, builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          spacing: 10,
+                          children: [
+                            ...snapshot.data!.map(
+                                  (habit) => Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                spacing: 16,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF27272A),
+                                    ),
+                                    child:
+                                    habit.isDoneToday
+                                        ? Icon(
                                       Icons.check,
                                       color: Color(0xFF00D492),
                                     )
-                                    : Icon(
+                                        : Icon(
                                       Icons.close,
                                       color: Color(0xFFEC003F),
                                     ),
-                          ),
+                                  ),
 
-                          Text(habit['title'] as String),
-                        ],
-                      ),
-                    ),
+                                  Text(habit.name),
+                                ],
+                              ),
+                            ),
+
+                          ],
+                        );
+                      } else {
+                        if (snapshot.hasError) {
+                          return Center(child: Text('Error getting habits'));
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }
+                    }),
                   ],
                 ),
               ),

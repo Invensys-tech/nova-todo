@@ -31,6 +31,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 
 class HomePage extends StatefulWidget {
   final Datamanager datamanager;
+
   const HomePage({super.key, required this.datamanager});
 
   @override
@@ -39,19 +40,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      // appBar: AppBar(
-      //   leading: IconButton(
-      //     icon: Icon(Icons.menu),
-      //     onPressed: () {
-      //       _scaffoldKey.currentState?.openDrawer();
-      //     },
-      //   ),
-      // ),
-      drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+        ),
+      ),
+      drawer: Drawer(backgroundColor: Colors.transparent, child: Drawerpage()),
       body: Dashboard(),
       // body: Column(
       //   children: [
