@@ -92,7 +92,10 @@ class _DailyReportState extends State<DailyReport> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return Container(
-                      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 16,
+                      ),
                       width: MediaQuery.of(context).size.width * .95,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
@@ -136,29 +139,35 @@ class _DailyReportState extends State<DailyReport> {
                                   height: 8,
                                   decoration: BoxDecoration(
                                     color: Color(0xFF009966),
-                                    borderRadius: BorderRadius.circular(4),  // Rounded corners
+                                    borderRadius: BorderRadius.circular(
+                                      4,
+                                    ), // Rounded corners
                                   ),
-                                )
+                                ),
                               ),
                               Expanded(
-                                  flex: snapshot.data!.maybe.toInt(),
-                                  child: Container(
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(4),  // Rounded corners
-                                    ),
-                                  )
+                                flex: snapshot.data!.maybe.toInt(),
+                                child: Container(
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(
+                                      4,
+                                    ), // Rounded corners
+                                  ),
+                                ),
                               ),
                               Expanded(
-                                  flex: snapshot.data!.unwanted.toInt(),
-                                  child: Container(
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFEC003F),
-                                      borderRadius: BorderRadius.circular(4),  // Rounded corners
-                                    ),
-                                  )
+                                flex: snapshot.data!.unwanted.toInt(),
+                                child: Container(
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFEC003F),
+                                    borderRadius: BorderRadius.circular(
+                                      4,
+                                    ), // Rounded corners
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -170,7 +179,6 @@ class _DailyReportState extends State<DailyReport> {
                           //   backgroundColor: Color(0xFF3F3F47),
                           //   color: Color(0xFF009966),
                           // ),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             spacing: 8,
@@ -184,14 +192,18 @@ class _DailyReportState extends State<DailyReport> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     gradient: LinearGradient(
-                                      colors: [Color(0xFF27272A), Color(0xFF18181B)],
+                                      colors: [
+                                        Color(0xFF27272A),
+                                        Color(0xFF18181B),
+                                      ],
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                     ),
                                   ),
                                   child: Column(
                                     spacing: 2,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Must',
@@ -223,14 +235,18 @@ class _DailyReportState extends State<DailyReport> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     gradient: LinearGradient(
-                                      colors: [Color(0xFF27272A), Color(0xFF18181B)],
+                                      colors: [
+                                        Color(0xFF27272A),
+                                        Color(0xFF18181B),
+                                      ],
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                     ),
                                   ),
                                   child: Column(
                                     spacing: 2,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Maybe',
@@ -262,14 +278,18 @@ class _DailyReportState extends State<DailyReport> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     gradient: LinearGradient(
-                                      colors: [Color(0xFF27272A), Color(0xFF18181B)],
+                                      colors: [
+                                        Color(0xFF27272A),
+                                        Color(0xFF18181B),
+                                      ],
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                     ),
                                   ),
                                   child: Column(
                                     spacing: 2,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Unwanted',
@@ -365,76 +385,78 @@ class _DailyReportState extends State<DailyReport> {
                     end: Alignment.bottomRight,
                   ),
                 ),
-                child: Column(
-                  spacing: 10,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          translate('Habit Summary'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          translate('3/4'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    FutureBuilder(future: habits, builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Column(
-                          spacing: 10,
-                          children: [
-                            ...snapshot.data!.map(
-                                  (habit) => Row(
+                child: FutureBuilder(
+                  future: habits,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        spacing: 10,
+                        children: [
+                          Column(
+                            spacing: 10,
+                            children: [
+                              Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                spacing: 16,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Color(0xFF27272A),
-                                    ),
-                                    child:
-                                    habit.isDoneToday
-                                        ? Icon(
-                                      Icons.check,
-                                      color: Color(0xFF00D492),
-                                    )
-                                        : Icon(
-                                      Icons.close,
-                                      color: Color(0xFFEC003F),
+                                  Text(
+                                    translate('Habit Summary'),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
-
-                                  Text(habit.name),
+                                  Text(
+                                    '${snapshot.data!.where((habit) => habit.isDoneToday).length}/${snapshot.data!.length}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
+                            ],
+                          ),
+                          ...snapshot.data!.map(
+                            (habit) => Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              spacing: 16,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xFF27272A),
+                                  ),
+                                  child:
+                                      habit.isDoneToday
+                                          ? Icon(
+                                            Icons.check,
+                                            color: Color(0xFF00D492),
+                                          )
+                                          : Icon(
+                                            Icons.close,
+                                            color: Color(0xFFEC003F),
+                                          ),
+                                ),
 
-                          ],
-                        );
+                                Text(habit.name),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error getting habits'));
                       } else {
-                        if (snapshot.hasError) {
-                          return Center(child: Text('Error getting habits'));
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
+                        return Center(child: CircularProgressIndicator());
                       }
-                    }),
-                  ],
+                    }
+                  },
                 ),
               ),
 

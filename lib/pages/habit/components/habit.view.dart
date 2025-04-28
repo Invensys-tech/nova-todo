@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/habit/components/habit.missed.item.dart';
+import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 
 class HabitView extends StatelessWidget {
   final Habit habit;
+
   const HabitView({super.key, required this.habit});
 
   Widget _buildCircle(double radius, Color color) {
@@ -33,11 +35,11 @@ class HabitView extends StatelessWidget {
             TextButton(
               child: Text("Delete", style: TextStyle(color: Color(0xFFEC003F))),
               onPressed: () async {
-                  final deleted = await HabitsRepository().deleteById(habit!.id!);
-                  if (deleted) {
-                    Navigator.of(context).pop();
-                    Navigator.of(pageContext).pop();
-                  }
+                final deleted = await HabitsRepository().deleteById(habit!.id!);
+                if (deleted) {
+                  Navigator.of(context).pop();
+                  Navigator.of(pageContext).pop();
+                }
               },
             ),
           ],
@@ -45,7 +47,6 @@ class HabitView extends StatelessWidget {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -317,6 +318,40 @@ class HabitView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Expanded(
+                      flex: 2,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF27272A),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(
+                              color: Color(0xFF27272A),
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => HabitForm(
+                                    refetchData: () {},
+                                    habit: habit,
+                                    isEditing: true,
+                                  ),
+                            ),
+                          );
+                          print('Editing...');
+                        },
+                        child: Text(
+                          "Edit",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Expanded(flex: 2, child: SizedBox()),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF27272A),
@@ -326,7 +361,6 @@ class HabitView extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        print('delete...');
                         _showAlertDialog(context);
                       },
                       child: Text(
@@ -334,8 +368,8 @@ class HabitView extends StatelessWidget {
                         style: TextStyle(color: Color(0xFFEC003F)),
                       ),
                     ),
-                  ]
-                )
+                  ],
+                ),
               ],
             )),
           ),

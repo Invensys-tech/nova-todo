@@ -35,8 +35,7 @@ class MyRadioInputState extends State<MyRadioInput> {
     super.initState();
     if (widget.value != null) {
       setState(() {
-        _selectedValue = widget.value ?? '';
-        widget.onChanged(widget.value);
+        _selectedValue = widget.value!;
       });
     }
   }

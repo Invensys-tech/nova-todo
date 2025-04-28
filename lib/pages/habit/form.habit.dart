@@ -14,8 +14,17 @@ import 'package:flutter_application_1/utils/helpers.dart';
 
 class HabitForm extends StatefulWidget {
   final String? date;
+  final Habit? habit;
+  final bool isEditing;
   final void Function() refetchData;
-  const HabitForm({super.key, required this.refetchData, this.date});
+
+  const HabitForm({
+    super.key,
+    required this.refetchData,
+    this.date,
+    this.habit,
+    this.isEditing = false,
+  });
 
   @override
   State<HabitForm> createState() => _HabitFormState();
@@ -44,8 +53,16 @@ class _HabitFormState extends State<HabitForm> {
   @override
   void initState() {
     super.initState();
-    repetition.controller.text = 'Daily';
-    frequency.controller.text = '0';
+
+    if (widget.isEditing && widget.habit != null) {
+      name.controller.text = widget.habit!.name;
+      repetition.controller.text = widget.habit!.type;
+      frequency.controller.text = widget.habit!.frequency.toString();
+      customRepetitionItems = Set.from(widget.habit!.repetitions);
+    } else {
+      repetition.controller.text = 'Daily';
+      frequency.controller.text = '0';
+    }
   }
 
   TextEditingController repetitionTypeController = TextEditingController();
@@ -103,8 +120,8 @@ class _HabitFormState extends State<HabitForm> {
     });
   }
 
-  navigateBack() {
-    Navigator.pop(context);
+  navigateBack({BuildContext? buildContext}) {
+    Navigator.pop(buildContext ?? context);
   }
 
   // printDays() {
@@ -191,13 +208,23 @@ class _HabitFormState extends State<HabitForm> {
     //   }
     // });
 
-    HabitsRepository().createHabit(newHabit).then((value) {
-      if (value) {
-        navigateBack();
-        widget.refetchData();
-        resetForm();
-      }
-    });
+    if (widget.isEditing && widget.habit != null) {
+      HabitsRepository().updateById(newHabit, widget.habit!.id!).then((value) {
+        if (value) {
+          navigateBack(buildContext: context);
+          widget.refetchData();
+          resetForm();
+        }
+      });
+    } else {
+      HabitsRepository().createHabit(newHabit).then((value) {
+        if (value) {
+          navigateBack();
+          widget.refetchData();
+          resetForm();
+        }
+      });
+    }
   }
 
   // Widget buildHabitForm() {
@@ -246,7 +273,7 @@ class _HabitFormState extends State<HabitForm> {
               groupKey: 'repetition',
               onChanged: selectRepetition,
               options: ['Daily', 'Weekly', 'Monthly'],
-              // value: 'Daily',
+              value: repetition.controller.text,
             ),
             repetition.controller.text == 'Weekly'
                 ? Row(

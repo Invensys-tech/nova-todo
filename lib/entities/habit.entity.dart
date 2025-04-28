@@ -164,7 +164,7 @@ class Habit {
                 (streakDate) => streakDate == getDateOnly(DateTime.now())
         ).length;
 
-        return todayFrequency == frequency ? true : false;
+        return todayFrequency >= frequency ? true : false;
         break;
       case 'Weekly':
         return streakDates.contains(getDateOnly(DateTime.now()));
