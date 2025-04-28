@@ -15,6 +15,7 @@ import 'package:flutter_application_1/pages/goal/form.goal.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SubGoalData {
@@ -476,131 +477,132 @@ class _AccordionAxampleState extends State<AddGoal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: _printAllValues,
-              child: const Text("Save", style: TextStyle(color: Colors.white)),
+        leading: Row(
+          spacing: MediaQuery.of(context).size.width * 0.04,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon:  FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
             ),
-          ),
-        ],
+          ],
+        ),
+        title: Text("Adding New Goal",style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17),),
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 16.0),
+        //     child: ElevatedButton(
+        //       style: ElevatedButton.styleFrom(
+        //         backgroundColor: Colors.green,
+        //         shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(8),
+        //         ),
+        //       ),
+        //       onPressed: _printAllValues,
+        //       child: const Text("Save", style: TextStyle(color: Colors.white)),
+        //     ),
+        //   ),
+        // ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.045,
+      body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: GoalStepperForm(
+          controllers: _controllers,
+          printAllValues: _printAllValues,
         ),
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: GoalStepperForm(
-            controllers: _controllers,
-            printAllValues: _printAllValues,
-          ),
-          // child: Container(
-          // child: Container(
-          // child: ExpansionPanelList(
-          //   materialGapSize: MediaQuery.of(context).size.width * 0,
-          //   children: [
-          //     ExpansionPanel(
-          //       headerBuilder: (context, isExpanded) {
-          //         return MyExpansionPanelHeader(
-          //           title: "Goal Information",
-          //           icon: Icon(Icons.star),
-          //         );
-          //       },
-          //       backgroundColor: const Color(0xff2F2F2F),
-          //       canTapOnHeader: true,
-          //       body: GoalForm(
-          //         goalName: _controllers["goals"]["name"] as FormInput,
-          //         goalTerms: _controllers["goals"]["term"] as FormInput,
-          //         goalPriority: _controllers["goals"]["priority"] as FormInput,
-          //         goalStatus: _controllers["goals"]["status"] as FormInput,
-          //         goalDescription:
-          //             _controllers["goals"]["description"] as FormInput,
-          //       ),
-          //       isExpanded: _expandedIndex == 0,
-          //     ),
-          //     ExpansionPanel(
-          //       headerBuilder: (context, isExpanded) {
-          //         return MyExpansionPanelHeader(
-          //           title: "Motivation and Progress",
-          //           icon: Icon(Icons.calendar_today),
-          //         );
-          //       },
-          //       backgroundColor: const Color(0xff2F2F2F),
-          //       canTapOnHeader: true,
-          //       body: MotivationForm(
-          //         motivations: _controllers["motivations"] as List<FormInput>,
-          //         addMotivations: addMotivation,
-          //       ),
-          //       isExpanded: _expandedIndex == 1,
-          //     ),
-          //     ExpansionPanel(
-          //       headerBuilder: (context, isExpanded) {
-          //         return MyExpansionPanelHeader(
-          //           title: "SubGoals And Deadlines",
-          //           icon: Icon(Icons.wallet),
-          //         );
-          //       },
-          //       backgroundColor: const Color(0xff2F2F2F),
-          //       canTapOnHeader: true,
-          //       body: SubGoalsForm(
-          //         deadline:
-          //             _controllers["subGoalsWithDeadline"]["deadline"]
-          //                 as FormInput,
-          //         subGoals:
-          //             _controllers["subGoalsWithDeadline"]["subGoals"]
-          //                 as List<FormInputPair>,
-          //         addSubGoal: addSubGoals,
-          //       ),
-          //       isExpanded: _expandedIndex == 2,
-          //     ),
-          //     ExpansionPanel(
-          //       headerBuilder: (context, isExpanded) {
-          //         return MyExpansionPanelHeader(
-          //           title: "Finance and Impact",
-          //           icon: Icon(Icons.circle_outlined),
-          //         );
-          //       },
-          //       backgroundColor: const Color(0xff2F2F2F),
-          //       canTapOnHeader: true,
-          //       body: Text('Finance Impact Form'),
-          //       // body: FinanceImpactForm(
-          //       //   totalMoney:
-          //       //       _controllers["financeImpact"]["totalMoney"] as FormInput,
-          //       //   amountSaved:
-          //       //       _controllers["financeImpact"]["amountSaved"] as FormInput,
-          //       //   timeSaved:
-          //       //       _controllers["financeImpact"]["timeSaved"] as FormInput,
-          //       //   incomeSources:
-          //       //       _controllers["financeImpact"]["incomeSource"]
-          //       //           as List<FormInputPair>,
-          //       //   addIncomeSource: addIncomeSource,
-          //       // ),
-          //       isExpanded: _expandedIndex == 3,
-          //     ),
-          //   ],
-          //   expansionCallback: (panelIndex, isExpanded) {
-          //     setState(() {
-          //       panelIndex == _expandedIndex
-          //           ? _expandedIndex = -1
-          //           : _expandedIndex = panelIndex;
-          //     });
-          //   },
-          // ),
-        ),
+        // child: Container(
+        // child: Container(
+        // child: ExpansionPanelList(
+        //   materialGapSize: MediaQuery.of(context).size.width * 0,
+        //   children: [
+        //     ExpansionPanel(
+        //       headerBuilder: (context, isExpanded) {
+        //         return MyExpansionPanelHeader(
+        //           title: "Goal Information",
+        //           icon: Icon(Icons.star),
+        //         );
+        //       },
+        //       backgroundColor: const Color(0xff2F2F2F),
+        //       canTapOnHeader: true,
+        //       body: GoalForm(
+        //         goalName: _controllers["goals"]["name"] as FormInput,
+        //         goalTerms: _controllers["goals"]["term"] as FormInput,
+        //         goalPriority: _controllers["goals"]["priority"] as FormInput,
+        //         goalStatus: _controllers["goals"]["status"] as FormInput,
+        //         goalDescription:
+        //             _controllers["goals"]["description"] as FormInput,
+        //       ),
+        //       isExpanded: _expandedIndex == 0,
+        //     ),
+        //     ExpansionPanel(
+        //       headerBuilder: (context, isExpanded) {
+        //         return MyExpansionPanelHeader(
+        //           title: "Motivation and Progress",
+        //           icon: Icon(Icons.calendar_today),
+        //         );
+        //       },
+        //       backgroundColor: const Color(0xff2F2F2F),
+        //       canTapOnHeader: true,
+        //       body: MotivationForm(
+        //         motivations: _controllers["motivations"] as List<FormInput>,
+        //         addMotivations: addMotivation,
+        //       ),
+        //       isExpanded: _expandedIndex == 1,
+        //     ),
+        //     ExpansionPanel(
+        //       headerBuilder: (context, isExpanded) {
+        //         return MyExpansionPanelHeader(
+        //           title: "SubGoals And Deadlines",
+        //           icon: Icon(Icons.wallet),
+        //         );
+        //       },
+        //       backgroundColor: const Color(0xff2F2F2F),
+        //       canTapOnHeader: true,
+        //       body: SubGoalsForm(
+        //         deadline:
+        //             _controllers["subGoalsWithDeadline"]["deadline"]
+        //                 as FormInput,
+        //         subGoals:
+        //             _controllers["subGoalsWithDeadline"]["subGoals"]
+        //                 as List<FormInputPair>,
+        //         addSubGoal: addSubGoals,
+        //       ),
+        //       isExpanded: _expandedIndex == 2,
+        //     ),
+        //     ExpansionPanel(
+        //       headerBuilder: (context, isExpanded) {
+        //         return MyExpansionPanelHeader(
+        //           title: "Finance and Impact",
+        //           icon: Icon(Icons.circle_outlined),
+        //         );
+        //       },
+        //       backgroundColor: const Color(0xff2F2F2F),
+        //       canTapOnHeader: true,
+        //       body: Text('Finance Impact Form'),
+        //       // body: FinanceImpactForm(
+        //       //   totalMoney:
+        //       //       _controllers["financeImpact"]["totalMoney"] as FormInput,
+        //       //   amountSaved:
+        //       //       _controllers["financeImpact"]["amountSaved"] as FormInput,
+        //       //   timeSaved:
+        //       //       _controllers["financeImpact"]["timeSaved"] as FormInput,
+        //       //   incomeSources:
+        //       //       _controllers["financeImpact"]["incomeSource"]
+        //       //           as List<FormInputPair>,
+        //       //   addIncomeSource: addIncomeSource,
+        //       // ),
+        //       isExpanded: _expandedIndex == 3,
+        //     ),
+        //   ],
+        //   expansionCallback: (panelIndex, isExpanded) {
+        //     setState(() {
+        //       panelIndex == _expandedIndex
+        //           ? _expandedIndex = -1
+        //           : _expandedIndex = panelIndex;
+        //     });
+        //   },
+        // ),
       ),
       // ),
       // ),

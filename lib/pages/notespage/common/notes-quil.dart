@@ -375,7 +375,7 @@ class _NoteQuilState extends State<NoteQuil> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon:  Icon(Icons.arrow_back, ),
         ),
         actions: [
           Padding(
@@ -401,7 +401,7 @@ class _NoteQuilState extends State<NoteQuil> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * .02),
+            SizedBox(height: MediaQuery.of(context).size.height * .005),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -413,13 +413,12 @@ class _NoteQuilState extends State<NoteQuil> {
                       const Text(
                         "Title",
                         style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white70,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * .02,
+                        height: MediaQuery.of(context).size.height * .0025,
                       ),
                       TextFields(
                         hinttext: title.hint,
@@ -438,17 +437,17 @@ class _NoteQuilState extends State<NoteQuil> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Select Color:",
+                        "Color of Note:",
                         style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white70,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * .02,
+                        height: MediaQuery.of(context).size.height * .0025,
                       ),
                       Container(
+                        height: MediaQuery.of(context).size.height*.045,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 4,
@@ -509,30 +508,109 @@ class _NoteQuilState extends State<NoteQuil> {
               ],
             ),
 
-            const SizedBox(height: 10),
+             SizedBox(height: MediaQuery.of(context).size.height*.025),
 
             // Quill toolbar + editor
-            QuillSimpleToolbar(
-              controller: _controller,
-              config: QuillSimpleToolbarConfig(
-                showUndo: false,
-                showRedo: false,
-                showStrikeThrough: false,
-                showInlineCode: false,
-                showClearFormat: false,
-                showCodeBlock: false,
-                showSearchButton: false,
-                showLink: false,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: QuillEditor.basic(
-                controller: _controller,
-                config: QuillEditorConfig(
-                  scrollable: true,
-                  scrollPhysics: const AlwaysScrollableScrollPhysics(),
-                ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.757,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Container(
+                    width:MediaQuery.of(context).size.width*1,
+                    child: QuillSimpleToolbar(
+                      controller: _controller,
+
+                      config: QuillSimpleToolbarConfig(
+                          toolbarIconAlignment: WrapAlignment.start,
+                          toolbarRunSpacing: 0,
+                          showUndo:
+                          false, // Set this to false to remove the undo button
+                          showRedo: false,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            border: Border.all(color: Colors.blueAccent),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              )
+                            ],
+                          ),
+
+                          showStrikeThrough: false,
+                          showInlineCode: false,
+                          showClearFormat: false,
+                          showCodeBlock: false,
+                          showSearchButton: false,
+                          showLink: false,
+                          showCenterAlignment: false,
+                          showQuote: false,
+                          showRightAlignment: false,
+                          showListCheck: false,
+                          showListBullets: false,
+                          showListNumbers: false,
+                          showSmallButton: false,
+                          showLeftAlignment: false,
+                          showJustifyAlignment: false,
+                          showAlignmentButtons: false,
+                          showLineHeightButton: false,
+                          showIndent: false,
+                          headerStyleType: HeaderStyleType.original,
+                          axis: Axis.horizontal
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: QuillEditor.basic(
+                      controller: _controller,
+                      config: QuillEditorConfig(
+                        scrollable: true,
+                      ),
+                    ),
+                  ),
+                  QuillSimpleToolbar(
+                    controller: _controller,
+                    config: QuillSimpleToolbarConfig(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          border: Border.all(color: Colors.blueAccent),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4,
+                              offset: Offset(0, 2),
+                            )
+                          ],
+                        ),
+
+                        showUndo:
+                        false, // Set this to false to remove the undo button
+                        showRedo: false,
+                        showStrikeThrough: false,
+                        showInlineCode: false,
+                        showClearFormat: false,
+                        showCodeBlock: false,
+                        showSearchButton: false,
+                        showLink: false,
+                        showBackgroundColorButton: false,
+                        showColorButton: false,
+                        showFontSize: false,
+                        showFontFamily: false,
+                        showBoldButton: false,
+                        showItalicButton: false,
+                        showUnderLineButton: false,
+                        showSubscript: false,
+                        showSuperscript: false,
+                        showHeaderStyle: false,
+                        headerStyleType: HeaderStyleType.original,
+                        axis: Axis.horizontal
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

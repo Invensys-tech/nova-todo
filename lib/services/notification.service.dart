@@ -25,10 +25,11 @@ class NotificationService {
 
     _navigatorKey = navigatorKey;
 
-    const  AndroidInitializationSettings initSettingsAndroid= AndroidInitializationSettings(
-      //'@mipmap/ic_launcher',
-      'ic_notification',
-    );
+    const AndroidInitializationSettings initSettingsAndroid =
+        AndroidInitializationSettings(
+          //'@mipmap/ic_launcher',
+          'ic_notification',
+        );
     const initSettingsIOS = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -88,7 +89,7 @@ class NotificationService {
         importance: Importance.max,
         priority: Priority.high,
         playSound: true,
-        icon:  'ic_notification'
+        icon: 'ic_notification',
       ),
       iOS: DarwinNotificationDetails(
         presentAlert: true,
@@ -135,12 +136,12 @@ class NotificationService {
   checkSetNotification() async {
     final hiveService = HiveService();
     await hiveService.initHive(boxName: 'notification');
-    final lastQuoteNotificationDate = await hiveService.getData('last-quote-notification-date');
+    final lastQuoteNotificationDate = await hiveService.getData(
+      'last-quote-notification-date',
+    );
     DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
-    if (
-      lastQuoteNotificationDate == null
-          || lastQuoteNotificationDate != getDateOnly(DateTime.now())
-      ) {
+    if (lastQuoteNotificationDate == null ||
+        lastQuoteNotificationDate != getDateOnly(DateTime.now())) {
       int userId = (await AuthService().findSession())['id'];
       final quotes = await supabaseClient
           .from('quotes')
@@ -153,17 +154,48 @@ class NotificationService {
           final random = Random();
           String randomQuote = quotes[random.nextInt(quotes.length)]['quote'];
           notificationService.showNotification(-23, 'Daily Quote', randomQuote);
-        } 
+        }
       }
 
       if (quotes.isNotEmpty) {
         final random = Random();
-        String randomQuote = quotes[random.nextInt(quotes.length)]['quote'];
-        await notificationService.showNotification(-23, 'Daily Quote', randomQuote);
+        // String randomQuote = quotes[random.nextInt(quotes.length)]['quote'];
+        // await notificationService.showNotification(
+        //   -23,
+        //   'Daily Quote',
+        //   randomQuote,
+        // );
+
+        // await notificationService.scheduleNotification(
+        //   id: -23,
+        //   title: 'Daily Quote',
+        //   body: randomQuote,
+        //   time: getStartOfDay(tomorrow),
+        // );
 
         DateTime tomorrow = DateTime.now().add(Duration(days: 1));
-        await notificationService.scheduleNotification(id: -23, title: 'Daily Quote', body: randomQuote, time: getStartOfDay(tomorrow));
-        await hiveService.upsertData('last-quote-notification-date', getDateOnly(DateTime.now()));
+
+        for (int i = 0; i < 7; i++) {
+          String randomQuote = quotes[random.nextInt(quotes.length)]['quote'];
+          await notificationService.showNotification(
+            -23,
+            'Daily Quote',
+            randomQuote,
+          );
+
+          DateTime day = tomorrow.add(Duration(days: i));
+          await notificationService.scheduleNotification(
+            id: -23 - i,
+            title: 'Daily Quote',
+            body: randomQuote,
+            time: getStartOfDay(day),
+          );
+        }
+
+        await hiveService.upsertData(
+          'last-quote-notification-date',
+          getDateOnly(DateTime.now()),
+        );
       }
     }
   }
@@ -177,10 +209,10 @@ class NotificationService {
         .eq('user_id', userId);
 
     final notificationService = NotificationService();
-      if (quotes.isNotEmpty) {
-        final random = Random();
-        String randomQuote = quotes[random.nextInt(quotes.length)]['quote'];
-        notificationService.showNotification(-23, 'Daily Quote', randomQuote);
-      }
+    if (quotes.isNotEmpty) {
+      final random = Random();
+      String randomQuote = quotes[random.nextInt(quotes.length)]['quote'];
+      notificationService.showNotification(-23, 'Daily Quote', randomQuote);
+    }
   }
 }

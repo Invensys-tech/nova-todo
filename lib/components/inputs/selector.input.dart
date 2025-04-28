@@ -26,37 +26,54 @@ class _MySelectorState extends State<MySelector> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width*1,
       child: Column(
-        spacing: MediaQuery.of(context).size.width * 0.01,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.label,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
           ),
           SizedBox(
             child: Row(
-              spacing: MediaQuery.of(context).size.width * 0.02,
               children: [
                 widget.icon != null ? Icon(widget.icon, size: 32) : Container(),
-                DropdownMenu(
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  menuStyle: MenuStyle(),
-                  // initialSelection: widget.myDropdownItems[0]['value'],
-                  // enableSearch: true,
-                  // enableFilter: true,
-                  controller: widget.controller,
-                  onSelected: widget.onSelect,
-                  dropdownMenuEntries:
-                      widget.myDropdownItems
-                          .map(
-                            (e) => DropdownMenuEntry(
-                              label: e['label'],
-                              value: e['value'],
-                            ),
-                          )
-                          .toList(),
+                Expanded(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height*.05,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.grey.withOpacity(.3))
+                    ),
+                    child: DropdownMenu(
+                      hintText: "Before 10 Min",
+                      inputDecorationTheme: const InputDecorationTheme(
+                        border: InputBorder.none, //
+                        enabledBorder: InputBorder.none, //
+                        focusedBorder: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                      ),
+                      width: MediaQuery.of(context).size.width * .91,
+                      menuStyle: MenuStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.zero)
+                      ),
+                      // initialSelection: widget.myDropdownItems[0]['value'],
+                      // enableSearch: true,
+                      // enableFilter: true,
+
+
+                      controller: widget.controller,
+                      onSelected: widget.onSelect,
+                      dropdownMenuEntries:
+                          widget.myDropdownItems
+                              .map(
+                                (e) => DropdownMenuEntry(
+                                  label: e['label'],
+                                  value: e['value'],
+                                ),
+                              )
+                              .toList(),
+                    ),
+                  ),
                 ),
               ],
             ),

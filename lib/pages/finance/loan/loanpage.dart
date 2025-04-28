@@ -485,7 +485,7 @@ class _LoanpageState extends State<Loanpage> {
 
     return grouped.entries.map((entry) {
       final types = entry.value['types'] as Set<String>;
-      final netAmount = entry.value['amount'] as double;
+      final netAmount = entry.value['amount'] as int;
 
       return {
         'name': entry.key,

@@ -11,6 +11,7 @@ enum Entities {
   DAILY_SUBTASK("daily_sub_tasks"),
   DAILY_JOURNAL("daily_journals"),
   HABITS("habits"),
+  HABITHISTORY("habit_history"),
   QUOTES("quotes"),
   NOTE('notes'),
   PRODUCTIVITY('productivity'),

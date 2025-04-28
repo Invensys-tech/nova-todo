@@ -27,7 +27,7 @@ class _QuotesPageState extends State<QuotesPage> {
   void initState() {
     super.initState();
     quotes = QuoteRepository().fetchAll();
-    loabThemeApp();
+   // loabThemeApp();
   }
 
  bool isDarkB = true;

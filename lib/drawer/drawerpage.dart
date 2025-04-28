@@ -4,6 +4,7 @@ import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.view.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
+import 'package:flutter_application_1/pages/goal/goal.dart';
 import 'package:flutter_application_1/pages/habit/habits.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
 import 'package:flutter_application_1/pages/quotes/quotes.dart';
@@ -11,6 +12,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+
+import '../datamanager.dart';
 
 class Drawerpage extends StatefulWidget {
   const Drawerpage({super.key});
@@ -20,10 +23,12 @@ class Drawerpage extends StatefulWidget {
 }
 
 class _DrawerpageState extends State<Drawerpage> {
+
+  var dataManager = Datamanager();
   routeToHabits() {
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
-      screen: HabitsPage(),
+      screen: GoalPage(datamanager: dataManager),
       withNavBar: false,
       pageTransitionAnimation: PageTransitionAnimation.cupertino,
       settings: const RouteSettings(),
@@ -117,7 +122,7 @@ class _DrawerpageState extends State<Drawerpage> {
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * .035),
                 Text(
-                  translate("Habits"),
+                  translate("Vision Board"),
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                 ),
               ],

@@ -33,16 +33,16 @@ class _GoalFormState extends State<GoalForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width*1,
       padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.02),
       decoration: BoxDecoration(
-        border: Border.all(width: 1, color: Color(0xFF27272A)),
+        border: Border.all(width: 1, color: Colors.grey.withOpacity(.4)),
         borderRadius: BorderRadius.circular(10),
         color: const Color(0x00000000),
       ),
       // color: const Color(0x00000000),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: MediaQuery.of(context).size.height * 0.019,
         children: [
           MyTextInput(
             label: 'Goal Name',
