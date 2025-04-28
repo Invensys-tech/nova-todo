@@ -157,6 +157,27 @@ class Habit {
     return missedDates;
   }
 
+  bool get isDoneToday {
+    switch (type) {
+      case 'Daily':
+        final todayFrequency = streakDates.where(
+                (streakDate) => streakDate == getDateOnly(DateTime.now())
+        ).length;
+
+        return todayFrequency >= frequency ? true : false;
+        break;
+      case 'Weekly':
+        return streakDates.contains(getDateOnly(DateTime.now()));
+        break;
+      case 'Monthly':
+        return streakDates.contains(getDateOnly(DateTime.now()));
+        break;
+
+      default:
+        return false;
+    }
+  }
+
   // type
   // name
   // repetition_type

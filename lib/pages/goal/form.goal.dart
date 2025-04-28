@@ -279,7 +279,7 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: MediaQuery.of(context).size.height * 0.02,
         children: [
-          Text('Goal Info', style: TextStyle(fontSize: 16)),
+          Text('Goal Info', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
           GoalForm(
             goalName: widget.controllers["goals"]["name"] as FormInput,
             goalTerms: widget.controllers["goals"]["term"] as FormInput,
@@ -373,8 +373,9 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.8,
+      height: MediaQuery.of(context).size.height * 0.9,
       child: Stepper(
+
         steps: steps(),
         currentStep: _currentStep,
         type: StepperType.horizontal,
@@ -392,10 +393,10 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
                   flex: 2,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF27272A),
+                      backgroundColor: Colors.grey.withOpacity(.5),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: Color(0xFF27272A), width: 2),
+                        side: BorderSide(color: Colors.grey.withOpacity(.5), width: 1),
                       ),
                     ),
                     onPressed: details.onStepCancel,
@@ -410,10 +411,9 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
                   flex: 2,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF27272A),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: Color(0xFF009966), width: 2),
+                        side: BorderSide(color: Color(0xFF009966), width: 1),
                       ),
                     ),
                     onPressed: details.onStepContinue,

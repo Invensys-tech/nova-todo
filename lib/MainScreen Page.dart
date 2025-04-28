@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/pages/habit/habits.dart';
 import 'package:flutter_application_1/pages/homepage/home.dart';
 import 'package:flutter_application_1/pages/notespage/notes.dart';
 import 'package:flutter_application_1/pages/todopage/todo.dart';
@@ -33,7 +34,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
     return [
       HomePage(datamanager: dataManager),
       FinanceUi(datamanager: dataManager),
-      GoalPage(datamanager: dataManager),
+      HabitsPage(),
       TodoPage(),
       NotesPage(),
     ];
@@ -59,7 +60,8 @@ class _MainScreenPageState extends State<MainScreenPage> {
       ),
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.locationArrow),
-        title: translate("Vision Board"),
+       // icon: FaIcon(FontAwesomeIcons.refresh),
+        title: translate("Habit"),
         iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),

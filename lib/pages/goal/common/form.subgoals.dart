@@ -54,9 +54,10 @@ class _SubGoalsFormState extends State<SubGoalsForm> {
               padding: EdgeInsets.symmetric(
                 vertical: MediaQuery.of(context).size.height * 0.02,
                 horizontal: MediaQuery.of(context).size.width * 0.04,
+                
               ),
               decoration: BoxDecoration(
-                color: const Color(0xFF27272A),
+                border: Border.all(width: 1, color: Colors.grey.withOpacity(.45)),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(

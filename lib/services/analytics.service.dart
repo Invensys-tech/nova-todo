@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/repositories/goal.repository.dart';
+import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
@@ -38,7 +40,7 @@ class AnalyticsService {
           payableLoan += loan['amount'];
         }
       }
-      
+
       return TotalBanksAnalytics(
           total: balance + receivableLoan + payableLoan,
           balance: balance,
@@ -66,7 +68,8 @@ class AnalyticsService {
       num unwanted = 0;
 
       for (var expense in expenses) {
-        if (expense['amount'] == null || expense['amount'].runtimeType == Null) {
+        if (expense['amount'] == null ||
+            expense['amount'].runtimeType == Null) {
           continue;
         }
 
@@ -106,12 +109,14 @@ class AnalyticsService {
       Map<String, num> incomeTypes = {};
 
       for (var income in incomes) {
-        if (income['amount'] == null || income['amount'].runtimeType == 'Null') {
+        if (income['amount'] == null ||
+            income['amount'].runtimeType == 'Null') {
           continue;
         }
 
         total += income['amount'];
-        incomeTypes[income['category']] = (incomeTypes[income['category']] ?? 0) + income['amount'];
+        incomeTypes[income['category']] =
+            (incomeTypes[income['category']] ?? 0) + income['amount'];
 
         // if (income['type'] == 'Must') {
         //   must += income['amount'];
@@ -141,12 +146,121 @@ class AnalyticsService {
   static Future<List<GoalAnalytics>> getGoalAnalytics() async {
     try {
       final goals = await GoalRepository().fetchAll();
-      
-      return goals.map((goal) => GoalAnalytics(
-          date: goal.deadline ?? getDateOnly(DateTime.now()),
-          title: goal.name,
-          percent: goal.getPercentage
-      )).take(3).toList();
+
+      return goals.map((goal) =>
+          GoalAnalytics(
+              date: goal.deadline ?? getDateOnly(DateTime.now()),
+              title: goal.name,
+              percent: goal.getPercentage
+          )).take(3).toList();
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  static Future<ExpenseAnalytics> getDailyExpenseSummary() async {
+    try {
+      try {
+        int userId = (await AuthService().findSession())['id'];
+
+        final expenses = await supabaseClient
+            .from('expense')
+            .select('amount, type')
+            .eq('date', getDateOnly(DateTime.now()))
+            .eq('userid', userId);
+
+        num total = 0;
+        num maybe = 0;
+        num must = 0;
+        num unwanted = 0;
+
+        for (var expense in expenses) {
+          if (expense['amount'] == null ||
+              expense['amount'].runtimeType == Null) {
+            continue;
+          }
+
+          total += expense['amount'];
+          if (expense['type'] == 'Must') {
+            must += expense['amount'];
+          } else if (expense['type'] == 'Maybe') {
+            maybe += expense['amount'];
+          } else if (expense['type'] == 'Unwanted') {
+            unwanted += expense['amount'];
+          }
+        }
+
+        return ExpenseAnalytics(
+          total: total,
+          maybe: maybe,
+          must: must,
+          unwanted: unwanted,
+        );
+      } catch (e) {
+        print(e);
+        rethrow;
+      }
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  static Future<Map<String, dynamic>> getDailyIncomeSummary() async {
+    try {
+      int userId = (await AuthService().findSession())['id'];
+
+      final incomes = await supabaseClient
+          .from('incomes')
+          .select('amount, category')
+          .eq('date', getDateOnly(DateTime.now()))
+          .eq('user_id', userId);
+
+      num total = 0;
+
+      Map<String, num> incomeTypes = {};
+
+      for (var income in incomes) {
+        if (income['amount'] == null ||
+            income['amount'].runtimeType == 'Null') {
+          continue;
+        }
+
+        total += income['amount'];
+        incomeTypes[income['category']] =
+            (incomeTypes[income['category']] ?? 0) + income['amount'];
+
+        // if (income['type'] == 'Must') {
+        //   must += income['amount'];
+        // } else if (income['type'] == 'Maybe') {
+        //   maybe += income['amount'];
+        // } else if (income['type'] == 'Unwanted') {
+        //   unwanted += income['amount'];
+        // }
+      }
+
+      var sortedIncomes = incomeTypes.entries.toList()
+        ..sort((a, b) => a.value.compareTo(b.value))
+        ..toList();
+
+      print(sortedIncomes);
+
+      return {
+        'total': total,
+        'categorized': sortedIncomes.take(3).toList(),
+      };
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  static Future<List<Habit>> getHabitAnalytics() async {
+    try {
+      final habits = await HabitsRepository().fetchHabitsByDate(DateTime.now());
+
+      return habits;
     } catch (e) {
       print(e);
       rethrow;
@@ -179,7 +293,7 @@ class ExpenseAnalytics {
     required this.maybe,
     required this.must,
     required this.unwanted,
-});
+  });
 }
 
 class GoalAnalytics {

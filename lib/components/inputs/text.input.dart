@@ -22,7 +22,7 @@ class _MyTextInputState extends State<MyTextInput> {
               padding: EdgeInsets.only(left: 8.0),
               child: Text(
                 widget.label!,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, ),
               ),
             )
             : Container(),

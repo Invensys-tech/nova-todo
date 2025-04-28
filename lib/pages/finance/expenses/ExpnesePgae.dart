@@ -298,6 +298,8 @@ import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
+import '../../../drawer/Seeting Page/SeetingPage.dart';
+
 class Expensespage extends StatefulWidget {
   final Datamanager datamanager;
   const Expensespage({Key? key, required this.datamanager}) : super(key: key);
@@ -348,6 +350,8 @@ class _ExpensespageState extends State<Expensespage> {
 
     _loadExpenses();
   }
+
+  String calanderE = "Geo";
 
   void _loadExpenses() {
     _expensesFuture = widget.datamanager.getExpense(dateTime: _queryDate).then((

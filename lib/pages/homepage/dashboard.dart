@@ -9,6 +9,8 @@ import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:time_interval_picker/time_interval_picker.dart';
 
+import '../../drawer/drawerpage.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -60,491 +62,378 @@ class _DashboardState extends State<Dashboard> {
 
   final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: AlwaysScrollableScrollPhysics(),
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * .035),
-            Container(
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.menu_outlined,
-                    size: 28,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  SizedBox(width: MediaQuery.of(context).size.width * .015),
-                  Text(
-                    "Jan 23, 2025",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
+    return Scaffold(
+      key: _scaffoldKey,
 
-                  SizedBox(width: MediaQuery.of(context).size.width * .35),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        "Good Morning",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w300,
-                        ),
+      drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
+      body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height * .035),
+              Container(
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        _scaffoldKey.currentState?.openDrawer();
+                      },
+                      child: Icon(
+                        Icons.menu_outlined,
+                        size: 28,
+                        color: Theme.of(context).primaryColorLight,
                       ),
-                      Text(
-                        "Abebe",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            // ElevatedButton(
-            //   onPressed: () {
-            //     print('scheduled notification');
-            //
-            //     // NotificationService()
-            //     //     .sendQuoteNotification();
-            //
-            //     NotificationService()
-            //         .scheduleNotification(
-            //         id: -23,
-            //         title: 'Quote',
-            //         body: 'Lorem ipsum dolor amet...',
-            //         time: DateTime.now().add(Duration(seconds: 1))
-            //     );
-            //   },
-            //   child: Text('Quote Notification'),
-            // ),
-
-            // SizedBox(height: MediaQuery.of(context).size.height*.03),
-            Container(
-              height: MediaQuery.of(context).size.height * .2,
-              width: MediaQuery.of(context).size.width * .95,
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * .025,
-                vertical: MediaQuery.of(context).size.height * .02,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorDark,
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                border: Border.all(color: Colors.grey.withOpacity(.2)),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * .9,
-                    height: MediaQuery.of(context).size.height * .12,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Theme.of(context).disabledColor,
                     ),
-                    child: Stack(
-                      children: [
-                        FutureBuilder(
-                          future: bankAnalytics,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      MediaQuery.of(context).size.width * .035,
-                                  vertical:
-                                      MediaQuery.of(context).size.height * .01,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          height:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.height *
-                                              .01,
-                                        ),
-                                        Text(
-                                          'Total Balance',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.height *
-                                              .005,
-                                        ),
-                                        Text(
-                                          "\$ ${snapshot.data!.total}",
-                                          style: TextStyle(
-                                            fontSize: 27,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        SizedBox(
-                                          height:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.height *
-                                              .0075,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          spacing: 4,
-                                          children: [
-                                            Text(
-                                              '${snapshot.data!.balance} : Banks',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.circle,
-                                              color: Color(0xFF009966),
-                                              size: 13,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.height *
-                                              .0075,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          spacing: 4,
-                                          children: [
-                                            Text(
-                                              '${snapshot.data!.receivableLoan} : Recivable Loan',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.circle,
-                                              color: Color(0xFF009966),
-                                              size: 13,
-                                            ),
-                                          ],
-                                        ),
+                    SizedBox(width: MediaQuery.of(context).size.width * .015),
+                    Text(
+                      "Jan 23, 2025",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
 
-                                        SizedBox(
-                                          height:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.height *
-                                              .0075,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          spacing: 4,
-                                          children: [
-                                            Text(
-                                              '${snapshot.data!.payableLoan} : Payable Loan',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.circle,
-                                              color: Color(0xFF8B0836),
-                                              size: 13,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text('Error getting analytics'),
-                                );
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            }
-                          },
-                        ),
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * .03,
-                          left: MediaQuery.of(context).size.width * .4,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * .3,
-                            height: MediaQuery.of(context).size.height * .1,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xff009966).withOpacity(.1),
-                            ),
+                    SizedBox(width: MediaQuery.of(context).size.width * .35),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Good Morning",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
-                        Positioned(
-                          top: MediaQuery.of(context).size.height * .05,
-                          left: MediaQuery.of(context).size.width * .5,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * .35,
-                            height: MediaQuery.of(context).size.height * .15,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xffFAFAFA).withOpacity(.1),
-                            ),
+                        Text(
+                          "Abebe",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * .015),
-                ],
-              ),
-            ),
-
-            // Financial Overview Section
-            SizedBox(height: MediaQuery.of(context).size.height * .035),
-            Column(
-              spacing: MediaQuery.of(context).size.height * .008,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Financial Overview', style: TextStyle(fontSize: 16)),
-                    Text(
-                      'This Month',
-                      style: TextStyle(color: Color(0xFF009966), fontSize: 12),
-                    ),
                   ],
                 ),
-                FutureBuilder(
-                  future: expenseAnalytics,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: Colors.grey.withOpacity(.5),
-                            width: 1,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+              ),
 
-                                  children: [
-                                    Text('Expenses OverView'),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '+',
-                                          style: TextStyle(fontSize: 24),
-                                        ),
-                                        Text(
-                                          '\$ ${snapshot.data!.total}',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                spacing: 8,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    spacing: 4,
+              // ElevatedButton(
+              //   onPressed: () {
+              //     print('scheduled notification');
+              //
+              //     // NotificationService()
+              //     //     .sendQuoteNotification();
+              //
+              //     NotificationService()
+              //         .scheduleNotification(
+              //         id: -23,
+              //         title: 'Quote',
+              //         body: 'Lorem ipsum dolor amet...',
+              //         time: DateTime.now().add(Duration(seconds: 1))
+              //     );
+              //   },
+              //   child: Text('Quote Notification'),
+              // ),
+
+              // SizedBox(height: MediaQuery.of(context).size.height*.03),
+              Container(
+                height: MediaQuery.of(context).size.height * .2,
+                width: MediaQuery.of(context).size.width * .95,
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * .025,
+                  vertical: MediaQuery.of(context).size.height * .02,
+                ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorDark,
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  border: Border.all(color: Colors.grey.withOpacity(.2)),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * .9,
+                      height: MediaQuery.of(context).size.height * .12,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Theme.of(context).disabledColor,
+                      ),
+                      child: Stack(
+                        children: [
+                          FutureBuilder(
+                            future: bankAnalytics,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                        .035,
+                                    vertical:
+                                        MediaQuery.of(context).size.height *
+                                        .01,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        spacing: 4,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
+                                          SizedBox(
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .01,
+                                          ),
                                           Text(
-                                            '${snapshot.data!.must} : Must',
+                                            'Total Balance',
                                             style: TextStyle(
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 12,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
-                                          Icon(
-                                            Icons.circle,
-                                            color: Color(0xFF009966),
-                                            size: 8,
+                                          SizedBox(
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .005,
+                                          ),
+                                          Text(
+                                            "\$ ${snapshot.data!.total}",
+                                            style: TextStyle(
+                                              fontSize: 27,
+                                              fontWeight: FontWeight.w700,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        spacing: 4,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
                                         children: [
-                                          Text(
-                                            '${snapshot.data!.maybe} : Maybe',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 12,
-                                            ),
+                                          SizedBox(
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .0075,
                                           ),
-                                          Icon(
-                                            Icons.circle,
-                                            color: Colors.orange,
-                                            size: 8,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            spacing: 4,
+                                            children: [
+                                              Text(
+                                                '${snapshot.data!.balance} : Banks',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.circle,
+                                                color: Color(0xFF009966),
+                                                size: 13,
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        spacing: 4,
-                                        children: [
-                                          Text(
-                                            '${snapshot.data!.unwanted} : Unwanted',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 12,
-                                            ),
+                                          SizedBox(
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .0075,
                                           ),
-                                          Icon(
-                                            Icons.circle,
-                                            color: Colors.red,
-                                            size: 8,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            spacing: 4,
+                                            children: [
+                                              Text(
+                                                '${snapshot.data!.receivableLoan} : Recivable Loan',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.circle,
+                                                color: Color(0xFF009966),
+                                                size: 13,
+                                              ),
+                                            ],
+                                          ),
+
+                                          SizedBox(
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .0075,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            spacing: 4,
+                                            children: [
+                                              Text(
+                                                '${snapshot.data!.payableLoan} : Payable Loan',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.circle,
+                                                color: Color(0xFF8B0836),
+                                                size: 13,
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                ],
+                                );
+                              } else {
+                                if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text('Error getting analytics'),
+                                  );
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                          Positioned(
+                            top: MediaQuery.of(context).size.height * .03,
+                            left: MediaQuery.of(context).size.width * .4,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * .3,
+                              height: MediaQuery.of(context).size.height * .1,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xff009966).withOpacity(.1),
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text('Error getting expense analytics'),
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    }
-                  },
-                ),
-
-                FutureBuilder(
-                  future: incomeAnalytics,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: Colors.grey.withOpacity(.5),
-                            width: 1,
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          Positioned(
+                            top: MediaQuery.of(context).size.height * .05,
+                            left: MediaQuery.of(context).size.width * .5,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * .35,
+                              height: MediaQuery.of(context).size.height * .15,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xffFAFAFA).withOpacity(.1),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * .015),
+                  ],
+                ),
+              ),
 
-                                  children: [
-                                    Text('Income OverView'),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '+',
-                                          style: TextStyle(fontSize: 24),
-                                        ),
-                                        Text(
-                                          '\$ ${snapshot.data!['total']}',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+              // Financial Overview Section
+              SizedBox(height: MediaQuery.of(context).size.height * .035),
+              Column(
+                spacing: MediaQuery.of(context).size.height * .008,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Financial Overview',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        'This Month',
+                        style: TextStyle(
+                          color: Color(0xFF009966),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  FutureBuilder(
+                    future: expenseAnalytics,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(.5),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+
+                                    children: [
+                                      Text('Expenses OverView'),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '+',
+                                            style: TextStyle(fontSize: 24),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                          Text(
+                                            '\$ ${snapshot.data!.total}',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                spacing: 8,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    spacing: 4,
-                                    children: [
-                                      ...snapshot.data!['categorized'].map((
-                                        MapEntry incomeType,
-                                      ) {
-                                        return Row(
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  spacing: 8,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      spacing: 4,
+                                      children: [
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           spacing: 4,
                                           children: [
                                             Text(
-                                              '${incomeType.key} : ${incomeType.value}',
+                                              '${snapshot.data!.must} : Must',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w300,
                                                 fontSize: 12,
@@ -556,195 +445,57 @@ class _DashboardState extends State<Dashboard> {
                                               size: 8,
                                             ),
                                           ],
-                                        );
-                                      }),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text('Error getting income analytics'),
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    }
-                  },
-                ),
-              ],
-            ),
-
-            // Financial Overview Section.
-            SizedBox(height: MediaQuery.of(context).size.height * .05),
-
-            //Recent Expenses Section
-            Column(
-              spacing: MediaQuery.of(context).size.height * .008,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Top Community Challenges',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      'See All',
-                      style: TextStyle(color: Color(0xFF009966), fontSize: 12),
-                    ),
-                  ],
-                ),
-
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: FutureBuilder(
-                    future: goalAnalytics,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Row(
-                          spacing: MediaQuery.of(context).size.width * .035,
-                          children: [
-                            ...snapshot.data!.map((goalAnalysis) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width * .3,
-                                height: MediaQuery.of(context).size.height * .2,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    width: 1,
-                                    color: Colors.grey.withOpacity(.5),
-                                  ),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      MediaQuery.of(context).size.width * .015,
-                                  vertical:
-                                      MediaQuery.of(context).size.height * .012,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      goalAnalysis.title,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      goalAnalysis.date,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w300,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                          .015,
-                                    ),
-                                    Center(
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                            .2,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                            .1,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color:
-                                              Theme.of(
-                                                context,
-                                              ).primaryColorDark,
                                         ),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                MediaQuery.of(
-                                                  context,
-                                                ).size.width *
-                                                .015,
-                                          ),
-                                          width:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.width *
-                                              .175,
-                                          height:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.height *
-                                              .075,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color:
-                                                Theme.of(
-                                                  context,
-                                                ).primaryColorDark,
-                                          ),
-                                          child: DashedCircularProgressBar.aspectRatio(
-                                            aspectRatio: 1, // width ÷ height
-                                            valueNotifier: _valueNotifier,
-                                            progress: goalAnalysis.percent,
-                                            startAngle: 360,
-                                            sweepAngle: -360,
-                                            foregroundColor: Color(
-                                              0xff0FF009966,
-                                            ),
-                                            backgroundColor:
-                                                Theme.of(
-                                                  context,
-                                                ).primaryColorDark,
-                                            foregroundStrokeWidth: 15,
-                                            backgroundStrokeWidth: 15,
-                                            animation: true,
-                                            seekSize: 6,
-                                            seekColor: const Color(0xffeeeeee),
-                                            child: Center(
-                                              child: ValueListenableBuilder(
-                                                valueListenable: _valueNotifier,
-                                                builder:
-                                                    (
-                                                      _,
-                                                      double value,
-                                                      __,
-                                                    ) => Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          '${goalAnalysis.percent}%',
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 12,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          spacing: 4,
+                                          children: [
+                                            Text(
+                                              '${snapshot.data!.maybe} : Maybe',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 12,
                                               ),
                                             ),
-                                          ),
+                                            Icon(
+                                              Icons.circle,
+                                              color: Colors.orange,
+                                              size: 8,
+                                            ),
+                                          ],
                                         ),
-                                      ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          spacing: 4,
+                                          children: [
+                                            Text(
+                                              '${snapshot.data!.unwanted} : Unwanted',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.circle,
+                                              color: Colors.red,
+                                              size: 8,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              );
-                            }),
-                          ],
+                              ),
+                            ],
+                          ),
                         );
                       } else {
                         if (snapshot.hasError) {
                           return Center(
-                            child: Text('Error getting goal analytics'),
+                            child: Text('Error getting expense analytics'),
                           );
                         } else {
                           return Center(child: CircularProgressIndicator());
@@ -752,261 +503,553 @@ class _DashboardState extends State<Dashboard> {
                       }
                     },
                   ),
-                ),
-                // Container(
-                //   child: Column(
-                //     spacing: MediaQuery.of(context).size.height * .01,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children:
-                //         expenses
-                //             .map(
-                //               (expense) =>
-                //                   DashboardExpenseItem(expense: expense),
-                //             )
-                //             .toList(),
-                //   ),
-                // ),
-              ],
-            ),
-            // Recent Expenses Section
 
-            //   Todays Habits Section
+                  FutureBuilder(
+                    future: incomeAnalytics,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(.5),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
 
-            // SizedBox(height: MediaQuery.of(context).size.height*.035,),
-            // Column(
-            //   spacing: MediaQuery.of(context).size.height * .008,
-            //   children: [
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Text(
-            //           "Today's Habits",
-            //           style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
-            //         ),
-            //         Text(
-            //           'See All',
-            //           style: TextStyle(color: Color(0xFF009966), fontSize: 12),
-            //         ),
-            //       ],
-            //     ),
-            //     Container(
-            //       child: Column(
-            //         spacing: MediaQuery.of(context).size.height * .008,
-            //         children:
-            //             habits
-            //                 .map((habit) => DashboardHabitItem(habit: habit))
-            //                 .toList(),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // // Todays Habits Section
-            //
-            // // Board below todays habits and above the chart
-            // Container(
-            //   margin: EdgeInsets.symmetric(horizontal: 10),
-            //   padding: EdgeInsets.symmetric(
-            //     horizontal: MediaQuery.of(context).size.width * .03,
-            //     vertical: MediaQuery.of(context).size.height * .025,
-            //   ),
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(15),
-            //     border: Border.all(
-            //       color: Color(0xFF27272A).withOpacity(.35),
-            //       width: 2.5,
-            //     ),
-            //   ),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     crossAxisAlignment: CrossAxisAlignment.center,
-            //     children: [
-            //       Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           Text(
-            //             'Weekly Completion',
-            //             style: TextStyle(
-            //               fontSize: 14,
-            //               fontWeight: FontWeight.w300,
-            //             ),
-            //           ),
-            //           Text(
-            //             'Apr 12 - Apr 19',
-            //             style: TextStyle(
-            //               fontSize: 10,
-            //               fontWeight: FontWeight.w300,
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       Row(
-            //         children: [
-            //           Text(
-            //             '12',
-            //             style: TextStyle(
-            //               fontSize: 16,
-            //               fontWeight: FontWeight.w400,
-            //             ),
-            //           ),
-            //           Icon(
-            //             Icons.local_fire_department,
-            //             color: Color(0xFFE36810),
-            //             size: 16,
-            //           ),
-            //         ],
-            //       ),
-            //       Column(
-            //         crossAxisAlignment: CrossAxisAlignment.end,
-            //         spacing: 4,
-            //         children: [
-            //           Row(
-            //             spacing: 4,
-            //             children: [
-            //               Icon(Icons.circle, color: Color(0xFF009966), size: 8),
-            //               Text(
-            //                 'This Week',
-            //                 style: TextStyle(
-            //                   fontSize: 10,
-            //                   fontWeight: FontWeight.w300,
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //           Row(
-            //             spacing: 4,
-            //             children: [
-            //               Icon(Icons.circle, color: Color(0xFF3F3F47), size: 8),
-            //               Text(
-            //                 'Last Week',
-            //                 style: TextStyle(
-            //                   fontSize: 10,
-            //                   fontWeight: FontWeight.w300,
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ],
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // // Board below todays habits and above the chart
-            //
-            // // Top community challenges
-            // Column(
-            //   spacing: MediaQuery.of(context).size.height * .008,
-            //   children: [
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         Text(
-            //           "Top Community Challenges",
-            //           style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
-            //         ),
-            //         Text(
-            //           'See All',
-            //           style: TextStyle(color: Color(0xFF009966), fontSize: 12),
-            //         ),
-            //       ],
-            //     ),
-            //     Container(
-            //       padding: EdgeInsets.symmetric(
-            //         horizontal: 20.0,
-            //         vertical: 4.0,
-            //       ),
-            //       margin: EdgeInsets.only(bottom: 10.0),
-            //       decoration: BoxDecoration(
-            //         color: Color(0xFF27272A).withValues(alpha: .5),
-            //         borderRadius: BorderRadius.circular(10.0),
-            //       ),
-            //       // Container(
-            //       //       padding: EdgeInsets.symmetric(
-            //       //         horizontal: 12.0,
-            //       //         vertical: 4.0,
-            //       //       ),
-            //       //       margin: EdgeInsets.only(bottom: 10.0),
-            //       //       decoration: BoxDecoration(
-            //       //         color: Color(0xFF27272A).withValues(alpha: .5),
-            //       //         borderRadius: BorderRadius.circular(40.0),
-            //       //       ),
-            //       //       alignment: Alignment.center,
-            //       //       child: Text(
-            //       //         quote.category,
-            //       //         style: TextStyle(color: Colors.white, fontSize: 12),
-            //       //       ),
-            //       //     ),
-            //       child: Column(
-            //         spacing: MediaQuery.of(context).size.height * .008,
-            //         children: [
-            //           Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             crossAxisAlignment: CrossAxisAlignment.center,
-            //             children: [
-            //               Text('60 Days Active Body Transformation'),
-            //               Container(
-            //                 padding: EdgeInsets.symmetric(
-            //                   horizontal: 12.0,
-            //                   vertical: 4.0,
-            //                 ),
-            //                 margin: EdgeInsets.only(bottom: 10.0),
-            //                 decoration: BoxDecoration(
-            //                   color: Color(0xFF00D492).withValues(alpha: .5),
-            //                   borderRadius: BorderRadius.circular(40.0),
-            //                 ),
-            //                 alignment: Alignment.center,
-            //                 child: Text(
-            //                   'Active',
-            //                   style: TextStyle(
-            //                     color: Colors.white,
-            //                     fontSize: 12,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //           Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             crossAxisAlignment: CrossAxisAlignment.center,
-            //             children: [
-            //               Container(
-            //                 padding: EdgeInsets.symmetric(
-            //                   horizontal: 12.0,
-            //                   vertical: 4.0,
-            //                 ),
-            //                 margin: EdgeInsets.only(bottom: 10.0),
-            //                 decoration: BoxDecoration(
-            //                   color: Color(0xFF27272A).withValues(alpha: .5),
-            //                   borderRadius: BorderRadius.circular(40.0),
-            //                 ),
-            //                 alignment: Alignment.center,
-            //                 child: Text(
-            //                   'Fitness',
-            //                   style: TextStyle(
-            //                     // color: Color(0xFF27272A),
-            //                     fontSize: 12,
-            //                   ),
-            //                 ),
-            //               ),
-            //               Row(
-            //                 spacing: MediaQuery.of(context).size.width * 0.02,
-            //                 children: [Icon(Icons.people, size: 16), Text('4')],
-            //               ),
-            //               Row(
-            //                 spacing: MediaQuery.of(context).size.width * 0.02,
-            //                 children: [
-            //                   Icon(Icons.calendar_today, size: 16),
-            //                   Text('April 12'),
-            //                 ],
-            //               ),
-            //             ],
-            //           ),
-            //           Row(),
-            //         ],
-            //       ),
-            //     ),
-            //   ],
-            // ),z
-          ],
+                                    children: [
+                                      Text('Income OverView'),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '+',
+                                            style: TextStyle(fontSize: 24),
+                                          ),
+                                          Text(
+                                            '\$ ${snapshot.data!['total']}',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  spacing: 8,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      spacing: 4,
+                                      children: [
+                                        ...snapshot.data!['categorized'].map((
+                                          MapEntry incomeType,
+                                        ) {
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            spacing: 4,
+                                            children: [
+                                              Text(
+                                                '${incomeType.key} : ${incomeType.value}',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.circle,
+                                                color: Color(0xFF009966),
+                                                size: 8,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Error getting income analytics'),
+                          );
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }
+                    },
+                  ),
+                ],
+              ),
+
+              // Financial Overview Section.
+              SizedBox(height: MediaQuery.of(context).size.height * .05),
+
+              //Recent Expenses Section
+              Column(
+                spacing: MediaQuery.of(context).size.height * .008,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Top Community Challenges',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        'See All',
+                        style: TextStyle(
+                          color: Color(0xFF009966),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: FutureBuilder(
+                      future: goalAnalytics,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Row(
+                            spacing: MediaQuery.of(context).size.width * .035,
+                            children: [
+                              ...snapshot.data!.map((goalAnalysis) {
+                                return Container(
+                                  width: MediaQuery.of(context).size.width * .3,
+                                  height:
+                                      MediaQuery.of(context).size.height * .2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.withOpacity(.5),
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                        .015,
+                                    vertical:
+                                        MediaQuery.of(context).size.height *
+                                        .012,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        goalAnalysis.title,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      Text(
+                                        goalAnalysis.date,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                            .015,
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
+                                              .2,
+                                          height:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.height *
+                                              .1,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color:
+                                                Theme.of(
+                                                  context,
+                                                ).primaryColorDark,
+                                          ),
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  .015,
+                                            ),
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                .175,
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .075,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color:
+                                                  Theme.of(
+                                                    context,
+                                                  ).primaryColorDark,
+                                            ),
+                                            child: DashedCircularProgressBar.aspectRatio(
+                                              aspectRatio: 1, // width ÷ height
+                                              valueNotifier: _valueNotifier,
+                                              progress: goalAnalysis.percent,
+                                              startAngle: 360,
+                                              sweepAngle: -360,
+                                              foregroundColor: Color(
+                                                0xff0FF009966,
+                                              ),
+                                              backgroundColor:
+                                                  Theme.of(
+                                                    context,
+                                                  ).primaryColorDark,
+                                              foregroundStrokeWidth: 15,
+                                              backgroundStrokeWidth: 15,
+                                              animation: true,
+                                              seekSize: 6,
+                                              seekColor: const Color(
+                                                0xffeeeeee,
+                                              ),
+                                              child: Center(
+                                                child: ValueListenableBuilder(
+                                                  valueListenable:
+                                                      _valueNotifier,
+                                                  builder:
+                                                      (
+                                                        _,
+                                                        double value,
+                                                        __,
+                                                      ) => Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            '${goalAnalysis.percent}%',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        } else {
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text('Error getting goal analytics'),
+                            );
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                  // Container(
+                  //   child: Column(
+                  //     spacing: MediaQuery.of(context).size.height * .01,
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children:
+                  //         expenses
+                  //             .map(
+                  //               (expense) =>
+                  //                   DashboardExpenseItem(expense: expense),
+                  //             )
+                  //             .toList(),
+                  //   ),
+                  // ),
+                ],
+              ),
+              // Recent Expenses Section
+
+              //   Todays Habits Section
+
+              // SizedBox(height: MediaQuery.of(context).size.height*.035,),
+              // Column(
+              //   spacing: MediaQuery.of(context).size.height * .008,
+              //   children: [
+              //     Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Text(
+              //           "Today's Habits",
+              //           style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
+              //         ),
+              //         Text(
+              //           'See All',
+              //           style: TextStyle(color: Color(0xFF009966), fontSize: 12),
+              //         ),
+              //       ],
+              //     ),
+              //     Container(
+              //       child: Column(
+              //         spacing: MediaQuery.of(context).size.height * .008,
+              //         children:
+              //             habits
+              //                 .map((habit) => DashboardHabitItem(habit: habit))
+              //                 .toList(),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // // Todays Habits Section
+              //
+              // // Board below todays habits and above the chart
+              // Container(
+              //   margin: EdgeInsets.symmetric(horizontal: 10),
+              //   padding: EdgeInsets.symmetric(
+              //     horizontal: MediaQuery.of(context).size.width * .03,
+              //     vertical: MediaQuery.of(context).size.height * .025,
+              //   ),
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(15),
+              //     border: Border.all(
+              //       color: Color(0xFF27272A).withOpacity(.35),
+              //       width: 2.5,
+              //     ),
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //       Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           Text(
+              //             'Weekly Completion',
+              //             style: TextStyle(
+              //               fontSize: 14,
+              //               fontWeight: FontWeight.w300,
+              //             ),
+              //           ),
+              //           Text(
+              //             'Apr 12 - Apr 19',
+              //             style: TextStyle(
+              //               fontSize: 10,
+              //               fontWeight: FontWeight.w300,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //       Row(
+              //         children: [
+              //           Text(
+              //             '12',
+              //             style: TextStyle(
+              //               fontSize: 16,
+              //               fontWeight: FontWeight.w400,
+              //             ),
+              //           ),
+              //           Icon(
+              //             Icons.local_fire_department,
+              //             color: Color(0xFFE36810),
+              //             size: 16,
+              //           ),
+              //         ],
+              //       ),
+              //       Column(
+              //         crossAxisAlignment: CrossAxisAlignment.end,
+              //         spacing: 4,
+              //         children: [
+              //           Row(
+              //             spacing: 4,
+              //             children: [
+              //               Icon(Icons.circle, color: Color(0xFF009966), size: 8),
+              //               Text(
+              //                 'This Week',
+              //                 style: TextStyle(
+              //                   fontSize: 10,
+              //                   fontWeight: FontWeight.w300,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //           Row(
+              //             spacing: 4,
+              //             children: [
+              //               Icon(Icons.circle, color: Color(0xFF3F3F47), size: 8),
+              //               Text(
+              //                 'Last Week',
+              //                 style: TextStyle(
+              //                   fontSize: 10,
+              //                   fontWeight: FontWeight.w300,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // // Board below todays habits and above the chart
+              //
+              // // Top community challenges
+              // Column(
+              //   spacing: MediaQuery.of(context).size.height * .008,
+              //   children: [
+              //     Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Text(
+              //           "Top Community Challenges",
+              //           style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 16),
+              //         ),
+              //         Text(
+              //           'See All',
+              //           style: TextStyle(color: Color(0xFF009966), fontSize: 12),
+              //         ),
+              //       ],
+              //     ),
+              //     Container(
+              //       padding: EdgeInsets.symmetric(
+              //         horizontal: 20.0,
+              //         vertical: 4.0,
+              //       ),
+              //       margin: EdgeInsets.only(bottom: 10.0),
+              //       decoration: BoxDecoration(
+              //         color: Color(0xFF27272A).withValues(alpha: .5),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       // Container(
+              //       //       padding: EdgeInsets.symmetric(
+              //       //         horizontal: 12.0,
+              //       //         vertical: 4.0,
+              //       //       ),
+              //       //       margin: EdgeInsets.only(bottom: 10.0),
+              //       //       decoration: BoxDecoration(
+              //       //         color: Color(0xFF27272A).withValues(alpha: .5),
+              //       //         borderRadius: BorderRadius.circular(40.0),
+              //       //       ),
+              //       //       alignment: Alignment.center,
+              //       //       child: Text(
+              //       //         quote.category,
+              //       //         style: TextStyle(color: Colors.white, fontSize: 12),
+              //       //       ),
+              //       //     ),
+              //       child: Column(
+              //         spacing: MediaQuery.of(context).size.height * .008,
+              //         children: [
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: [
+              //               Text('60 Days Active Body Transformation'),
+              //               Container(
+              //                 padding: EdgeInsets.symmetric(
+              //                   horizontal: 12.0,
+              //                   vertical: 4.0,
+              //                 ),
+              //                 margin: EdgeInsets.only(bottom: 10.0),
+              //                 decoration: BoxDecoration(
+              //                   color: Color(0xFF00D492).withValues(alpha: .5),
+              //                   borderRadius: BorderRadius.circular(40.0),
+              //                 ),
+              //                 alignment: Alignment.center,
+              //                 child: Text(
+              //                   'Active',
+              //                   style: TextStyle(
+              //                     color: Colors.white,
+              //                     fontSize: 12,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: [
+              //               Container(
+              //                 padding: EdgeInsets.symmetric(
+              //                   horizontal: 12.0,
+              //                   vertical: 4.0,
+              //                 ),
+              //                 margin: EdgeInsets.only(bottom: 10.0),
+              //                 decoration: BoxDecoration(
+              //                   color: Color(0xFF27272A).withValues(alpha: .5),
+              //                   borderRadius: BorderRadius.circular(40.0),
+              //                 ),
+              //                 alignment: Alignment.center,
+              //                 child: Text(
+              //                   'Fitness',
+              //                   style: TextStyle(
+              //                     // color: Color(0xFF27272A),
+              //                     fontSize: 12,
+              //                   ),
+              //                 ),
+              //               ),
+              //               Row(
+              //                 spacing: MediaQuery.of(context).size.width * 0.02,
+              //                 children: [Icon(Icons.people, size: 16), Text('4')],
+              //               ),
+              //               Row(
+              //                 spacing: MediaQuery.of(context).size.width * 0.02,
+              //                 children: [
+              //                   Icon(Icons.calendar_today, size: 16),
+              //                   Text('April 12'),
+              //                 ],
+              //               ),
+              //             ],
+              //           ),
+              //           Row(),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),z
+            ],
+          ),
         ),
       ),
     );

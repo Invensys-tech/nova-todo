@@ -27,6 +27,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'drawer/Seeting Page/SeetingPage.dart';
+
 bool isDark = true;
 
 void main() async {
@@ -83,8 +85,8 @@ void main() async {
 
   final delegate = await setupLocalization();
 
-  // runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
-  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+  //runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
+   runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

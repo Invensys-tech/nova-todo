@@ -9,6 +9,7 @@ import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/productivity-frequency.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProductivityForm extends StatefulWidget {
   const ProductivityForm({super.key});
@@ -61,18 +62,21 @@ class _ProductivityFormState extends State<ProductivityForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: FaIcon(
+            FontAwesomeIcons.chevronLeft,
+            size: 25,
+            color: Color(0xff006045),
+          ),
         ),
-        title: const Text(
+        title:  Text(
           "Add Productivity",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -81,7 +85,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: Color(0xff27272A), // Border color
+                color: Colors.grey.withOpacity(.4), // Border color
                 width: 1.0, // Border width
               ),
               borderRadius: BorderRadius.circular(
@@ -96,12 +100,11 @@ class _ProductivityFormState extends State<ProductivityForm> {
                 const Text(
                   "Topic Title",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 TextFields(
                   hinttext: title.hint,
                   controller: title.controller,
@@ -113,12 +116,11 @@ class _ProductivityFormState extends State<ProductivityForm> {
                 const Text(
                   "Frequency",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
 
                 TextFields(
                   hinttext: frequency.hint,
@@ -130,12 +132,11 @@ class _ProductivityFormState extends State<ProductivityForm> {
                 const Text(
                   "Description",
                   style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white70,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 MultiLineTextField(
                   hintText: description.hint,
                   controller: description.controller,

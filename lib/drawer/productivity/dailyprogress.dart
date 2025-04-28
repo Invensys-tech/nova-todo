@@ -466,11 +466,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/habit-list.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/entities/productivity-habit-entity.dart';
+import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/pages/homepage/edit.productivity-habit.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity-habit.dart';
 import 'package:flutter_application_1/pages/homepage/edit.productivity-habit.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_application_1/repositories/productivity-habit.repository.dart';
+import 'package:flutter_application_1/repositories/productivity-habit.repository.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class DailyprogressLists extends StatefulWidget {
   final Future<Productivity> productivityFuture;
@@ -543,7 +547,7 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF2b2d30),
+        backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () async {
           await Navigator.push(
@@ -666,17 +670,29 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
       ),
       child: Container(
         margin: EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.height * .015,
+          vertical: MediaQuery.of(context).size.height * .0075,
           horizontal: MediaQuery.of(context).size.width * .025,
         ),
         padding: EdgeInsets.symmetric(
           vertical: MediaQuery.of(context).size.height * .015,
           horizontal: MediaQuery.of(context).size.width * .045,
         ),
+        width: MediaQuery.of(context).size.width * .925,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: const Color(0xff626262).withOpacity(.5),
-          border: Border.all(width: 1, color: Colors.white.withOpacity(.3)),
+          gradient:
+              Theme.of(context).brightness == Brightness.dark
+                  ? LinearGradient(
+                    colors: [Color(0xff18181B), Color(0xff27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                  : LinearGradient(
+                    colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+          border: Border.all(width: 1, color: Colors.grey.withOpacity(.3)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

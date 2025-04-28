@@ -9,6 +9,7 @@ import 'package:flutter_application_1/pages/goal/common/editgoal.dart';
 import 'package:flutter_application_1/pages/goal/common/goal-stat.dart';
 import 'package:flutter_application_1/pages/goal/common/goalwidget.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GoalPage extends StatefulWidget {
   final Datamanager datamanager;
@@ -51,10 +52,36 @@ class _GoalPageState extends State<GoalPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff2F2F2F),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text("Vision Boards"),
+            SizedBox(width: MediaQuery.of(context).size.width * .015),
+
+            // Container(
+            //     height: MediaQuery.of(context).size.height*.03,
+            //     width: MediaQuery.of(context).size.width*.06,
+            //     child: Image.asset('assets/Gif/Quotes.gif'))
+          ],
+        ),
+
+        // centerTitle: true,
+        leading: Row(
+          spacing: MediaQuery.of(context).size.width * 0.04,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
+            ),
+          ],
+        ),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
+      ),
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: const Color(0xFF2b2d30),
+        backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () async {
           final newGoals = await Navigator.push<List<Goal>>(
@@ -75,20 +102,6 @@ class _GoalPageState extends State<GoalPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              GoalStat(),
-
-              // ─── Tabs ───
-              TabBar(
-                controller: _tabController,
-                indicatorColor: Colors.green,
-                labelColor: Colors.green,
-                unselectedLabelColor: Colors.white70,
-                tabs: const [
-                  Tab(text: 'All'),
-                  Tab(text: 'Short‑term'),
-                  Tab(text: 'Longterm'),
-                ],
-              ),
 
               const SizedBox(height: 10),
 
