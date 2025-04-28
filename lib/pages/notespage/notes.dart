@@ -5,6 +5,7 @@ import 'package:flutter_application_1/pages/notespage/common/note-list.dart';
 import 'package:flutter_application_1/pages/notespage/common/notes-quil.dart';
 import 'package:flutter_application_1/repositories/notes.repository.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import '../../drawer/drawerpage.dart';
 
@@ -88,6 +89,7 @@ class _NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         leading: GestureDetector(
             onTap: (){
@@ -111,9 +113,13 @@ class _NotesPageState extends State<NotesPage> {
         backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () async {
-          await Navigator.push(
+
+          PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
             context,
-            MaterialPageRoute(builder: (context) => NoteQuil(note: '')),
+            screen: NoteQuil(note: ''),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+            settings: const RouteSettings(),
           ).then((_) {
             // Refresh the notes when returning from the form.
             fetchNotes();

@@ -42,7 +42,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       // appBar: AppBar(
       //   leading: IconButton(
       //     icon: Icon(Icons.menu),
@@ -52,7 +51,7 @@ class _HomePageState extends State<HomePage> {
       //   ),
       // ),
       drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
-      body: Dashboard(),
+     body: Dashboard()
       // body: Column(
       //   children: [
       //     ElevatedButton(
@@ -156,3 +155,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

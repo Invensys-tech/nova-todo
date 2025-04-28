@@ -107,18 +107,23 @@ class _SubGoalsContainerState extends State<SubGoalsContainer> {
         child: Column(
           children: [
             Row(
-              children: const [
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children:  [
                 // Icon(Icons.account_tree, color: Colors.white),
-                SizedBox(width: 8),
                 Text(
                   "Sub-Goals",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle( fontSize: 17,fontWeight: FontWeight.w700, color: Theme.of(context).disabledColor),
+                ),
+                Text(
+                  "Add New SubGoals",
+                  style: TextStyle( fontSize: 15,fontWeight: FontWeight.w500, color: Color(0xff009966)),
                 ),
               ],
             ),
             const SizedBox(height: 10),
             ExpansionPanelList(
-              materialGapSize: MediaQuery.of(context).size.width * 0.01,
+
+              elevation: 2,
               expansionCallback: (panelIndex, isExpanded) {
                 setState(() {
                   _expansionIndex =
@@ -141,17 +146,20 @@ class _SubGoalsContainerState extends State<SubGoalsContainer> {
                   setState(() {
                     widget.onDataChanged(percentageArr);
                   });
-                  print("llllllllllllllaaaaaaaaaaaaaaaaaaaa");
                   print(subGoal.toJson());
                   print(tasks);
                   print(percentage);
 
                   return ExpansionPanel(
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     headerBuilder:
-                        (context, isExpanded) => GoalExpansionPanel(
-                          title: subGoal.goal,
-                          created_at: subGoal.created_at,
-                          percentage: percentage,
+                        (context, isExpanded) => Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: GoalExpansionPanel(
+                            title: subGoal.goal,
+                            created_at: subGoal.created_at,
+                            percentage: percentage,
+                          ),
                         ),
                     isExpanded: _expansionIndex == idx,
                     // backgroundColor: const Color(0xFF424242),

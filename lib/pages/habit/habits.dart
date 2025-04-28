@@ -8,6 +8,9 @@ import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+
+import '../../drawer/drawerpage.dart';
 
 class HabitsPage extends StatefulWidget {
   const HabitsPage({super.key});
@@ -28,13 +31,14 @@ class _HabitsPageState extends State<HabitsPage> {
   }
 
   void newHabit() async {
-    await Navigator.push(
+
+
+    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
-      MaterialPageRoute(
-        builder:
-            (context) =>
-                HabitForm(date: getDateOnly(now), refetchData: refetchData),
-      ),
+      screen: HabitForm(date: getDateOnly(now), refetchData: refetchData),
+      withNavBar: false,
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      settings: const RouteSettings(),
     );
   }
 
@@ -42,9 +46,15 @@ class _HabitsPageState extends State<HabitsPage> {
     habits = HabitsRepository().fetchHabits();
   }
 
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      key: _scaffoldKey,
+      drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
         backgroundColor: Colors.green.shade900,
@@ -70,9 +80,9 @@ class _HabitsPageState extends State<HabitsPage> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.pop(context);
+
               },
-              icon:FaIcon(FontAwesomeIcons.chevronLeft,size: 22, color: Color(0xff009966),)
+              icon:Icon(Icons.menu,size: 22, color: Color(0xff009966),)
             ),
           ],
         ),

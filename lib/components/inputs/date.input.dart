@@ -22,7 +22,7 @@ class _MyDateTimeInputState extends State<MyDateTimeInput> {
       children: [
         Text(
           widget.label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
         ),
         widget.dateFields,
       ],

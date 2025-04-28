@@ -32,10 +32,9 @@ class _HabitsDailyListState extends State<HabitsDailyList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
-      child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
         child: Column(
           children: [
             CalendarTimeline(
@@ -59,21 +58,18 @@ class _HabitsDailyListState extends State<HabitsDailyList> {
               shrink: true,
               locale: 'en_ISO',
             ),
-
+      
             SizedBox(height: MediaQuery.of(context).size.height*.02,),
             FutureBuilder(
               future: habits,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      spacing: MediaQuery.of(context).size.width * 0.04,
-                      children:
-                          snapshot.data!
-                              .map((habit) => HabitItem(habit: habit))
-                              .toList(),
-                    ),
+                  return Column(
+                    spacing: MediaQuery.of(context).size.width * 0.04,
+                    children:
+                        snapshot.data!
+                            .map((habit) => HabitItem(habit: habit))
+                            .toList(),
                   );
                 } else {
                   if (snapshot.hasError) {

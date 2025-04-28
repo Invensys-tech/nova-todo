@@ -73,7 +73,7 @@ class TextFields extends StatelessWidget {
                   ),
                 ),
                 contentPadding: EdgeInsets.symmetric(
-                  vertical: 15,
+                  vertical: 7,
                   horizontal: 20,
                 ),
                 enabledBorder: OutlineInputBorder(

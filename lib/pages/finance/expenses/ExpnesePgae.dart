@@ -11,6 +11,8 @@ import 'package:flutter_application_1/repositories/expense.repository.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
+import '../../../drawer/Seeting Page/SeetingPage.dart';
+
 class Expensespage extends StatefulWidget {
   final Datamanager datamanager;
   const Expensespage({Key? key, required this.datamanager}) : super(key: key);
@@ -35,34 +37,49 @@ class _ExpensespageState extends State<Expensespage> {
     _loadExpenses(); // initial load (no date filter = all)
   }
 
+  String calanderE = "Geo";
+
+
   void _loadExpenses() {
-    _expensesFuture = widget.datamanager
-        .getExpense(dateTime: _selectedDate)
-        .then((list) {
-          // compute your category sums
-          _mustTotal = list
-              .where((e) => e.type == "Must")
-              .fold<num>(0, (s, e) => s + e.amount);
-          _maybeTotal = list
-              .where((e) => e.type == "Maybe")
-              .fold<num>(0, (s, e) => s + e.amount);
-          _unwantedTotal = list
-              .where((e) => e.type == "Unwanted")
-              .fold<num>(0, (s, e) => s + e.amount);
-          _grandTotal = _mustTotal + _maybeTotal + _unwantedTotal;
-          return list;
-        });
+  _expensesFuture = widget.datamanager
+      .getExpense( dateTime:   _Dateis)
+      .then((list) {
+  // compute your category sums
+  _mustTotal = list
+      .where((e) => e.type == "Must")
+      .fold<num>(0, (s, e) => s + e.amount);
+  _maybeTotal = list
+      .where((e) => e.type == "Maybe")
+      .fold<num>(0, (s, e) => s + e.amount);
+  _unwantedTotal = list
+      .where((e) => e.type == "Unwanted")
+      .fold<num>(0, (s, e) => s + e.amount);
+  _grandTotal = _mustTotal + _maybeTotal + _unwantedTotal;
+  return list;
+  });
   }
+
 
   void _onDateSelected(DateTime date) {
     // send into Datamanager and reload
     setState(() {
-      _selectedDate = date;
+     // _selectedDate = date;
+      if(Calander == "ET")
+        {
+
+          _Dateis = date.convertToEthiopian();
+        }
+      else
+        {
+
+          _Dateis = date;
+        }
       _loadExpenses();
     });
   }
 
-  ETDateTime now = ETDateTime.now();
+  DateTime _Dateis = DateTime.now();
+  //ETDateTime noww = ETDateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +106,7 @@ class _ExpensespageState extends State<Expensespage> {
 
             // ─── CalendarTimeline ───
             CalendarTimeline(
-              initialDate: _selectedDate,
+              initialDate: Calander == "ET" ? _Dateis.convertToEthiopian() : _Dateis,
               firstDate: DateTime(2000, 11, 20),
               lastDate: DateTime(2027, 11, 20),
               onDateSelected: _onDateSelected,
@@ -100,7 +117,7 @@ class _ExpensespageState extends State<Expensespage> {
               activeDayColor: Colors.white,
               activeBackgroundDayColor: Theme.of(context).disabledColor,
               shrink: true,
-              locale: 'am',
+              locale: 'en',
             ),
 
             const SizedBox(height: 24),
@@ -284,3 +301,5 @@ class _ExpensespageState extends State<Expensespage> {
     ],
   );
 }
+
+

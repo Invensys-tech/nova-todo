@@ -244,9 +244,10 @@ class _HabitFormState extends State<HabitForm> {
             MyRadioInput(
               label: 'Repetition',
               groupKey: 'repetition',
+              orientation: "horizontal",
               onChanged: selectRepetition,
               options: ['Daily', 'Weekly', 'Monthly'],
-              // value: 'Daily',
+              value: 'Daily',
             ),
             repetition.controller.text == 'Weekly'
                 ? Row(
@@ -266,8 +267,8 @@ class _HabitFormState extends State<HabitForm> {
                                 decoration: BoxDecoration(
                                   color:
                                       customRepetitionItems.contains(e['value'])
-                                          ? Color(0xFF8B0836)
-                                          : Color(0xFF27272A),
+                                          ? Color(0xFF009966)
+                                          : Colors.grey.withOpacity(.5),
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
                                 alignment: Alignment.center,

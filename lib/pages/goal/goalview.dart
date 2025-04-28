@@ -5,6 +5,7 @@ import 'package:flutter_application_1/pages/goal/common/goal-view-stat.dart';
 import 'package:flutter_application_1/pages/goal/journal.container.dart';
 import 'package:flutter_application_1/pages/goal/subgoals.container.dart';
 import 'package:flutter_application_1/repositories/goal.repository.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Task {
   String text;
@@ -172,18 +173,31 @@ class _GoalViewState extends State<GoalView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff2F2F2F),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+        title: Row(
+          children: [
+            Text("Goal View"),
+            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            // Container(
+            //     height: MediaQuery.of(context).size.height*.03,
+            //     width: MediaQuery.of(context).size.width*.06,
+            //     child: Image.asset('assets/Gif/Quotes.gif'))
+
+          ],
         ),
-        title: const Text(
-          "Back to Goals",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+
+        // centerTitle: true,
+        leading: Row(
+          spacing: MediaQuery.of(context).size.width * 0.04,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon:  FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
+            ),
+          ],
         ),
-        centerTitle: true,
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
@@ -214,8 +228,8 @@ class _GoalViewState extends State<GoalView> {
                       Text(
                         "Description",
                         style: TextStyle(
-                          color: Colors.white70,
                           fontSize: 18,
+                          color:Theme.of(context).disabledColor,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -225,28 +239,24 @@ class _GoalViewState extends State<GoalView> {
 
                       Text(
                         goal.description,
-                        style: TextStyle(color: Colors.white54),
                         softWrap: true,
                       ),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.07),
 
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.055),
                   Text(
                     'Remember This',
-                    style: TextStyle(color: Color(0xff009966)),
+                    style: TextStyle(color:Theme.of(context).disabledColor, fontSize: 18,fontWeight: FontWeight.w700),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.009),
 
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * 0.005,
+                      vertical: MediaQuery.of(context).size.height * 0.0015,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 10),
                         ...List.generate(
                           goal.motivation["motivations"].length,
                           (index) {
@@ -259,8 +269,7 @@ class _GoalViewState extends State<GoalView> {
                                 Text(
                                   motivationTitles[index],
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 15,
                                   ),
                                 ),
@@ -268,14 +277,13 @@ class _GoalViewState extends State<GoalView> {
                                 Container(
                                   width: double.infinity,
                                   margin: const EdgeInsets.only(bottom: 12),
-                                  padding: const EdgeInsets.all(12),
+                                  padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025, vertical: MediaQuery.of(context).size.height*.01),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white30),
+                                    border: Border.all(color: Colors.grey.withOpacity(.3)),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
                                     motivation,
-                                    style: TextStyle(color: Colors.white70),
                                     softWrap: true,
                                   ),
                                 ),
@@ -286,13 +294,14 @@ class _GoalViewState extends State<GoalView> {
                       ],
                     ),
                   ),
+                   SizedBox(height: MediaQuery.of(context).size.height*.05),
                   Container(
                     // color: Color(0xff353535),
                     child: Padding(
                       padding: const EdgeInsets.all(0),
                       child: Column(
                         children: [
-                          const SizedBox(height: 10),
+
                           Column(
                             children: [
                               SubGoalsContainer(
@@ -328,7 +337,6 @@ class _GoalViewState extends State<GoalView> {
                       ),
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.07),
                 ],
               );
             } else {

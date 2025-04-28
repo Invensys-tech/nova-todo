@@ -5,6 +5,10 @@ import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../main.dart';
 
+
+  String Calander = "ET";
+
+
 class Seetingpage extends StatefulWidget {
   const Seetingpage({super.key});
 
@@ -27,9 +31,15 @@ class _SeetingpageState extends State<Seetingpage> {
     });
   }
 
+
   Future<void> SaveBrightness(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('ThemeOfApp', value);
+  }
+
+  Future<void> SaveClander(String vlue1) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('Calander', vlue1);
   }
 
   @override
@@ -89,6 +99,7 @@ class _SeetingpageState extends State<Seetingpage> {
                   ElevatedButton(
                     onPressed: () {
                       changeLocale(context, 'am');
+
                     },
                     child: Text('Change to amharic'),
                   ),
@@ -97,6 +108,37 @@ class _SeetingpageState extends State<Seetingpage> {
                       changeLocale(context, 'en');
                     },
                     child: Text('Change to english'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+
+
+          Row(
+            children: [
+              Text(
+                "Calander",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+              ),
+              SizedBox(width: MediaQuery.of(context).size.width * .25),
+              Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+
+                      setState(() {
+                      });
+                    },
+                    child: Text('Change to Habesha',style: TextStyle(color: Calander == "ET" ? Colors.green : Theme.of(context).primaryColorDark),),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Calander = "GE";
+
+                    },
+                    child: Text('Change to Gregorian',style: TextStyle(color: Calander != "ET" ? Colors.green : Theme.of(context).primaryColorDark)),
                   ),
                 ],
               ),

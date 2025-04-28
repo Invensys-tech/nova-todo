@@ -29,10 +29,9 @@ class MyExpansionPanelHeader extends StatelessWidget {
             vertical: MediaQuery.of(context).size.height * 0.01,
             horizontal: MediaQuery.of(context).size.width * 0.02,
           ),
-          color: Theme.of(context).primaryColorDark,
           child: Row(
             spacing: MediaQuery.of(context).size.width * 0.04,
-            children: [icon ?? Container(), Text("p")],
+            children: [icon ?? Container(), Text("Adding  Tasks Of The Work")],
           ),
         ),
         // GoalWidget(id: 1, title: title, description: "description", term: "t"),

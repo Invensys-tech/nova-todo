@@ -66,11 +66,14 @@ class _TodoPageState extends State<TodoPage> {
 
   void newTodo() async {
     // final newGoals = await Navigator.push(
-    await Navigator.push(
+
+
+    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
-      MaterialPageRoute(
-        builder: (context) => AddTodoPage(refetchData: refetchData),
-      ),
+      screen: AddTodoPage(refetchData: refetchData),
+      withNavBar: false,
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      settings: const RouteSettings(),
     );
   }
 
@@ -109,6 +112,7 @@ class _TodoPageState extends State<TodoPage> {
     // now.subtract(Duration(days: 1));
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
           leading: GestureDetector(
               onTap: (){
