@@ -25,7 +25,6 @@ class _EditBankState extends State<EditBank> {
   final TextEditingController _type = TextEditingController();
   final TextEditingController _balance = TextEditingController();
 
-  // Same list of banks as in AddBank
   final List<String> banksList = [
     'Abay Bank',
     'Addis International Bank',

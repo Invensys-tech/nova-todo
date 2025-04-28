@@ -142,6 +142,8 @@ class Datamanager {
   }
 
   Future<List<Expense>> getExpense({DateTime? dateTime}) async {
+    print("My date time in the data manager");
+    print(dateTime);
     if (dateTime != null) {
       return await fetchExpenseWithDateFilter(dateTime);
     } else {

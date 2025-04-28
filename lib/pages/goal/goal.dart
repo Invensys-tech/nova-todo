@@ -5,8 +5,10 @@ import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
 import 'package:flutter_application_1/pages/goal/common/addgoal.dart';
+import 'package:flutter_application_1/pages/goal/common/editgoal.dart';
 import 'package:flutter_application_1/pages/goal/common/goal-stat.dart';
 import 'package:flutter_application_1/pages/goal/common/goalwidget.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GoalPage extends StatefulWidget {
@@ -50,17 +52,16 @@ class _GoalPageState extends State<GoalPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: Row(
           children: [
             Text("Vision Boards"),
-            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            SizedBox(width: MediaQuery.of(context).size.width * .015),
+
             // Container(
             //     height: MediaQuery.of(context).size.height*.03,
             //     width: MediaQuery.of(context).size.width*.06,
             //     child: Image.asset('assets/Gif/Quotes.gif'))
-
           ],
         ),
 
@@ -72,7 +73,7 @@ class _GoalPageState extends State<GoalPage>
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon:  FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
+              icon: FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
             ),
           ],
         ),
@@ -101,7 +102,6 @@ class _GoalPageState extends State<GoalPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-
 
               const SizedBox(height: 10),
 
@@ -143,18 +143,57 @@ class _GoalPageState extends State<GoalPage>
                   }
 
                   return ListView.builder(
+                    padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     itemCount: filtered.length,
                     itemBuilder: (context, i) {
                       final goal = filtered[i];
-                      return GoalWidget(
-                        id: goal.id,
-                        title: goal.name,
-                        description: goal.description,
-                        percentage: goal.getPercentage,
-                        term: goal.term,
-                        date: goal.deadline,
+                      return Column(
+                        children: [
+                          Slidable(
+                            key: ValueKey(goal.id),
+                            startActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (_) {},
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
+                                ),
+                              ],
+                            ),
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (_) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => EditGoal(goal: goal),
+                                      ),
+                                    );
+                                  },
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.edit,
+                                  label: 'Edit',
+                                ),
+                              ],
+                            ),
+                            child: GoalWidget(
+                              id: goal.id,
+                              title: goal.name,
+                              description: goal.description,
+                              percentage: goal.getPercentage,
+                              term: goal.term,
+                              date: goal.deadline,
+                            ),
+                          ),
+                        ],
                       );
                     },
                   );

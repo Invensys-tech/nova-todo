@@ -1,21 +1,9 @@
-import 'dart:convert';
-
-import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
-import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
-import 'package:flutter_application_1/pages/goal/common/form.finance-impact.dart';
-import 'package:flutter_application_1/pages/goal/common/form.goal.dart';
-import 'package:flutter_application_1/pages/goal/common/form.motivation.dart';
-import 'package:flutter_application_1/pages/goal/common/form.subgoals.dart';
-import 'package:flutter_application_1/pages/goal/common/goalInformationAccordion.dart';
-import 'package:flutter_application_1/pages/goal/common/header.expansion-panel.dart';
+import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/pages/goal/form.goal.dart';
-import 'package:flutter_application_1/ui/inputs/dateselector.dart';
-import 'package:flutter_application_1/ui/inputs/mutitext.dart';
-import 'package:flutter_application_1/ui/inputs/textfield.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SubGoalData {
@@ -31,15 +19,15 @@ class IncomeData {
   IncomeData({required this.amountController, required this.sourceController});
 }
 
-class AddGoal extends StatefulWidget {
-  const AddGoal({super.key});
+class EditGoal extends StatefulWidget {
+  final Goal goal;
+  const EditGoal({super.key, required this.goal});
 
   @override
-  State<AddGoal> createState() => _AccordionAxampleState();
+  State<EditGoal> createState() => _EditGoalState();
 }
 
-class _AccordionAxampleState extends State<AddGoal> {
-  // Goal Information Controllers
+class _EditGoalState extends State<EditGoal> {
   final TextEditingController _goalName = TextEditingController();
   final TextEditingController _goalTerm = TextEditingController();
   final TextEditingController _goalPriority = TextEditingController();
@@ -81,6 +69,57 @@ class _AccordionAxampleState extends State<AddGoal> {
     fontSize: 18,
     fontWeight: FontWeight.bold,
   );
+
+  void _editGoal(int goalId) async {
+    try {
+      final goalResponse = await Supabase.instance.client
+          .from('goal')
+          .update({
+            'name': _controllers["goals"]["name"].controller.text,
+            'status': _controllers["goals"]["priority"].controller.text,
+            'priority': _controllers["goals"]["priority"].controller.text,
+            'description': _controllers["goals"]["description"].controller.text,
+            'term': _controllers["goals"]["term"].controller.text,
+            'userId': 1,
+            'deadline': (formatDate(
+              _controllers["subGoalsWithDeadline"]["deadline"].controller.text,
+            )),
+            'motivation': getMotivationJson(),
+            // 'finance': {'totalMoney', 1000},
+            'finance': getFinanceJson(),
+          })
+          .eq('id', goalId);
+
+      // await updateSubGoals(goalId, subGoalId);
+      print(goalResponse);
+      print("Goal Updated successfully!");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Goal Updated successfully!")),
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+    }
+  }
+
+  Future<void> updateSubGoals(int goalId, int subGoalId) async {
+    List<dynamic> subGoalsData = getSubGoalsJson(goalId);
+
+    if (subGoalsData.isNotEmpty) {
+      try {
+        await Supabase.instance.client
+            .from('sub_goal')
+            .update(subGoalsData as Map)
+            .eq('id', subGoalId);
+      } catch (e) {
+        print("Issue update in the sub goal");
+        print(e);
+      }
+    }
+  }
 
   void _printAllValues() async {
     print("-------- Goals ----------");
@@ -133,7 +172,7 @@ class _AccordionAxampleState extends State<AddGoal> {
       });
 
       final goals = await Datamanager().getGoals();
-      print("Goal Index Checll");
+      print("Goal INdex Checll");
 
       final goalIdIndex = goals.length - 1;
       // Fixing index to get the last inserted goal
@@ -212,22 +251,6 @@ class _AccordionAxampleState extends State<AddGoal> {
         await Supabase.instance.client.from('sub_goal').insert(subGoalsData);
       } catch (e) {
         print("Issue in the sub goal");
-        print(e);
-      }
-    }
-  }
-
-  Future<void> updateSubGoals(int goalId, int subGoalId) async {
-    List<dynamic> subGoalsData = getSubGoalsJson(goalId);
-
-    if (subGoalsData.isNotEmpty) {
-      try {
-        await Supabase.instance.client
-            .from('sub_goal')
-            .update(subGoalsData as Map)
-            .eq('id', subGoalId);
-      } catch (e) {
-        print("Issue update in the sub goal");
         print(e);
       }
     }
@@ -420,38 +443,31 @@ class _AccordionAxampleState extends State<AddGoal> {
 
   @override
   Widget build(BuildContext context) {
+    print("Edit Goal");
+    print(widget.goal);
     return Scaffold(
       appBar: AppBar(
-        leading: Row(
-          spacing: MediaQuery.of(context).size.width * 0.04,
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: _printAllValues,
+              child: const Text("Edit", style: TextStyle(color: Colors.white)),
             ),
-          ],
-        ),
-        title: Text(
-          "Adding New Goal",
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17),
-        ),
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.only(right: 16.0),
-        //     child: ElevatedButton(
-        //       style: ElevatedButton.styleFrom(
-        //         backgroundColor: Colors.green,
-        //         shape: RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.circular(8),
-        //         ),
-        //       ),
-        //       onPressed: _printAllValues,
-        //       child: const Text("Save", style: TextStyle(color: Colors.white)),
-        //     ),
-        //   ),
-        // ],
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -461,102 +477,10 @@ class _AccordionAxampleState extends State<AddGoal> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: GoalStepperForm(
             controllers: _controllers,
-
-            printAllValues: _printAllValues,
+            printAllValues: () => _editGoal(widget.goal.id),
+            editData: widget.goal,
           ),
         ),
-        // child: Container(
-        // child: Container(
-        // child: ExpansionPanelList(
-        //   materialGapSize: MediaQuery.of(context).size.width * 0,
-        //   children: [
-        //     ExpansionPanel(
-        //       headerBuilder: (context, isExpanded) {
-        //         return MyExpansionPanelHeader(
-        //           title: "Goal Information",
-        //           icon: Icon(Icons.star),
-        //         );
-        //       },
-        //       backgroundColor: const Color(0xff2F2F2F),
-        //       canTapOnHeader: true,
-        //       body: GoalForm(
-        //         goalName: _controllers["goals"]["name"] as FormInput,
-        //         goalTerms: _controllers["goals"]["term"] as FormInput,
-        //         goalPriority: _controllers["goals"]["priority"] as FormInput,
-        //         goalStatus: _controllers["goals"]["status"] as FormInput,
-        //         goalDescription:
-        //             _controllers["goals"]["description"] as FormInput,
-        //       ),
-        //       isExpanded: _expandedIndex == 0,
-        //     ),
-        //     ExpansionPanel(
-        //       headerBuilder: (context, isExpanded) {
-        //         return MyExpansionPanelHeader(
-        //           title: "Motivation and Progress",
-        //           icon: Icon(Icons.calendar_today),
-        //         );
-        //       },
-        //       backgroundColor: const Color(0xff2F2F2F),
-        //       canTapOnHeader: true,
-        //       body: MotivationForm(
-        //         motivations: _controllers["motivations"] as List<FormInput>,
-        //         addMotivations: addMotivation,
-        //       ),
-        //       isExpanded: _expandedIndex == 1,
-        //     ),
-        //     ExpansionPanel(
-        //       headerBuilder: (context, isExpanded) {
-        //         return MyExpansionPanelHeader(
-        //           title: "SubGoals And Deadlines",
-        //           icon: Icon(Icons.wallet),
-        //         );
-        //       },
-        //       backgroundColor: const Color(0xff2F2F2F),
-        //       canTapOnHeader: true,
-        //       body: SubGoalsForm(
-        //         deadline:
-        //             _controllers["subGoalsWithDeadline"]["deadline"]
-        //                 as FormInput,
-        //         subGoals:
-        //             _controllers["subGoalsWithDeadline"]["subGoals"]
-        //                 as List<FormInputPair>,
-        //         addSubGoal: addSubGoals,
-        //       ),
-        //       isExpanded: _expandedIndex == 2,
-        //     ),
-        //     ExpansionPanel(
-        //       headerBuilder: (context, isExpanded) {
-        //         return MyExpansionPanelHeader(
-        //           title: "Finance and Impact",
-        //           icon: Icon(Icons.circle_outlined),
-        //         );
-        //       },
-        //       backgroundColor: const Color(0xff2F2F2F),
-        //       canTapOnHeader: true,
-        //       body: Text('Finance Impact Form'),
-        //       // body: FinanceImpactForm(
-        //       //   totalMoney:
-        //       //       _controllers["financeImpact"]["totalMoney"] as FormInput,
-        //       //   amountSaved:
-        //       //       _controllers["financeImpact"]["amountSaved"] as FormInput,
-        //       //   timeSaved:
-        //       //       _controllers["financeImpact"]["timeSaved"] as FormInput,
-        //       //   incomeSources:
-        //       //       _controllers["financeImpact"]["incomeSource"]
-        //       //           as List<FormInputPair>,
-        //       //   addIncomeSource: addIncomeSource,
-        //       // ),
-        //       isExpanded: _expandedIndex == 3,
-        //     ),
-        //   ],
-        //   expansionCallback: (panelIndex, isExpanded) {
-        //     setState(() {
-        //       panelIndex == _expandedIndex
-        //           ? _expandedIndex = -1
-        //           : _expandedIndex = panelIndex;
-        //     });
-        //   },
-        // ),
       ),
     );
   }

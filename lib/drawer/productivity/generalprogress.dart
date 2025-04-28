@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/drawer/productivity/categorydetail.dart';
 import 'package:flutter_application_1/drawer/productivity/generalprogressstreakview.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/entities/productivity-habit-entity.dart';
@@ -15,34 +16,73 @@ class Generalprogress extends StatefulWidget {
 
 class _GeneralprogressState extends State<Generalprogress> {
   @override
-  Widget categoryBuilder(ProductivityHabit p) {
-    return Container(
-      width: MediaQuery.of(context).size.width * .935,
-      height: MediaQuery.of(context).size.height * .075,
-      margin: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * .015,
-        vertical: MediaQuery.of(context).size.height * .0075,
-      ),
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * .025,
-        vertical: MediaQuery.of(context).size.height * .015,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(width: 1,color: Colors.grey.withOpacity(.4)),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            p.title,
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
-          ),
-          Text(
-            "${p.habitList?.length ?? 0} Sub tasks ",
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
-          ),
-        ],
+  // Widget categoryBuilder(ProductivityHabit p) {
+  //   return Container(
+  //     width: MediaQuery.of(context).size.width * .935,
+  //     height: MediaQuery.of(context).size.height * .075,
+  //     margin: EdgeInsets.symmetric(
+  //       horizontal: MediaQuery.of(context).size.width * .015,
+  //       vertical: MediaQuery.of(context).size.height * .0075,
+  //     ),
+  //     padding: EdgeInsets.symmetric(
+  //       horizontal: MediaQuery.of(context).size.width * .025,
+  //       vertical: MediaQuery.of(context).size.height * .015,
+  //     ),
+  //     decoration: BoxDecoration(
+  //       color: Color(0xff393838),
+  //       borderRadius: BorderRadius.circular(10),
+  //     ),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(
+  //           p.title,
+  //           style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+  //         ),
+  //         Text(
+  //           "${p.habitList?.length ?? 0} Sub tasks ",
+  //           style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  Widget categoryBuilder({
+    required String title,
+    required int subtaskCount,
+    required VoidCallback onTap,
+    required BuildContext context,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: MediaQuery.of(context).size.width * .935,
+        height: MediaQuery.of(context).size.height * .075,
+        margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * .015,
+          vertical: MediaQuery.of(context).size.height * .0075,
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * .025,
+          vertical: MediaQuery.of(context).size.height * .015,
+        ),
+        decoration: BoxDecoration(
+          color: const Color(0xff393838),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+            ),
+            Text(
+              "$subtaskCount Sub-tasks",
+              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -126,44 +166,90 @@ class _GeneralprogressState extends State<Generalprogress> {
           //   // ),
           // ),
           SizedBox(height: MediaQuery.of(context).size.height * .0225),
-          // Padding(
-          //   padding: EdgeInsets.symmetric(
-          //     horizontal: MediaQuery.of(context).size.width * .04,
-          //   ),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       Text(
-          //         "Catagories",
-          //         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-          //       ),
-          //
-          //       Text(
-          //         "See All",
-          //         style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-        //  SizedBox(height: MediaQuery.of(context).size.height * .0225),
           FutureBuilder(
             future: widget.productivityFuture,
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var data = snapshot.data?.productivityHabits;
-                return Column(
-                  children: data?.map((e) => categoryBuilder(e)).toList() ?? [],
-                );
-              } else {
-                if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
               }
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+
+              final habits = snapshot.data?.productivityHabits ?? [];
+
+              // 1) Group by title
+              final Map<String, List<ProductivityHabit>> grouped = {};
+              for (var h in habits) {
+                grouped.putIfAbsent(h.title, () => []).add(h);
+              }
+
+              // 2) Build a list of widgets
+              final widgets =
+                  grouped.entries.map((entry) {
+                    final title = entry.key;
+                    final group = entry.value;
+
+                    // Count total subtasks across this group
+                    final totalSubtasks = group.fold<int>(
+                      0,
+                      (sum, habit) => sum + (habit.habitList?.length ?? 0),
+                    );
+
+                    // inside your FutureBuilder’s map:
+                    void _handleTap() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (_) =>
+                                  CategoryDetail(title: title, habits: group),
+                        ),
+                      );
+                    }
+
+                    // onTap: navigate, passing the entire `group`
+                    // void _handleTap() {
+                    //   // Navigator.push(
+                    //   //   context,
+                    //   //   MaterialPageRoute(
+                    //   //     builder:
+                    //   //         (_) =>
+                    //   //             YourDetailScreen(title: title, habits: group),
+                    //   //   ),
+                    //   // );
+                    // }
+
+                    return categoryBuilder(
+                      title: title,
+                      subtaskCount: totalSubtasks,
+                      onTap: _handleTap,
+                      context: context,
+                    );
+                  }).toList();
+
+              return SingleChildScrollView(child: Column(children: widgets));
             },
           ),
+
+          // FutureBuilder(
+          //   future: widget.productivityFuture,
+          //   builder: (context, snapshot) {
+          //     if (snapshot.hasData) {
+          //       var data = snapshot.data?.productivityHabits;
+          //       return Column(
+          //         children: data?.map((e) => categoryBuilder(e)).toList() ?? [],
+          //       );
+          //     } else {
+          //       if (snapshot.hasError) {
+          //         print(snapshot.error);
+          //         return Text('Error: ${snapshot.error}');
+          //       } else {
+          //         return const Center(child: CircularProgressIndicator());
+          //       }
+          //     }
+          //   },
+          // ),
         ],
       ),
     );

@@ -162,7 +162,7 @@ class _AddExpenseState extends State<AddExpense> {
             color: Color(0xff006045),
           ),
         ),
-        title:  Text(
+        title: Text(
           translate("Finance"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -263,6 +263,7 @@ class _AddExpenseState extends State<AddExpense> {
                                     }
                                     return null;
                                   },
+
                                   suggestions:
                                       _expenseList
                                           .map((exp) => exp.category)

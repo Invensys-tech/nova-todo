@@ -80,10 +80,9 @@ class _DashboardState extends State<Dashboard> {
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap:(){
-
-                           _scaffoldKey.currentState?.openDrawer();
-              },
+                      onTap: () {
+                        _scaffoldKey.currentState?.openDrawer();
+                      },
                       child: Icon(
                         Icons.menu_outlined,
                         size: 28,
@@ -93,7 +92,10 @@ class _DashboardState extends State<Dashboard> {
                     SizedBox(width: MediaQuery.of(context).size.width * .015),
                     Text(
                       "Jan 23, 2025",
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
 
                     SizedBox(width: MediaQuery.of(context).size.width * .35),
@@ -169,23 +171,25 @@ class _DashboardState extends State<Dashboard> {
                                 return Padding(
                                   padding: EdgeInsets.symmetric(
                                     horizontal:
-                                    MediaQuery.of(context).size.width * .035,
+                                        MediaQuery.of(context).size.width *
+                                        .035,
                                     vertical:
-                                    MediaQuery.of(context).size.height * .01,
+                                        MediaQuery.of(context).size.height *
+                                        .01,
                                   ),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
                                             height:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.height *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
                                                 .01,
                                           ),
                                           Text(
@@ -197,9 +201,9 @@ class _DashboardState extends State<Dashboard> {
                                           ),
                                           SizedBox(
                                             height:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.height *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
                                                 .005,
                                           ),
                                           Text(
@@ -213,18 +217,18 @@ class _DashboardState extends State<Dashboard> {
                                       ),
                                       Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                            CrossAxisAlignment.end,
                                         children: [
                                           SizedBox(
                                             height:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.height *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
                                                 .0075,
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                                MainAxisAlignment.end,
                                             spacing: 4,
                                             children: [
                                               Text(
@@ -243,14 +247,14 @@ class _DashboardState extends State<Dashboard> {
                                           ),
                                           SizedBox(
                                             height:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.height *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
                                                 .0075,
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                                MainAxisAlignment.end,
                                             spacing: 4,
                                             children: [
                                               Text(
@@ -270,14 +274,14 @@ class _DashboardState extends State<Dashboard> {
 
                                           SizedBox(
                                             height:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.height *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
                                                 .0075,
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                                MainAxisAlignment.end,
                                             spacing: 4,
                                             children: [
                                               Text(
@@ -352,10 +356,16 @@ class _DashboardState extends State<Dashboard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Financial Overview', style: TextStyle(fontSize: 16)),
+                      Text(
+                        'Financial Overview',
+                        style: TextStyle(fontSize: 16),
+                      ),
                       Text(
                         'This Month',
-                        style: TextStyle(color: Color(0xFF009966), fontSize: 12),
+                        style: TextStyle(
+                          color: Color(0xFF009966),
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ),
@@ -382,7 +392,8 @@ class _DashboardState extends State<Dashboard> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 8),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
 
                                     children: [
                                       Text('Expenses OverView'),
@@ -412,12 +423,13 @@ class _DashboardState extends State<Dashboard> {
                                   spacing: 8,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       spacing: 4,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.end,
+                                              MainAxisAlignment.end,
                                           spacing: 4,
                                           children: [
                                             Text(
@@ -436,7 +448,7 @@ class _DashboardState extends State<Dashboard> {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.end,
+                                              MainAxisAlignment.end,
                                           spacing: 4,
                                           children: [
                                             Text(
@@ -455,7 +467,7 @@ class _DashboardState extends State<Dashboard> {
                                         ),
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.end,
+                                              MainAxisAlignment.end,
                                           spacing: 4,
                                           children: [
                                             Text(
@@ -515,7 +527,8 @@ class _DashboardState extends State<Dashboard> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 8),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
 
                                     children: [
                                       Text('Income OverView'),
@@ -545,15 +558,16 @@ class _DashboardState extends State<Dashboard> {
                                   spacing: 8,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       spacing: 4,
                                       children: [
                                         ...snapshot.data!['categorized'].map((
-                                            MapEntry incomeType,
-                                            ) {
+                                          MapEntry incomeType,
+                                        ) {
                                           return Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                                MainAxisAlignment.end,
                                             spacing: 4,
                                             children: [
                                               Text(
@@ -609,7 +623,10 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       Text(
                         'See All',
-                        style: TextStyle(color: Color(0xFF009966), fontSize: 12),
+                        style: TextStyle(
+                          color: Color(0xFF009966),
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ),
@@ -626,7 +643,8 @@ class _DashboardState extends State<Dashboard> {
                               ...snapshot.data!.map((goalAnalysis) {
                                 return Container(
                                   width: MediaQuery.of(context).size.width * .3,
-                                  height: MediaQuery.of(context).size.height * .2,
+                                  height:
+                                      MediaQuery.of(context).size.height * .2,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
@@ -636,12 +654,15 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                   padding: EdgeInsets.symmetric(
                                     horizontal:
-                                    MediaQuery.of(context).size.width * .015,
+                                        MediaQuery.of(context).size.width *
+                                        .015,
                                     vertical:
-                                    MediaQuery.of(context).size.height * .012,
+                                        MediaQuery.of(context).size.height *
+                                        .012,
                                   ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         goalAnalysis.title,
@@ -659,48 +680,52 @@ class _DashboardState extends State<Dashboard> {
                                       ),
                                       SizedBox(
                                         height:
-                                        MediaQuery.of(context).size.height *
+                                            MediaQuery.of(context).size.height *
                                             .015,
                                       ),
                                       Center(
                                         child: Container(
                                           width:
-                                          MediaQuery.of(context).size.width *
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
                                               .2,
                                           height:
-                                          MediaQuery.of(context).size.height *
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.height *
                                               .1,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color:
-                                            Theme.of(
-                                              context,
-                                            ).primaryColorDark,
+                                                Theme.of(
+                                                  context,
+                                                ).primaryColorDark,
                                           ),
                                           child: Container(
                                             padding: EdgeInsets.symmetric(
                                               horizontal:
-                                              MediaQuery.of(
-                                                context,
-                                              ).size.width *
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
                                                   .015,
                                             ),
                                             width:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.width *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
                                                 .175,
                                             height:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.height *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
                                                 .075,
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               color:
-                                              Theme.of(
-                                                context,
-                                              ).primaryColorDark,
+                                                  Theme.of(
+                                                    context,
+                                                  ).primaryColorDark,
                                             ),
                                             child: DashedCircularProgressBar.aspectRatio(
                                               aspectRatio: 1, // width ÷ height
@@ -712,36 +737,40 @@ class _DashboardState extends State<Dashboard> {
                                                 0xff0FF009966,
                                               ),
                                               backgroundColor:
-                                              Theme.of(
-                                                context,
-                                              ).primaryColorDark,
+                                                  Theme.of(
+                                                    context,
+                                                  ).primaryColorDark,
                                               foregroundStrokeWidth: 15,
                                               backgroundStrokeWidth: 15,
                                               animation: true,
                                               seekSize: 6,
-                                              seekColor: const Color(0xffeeeeee),
+                                              seekColor: const Color(
+                                                0xffeeeeee,
+                                              ),
                                               child: Center(
                                                 child: ValueListenableBuilder(
-                                                  valueListenable: _valueNotifier,
+                                                  valueListenable:
+                                                      _valueNotifier,
                                                   builder:
                                                       (
-                                                      _,
-                                                      double value,
-                                                      __,
+                                                        _,
+                                                        double value,
+                                                        __,
                                                       ) => Column(
-                                                    mainAxisSize:
-                                                    MainAxisSize.min,
-                                                    children: [
-                                                      Text(
-                                                        '${goalAnalysis.percent}%',
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                          FontWeight.w500,
-                                                          fontSize: 12,
-                                                        ),
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            '${goalAnalysis.percent}%',
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
                                                 ),
                                               ),
                                             ),

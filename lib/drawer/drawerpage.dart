@@ -23,7 +23,6 @@ class Drawerpage extends StatefulWidget {
 }
 
 class _DrawerpageState extends State<Drawerpage> {
-
   var dataManager = Datamanager();
   routeToHabits() {
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
