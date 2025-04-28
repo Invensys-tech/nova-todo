@@ -57,7 +57,7 @@ class _LogInPageState extends State<LogInPage> {
           });
         });
   }
-
+  PhoneNumber number = PhoneNumber(isoCode: 'ET');
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -106,9 +106,10 @@ class _LogInPageState extends State<LogInPage> {
                       style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                     ),
                     InternationalPhoneNumberInput(
+
                         selectorConfig: SelectorConfig(
                           selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                          showFlags: false,
+                          showFlags: true,
                           useEmoji: false,
                           // backgroundColor,
                           // this.countryComparator,
@@ -116,15 +117,16 @@ class _LogInPageState extends State<LogInPage> {
                           useBottomSheetSafeArea: false,
                         ),
                       // initialValue: PhoneNumber(
-                        // phoneNumber: '+251912345678',
-                        // dialCode: '+251',
-                        // isoCode: '+251',
+                      //   phoneNumber: '+251912345678',
+                      //   dialCode: '+251',
+                      //   isoCode: '+251',
                       // ),
+                      initialValue: number,
                       inputBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xFF27272A))),
-                      onInputChanged: (phoneNumber) {
+                      onInputChanged: (number) {
                         // print(phoneNumber.phoneNumber);
                         // print(phoneNumber.toString());
-                        _phoneNumberController.text = phoneNumber.phoneNumber ?? '';
+                        _phoneNumberController.text = number.phoneNumber ?? '';
                       },
                     ),
                     // MyTextInput(

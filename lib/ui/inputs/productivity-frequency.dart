@@ -21,7 +21,7 @@ class _TermSelectorState extends State<TermSelector> {
   }
 
   Color _getColor(bool isSelected) {
-    return isSelected ? Colors.green : Colors.white30;
+    return isSelected ? Colors.green : Colors.grey.withOpacity(.5);
   }
 
   @override
@@ -32,12 +32,11 @@ class _TermSelectorState extends State<TermSelector> {
         const Text(
           "Term",
           style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w300,
-            color: Colors.white70,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
           ),
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children:
@@ -47,10 +46,11 @@ class _TermSelectorState extends State<TermSelector> {
 
                 return Expanded(
                   child: Container(
+                    height: MediaQuery.of(context).size.height*.04,
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 6,
-                      vertical: 4,
+                      vertical: 2,
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(color: color),

@@ -4,6 +4,7 @@ import 'package:flutter_application_1/drawer/productivity/dailyprogress.dart';
 import 'package:flutter_application_1/drawer/productivity/generalprogress.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProductivityViewPgae extends StatefulWidget {
   final int id;
@@ -27,35 +28,39 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
     print("Current Route: $currentRoute");
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-        ),
-        shape: Border(
-          bottom: BorderSide(
-            color: Colors.white, // Border color
-            width: 1, // Border width
-          ),
-        ),
-        title: Text(
-          "Title",
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-        ),
-        actions: [Row(children: [
+        title: Row(
+          children: [
+            Text("Productivity View"),
+            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            // Container(
+            //     height: MediaQuery.of(context).size.height*.03,
+            //     width: MediaQuery.of(context).size.width*.06,
+            //     child: Image.asset('assets/Gif/Quotes.gif'))
+
           ],
-        )],
+        ),
+
+        // centerTitle: true,
+        leading: Row(
+          spacing: MediaQuery.of(context).size.width * 0.04,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon:  FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
+            ),
+          ],
+        ),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
       ),
       body: Column(
         children: [
           Container(
             height: MediaQuery.of(context).size.height * .89,
             padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * .03575,
+              top: MediaQuery.of(context).size.height * .0175,
             ),
-            color: Colors.black,
             child: ContainedTabBarView(
               tabs: [
                 Tab(text: "Daily Progress"),
@@ -72,22 +77,14 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
                 indicatorWeight: 3,
                 background: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black,
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.4),
-                        spreadRadius: 0.5,
-                        blurRadius: 2,
-                        offset: Offset(1, -1),
-                      ),
-                    ],
+
                   ),
                 ),
                 position: TabBarPosition.top,
                 alignment: TabBarAlignment.start,
+                labelColor: Color(0xff11853F),
                 indicatorColor: Color(0xff11853F),
-                labelColor: Colors.white,
                 labelStyle: TextStyle(fontSize: 16),
                 unselectedLabelColor: Colors.grey[400],
                 unselectedLabelStyle: TextStyle(fontSize: 13),

@@ -45,9 +45,9 @@ class _JournalContainerState extends State<JournalContainer> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                 Text(
                   "Journals",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700 , color: Theme.of(context).disabledColor),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -101,11 +101,19 @@ class _JournalContainerState extends State<JournalContainer> {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white30),
+                    
+                    border: Border.all(color: Colors.grey.withOpacity(.3), width: 1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   // padding: EdgeInsets.all(8.0),
-                  child: Text(quillData.toPlainText()),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("12 - 02 -2025",style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),),
+                      SizedBox(height: MediaQuery.of(context).size.height*.0025,),
+                      Text(quillData.toPlainText(), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
+                    ],
+                  ),
                 ),
               );
             }),
@@ -138,7 +146,7 @@ class _JournalContainerState extends State<JournalContainer> {
             // ),
             Container(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Theme.of(context).disabledColor,
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(

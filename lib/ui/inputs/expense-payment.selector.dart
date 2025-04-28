@@ -389,7 +389,7 @@ class _PaidByAndSpecificFromInputContentState
                           style: TextStyle(fontSize: 12),
                         ),
                         icon: const Icon(Icons.arrow_drop_down),
-                        style: const TextStyle(fontSize: 13),
+                        style:  TextStyle(fontSize: 13,color: Theme.of(context).primaryColorLight),
                         items:
                             dynamicItems.map((String value) {
                               return DropdownMenuItem<String>(

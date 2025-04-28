@@ -12,6 +12,7 @@ import 'package:flutter_application_1/services/streak.helper.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProductivityHabitForm extends StatefulWidget {
   final FormInput? title;
@@ -263,18 +264,21 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: FaIcon(
+            FontAwesomeIcons.chevronLeft,
+            size: 25,
+            color: Color(0xff006045),
+          ),
         ),
-        title: const Text(
-          "Add Productivity",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        title:  Text(
+         " Add Productivity",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -301,7 +305,6 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                               int index = entry.key;
                               var item = entry.value;
                               return ExpansionPanel(
-                                backgroundColor: const Color(0xff2F2F2F),
                                 canTapOnHeader: true,
                                 headerBuilder: (context, isExpanded) {
                                   return MyExpansionPanelHeader(
@@ -344,7 +347,6 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 16,
-                                                    color: Colors.white,
                                                   ),
                                                 ),
                                                 subtitle: const Text(
@@ -407,9 +409,6 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                                                                             .bold,
                                                                     fontSize:
                                                                         16,
-                                                                    color:
-                                                                        Colors
-                                                                            .white,
                                                                   ),
                                                                 ),
                                                                 subtitle: const Text(

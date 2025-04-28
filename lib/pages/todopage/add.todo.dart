@@ -242,69 +242,71 @@ class _AddTodoPageState extends State<AddTodoPage> {
         ),
         title: const Text(
           "Add New Todo",
-          style: TextStyle(color: Color(0xFFD4D4D8)),
         ),
       ),
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            TodoForm(
-              name: name,
-              time: time,
-              type: type,
-              date: date,
-              notifyMe: notifyMe,
-              description: description,
-              subTasks: subTasks,
-              // taskTime: taskTimeController,
-              // taskEndTime: taskEndTimeController,
-              startTimeInput: startTimeInput,
-              endTimeInput: endTimeInput,
-              addSubTask: addSubTask,
-            ),
-            Padding(
-              padding: EdgeInsets.all(
-                MediaQuery.of(context).size.height * 0.02,
+      body: Container(
+        height: MediaQuery.of(context).size.height*.9,
+        child:  SingleChildScrollView(
+          physics:  AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              TodoForm(
+                name: name,
+                time: time,
+                type: type,
+                date: date,
+                notifyMe: notifyMe,
+                description: description,
+                subTasks: subTasks,
+                // taskTime: taskTimeController,
+                // taskEndTime: taskEndTimeController,
+                startTimeInput: startTimeInput,
+                endTimeInput: endTimeInput,
+                addSubTask: addSubTask,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+              Padding(
+                padding: EdgeInsets.all(
+                  MediaQuery.of(context).size.height * 0.02,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () {
+                        // Navigator.pop(context);
+                        saveTodo();
+                      },
+                      child: const Text(
+                        "Save Todo",
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    onPressed: () {
-                      // Navigator.pop(context);
-                      saveTodo();
-                    },
-                    child: const Text(
-                      "Save Todo",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
