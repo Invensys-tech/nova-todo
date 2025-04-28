@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/analytics.service.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -10,6 +11,9 @@ class DailyReport extends StatefulWidget {
 }
 
 class _DailyReportState extends State<DailyReport> {
+  final incomeAnalytics = AnalyticsService.getIncome();
+  final expenseAnalytics = AnalyticsService.getExpense();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,174 +86,223 @@ class _DailyReportState extends State<DailyReport> {
                 ),
               ),
 
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                width: MediaQuery.of(context).size.width * .95,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF18181B), Color(0xFF27272A)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 8,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          translate('Expenses'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
+              FutureBuilder(
+                future: expenseAnalytics,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                      width: MediaQuery.of(context).size.width * .95,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        gradient: LinearGradient(
+                          colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        Text(
-                          '\$ 105,000',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    LinearProgressIndicator(
-                      value: .4,
-                      minHeight: 8,
-                      borderRadius: BorderRadius.circular(4),
-                      backgroundColor: Color(0xFF3F3F47),
-                      color: Color(0xFF009966),
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      spacing: 8,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              gradient: LinearGradient(
-                                colors: [Color(0xFF27272A), Color(0xFF18181B)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 8,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                translate('Expenses'),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            child: Column(
-                              spacing: 2,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Must',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
+                              Text(
+                                '\$ ${snapshot.data!.total}',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            spacing: 5,
+                            children: [
+                              Expanded(
+                                flex: snapshot.data!.must.toInt(),
+                                child: Container(
+                                  height: 8,
+                                  decoration: BoxDecoration(
                                     color: Color(0xFF009966),
+                                    borderRadius: BorderRadius.circular(4),  // Rounded corners
                                   ),
-                                ),
-                                Text(
-                                  '55k',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              gradient: LinearGradient(
-                                colors: [Color(0xFF27272A), Color(0xFF18181B)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                                )
                               ),
-                            ),
-                            child: Column(
-                              spacing: 2,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Maybe',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFFD4D4D8),
-                                  ),
-                                ),
-                                Text(
-                                  '43.2k',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              gradient: LinearGradient(
-                                colors: [Color(0xFF27272A), Color(0xFF18181B)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                              Expanded(
+                                  flex: snapshot.data!.maybe.toInt(),
+                                  child: Container(
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(4),  // Rounded corners
+                                    ),
+                                  )
                               ),
-                            ),
-                            child: Column(
-                              spacing: 2,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Unwanted',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFFEC003F),
-                                  ),
-                                ),
-                                Text(
-                                  '26k',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              Expanded(
+                                  flex: snapshot.data!.unwanted.toInt(),
+                                  child: Container(
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFEC003F),
+                                      borderRadius: BorderRadius.circular(4),  // Rounded corners
+                                    ),
+                                  )
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+
+                          // LinearProgressIndicator(
+                          //   value: .4,
+                          //   minHeight: 8,
+                          //   borderRadius: BorderRadius.circular(4),
+                          //   backgroundColor: Color(0xFF3F3F47),
+                          //   color: Color(0xFF009966),
+                          // ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            spacing: 8,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    gradient: LinearGradient(
+                                      colors: [Color(0xFF27272A), Color(0xFF18181B)],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    spacing: 2,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Must',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF009966),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${snapshot.data!.must}',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    gradient: LinearGradient(
+                                      colors: [Color(0xFF27272A), Color(0xFF18181B)],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    spacing: 2,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Maybe',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFFD4D4D8),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${snapshot.data!.maybe}',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 8,
+                                    horizontal: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    gradient: LinearGradient(
+                                      colors: [Color(0xFF27272A), Color(0xFF18181B)],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    spacing: 2,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Unwanted',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFFEC003F),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${snapshot.data!.unwanted}',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error getting expense'));
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  }
+                },
               ),
 
               Container(
@@ -275,13 +328,26 @@ class _DailyReportState extends State<DailyReport> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    Text(
-                      translate('\$ 34,500'),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    FutureBuilder(
+                      future: incomeAnalytics,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            '\$ ${snapshot.data!['total']}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          );
+                        } else {
+                          if (snapshot.hasError) {
+                            return Center(child: Text('Error getting income'));
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -444,14 +510,14 @@ class _DailyReportState extends State<DailyReport> {
                             backgroundColor: Color(0xFFFF637E).withAlpha(20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(color: Color(0xFFFF637E), width: 2),
+                              side: BorderSide(
+                                color: Color(0xFFFF637E),
+                                width: 2,
+                              ),
                             ),
                           ),
                           onPressed: () {},
-                          child: Icon(
-                            Icons.camera,
-                            color: Color(0xFFFF637E),
-                          ),
+                          child: Icon(Icons.camera, color: Color(0xFFFF637E)),
                         ),
 
                         ElevatedButton(
@@ -463,10 +529,7 @@ class _DailyReportState extends State<DailyReport> {
                             ),
                           ),
                           onPressed: () {},
-                          child: Icon(
-                            Icons.music_note,
-                            color: Colors.white,
-                          ),
+                          child: Icon(Icons.music_note, color: Colors.white),
                         ),
 
                         ElevatedButton(
@@ -474,14 +537,14 @@ class _DailyReportState extends State<DailyReport> {
                             backgroundColor: Color(0xFF00D492).withAlpha(20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
-                              side: BorderSide(color: Color(0xFF00D492), width: 2),
+                              side: BorderSide(
+                                color: Color(0xFF00D492),
+                                width: 2,
+                              ),
                             ),
                           ),
                           onPressed: () {},
-                          child: Icon(
-                            Icons.share,
-                            color: Color(0xFF00D492),
-                          ),
+                          child: Icon(Icons.share, color: Color(0xFF00D492)),
                         ),
                       ],
                     ),
