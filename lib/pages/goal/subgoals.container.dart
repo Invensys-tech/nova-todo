@@ -108,21 +108,28 @@ class _SubGoalsContainerState extends State<SubGoalsContainer> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:  [
+              children: [
                 // Icon(Icons.account_tree, color: Colors.white),
                 Text(
                   "Sub-Goals",
-                  style: TextStyle( fontSize: 17,fontWeight: FontWeight.w700, color: Theme.of(context).disabledColor),
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).disabledColor,
+                  ),
                 ),
                 Text(
                   "Add New SubGoals",
-                  style: TextStyle( fontSize: 15,fontWeight: FontWeight.w500, color: Color(0xff009966)),
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff009966),
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 10),
             ExpansionPanelList(
-
               elevation: 2,
               expansionCallback: (panelIndex, isExpanded) {
                 setState(() {

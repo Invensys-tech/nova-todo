@@ -77,7 +77,7 @@ class _EditProductivityState extends State<EditProductivity> {
         ),
         backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back,),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context, false),
         ),
         centerTitle: true,

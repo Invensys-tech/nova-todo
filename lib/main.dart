@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:another_telephony/telephony.dart';
+import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/pages/auth/payment.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
@@ -36,6 +37,13 @@ void main() async {
   await Hive.initFlutter();
   HiveService hiveService = HiveService();
   await hiveService.initHive(boxName: 'session');
+  HiveService hiveService2 = HiveService();
+  await hiveService2.initHive(boxName: "dateTime");
+  await hiveService2.upsertData("dateTime", "Gregorian");
+
+  HiveService hiveService3 = HiveService();
+  await hiveService3.initHive(boxName: "dateTime");
+
   dynamic data = await hiveService.getData('user');
   print('----------------- user store in hive -----------------');
   print(jsonEncode(data));
@@ -62,22 +70,16 @@ void main() async {
       initPage = InitPage.HOME;
     }
 
-    // print('----------------- Is After -----------------');
-    // print(
-    //   DateTime.now().isAfter(
-    //     (await UserRepository().getSubscriptionEndDate(data['phoneNumber'])),
-    //   ),
-    // );
-    // print('----------------- Now -----------------');
-    // print(DateTime.now().toIso8601String());
-    // print('----------------- Subscription End Date -----------------');
-    // print(await UserRepository().getSubscriptionEndDate(data['phoneNumber']));
   } catch (e) {
     print('Error getting sub end date initializing Supabase');
   }
 
   final delegate = await setupLocalization();
-
+  final prefs = await SharedPreferences.getInstance();
+  String? languageCode = prefs.getString('languageCode');
+  if (languageCode != null) {
+    await delegate.changeLocale(Locale(languageCode));
+  }
   //runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
    runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
 }
@@ -150,6 +152,24 @@ class _MyAppState extends State<MyApp> {
     loabThemeApp();
   }
 
+  Future<void> initAll() async {
+    HiveService hiveService3 = HiveService();
+    await hiveService3.initHive(boxName: "dateTime");
+    final stored = await hiveService3.getData('dateType');
+    setState(() {
+      stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
+      if (stored == "Ethiopian") {
+        setState(() {
+          eth = true;
+        });
+      } else {
+        setState(() {
+          eth = false;
+        });
+      }
+    });
+  }
+
   Future<void> loabThemeApp() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -210,6 +230,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext appContext) {
+
+    final localizationDelegate = LocalizedApp.of(context).delegate;
     return DynamicTheme(
       themeCollection: themeCollection,
       defaultThemeId: _currentThemeId, // optional, default id is 0
@@ -218,6 +240,13 @@ class _MyAppState extends State<MyApp> {
           state: LocalizationProvider.of(appContext).state,
           // state: LocalizedApp.of(context).,
           child: MaterialApp(
+
+           // supportedLocales: localizationDelegate.supportedLocales,
+            locale: localizationDelegate.currentLocale ?? Locale('en'),
+            supportedLocales: const [
+              Locale('en'), // English
+              Locale('am'), // Amharic
+            ],
             navigatorKey: navigatorKey,
             title: 'Vita Board',
             theme: theme,
@@ -231,12 +260,14 @@ class _MyAppState extends State<MyApp> {
             // home: const MainScreenPage(),
             // home: widget.isLoggedIn ? const MainScreenPage() : const AuthGate(),
             debugShowCheckedModeBanner: false,
-            localizationsDelegates: const [
+            localizationsDelegates: [
+              localizationDelegate,
               GlobalMaterialLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
-              FlutterQuillLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              FlutterQuillLocalizations.delegate// Add this line for FlutterQuill localization
             ],
+            //locale: Locale('en', 'US'),
             routes: {
               '/':
                   (context) =>

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class BankBalance extends StatefulWidget {
   final double total;
@@ -55,7 +56,7 @@ class _BankBalanceState extends State<BankBalance> {
                       Row(
                         children: [
                           Text(
-                            'Total Balance',
+                            translate('Total Balance'),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -63,7 +64,7 @@ class _BankBalanceState extends State<BankBalance> {
                           ),
                           Spacer(),
                           Text(
-                            'Today',
+                            translate('Today'),
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
@@ -143,7 +144,7 @@ class _BankBalanceState extends State<BankBalance> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Total Income",
+                        translate("Total Income"),
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -190,7 +191,7 @@ class _BankBalanceState extends State<BankBalance> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Total Expenses",
+                        translate("Total Expenses"),
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,

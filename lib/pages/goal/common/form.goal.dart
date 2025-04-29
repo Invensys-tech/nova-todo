@@ -6,6 +6,7 @@ import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:intl/intl.dart';
 
 class GoalForm extends StatefulWidget {
   final FormInput goalName;
@@ -40,7 +41,6 @@ class _GoalFormState extends State<GoalForm> {
         borderRadius: BorderRadius.circular(10),
         color: const Color(0x00000000),
       ),
-      // color: const Color(0x00000000),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -52,27 +52,23 @@ class _GoalFormState extends State<GoalForm> {
               controller: widget.goalName.controller,
             ),
           ),
-          // MyTextInput(
-          //   label: 'Term',
-          //   textFields: TextFields(
-          //     hinttext: widget.goalTerms.hint,
-          //     whatIsInput: widget.goalTerms.type,
-          //     controller: widget.goalTerms.controller,
-          //   ),
-          // ),
+
           MyRadioInput(
+            value: widget.goalTerms.controller.text,
             label: 'Term',
             groupKey: 'term',
             options: ['short', 'long'],
             onChanged: (value) => widget.goalTerms.controller.text = value,
           ),
           MyRadioInput(
+            value: widget.goalPriority.controller.text,
             label: 'Priority',
             groupKey: 'priority',
             options: ['High', 'Medium', 'Low'],
             onChanged: (value) => widget.goalPriority.controller.text = value,
           ),
           MyRadioInput(
+            value: widget.goalStatus.controller.text,
             label: 'Status',
             groupKey: 'status',
             options: ['New', 'Ongoing', 'Completed'],
@@ -91,12 +87,18 @@ class _GoalFormState extends State<GoalForm> {
               ),
               DateSelector(
                 controller: widget.deadline.controller,
+
                 // controller: TextEditingController(),
                 hintText: 'Date',
                 icon: Icons.calendar_today,
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2100),
-                initialDate: DateTime.now(),
+                initialDate:
+                    widget.deadline.controller.text.isNotEmpty
+                        ? DateFormat(
+                          'yyyy-MM-dd',
+                        ).parse(widget.deadline.controller.text)
+                        : DateTime.now(),
               ),
             ],
           ),

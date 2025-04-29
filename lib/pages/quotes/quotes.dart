@@ -8,6 +8,7 @@ import 'package:flutter_application_1/pages/quotes/form.quotes.dart';
 import 'package:flutter_application_1/repositories/quote.repository.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,7 +62,7 @@ class _QuotesPageState extends State<QuotesPage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Quotes"),
+            Text(translate("Quotes")),
             SizedBox(width: MediaQuery.of(context).size.width*.015,),
             Container(
                 height: MediaQuery.of(context).size.height*.03,

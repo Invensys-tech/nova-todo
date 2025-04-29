@@ -5,6 +5,7 @@ import 'package:flutter_application_1/pages/notespage/common/note-list.dart';
 import 'package:flutter_application_1/pages/notespage/common/notes-quil.dart';
 import 'package:flutter_application_1/repositories/notes.repository.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import '../../drawer/drawerpage.dart';
@@ -98,7 +99,7 @@ class _NotesPageState extends State<NotesPage> {
             child: Icon(Icons.menu, size: 27, )),
         title: Row(
           children: [
-            Text("Notes"),
+            Text(translate("Notes")),
             SizedBox(width: MediaQuery.of(context).size.width*.015,),
             Container(
                 height: MediaQuery.of(context).size.height*.03,

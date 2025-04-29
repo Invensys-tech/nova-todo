@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/goal/common/form.finance-impact.dart';
 import 'package:flutter_application_1/pages/goal/common/form.goal.dart';
 import 'package:flutter_application_1/pages/goal/common/form.motivation.dart';
 import 'package:flutter_application_1/pages/goal/common/form.subgoals.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:intl/intl.dart';
 
 class GoalStepperForm extends StatefulWidget {
   final Map<String, dynamic> controllers;
   final void Function() printAllValues;
+  final Goal? editData;
   const GoalStepperForm({
     super.key,
     required this.controllers,
     required this.printAllValues,
+    this.editData,
   });
 
   @override
@@ -19,34 +24,118 @@ class GoalStepperForm extends StatefulWidget {
 }
 
 class _GoalStepperFormState extends State<GoalStepperForm> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.editData != null) {
+      final data = widget.editData!;
+      // Fill goal fields
+      widget.controllers["goals"]["name"].controller.text = data.name ?? '';
+      widget.controllers["goals"]["term"].controller.text = data.term ?? '';
+      widget.controllers["goals"]["priority"].controller.text =
+          data.priority ?? '';
+      widget.controllers["goals"]["status"].controller.text = data.status ?? '';
+      widget.controllers["goals"]["description"].controller.text =
+          data.description ?? '';
+
+      // Fill motivations
+      final motivations = data.motivation['motivations'];
+
+      print("Motivation");
+      print(motivations);
+      if (motivations.isNotEmpty) {
+        widget.controllers['motivations'] =
+            motivations
+                .map<FormInput>(
+                  (m) => FormInput(
+                    label: "Motivation",
+                    controller: TextEditingController(text: m),
+                    type: "1",
+                    hint: "Enter Motivation",
+                  ),
+                )
+                .toList();
+      }
+
+      // Fill subGoals
+      final subGoals = data.subGoals ?? [];
+
+      print("SubGoals");
+
+      if (subGoals.isNotEmpty) {
+        widget.controllers['subGoalsWithDeadline']['subGoals'] =
+            subGoals
+                .map(
+                  (e) => FormInputPair(
+                    key: FormInput(
+                      label: translate("Sub Goal"),
+                      controller: TextEditingController(text: e.goal),
+                      type: "1",
+                      hint: "Enter Sub Goal",
+                    ),
+                    value: FormInput(
+                      label: translate("Deadline"),
+                      controller: TextEditingController(text: e.deadline),
+                      type: "1",
+                      hint: "Enter Deadline",
+                    ),
+                  ),
+                )
+                .toList();
+      }
+
+      widget
+          .controllers["subGoalsWithDeadline"]["deadline"]
+          .controller
+          .text = DateFormat(
+        'dd-MM-yyyy',
+      ).format(DateTime.parse(data.deadline ?? '1970-01-01'));
+      // data.deadline ?? '';
+
+      // Fill finance impact
+      print("Finnace");
+      print(data.finance);
+      print(data.finance['total_money']);
+      print(data.finance['finance']['total_money']);
+
+      widget.controllers["financeImpact"]["totalMoney"].controller.text =
+          data.finance['finance']['total_money'].toString() ?? '';
+
+      widget.controllers["financeImpact"]["amountSaved"].controller.text =
+          data.finance['finance']['amount_saved'].toString() ?? '';
+      widget.controllers["financeImpact"]["timeSaved"].controller.text =
+          data.finance['finance']['time_saved'].toString() ?? '';
+    }
+  }
+
   final Map<String, dynamic> _controllers = {
     "goals": {
       "name": FormInput(
-        label: "Goal Name",
+        label: translate("Goal Name"),
         controller: TextEditingController(),
         type: "1",
         hint: "Enter Goal Name",
       ),
       "term": FormInput(
-        label: "Terms of Goal",
+        label: translate("Terms of Goal"),
         controller: TextEditingController(),
         type: "1",
         hint: "Enter Terms of Goal",
       ),
       "priority": FormInput(
-        label: "Goal Priority",
+        label:translate( "Goal Priority"),
         controller: TextEditingController(),
         type: "1",
         hint: "Enter Goal Priority",
       ),
       "status": FormInput(
-        label: "Goal Status",
+        label: translate("Goal Status"),
         controller: TextEditingController(),
         type: "1",
         hint: "Enter Goal Status",
       ),
       "description": FormInput(
-        label: "Goal Description",
+        label: translate("Goal Description"),
         controller: TextEditingController(),
         type: "1",
         hint: "Enter Goal Description",
@@ -54,19 +143,19 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
     },
     "motivations": [
       FormInput(
-        label: "Why is this goal important to you",
+        label: translate("Why is this goal important to you"),
         controller: TextEditingController(),
         type: "1",
         hint: "Enter why this goal is important to you",
       ),
       FormInput(
-        label: "What will happen after you achieve this goal",
+        label: translate("What will happen after you achieve this goal"),
         controller: TextEditingController(),
         type: "1",
         hint: "Enter what will happen after you achieve this goal",
       ),
       FormInput(
-        label: "How would you feel if you don’t achieve this goal",
+        label: translate("How would you feel if you don’t achieve this goal"),
         controller: TextEditingController(),
         type: "1",
         hint: "Enter how would you feel if you don’t achieve this goal",
@@ -74,7 +163,7 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
     ],
     "subGoalsWithDeadline": {
       "deadline": FormInput(
-        label: "Deadline Of this current Vision Board",
+        label: translate("Deadline Of this current Vision Board"),
         controller: TextEditingController(),
         type: "1",
         hint: "Enter Deadline Of this current Vision Board",
@@ -82,13 +171,13 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
       "subGoals": [
         FormInputPair(
           key: FormInput(
-            label: "Sub goal name",
+            label: translate("Sub goal name"),
             controller: TextEditingController(),
             type: "1",
             hint: "Enter Sub goal name",
           ),
           value: FormInput(
-            label: "Subgoal Deadline",
+            label: translate("Subgoal Deadline"),
             controller: TextEditingController(),
             type: "1",
             hint: "Enter Subgoal Deadline",
@@ -98,48 +187,32 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
     },
     "financeImpact": {
       "totalMoney": FormInput(
-        label: "How much do you think this Goal will cost?",
+        label:translate( "How much do you think this Goal will cost?"),
         controller: TextEditingController(),
         type: "0",
         hint: "Enter how much you think this Goal Will Cost",
       ),
       "amountSaved": FormInput(
-        label: "How much do you think you are going to save?",
+        label:translate ("How much do you think you are going to save?"),
         controller: TextEditingController(),
         type: "0",
         hint: "Amount Of Money",
         span: 1.5,
       ),
       "timeSaved": FormInput(
-        label: "Time Saved",
+        label: translate("Time Saved"),
         controller: TextEditingController(),
         type: "0",
         hint: "Enter Time Saved",
         span: 1.5,
       ),
       "incomeSource": FormInput(
-        label: "Income Source",
+        label: translate("Income Source"),
         controller: TextEditingController(),
         type: "0",
         hint: "Enter Time Saved",
         span: 1.5,
       ),
-      // "incomeSource": [
-      //   FormInputPair(
-      //     key: FormInput(
-      //       label: "Source",
-      //       controller: TextEditingController(),
-      //       type: "1",
-      //       hint: "Enter Source",
-      //     ),
-      //     value: FormInput(
-      //       label: "Amount",
-      //       controller: TextEditingController(),
-      //       type: "0",
-      //       hint: "Enter Amount",
-      //     ),
-      //   ),
-      // ],
     },
   };
 
@@ -147,7 +220,7 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
     setState(() {
       _controllers["motivations"].add(
         FormInput(
-          label: "Additional Motivation",
+          label: translate("Additional Motivation"),
           controller: TextEditingController(),
           type: "1",
           hint: "Enter Additional Motivation",
@@ -257,9 +330,7 @@ class _GoalStepperFormState extends State<GoalStepperForm> {
             incomeSource:
                 widget.controllers["financeImpact"]["incomeSource"]
                     as FormInput,
-            // incomeSources:
-            //     widget.controllers["financeImpact"]["incomeSource"]
-            //         as List<FormInputPair>,
+
             addIncomeSource: addIncomeSource,
           ),
         ],

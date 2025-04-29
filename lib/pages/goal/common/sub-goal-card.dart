@@ -8,7 +8,7 @@ class SubGoalCardWidget extends StatelessWidget {
   final String? date;
   final double percentage;
 
-   SubGoalCardWidget({
+  SubGoalCardWidget({
     super.key,
     required this.title,
     required this.status,
@@ -28,7 +28,7 @@ class SubGoalCardWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
         decoration: BoxDecoration(
-          //color: const Color(0xFF424242),
+          // color: const Color(0xFF424242),
           borderRadius: BorderRadius.circular(12.0),
         ),
         child: Row(
@@ -51,19 +51,9 @@ class SubGoalCardWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 6),
-                        Text(
-                          status,
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
+                        Text(status, style: TextStyle(fontSize: 13)),
                         const SizedBox(height: 6),
-                        Text(
-                          date ?? '',
-                          style: TextStyle(
-                            fontSize: 13,
-                          ),
-                        ),
+                        Text(date ?? '', style: TextStyle(fontSize: 13)),
                       ],
                     ),
                   ),
@@ -99,46 +89,23 @@ class SubGoalCardWidget extends StatelessWidget {
             //     ],
             //   ),
             // ),
-
             Center(
               child: Container(
-                width:
-                MediaQuery.of(context).size.width *
-                    .2,
-                height:
-                MediaQuery.of(context).size.height *
-                    .1,
+                width: MediaQuery.of(context).size.width * .2,
+                height: MediaQuery.of(context).size.height * .1,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color:
-                  Theme.of(
-                    context,
-                  ).primaryColorDark,
+                  color: Theme.of(context).primaryColorDark,
                 ),
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal:
-                    MediaQuery.of(
-                      context,
-                    ).size.width *
-                        .015,
+                    horizontal: MediaQuery.of(context).size.width * .015,
                   ),
-                  width:
-                  MediaQuery.of(
-                    context,
-                  ).size.width *
-                      .175,
-                  height:
-                  MediaQuery.of(
-                    context,
-                  ).size.height *
-                      .075,
+                  width: MediaQuery.of(context).size.width * .175,
+                  height: MediaQuery.of(context).size.height * .075,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color:
-                    Theme.of(
-                      context,
-                    ).primaryColorDark,
+                    color: Theme.of(context).primaryColorDark,
                   ),
                   child: DashedCircularProgressBar.aspectRatio(
                     aspectRatio: 1, // width ÷ height
@@ -146,13 +113,8 @@ class SubGoalCardWidget extends StatelessWidget {
                     progress: percentage,
                     startAngle: 360,
                     sweepAngle: -360,
-                    foregroundColor: Color(
-                      0xff0FF009966,
-                    ),
-                    backgroundColor:
-                    Theme.of(
-                      context,
-                    ).primaryColorDark,
+                    foregroundColor: Color(0xff0FF009966),
+                    backgroundColor: Theme.of(context).primaryColorDark,
                     foregroundStrokeWidth: 10,
                     backgroundStrokeWidth: 10,
                     animation: true,
@@ -162,24 +124,18 @@ class SubGoalCardWidget extends StatelessWidget {
                       child: ValueListenableBuilder(
                         valueListenable: _valueNotifier,
                         builder:
-                            (
-                            _,
-                            double value,
-                            __,
-                            ) => Column(
-                          mainAxisSize:
-                          MainAxisSize.min,
-                          children: [
-                            Text(
-                              '${percentage}%',
-                              style: TextStyle(
-                                fontWeight:
-                                FontWeight.w500,
-                                fontSize: 12,
-                              ),
+                            (_, double value, __) => Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  '${percentage}%',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
                       ),
                     ),
                   ),

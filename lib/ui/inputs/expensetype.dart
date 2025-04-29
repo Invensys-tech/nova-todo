@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ExpenseTypeSelector extends StatefulWidget {
   final TextEditingController controller;
@@ -39,7 +40,7 @@ class _ExpenseTypeSelectorState extends State<ExpenseTypeSelector> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
          Text(
-          "Types of Expenses",
+         translate( "Types of Expenses"),
           style: TextStyle(
             fontSize: 13,fontWeight: FontWeight.w300
           ),

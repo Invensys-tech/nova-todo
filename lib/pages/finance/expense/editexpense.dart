@@ -720,6 +720,7 @@ class _EditExpenseState extends State<EditExpense> {
                                   child: CircularProgressIndicator(),
                                 )
                                 : AutoCompleteText(
+                                  isFromEdit: true,
                                   suggestions:
                                       _expenseList
                                           .map((e) => e.category)

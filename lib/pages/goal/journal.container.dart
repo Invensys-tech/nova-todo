@@ -45,9 +45,32 @@ class _JournalContainerState extends State<JournalContainer> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Text(
+                Text(
                   "Journals",
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700 , color: Theme.of(context).disabledColor),
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    color: Theme.of(context).disabledColor,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => QuilExample(
+                              journal: '',
+                              goalId: widget.goalId,
+                              addJournal: addJournal,
+                            ),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    "Add Journal",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -101,17 +124,33 @@ class _JournalContainerState extends State<JournalContainer> {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    
-                    border: Border.all(color: Colors.grey.withOpacity(.3), width: 1),
+                    border: Border.all(
+                      color: Colors.grey.withOpacity(.3),
+                      width: 1,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   // padding: EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("12 - 02 -2025",style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),),
-                      SizedBox(height: MediaQuery.of(context).size.height*.0025,),
-                      Text(quillData.toPlainText(), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
+                      Text(
+                        "12 - 02 -2025",
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .0025,
+                      ),
+                      Text(
+                        quillData.toPlainText(),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ],
                   ),
                 ),

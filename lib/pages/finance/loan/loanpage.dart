@@ -428,6 +428,7 @@ import 'package:flutter_application_1/pages/finance/common/loaninfo.dart';
 import 'package:flutter_application_1/pages/finance/loan/addloan.dart';
 import 'package:flutter_application_1/pages/finance/loan/editloan.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class Loanpage extends StatefulWidget {
@@ -564,9 +565,9 @@ class _LoanpageState extends State<Loanpage> {
                       var loans = snapshot.data as List<Loan>;
                       return ContainedTabBarView(
                         tabs: [
-                          Tab(text: "All Loans"),
-                          Tab(text: "Receivable Loans"),
-                          Tab(text: "Payable Loans"),
+                          Tab(text:translate( "All Loans")),
+                          Tab(text: translate("Receivable Loans")),
+                          Tab(text: translate( "Payable Loans")),
                         ],
                         tabBarProperties: TabBarProperties(
                           height: 32,

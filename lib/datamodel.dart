@@ -258,6 +258,7 @@ class SubGoal {
   final String goal;
   final int id;
   final int goalId;
+  final dynamic deadline;
   final List<Task> tasks;
   final dynamic? created_at;
   // final DateTime deadline;
@@ -268,6 +269,7 @@ class SubGoal {
     required this.goalId,
     required this.tasks,
     this.created_at,
+    required this.deadline,
     // required this.deadline,
   });
 
@@ -277,6 +279,7 @@ class SubGoal {
       id: json['id'] as int,
       goalId: json['goalId'] as int,
       created_at: json['created_at'],
+      deadline: json['deadline'],
       tasks:
           json['sub_goal_task'] == Null || json['sub_goal_task'] == null
               ? []
@@ -293,6 +296,7 @@ class SubGoal {
     data['id'] = id;
     data['goalId'] = goalId;
     data['tasks'] = tasks.map((task) => task.toJson()).toList();
+    data['deadline'] = deadline;
     return data;
   }
 }

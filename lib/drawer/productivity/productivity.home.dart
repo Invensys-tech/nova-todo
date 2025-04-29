@@ -8,6 +8,7 @@ import 'package:flutter_application_1/pages/homepage/form.productivity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
 import 'package:flutter_application_1/services/streak.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 
@@ -107,7 +108,7 @@ class _HomePageState extends State<ProductivityHome> {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
               icon: Icons.delete,
-              label: 'Delete',
+              label: translate('Delete'),
             ),
           ],
         ),
@@ -128,7 +129,7 @@ class _HomePageState extends State<ProductivityHome> {
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
               icon: Icons.edit,
-              label: 'Edit',
+              label: translate('Edit'),
             ),
           ],
         ),
@@ -136,7 +137,10 @@ class _HomePageState extends State<ProductivityHome> {
           padding: const EdgeInsets.all(12),
           margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
           decoration: BoxDecoration(
-             border: Border.all(width: 1, color: Colors.grey.withOpacity(.3)),// slightly different from icon bg
+            border: Border.all(
+              width: 1,
+              color: Colors.grey.withOpacity(.3),
+            ), // slightly different from icon bg
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
@@ -154,19 +158,9 @@ class _HomePageState extends State<ProductivityHome> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      motivationText,
-                      style: TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
+                    Text(motivationText, style: TextStyle(fontSize: 14)),
                     const SizedBox(height: 4),
-                    Text(
-                      frequencyText,
-                      style: TextStyle(
-                        fontSize: 13,
-                      ),
-                    ),
+                    Text(frequencyText, style: TextStyle(fontSize: 13)),
                   ],
                 ),
               ),
@@ -176,36 +170,39 @@ class _HomePageState extends State<ProductivityHome> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      child:Lottie.asset(
-                        productivity.streak_count.toString() == "1" ? 'assets/LottieAnimations/FirstStreak.json':
-                        productivity.streak_count.toString() == "2" ? 'assets/LottieAnimations/Scond2Streak.json':
-                        productivity.streak_count.toString() == "3" ? 'assets/LottieAnimations/ThirdStreak.json':
-                        productivity.streak_count.toString() == "4" ? 'assets/LottieAnimations/FourthStreak.json':
-                        productivity.streak_count.toString() == "5" ? 'assets/LottieAnimations/LastStreak.json':
-                        'assets/LottieAnimations/ZeroStreak.json',
-                        // height: widget.habit.streak.toString() == "1" ? 40:
-                        // widget.habit.streak.toString() == "2" ? 45:
-                        // widget.habit.streak.toString() == "3" ? 50:
-                        // widget.habit.streak.toString() == "4" ? 55:
-                        // widget.habit.streak.toString() == "5" ? 60:40,
-                        // width: widget.habit.streak.toString() == "1" ? 35:
-                        // widget.habit.streak.toString() == "2" ? 40:
-                        // widget.habit.streak.toString() == "3" ? 45:
-                        // widget.habit.streak.toString() == "4" ? 50:
-                        // widget.habit.streak.toString() == "5" ? 55:35,
-                        height: 45,
-                        width: 40,
-                        fit: BoxFit.contain,
-                      )
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: Lottie.asset(
+                      productivity.streak_count.toString() == "1"
+                          ? 'assets/LottieAnimations/FirstStreak.json'
+                          : productivity.streak_count.toString() == "2"
+                          ? 'assets/LottieAnimations/Scond2Streak.json'
+                          : productivity.streak_count.toString() == "3"
+                          ? 'assets/LottieAnimations/ThirdStreak.json'
+                          : productivity.streak_count.toString() == "4"
+                          ? 'assets/LottieAnimations/FourthStreak.json'
+                          : productivity.streak_count.toString() == "5"
+                          ? 'assets/LottieAnimations/LastStreak.json'
+                          : 'assets/LottieAnimations/ZeroStreak.json',
+                      // height: widget.habit.streak.toString() == "1" ? 40:
+                      // widget.habit.streak.toString() == "2" ? 45:
+                      // widget.habit.streak.toString() == "3" ? 50:
+                      // widget.habit.streak.toString() == "4" ? 55:
+                      // widget.habit.streak.toString() == "5" ? 60:40,
+                      // width: widget.habit.streak.toString() == "1" ? 35:
+                      // widget.habit.streak.toString() == "2" ? 40:
+                      // widget.habit.streak.toString() == "3" ? 45:
+                      // widget.habit.streak.toString() == "4" ? 50:
+                      // widget.habit.streak.toString() == "5" ? 55:35,
+                      height: 45,
+                      width: 40,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                   const SizedBox(width: 4),
                   Text(
                     "${productivity.streak_count}",
                     // productivity.streak_count as String,
-                    style: const TextStyle( fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ],
               ),
@@ -247,13 +244,13 @@ class _HomePageState extends State<ProductivityHome> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Productivity"),
-            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            Text(translate("Productivity")),
+            SizedBox(width: MediaQuery.of(context).size.width * .015),
+
             // Container(
             //     height: MediaQuery.of(context).size.height*.03,
             //     width: MediaQuery.of(context).size.width*.06,
             //     child: Image.asset('assets/Gif/Quotes.gif'))
-
           ],
         ),
 
@@ -265,7 +262,7 @@ class _HomePageState extends State<ProductivityHome> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon:  FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
+              icon: FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
             ),
           ],
         ),

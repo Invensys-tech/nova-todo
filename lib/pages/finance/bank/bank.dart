@@ -219,6 +219,7 @@ import 'package:flutter_application_1/pages/finance/bank/editbank.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
 import 'package:flutter_application_1/pages/finance/common/bank.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -385,15 +386,15 @@ class _BankPageState extends State<BankPage> {
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
-                                              child: const Text('Cancel'),
+                                              child:  Text(translate('Cancel')),
                                             ),
                                             TextButton(
                                               onPressed: () {
                                                 print('Deleted ${bank.id}');
                                                 Navigator.of(context).pop();
                                               },
-                                              child: const Text(
-                                                'Delete',
+                                              child:  Text(
+                                               translate( 'Delete'),
                                                 style: TextStyle(
                                                   color: Colors.red,
                                                 ),

@@ -2,6 +2,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class LoanWidget extends StatefulWidget {
   const LoanWidget({super.key});
@@ -85,7 +86,7 @@ class _LoanWidgetState extends State<LoanWidget> {
                           Row(
                             children: [
                               Text(
-                                'Net Amount Loan.  ',
+                                translate('Net Amount Loan.  '),
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
@@ -94,7 +95,7 @@ class _LoanWidgetState extends State<LoanWidget> {
                               badges.Badge(
                                 showBadge: true,
                                 badgeContent: Text(
-                                  netSum >= 0 ? "Receivable" : "Payable",
+                                  netSum >= 0 ? translate("Receivable" ): translate("Payable"),
                                   style: TextStyle(
                                     fontSize: 12,
                                     color:
@@ -111,7 +112,7 @@ class _LoanWidgetState extends State<LoanWidget> {
                               ),
                               const Spacer(),
                               Text(
-                                'Today',
+                                translate('Today'),
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
@@ -194,8 +195,8 @@ class _LoanWidgetState extends State<LoanWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Receivable",
+                           Text(
+                           translate( "Receivable"),
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
@@ -243,8 +244,8 @@ class _LoanWidgetState extends State<LoanWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Payable",
+                           Text(
+                           translate( "Payable"),
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
