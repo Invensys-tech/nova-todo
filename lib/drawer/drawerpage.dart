@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/drawer/CommunityChallenges.dart';
 import 'package:flutter_application_1/drawer/Profile/Profile.dart';
 import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.view.dart';
@@ -172,19 +173,30 @@ class _DrawerpageState extends State<Drawerpage> {
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .025),
-          Row(
-            children: [
-              FaIcon(
-                FontAwesomeIcons.userSecret,
-                color: Color(0xff00D492),
-                size: 19,
-              ),
-              SizedBox(width: MediaQuery.of(context).size.width * .035),
-              Text(
-                "Community Challenges",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-              ),
-            ],
+          GestureDetector(
+            onTap: (){
+              PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                context,
+                screen: CommunityChallenges(),
+                withNavBar: false,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                settings: const RouteSettings(),
+              );
+            },
+            child: Row(
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.userSecret,
+                  color: Color(0xff00D492),
+                  size: 19,
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * .035),
+                Text(
+                  "Community Challenges",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .025),
           Row(
