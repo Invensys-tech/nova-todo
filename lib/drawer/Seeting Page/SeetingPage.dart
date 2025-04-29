@@ -20,6 +20,7 @@ class Seetingpage extends StatefulWidget {
 class _SeetingpageState extends State<Seetingpage> {
   late HiveService _hiveService;
   String _selectedDateType = 'Gregorian'; // default
+  String selectedLang = 'am';
 
   @override
   void initState() {
@@ -203,6 +204,27 @@ class _SeetingpageState extends State<Seetingpage> {
                     _saveDateType(value);
                     setState(() {
                       eth = value == "Ethiopian";
+                    });
+                  }
+                },
+              ),
+            ),
+
+            const Text(
+              "Lang",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+            ),
+            DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: selectedLang,
+                items: const [
+                  DropdownMenuItem(value: "am", child: Text("Amharic")),
+                  DropdownMenuItem(value: "en", child: Text("English")),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedLang = value;
                     });
                   }
                 },

@@ -558,7 +558,7 @@ class _ExpensespageState extends State<Expensespage> {
                               child: ExpenseList(
                                 amountofexpenses: e.amount,
                                 catagoryofexpenses: e.category,
-                                titleofExpenses: e.category,
+                                titleofExpenses: e.expenseName,
                                 typeofexpenses: e.type,
                               ),
                             ),

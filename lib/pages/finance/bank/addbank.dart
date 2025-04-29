@@ -50,6 +50,7 @@ class _AddBankState extends State<AddBank> {
     'Zemen Bank',
   ];
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -192,21 +193,18 @@ class _AddBankState extends State<AddBank> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
-                  // Text(
-                  //   "Account type",
-                  //   style: TextStyle(
-                  //     fontSize: 13,
-                  //     fontWeight: FontWeight.w400,
-                  //   ),
-                  // ),
-                  // SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
-                  // CustomDropdown(
-                  //   hintText: "Eg, Saving or Check",
-                  //   // icon: Icons.local_mall,
-                  //   items: ["Savings", "Check"],
-                  //   controller: _type,
-                  // ),
-                  // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  Text(
+                    "Account type",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
+                  CustomDropdown(
+                    hintText: "Eg, Saving or Check",
+                    // icon: Icons.local_mall,
+                    items: ["Savings", "Check"],
+                    controller: _type,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Text(
                     "Balance",
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
@@ -262,50 +260,71 @@ class _AddBankState extends State<AddBank> {
                       Expanded(
                         flex: 3,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              try {
-                                final response = await Supabase.instance.client
-                                    .from('bank')
-                                    .insert({
-                                      'balance': _balance.text,
-                                      'accountHolder': _accHolder.text,
-                                      'accountNumber': _accNo.text,
-                                      'accountBank': _bank.text,
-                                      'branch': _branch.text,
-                                      'userId': 1,
-                                      'accountType': _type.text,
-                                    });
+                          onPressed:
+                              isLoading
+                                  ? null
+                                  : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      try {
+                                        final response = await Supabase
+                                            .instance
+                                            .client
+                                            .from('bank')
+                                            .insert({
+                                              'balance': _balance.text,
+                                              'accountHolder': _accHolder.text,
+                                              'accountNumber': _accNo.text,
+                                              'accountBank': _bank.text,
+                                              'branch': _branch.text,
+                                              'userId': 1,
+                                              'accountType': _type.text,
+                                            });
 
-                                print(response);
+                                        print(response);
 
-                                print("Bank added successfully!");
-                                final updatedBanks =
-                                    await Datamanager().fetchBanks();
+                                        print("Bank added successfully!");
+                                        final updatedBanks =
+                                            await Datamanager().fetchBanks();
 
-                                // Show success message
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Bank added successfully!"),
-                                  ),
-                                );
+                                        // Show success message
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              "Bank added successfully!",
+                                            ),
+                                          ),
+                                        );
+                                        setState(() {
+                                          isLoading = false;
+                                        });
 
-                                // Pass the updated loan data back before popping the screen
-                                Navigator.pop(context, updatedBanks);
-                              } catch (e) {
-                                print("Error inserting expense: $e");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: $e")),
-                                );
-                              }
-                            }
-                            ;
-                          },
+                                        // Pass the updated loan data back before popping the screen
+                                        Navigator.pop(context, updatedBanks);
+                                      } catch (e) {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        print("Error inserting expense: $e");
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(content: Text("Error: $e")),
+                                        );
+                                      }
+                                    }
+                                    ;
+                                  },
 
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(
-                              0xff009966,
-                            ), // Green background
+                            backgroundColor:
+                                isLoading
+                                    ? Colors.grey
+                                    : Color(0xff009966), // Green background
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),

@@ -161,6 +161,7 @@ class _IncomeFormState extends State<IncomeForm> {
   @override
   void initState() {
     super.initState();
+    paid_from.controller.text = 'Bank';
     _updateFuture();
     _loadIncomeList();
     date.controller.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
@@ -182,6 +183,7 @@ class _IncomeFormState extends State<IncomeForm> {
   }
 
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -431,39 +433,58 @@ class _IncomeFormState extends State<IncomeForm> {
                       Expanded(
                         flex: 3,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            if (!_formKey.currentState!.validate()) {
-                              try {
-                                // Insert expense
-                                saveIncome();
+                          onPressed:
+                              isLoading
+                                  ? null
+                                  : () async {
+                                    if (!_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      try {
+                                        // Insert expense
+                                        saveIncome();
 
-                                print("Income added successfully!");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      "Expense added successfully!",
-                                    ),
-                                  ),
-                                );
+                                        print("Income added successfully!");
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Expense added successfully!",
+                                            ),
+                                          ),
+                                        );
+                                        setState(() {
+                                          isLoading = false;
+                                        });
 
-                                Navigator.pop(context);
-                              } catch (e) {
-                                print("Error inserting expense: $e");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: $e")),
-                                );
-                              }
-                            }
-                          },
+                                        Navigator.pop(context);
+                                      } catch (e) {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        print("Error inserting expense: $e");
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(content: Text("Error: $e")),
+                                        );
+                                      }
+                                    }
+                                  },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff009966),
+                            backgroundColor:
+                                isLoading
+                                    ? Colors.grey
+                                    : const Color(0xff009966),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
                           child: const Text(
-                            "Add Expense",
+                            "Add Income",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
