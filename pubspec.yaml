@@ -73,6 +73,7 @@ dependencies:
   time_interval_picker: ^0.0.3
   dashed_circular_progress_bar: ^0.0.6
   intl_phone_number_input: ^0.7.4
+  liquid_pull_to_refresh: ^3.0.1
 
 flutter_icons:
   android: true
@@ -123,6 +124,8 @@ flutter:
     - assets/LottieAnimations/LastStreak.json
     - assets/LottieAnimations/Scond2Streak.json
     - assets/LottieAnimations/ZeroStreak.json
+    - assets/LottieAnimations/UnderConstruction.json
+    - assets/LottieAnimations/UnderConstruction2.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

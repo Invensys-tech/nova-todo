@@ -119,9 +119,8 @@ class _TodoFormState extends State<TodoForm> {
 
 
   //---------------------------------------
-  TextEditingController startController = TextEditingController();
-
-  final TextEditingController endController = TextEditingController();
+  TextEditingController startTimeController = TextEditingController();
+  TextEditingController endTimeController = TextEditingController();
 
   // Store selected start time
   TimeOfDay? _startTime;
@@ -138,7 +137,9 @@ class _TodoFormState extends State<TodoForm> {
     if (selectedTime != null) {
       setState(() {
         _startTime = selectedTime;
-        startController.text = selectedTime.format(context);
+        startTimeController.text = selectedTime.format(context);
+        widget.startTimeInput.key.controller.text = getHourFromTimeOfDay(selectedTime);
+        widget.startTimeInput.value.controller.text = getMinuteFromTimeOfDay(selectedTime);
       });
       // After selecting start time, automatically select end time
       _selectEndTime(context);
@@ -155,7 +156,9 @@ class _TodoFormState extends State<TodoForm> {
     if (selectedTime != null) {
       setState(() {
         _endTime = selectedTime;
-        endController.text = selectedTime.format(context);
+        endTimeController.text = selectedTime.format(context);
+        widget.endTimeInput.key.controller.text = getHourFromTimeOfDay(selectedTime);
+        widget.endTimeInput.value.controller.text = getMinuteFromTimeOfDay(selectedTime);
       });
     }
   }
@@ -330,7 +333,7 @@ class _TodoFormState extends State<TodoForm> {
                             },
                             child: AbsorbPointer(
                               child: TextFormField(
-                                controller: startController,
+                                controller: startTimeController,
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
@@ -372,7 +375,7 @@ class _TodoFormState extends State<TodoForm> {
                             },
                             child: AbsorbPointer(
                               child: TextFormField(
-                                controller: endController,
+                                controller: endTimeController,
                                 readOnly: true,
                                 decoration: InputDecoration(
 

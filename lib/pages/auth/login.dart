@@ -160,11 +160,11 @@ class _LogInPageState extends State<LogInPage> {
                             side: BorderSide(color: Color(0xFF009966), width: 2),
                           ),
                           padding: EdgeInsets.symmetric(vertical: 15),
-                          backgroundColor: Color(0xFF009966).withAlpha(33),
+                          backgroundColor: Color(0xFF009966),
                         ),
                         child: Text(
                           'Continue',
-                          style: TextStyle(color: Color(0xFF009966)),
+                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
                         ),
                       ),
                     ),

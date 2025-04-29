@@ -11,7 +11,6 @@ import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 class HabitForm extends StatefulWidget {
   final String? date;
@@ -50,6 +49,8 @@ class _HabitFormState extends State<HabitForm> {
     controller: TextEditingController(),
     type: "0",
   );
+
+  bool isSaving = false;
 
   @override
   void initState() {
@@ -144,6 +145,12 @@ class _HabitFormState extends State<HabitForm> {
     });
   }
 
+  changeSavingState(bool savingState) {
+    setState(() {
+      isSaving = savingState;
+    });
+  }
+
   saveHabit() {
     // Map<String, dynamic> jsonValue = {
     //   'name': name.controller.text,
@@ -155,9 +162,11 @@ class _HabitFormState extends State<HabitForm> {
     // };
 
     // printDays();
+    changeSavingState(true);
 
     if (name.controller.text == '') {
       print('Name is required');
+      changeSavingState(false);
       return;
     }
 
@@ -170,10 +179,11 @@ class _HabitFormState extends State<HabitForm> {
           return;
         }
       } catch (e) {
+        changeSavingState(false);
         print(
           'Frequency needs to be specified for ${repetition.controller.text} habits',
         );
-        print(e);
+        // print(e);
         return;
       }
     } else if (repetition.controller.text == 'Weekly') {
@@ -181,6 +191,7 @@ class _HabitFormState extends State<HabitForm> {
         print(
           'Repetition days must be specified for ${repetition.controller.text} habits',
         );
+        changeSavingState(false);
         return;
       }
     }
@@ -190,6 +201,7 @@ class _HabitFormState extends State<HabitForm> {
     // }
 
     Habit newHabit = Habit.fromJson({
+      'id': widget.habit?.id,
       'name': name.controller.text,
       'type': repetition.controller.text,
       'date': widget.date ?? getDateOnly(DateTime.now()),
@@ -210,21 +222,36 @@ class _HabitFormState extends State<HabitForm> {
     // });
 
     if (widget.isEditing && widget.habit != null) {
-      HabitsRepository().updateById(newHabit, widget.habit!.id!).then((value) {
-        if (value) {
-          navigateBack(buildContext: context);
-          widget.refetchData();
-          resetForm();
-        }
-      });
+      HabitsRepository()
+          .updateById(newHabit, widget.habit!.id!)
+          .then((value) {
+            if (value) {
+              navigateBack(buildContext: context);
+              widget.refetchData();
+              resetForm();
+            }
+          })
+          .then((value) {
+            changeSavingState(false);
+          })
+          .catchError((e) {
+            changeSavingState(false);
+          });
     } else {
-      HabitsRepository().createHabit(newHabit).then((value) {
-        if (value) {
-          navigateBack();
-          widget.refetchData();
-          resetForm();
-        }
-      });
+      HabitsRepository()
+          .createHabit(newHabit)
+          .then((value) {
+            if (value) {
+              navigateBack();
+              widget.refetchData();
+              resetForm();
+            }
+            changeSavingState(false);
+          })
+          .catchError((e) {
+            changeSavingState(false);
+          });
+      ;
     }
   }
 
@@ -270,7 +297,7 @@ class _HabitFormState extends State<HabitForm> {
               ),
             ),
             MyRadioInput(
-              label: translate('Repetition'),
+              label: 'Repetition',
               groupKey: 'repetition',
               onChanged: selectRepetition,
               options: ['Daily', 'Weekly', 'Monthly'],
@@ -335,7 +362,7 @@ class _HabitFormState extends State<HabitForm> {
                     Padding(
                       padding: EdgeInsets.only(left: 8.0),
                       child: Text(
-                        translate('Frequency'),
+                        'Frequency',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
@@ -391,8 +418,8 @@ class _HabitFormState extends State<HabitForm> {
                         ),
                       ),
                       onPressed: navigateBack,
-                      child:  Text(
-                       translate( "Cancel"),
+                      child: const Text(
+                        "Cancel",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Outfit',
@@ -410,13 +437,19 @@ class _HabitFormState extends State<HabitForm> {
                         ),
                       ),
                       onPressed: saveHabit,
-                      child:  Text(
-                        translate("Save"),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Outfit',
-                        ),
-                      ),
+                      child:
+                          isSaving
+                              ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.grey.shade300,
+                                ),
+                              )
+                              : const Text(
+                                "Save",
+                                style: TextStyle(color: Colors.white),
+                              ),
                     ),
                   ),
                 ],

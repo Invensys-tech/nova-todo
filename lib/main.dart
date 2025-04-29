@@ -33,6 +33,7 @@ bool isDark = true;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  requestNotificationPermission();
   await Hive.initFlutter();
   HiveService hiveService = HiveService();
   await hiveService.initHive(boxName: 'session');
@@ -81,6 +82,17 @@ void main() async {
   }
   //runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
    runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+}
+
+Future<void> requestNotificationPermission() async {
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
+
+  // final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  // await flutterLocalNotificationsPlugin
+  //     .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+  //     ?.requestPermissions(alert: true, badge: true, sound: true);
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

@@ -173,6 +173,18 @@ List<DateTime> getDatesBetween(DateTime start, DateTime end) {
   return dates;
 }
 
+String getHourFromTimeOfDay(TimeOfDay timeofday) {
+  final hour = timeofday.hour;
+
+  return hour < 10 ? '0$hour' : hour.toString();
+}
+
+String getMinuteFromTimeOfDay(TimeOfDay timeofday) {
+  final hour = timeofday.hour;
+
+  return hour < 10 ? '0$hour' : hour.toString();
+}
+
 String formatPhoneNumberToShowable(String phoneNumber) {
   if (phoneNumber.length < 10) {
     throw Exception('Wrong phone number format');
