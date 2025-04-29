@@ -14,6 +14,7 @@ import 'package:flutter_application_1/ui/inputs/expense-payment.selector.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/testdate.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -209,8 +210,8 @@ class _IncomeFormState extends State<IncomeForm> {
             color: Color(0xff006045),
           ),
         ),
-        title: const Text(
-          "Add Income",
+        title: Text(
+          translate("Add Income"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -238,8 +239,8 @@ class _IncomeFormState extends State<IncomeForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Income Name",
+                  Text(
+                    translate("Income Name"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -256,8 +257,8 @@ class _IncomeFormState extends State<IncomeForm> {
                     // icon: Icons.fingerprint,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Amount",
+                  Text(
+                    translate("Amount"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -285,8 +286,8 @@ class _IncomeFormState extends State<IncomeForm> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Category",
+                            Text(
+                              translate("Category"),
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
@@ -322,7 +323,6 @@ class _IncomeFormState extends State<IncomeForm> {
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
-                                          color: Colors.white,
                                         ),
                                       ),
                                     );
@@ -337,8 +337,8 @@ class _IncomeFormState extends State<IncomeForm> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Date",
+                            Text(
+                              translate("Date"),
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
@@ -396,8 +396,8 @@ class _IncomeFormState extends State<IncomeForm> {
                   ),
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Description",
+                  Text(
+                    translate("Description"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -426,7 +426,7 @@ class _IncomeFormState extends State<IncomeForm> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text("Cancel"),
+                          child: Text(translate("Cancel")),
                         ),
                       ),
                       const SizedBox(width: 10),

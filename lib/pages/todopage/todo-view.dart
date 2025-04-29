@@ -3,6 +3,7 @@ import 'package:flutter_application_1/entities/daily-task.entity.dart';
 import 'package:flutter_application_1/pages/todopage/add.todo.dart';
 import 'package:flutter_application_1/repositories/daily-task.repository.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 class TodoViewPage extends StatefulWidget {
@@ -95,7 +96,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
           ),
         ),
         title: Text(
-          "View Single Daily task",
+         translate( "View Single Daily task"),
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         elevation: 2,
@@ -137,7 +138,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Task Time ",
+                                 translate( "Task Time "),
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w300,
@@ -172,7 +173,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                               // ],
                               children: [
                                 Text(
-                                  "Task Date ",
+                                 translate( "Task Date "),
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w300,
@@ -228,7 +229,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                         );
                       },
                       child: Text(
-                        "Edit",
+                       translate( "Edit"),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -248,7 +249,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                         _showAlertDialog(context);
                       },
                       child: Text(
-                        "Delete",
+                        translate("Delete"),
                         style: TextStyle(color: Color(0xFFEC003F)),
                       ),
                     ),
@@ -263,7 +264,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   spacing: MediaQuery.of(context).size.height * .005,
                   children: [
                     Text(
-                      "Sub Tasks",
+                     translate( "Sub Tasks"),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w300,
@@ -352,7 +353,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   spacing: MediaQuery.of(context).size.height * .005,
                   children: [
                     Text(
-                      "New Sub Task",
+                      translate("New Sub Task"),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w300,
@@ -410,7 +411,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                             backgroundColor: Color(0xFF009966).withAlpha(33),
                           ),
                           child: Text(
-                            'Add',
+                            translate('Add'),
                             style: TextStyle(color: Color(0xFF009966)),
                           ),
                         ),

@@ -4,6 +4,7 @@ import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/bankinput.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -66,8 +67,8 @@ class _AddBankState extends State<AddBank> {
             color: Color(0xff006045),
           ),
         ),
-        title: const Text(
-          "Add Bank",
+        title:  Text(
+          translate("Add Bank"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         // centerTitle: true,
@@ -97,8 +98,8 @@ class _AddBankState extends State<AddBank> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Account Owner",
+                   Text(
+                   translate( "Account Owner"),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -115,8 +116,8 @@ class _AddBankState extends State<AddBank> {
                     // icon: Icons.attach_money,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Bank",
+                   Text(
+                    translate("Bank"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -153,8 +154,8 @@ class _AddBankState extends State<AddBank> {
                   // BankInput(bankController: _bank, valueController: _accNo),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
-                  const Text(
-                    "AccountNumber",
+                   Text(
+                    translate("AccountNumber"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -174,8 +175,8 @@ class _AddBankState extends State<AddBank> {
                     // icon: Icons.attach_money,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Branch",
+                   Text(
+                    translate("Branch"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -206,7 +207,7 @@ class _AddBankState extends State<AddBank> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Text(
-                    "Balance",
+                    translate("Balance"),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -253,7 +254,7 @@ class _AddBankState extends State<AddBank> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text("Cancel"),
+                          child:  Text(translate("Cancel")),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -330,8 +331,8 @@ class _AddBankState extends State<AddBank> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text(
-                            "Save",
+                          child:  Text(
+                            translate("Save"),
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

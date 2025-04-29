@@ -283,6 +283,7 @@ import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/repositories/notes.repository.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class NoteQuil extends StatefulWidget {
   final String note;
@@ -388,7 +389,7 @@ class _NoteQuilState extends State<NoteQuil> {
                 ),
               ),
               onPressed: widget.note != "" ? updateJournal : saveJournal,
-              child: const Text("Save", style: TextStyle(color: Colors.white)),
+              child:  Text(translate("Save"), style: TextStyle(color: Colors.white)),
             ),
           ),
         ],

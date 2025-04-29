@@ -6,6 +6,7 @@ import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/pages/todopage/components/form.todo.dart';
 import 'package:flutter_application_1/repositories/daily-task.repository.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class AddTodoPage extends StatefulWidget {
   final void Function() refetchData;
@@ -240,8 +241,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
             ),
           ],
         ),
-        title: const Text(
-          "Add New Todo",
+        title:  Text(
+         translate( "Add New Todo"),
         ),
       ),
       body: Container(
@@ -281,8 +282,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text(
-                        "Cancel",
+                      child:  Text(
+                       translate( "Cancel"),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -297,8 +298,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
                         // Navigator.pop(context);
                         saveTodo();
                       },
-                      child: const Text(
-                        "Save Todo",
+                      child:  Text(
+                        translate("Save Todo"),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
