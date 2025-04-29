@@ -9,6 +9,7 @@ import 'package:flutter_application_1/pages/goal/common/editgoal.dart';
 import 'package:flutter_application_1/pages/goal/common/goal-stat.dart';
 import 'package:flutter_application_1/pages/goal/common/goalwidget.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class GoalPage extends StatefulWidget {
@@ -55,7 +56,7 @@ class _GoalPageState extends State<GoalPage>
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Vision Boards"),
+            Text(translate("Vision Boards")),
             SizedBox(width: MediaQuery.of(context).size.width * .015),
 
             // Container(
@@ -161,7 +162,7 @@ class _GoalPageState extends State<GoalPage>
                                   backgroundColor: Colors.red,
                                   foregroundColor: Colors.white,
                                   icon: Icons.delete,
-                                  label: 'Delete',
+                                  label: translate('Delete'),
                                 ),
                               ],
                             ),
@@ -180,7 +181,7 @@ class _GoalPageState extends State<GoalPage>
                                   backgroundColor: Colors.blue,
                                   foregroundColor: Colors.white,
                                   icon: Icons.edit,
-                                  label: 'Edit',
+                                  label: translate('Edit'),
                                 ),
                               ],
                             ),

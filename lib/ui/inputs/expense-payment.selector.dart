@@ -197,6 +197,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class PaidByAndSpecificFromInput extends FormField<void> {
   PaidByAndSpecificFromInput({
@@ -297,7 +298,7 @@ class _PaidByAndSpecificFromInputContentState
                           ? const Color(0xff27272A)
                           : const Color(0xffD4D4D8),
                   value: selectedPaidBy,
-                  hint: const Text("Paid By", style: TextStyle(fontSize: 12)),
+                  hint:  Text(translate("Paid By"), style: TextStyle(fontSize: 12)),
                   icon: const Icon(Icons.arrow_drop_down),
                   style: TextStyle(
                     fontSize: 13,
@@ -384,8 +385,8 @@ class _PaidByAndSpecificFromInputContentState
                                 : const Color(0xffD4D4D8),
                         isExpanded: true,
                         value: selectedSpecificFrom,
-                        hint: const Text(
-                          "Specific From",
+                        hint:  Text(
+                          translate("Specific From"),
                           style: TextStyle(fontSize: 12),
                         ),
                         icon: const Icon(Icons.arrow_drop_down),

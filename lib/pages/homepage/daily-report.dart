@@ -11,8 +11,8 @@ class DailyReport extends StatefulWidget {
 }
 
 class _DailyReportState extends State<DailyReport> {
-  final incomeAnalytics = AnalyticsService.getIncome();
-  final expenseAnalytics = AnalyticsService.getExpense();
+  final incomeAnalytics = AnalyticsService.getDailyIncomeSummary();
+  final expenseAnalytics = AnalyticsService.getDailyExpenseSummary();
   final habits = AnalyticsService.getHabitAnalytics();
 
   @override
@@ -551,7 +551,7 @@ class _DailyReportState extends State<DailyReport> {
                             ),
                           ),
                           onPressed: () {},
-                          child: Icon(Icons.camera, color: Color(0xFFFF637E)),
+                          child: FaIcon(FontAwesomeIcons.instagram, color: Color(0xFFFF637E)),
                         ),
 
                         ElevatedButton(
@@ -563,7 +563,7 @@ class _DailyReportState extends State<DailyReport> {
                             ),
                           ),
                           onPressed: () {},
-                          child: Icon(Icons.music_note, color: Colors.white),
+                          child: FaIcon(FontAwesomeIcons.tiktok, color: Colors.white),
                         ),
 
                         ElevatedButton(

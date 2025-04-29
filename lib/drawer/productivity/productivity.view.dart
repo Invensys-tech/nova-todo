@@ -4,6 +4,7 @@ import 'package:flutter_application_1/drawer/productivity/dailyprogress.dart';
 import 'package:flutter_application_1/drawer/productivity/generalprogress.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProductivityViewPgae extends StatefulWidget {
@@ -30,7 +31,7 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Productivity View"),
+            Text(translate("Productivity View")),
             SizedBox(width: MediaQuery.of(context).size.width*.015,),
             // Container(
             //     height: MediaQuery.of(context).size.height*.03,
@@ -63,8 +64,8 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
             ),
             child: ContainedTabBarView(
               tabs: [
-                Tab(text: "Daily Progress"),
-                Tab(text: "General Progress"),
+                Tab(text: translate("Daily Progress")),
+                Tab(text: translate("General Progress")),
               ],
               tabBarProperties: TabBarProperties(
                 width: MediaQuery.of(context).size.width,

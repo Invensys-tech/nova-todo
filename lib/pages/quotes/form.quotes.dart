@@ -6,6 +6,7 @@ import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/repositories/quote.repository.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class QuoteForm extends StatefulWidget {
   final void Function() refetch;
@@ -72,7 +73,7 @@ class _QuoteFormState extends State<QuoteForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Add New Quotes",
+         translate( "Add New Quotes"),
           style: TextStyle(
             color: Color(0xFFD4D4D8),
             fontWeight: FontWeight.w600,
@@ -99,7 +100,7 @@ class _QuoteFormState extends State<QuoteForm> {
             spacing: MediaQuery.of(context).size.width * 0.04,
             children: [
               MultiLineTextField(
-                hintText: 'Enter Quote Text...',
+                hintText: translate('Enter Quote Text...'),
                 controller: textController,
                 icon: Icons.abc,
               ),
@@ -178,7 +179,7 @@ class _QuoteFormState extends State<QuoteForm> {
               //   ),
               // ),
               CategorySelector(
-                label: 'Category',
+                label: translate('Category'),
                 options: categories,
                 selectedValue: selectedCategory,
                 onChange: selectCategory,
@@ -201,8 +202,8 @@ class _QuoteFormState extends State<QuoteForm> {
                           ),
                         ),
                         onPressed: navigateBack,
-                        child: const Text(
-                          "Cancel",
+                        child:  Text(
+                          translate("Cancel"),
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -217,8 +218,8 @@ class _QuoteFormState extends State<QuoteForm> {
                           ),
                         ),
                         onPressed: saveQuote,
-                        child: const Text(
-                          "Save",
+                        child:  Text(
+                          translate("Save"),
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

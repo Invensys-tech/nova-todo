@@ -7,6 +7,7 @@ import 'package:flutter_application_1/pages/habit/components/habits-list.dart';
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
@@ -65,7 +66,7 @@ class _HabitsPageState extends State<HabitsPage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Habits"),
+            Text(translate("Habits")),
             SizedBox(width: MediaQuery.of(context).size.width*.015,),
             Container(
               height: MediaQuery.of(context).size.height*.03,
@@ -124,8 +125,8 @@ class _HabitsPageState extends State<HabitsPage> {
             Expanded(
               child: ContainedTabBarView(
                 tabs: [
-                  Tab(text: "Daily Habit"),
-                  Tab(text: "All Habits"),
+                  Tab(text: translate("Daily Habit")),
+                  Tab(text: translate("All Habits")),
                 ],
                 tabBarProperties: TabBarProperties(
                   width: MediaQuery.of(context).size.width,

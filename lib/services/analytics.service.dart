@@ -60,7 +60,7 @@ class AnalyticsService {
       final expenses = await supabaseClient
           .from('expense')
           .select('amount, type')
-          .eq('userid', userId);
+          .eq('userid', 1);
 
       num total = 0;
       num maybe = 0;
@@ -102,7 +102,7 @@ class AnalyticsService {
       final incomes = await supabaseClient
           .from('incomes')
           .select('amount, category')
-          .eq('user_id', userId);
+          .eq('user_id', 1);
 
       num total = 0;
 
@@ -168,7 +168,7 @@ class AnalyticsService {
             .from('expense')
             .select('amount, type')
             .eq('date', getDateOnly(DateTime.now()))
-            .eq('userid', userId);
+            .eq('userid', 1);
 
         num total = 0;
         num maybe = 0;
@@ -215,7 +215,7 @@ class AnalyticsService {
           .from('incomes')
           .select('amount, category')
           .eq('date', getDateOnly(DateTime.now()))
-          .eq('user_id', userId);
+          .eq('user_id', 1);
 
       num total = 0;
 

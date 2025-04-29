@@ -9,6 +9,7 @@ import 'package:flutter_application_1/pages/finance/expense/expense.dart';
 import 'package:flutter_application_1/pages/finance/income/income.view.dart';
 import 'package:flutter_application_1/pages/finance/loan/addloan.dart';
 import 'package:flutter_application_1/pages/finance/loan/loanpage.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../drawer/Seeting Page/SeetingPage.dart';
 import '../../main.dart';
@@ -29,11 +30,11 @@ class FinanceUi extends StatelessWidget {
           color: Theme.of(context).scaffoldBackgroundColor,
           child: ContainedTabBarView(
             tabs: [
-              Tab(text: "Expense"),
-              Tab(text: "Income"),
-              Tab(text: "Banks"),
-              Tab(text: "Loans"),
-              Tab(text: "Analytics"),
+              Tab(text: translate("Expense")),
+              Tab(text: translate("Income")),
+              Tab(text: translate("Banks")),
+              Tab(text: translate("Loans")),
+              Tab(text: translate("Analytics")),
             ],
             tabBarProperties: TabBarProperties(
               width: MediaQuery.of(context).size.width,

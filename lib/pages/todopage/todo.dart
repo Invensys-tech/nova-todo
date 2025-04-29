@@ -11,6 +11,7 @@ import 'package:flutter_application_1/components/customized/progressbar.dart';
 import 'package:flutter_application_1/repositories/daily-journal.repository.dart';
 import 'package:flutter_application_1/repositories/daily-task.repository.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
@@ -119,7 +120,7 @@ class _TodoPageState extends State<TodoPage> {
                 _scaffoldKey.currentState?.openDrawer();
               },
               child: Icon(Icons.menu, size: 27, )),
-      title: Text("DailyToDo List"),
+      title: Text(translate("DailyToDo List")),
       ),
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,

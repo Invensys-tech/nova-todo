@@ -610,6 +610,7 @@ import 'package:flutter_application_1/pages/finance/common/Expenses.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
 import 'package:flutter_application_1/pages/finance/common/bank.dart';
 import 'package:flutter_application_1/repositories/expense.repository.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:slider_bar_chart/slider_bar_chart.dart';
 
@@ -663,8 +664,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Account", style: TextStyle(fontWeight: FontWeight.w500)),
-            Text("See All", style: TextStyle(fontWeight: FontWeight.w500)),
+            Text(translate("Account"), style: TextStyle(fontWeight: FontWeight.w500)),
+            Text(translate("See All"), style: TextStyle(fontWeight: FontWeight.w500)),
           ],
         ),
         SizedBox(height: MediaQuery.of(context).size.height * .005),
@@ -736,7 +737,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Expenses Catagory",
+              translate("Expenses Catagory"),
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
             GestureDetector(
@@ -753,7 +754,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               child: Container(
                 padding: EdgeInsets.all(8), // Give it tappable space
                 child: Text(
-                  "See All",
+                  translate("See All"),
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Color(0xff009966),
