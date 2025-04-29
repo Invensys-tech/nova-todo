@@ -9,7 +9,9 @@ import 'package:flutter_application_1/ui/inputs/textfield.dart';
 
 class QuoteForm extends StatefulWidget {
   final void Function() refetch;
-  const QuoteForm({super.key, required this.refetch});
+  final Quote? quote;
+
+  const QuoteForm({super.key, required this.refetch, this.quote});
 
   @override
   State<QuoteForm> createState() => _QuoteFormState();
@@ -38,8 +40,25 @@ class _QuoteFormState extends State<QuoteForm> {
     'Productivity ',
     'Success ',
   ];
-
   String selectedCategory = "";
+
+  bool isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.quote != null) {
+      authorInput.controller.text = widget.quote!.author;
+      sourceInput.controller.text = widget.quote!.source;
+      selectedCategory = widget.quote!.category;
+    }
+  }
+
+  changeSavingState(bool savingState) {
+    setState(() {
+      isSaving = savingState;
+    });
+  }
 
   selectCategory(value) {
     setState(() {
@@ -52,6 +71,8 @@ class _QuoteFormState extends State<QuoteForm> {
   }
 
   saveQuote() {
+    changeSavingState(true);
+
     Quote quote = Quote(
       text: textController.text,
       author: authorInput.controller.text,
@@ -59,12 +80,35 @@ class _QuoteFormState extends State<QuoteForm> {
       category: selectedCategory,
     );
 
-    QuoteRepository().createQuote(quote).then((value) {
-      if (value) {
-        navigateBack();
-        widget.refetch();
-      }
-    });
+    if (widget.quote != null) {
+      //   Update quote here
+      QuoteRepository()
+          .updateQuoteById(widget.quote!.id!, quote)
+          .then((value) {
+            if (value) {
+              changeSavingState(false);
+              navigateBack();
+              widget.refetch();
+            }
+          })
+          .catchError((error) {
+            changeSavingState(false);
+          });
+      return;
+    }
+
+    QuoteRepository()
+        .createQuote(quote)
+        .then((value) {
+          if (value) {
+            changeSavingState(false);
+            navigateBack();
+            widget.refetch();
+          }
+        })
+        .catchError((error) {
+          changeSavingState(false);
+        });
   }
 
   @override
@@ -217,10 +261,19 @@ class _QuoteFormState extends State<QuoteForm> {
                           ),
                         ),
                         onPressed: saveQuote,
-                        child: const Text(
-                          "Save",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child:
+                            isSaving
+                                ? SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.grey.shade300,
+                                  ),
+                                )
+                                : const Text(
+                                  "Save",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                       ),
                     ),
                   ],
