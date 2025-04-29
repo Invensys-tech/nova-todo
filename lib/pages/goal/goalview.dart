@@ -5,6 +5,7 @@ import 'package:flutter_application_1/pages/goal/common/goal-view-stat.dart';
 import 'package:flutter_application_1/pages/goal/journal.container.dart';
 import 'package:flutter_application_1/pages/goal/subgoals.container.dart';
 import 'package:flutter_application_1/repositories/goal.repository.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Task {
@@ -103,8 +104,8 @@ class _TaskAccordionState extends State<TaskAccordion> {
                       child: TextField(
                         controller: _taskController,
                         style: const TextStyle(color: Colors.white),
-                        decoration: const InputDecoration(
-                          hintText: "Add a task",
+                        decoration:  InputDecoration(
+                          hintText:translate( "Add a task"),
                           hintStyle: TextStyle(color: Colors.white54),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.white54),

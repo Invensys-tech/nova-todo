@@ -8,6 +8,7 @@ import 'package:flutter_application_1/pages/homepage/form.productivity.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
 import 'package:flutter_application_1/services/streak.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 
@@ -107,7 +108,7 @@ class _HomePageState extends State<ProductivityHome> {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
               icon: Icons.delete,
-              label: 'Delete',
+              label: translate('Delete'),
             ),
           ],
         ),
@@ -128,7 +129,7 @@ class _HomePageState extends State<ProductivityHome> {
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
               icon: Icons.edit,
-              label: 'Edit',
+              label: translate('Edit'),
             ),
           ],
         ),
@@ -243,7 +244,7 @@ class _HomePageState extends State<ProductivityHome> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text("Productivity"),
+            Text(translate("Productivity")),
             SizedBox(width: MediaQuery.of(context).size.width * .015),
 
             // Container(

@@ -20,6 +20,7 @@ class Seetingpage extends StatefulWidget {
 class _SeetingpageState extends State<Seetingpage> {
   late HiveService _hiveService;
   String _selectedDateType = 'Gregorian'; // default
+  String _selectedlangugetype = 'am';
 
   @override
   void initState() {
@@ -27,8 +28,19 @@ class _SeetingpageState extends State<Seetingpage> {
     _hiveService = HiveService();
     _loadTheme();
     _loadDateType();
+    _loadSelectedLanguage();
   }
 
+
+  void _loadSelectedLanguage() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? savedLang = prefs.getString('languageCode');
+    if (savedLang != null && ['am', 'en'].contains(savedLang)) {
+      setState(() {
+        _selectedlangugetype = savedLang;
+      });
+    }
+  }
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -71,11 +83,17 @@ class _SeetingpageState extends State<Seetingpage> {
               TextButton(
                 onPressed: () {
                   AuthService().logout();
-                  Navigator.push(
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => LogInPage()),
+                  // );
+
+
+                  Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => LogInPage()),
+                        (Route<dynamic> route) => false, // This will remove all previous routes
                   );
-
                   // Call your logout function here
                 },
                 child: const Text(
@@ -117,6 +135,26 @@ class _SeetingpageState extends State<Seetingpage> {
     );
   }
 
+
+
+
+
+
+  Future<void> setLocale(Locale locale) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('languageCode', locale.languageCode);
+  }
+
+
+
+
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,16 +175,27 @@ class _SeetingpageState extends State<Seetingpage> {
                 Transform.scale(
                   scale: .65,
                   child: Switch(
-                    activeColor: const Color(0xff0D8054),
+                    activeColor: Color(0xff0D8054),
+                    splashRadius: 10,
                     value: isDark,
                     onChanged: (value) {
-                      setState(() => isDark = value);
-                      isDark
-                          ? DynamicTheme.of(context)!.setTheme(AppThemes.Dark)
-                          : DynamicTheme.of(
-                            context,
-                          )!.setTheme(AppThemes.LightBlue);
-                      _saveBrightness(value);
+                      setState(() {
+                        if (isDark) {
+                          setState(() {
+                            isDark = false;
+                          });
+                        } else {
+                          setState(() {
+                            isDark = true;
+                          });
+                        }
+                        isDark
+                            ? DynamicTheme.of(context)!.setTheme(AppThemes.Dark)
+                            : DynamicTheme.of(
+                          context,
+                        )!.setTheme(AppThemes.LightBlue);
+                      });
+                      _saveBrightness(isDark);
                     },
                   ),
                 ),
@@ -156,82 +205,170 @@ class _SeetingpageState extends State<Seetingpage> {
             const Divider(height: 32),
 
             // --- Language buttons
+            // Row(
+            //   children: [
+            //     const Text(
+            //       "Language",
+            //       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+            //     ),
+            //     const Spacer(),
+            //     Column(
+            //       children: [
+            //         ElevatedButton(
+            //           onPressed: () async{  await changeLocale(context, 'am');
+            //
+            //            setLocale(Locale('am'));
+            //
+            //
+            //           },
+            //           child: const Text('Change to Amharic'),
+            //
+            //         ),
+            //         ElevatedButton(
+            //           onPressed: () async {
+            //             await changeLocale(context, 'en');
+            //              setLocale(Locale('en'));
+            //             },
+            //           child: const Text('Change to English'),
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Language",
+                Text(
+                  "languge",
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+
                 ),
-                const Spacer(),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => changeLocale(context, 'am'),
-                      child: const Text('Change to Amharic'),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.05),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7),
+                      border: Border.all(width: 1,color: Colors.grey.withOpacity(.4))
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _selectedlangugetype,
+                      items: const [
+                        DropdownMenuItem(
+                          value: "am",
+                          child: Text("Amargna"),
+                        ),
+                        DropdownMenuItem(
+                          value: "en",
+                          child: Text("English"),
+                        ),
+                      ],
+                      onChanged: (value) async{
+                        if (value != null) {
+                          await changeLocale(context, value);
+                          setLocale(Locale(value));
+                        }
+                      },
                     ),
-                    ElevatedButton(
-                      onPressed: () => changeLocale(context, 'en'),
-                      child: const Text('Change to English'),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
-
             const SizedBox(height: 24),
 
             // --- Date type dropdown
-            const Text(
-              "Date",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-            ),
-            DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: _selectedDateType,
-                items: const [
-                  DropdownMenuItem(
-                    value: "Ethiopian",
-                    child: Text("Ethiopian"),
-                  ),
-                  DropdownMenuItem(
-                    value: "Gregorian",
-                    child: Text("Gregorian"),
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    _saveDateType(value);
-                    setState(() {
-                      eth = value == "Ethiopian";
-                    });
-                  }
-                },
-              ),
-            ),
+             Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               children: [
+                 Text(
+                  "Date",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+
+                             ),
+                 Container(
+                   padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.05),
+                   decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(7),
+                       border: Border.all(width: 1,color: Colors.grey.withOpacity(.4))
+                   ),
+                   child: DropdownButtonHideUnderline(
+                     child: DropdownButton<String>(
+                       value: _selectedDateType,
+                       items: const [
+                         DropdownMenuItem(
+                           value: "Ethiopian",
+                           child: Text("Ethiopian"),
+                         ),
+                         DropdownMenuItem(
+                           value: "Gregorian",
+                           child: Text("Gregorian"),
+                         ),
+                       ],
+                       onChanged: (value) {
+                         if (value != null) {
+                           _saveDateType(value);
+                           setState(() {
+                             eth = value == "Ethiopian";
+                           });
+                         }
+                       },
+                     ),
+                   ),
+                 ),
+               ],
+             ),
+
+
+
 
             const SizedBox(height: 32),
 
             // --- Logout button
-            Center(
-              child: ElevatedButton(
-                onPressed: _confirmLogout,
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                child: const Text('Logout'),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: _confirmLogout,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width*.45,
+                      height: MediaQuery.of(context).size.height*.05,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(7)),
+                        border: Border.all(width: 1, color: Colors.red)
+                      ),
+                      child: Center(
+                        child:  Text('Logout'),
+                      ),
+                    ),
+                  ),
+
+                  GestureDetector(
+                    onTap: _confirmDeleteAccount,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width*.45,
+                      height: MediaQuery.of(context).size.height*.05,
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                          border: Border.all(width: 1, color: Colors.red)
+                      ),
+                      child: Center(
+                        child:  const Text('Delete Account'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
             const SizedBox(height: 16),
 
             // --- Delete Account button
-            Center(
-              child: ElevatedButton(
-                onPressed: _confirmDeleteAccount,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
-                ),
-                child: const Text('Delete Account'),
-              ),
-            ),
+
+
+
+
           ],
         ),
       ),

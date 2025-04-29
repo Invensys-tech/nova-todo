@@ -3,10 +3,12 @@ import 'dart:math';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/customized/billboard.dart';
+import 'package:flutter_application_1/pages/homepage/daily-report.dart';
 import 'package:flutter_application_1/pages/homepage/dashboard-components/dashboard.expense.item.dart';
 import 'package:flutter_application_1/services/analytics.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:time_interval_picker/time_interval_picker.dart';
 
 import '../../drawer/drawerpage.dart';
@@ -90,11 +92,22 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width * .015),
-                    Text(
-                      "Jan 23, 2025",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
+                    GestureDetector(
+                      onTap: (){
+                        PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                          context,
+                          screen: DailyReport(),
+                          withNavBar: false,
+                          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                          settings: const RouteSettings(),
+                        );
+                      },
+                      child: Text(
+                        "Jan 23, 2025",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
 

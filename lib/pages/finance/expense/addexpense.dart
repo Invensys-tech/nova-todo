@@ -39,13 +39,6 @@ class _AddExpenseState extends State<AddExpense> {
   int? _parentLoanId;
   List<Expense> _expenseList = [];
 
-  final List<String> searchNames = [
-    "Abebe",
-    "Kebede",
-    "Chala",
-    "Alemu",
-    "Ayele",
-  ];
 
   final List<String> banks = [
     'Abay Bank',
@@ -163,7 +156,7 @@ class _AddExpenseState extends State<AddExpense> {
           ),
         ),
         title: Text(
-          translate("Finance"),
+          translate("Expenses"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -194,8 +187,8 @@ class _AddExpenseState extends State<AddExpense> {
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
-                  const Text(
-                    "Amount",
+                   Text(
+                    translate("Amount"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -215,8 +208,8 @@ class _AddExpenseState extends State<AddExpense> {
                     },
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Expense Name",
+                   Text(
+                    translate("Expense Name"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -241,8 +234,8 @@ class _AddExpenseState extends State<AddExpense> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Category",
+                             Text(
+                              translate("Category"),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w300,
@@ -293,8 +286,8 @@ class _AddExpenseState extends State<AddExpense> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Date",
+                             Text(
+                             translate( "Date"),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w300,
@@ -336,8 +329,8 @@ class _AddExpenseState extends State<AddExpense> {
                   //   initialDate: DateTime.now(),
                   // ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Paid By",
+                   Text(
+                    translate("Paid By"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
 
@@ -373,8 +366,8 @@ class _AddExpenseState extends State<AddExpense> {
                   ),
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Description",
+                   Text(
+                    translate("Description"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -412,7 +405,7 @@ class _AddExpenseState extends State<AddExpense> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text("Cancel"),
+                          child:  Text(translate("Cancel")),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -502,8 +495,8 @@ class _AddExpenseState extends State<AddExpense> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text(
-                            "Add Expense",
+                          child:  Text(
+                           translate( "Add Expense"),
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

@@ -11,6 +11,7 @@ import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class HabitForm extends StatefulWidget {
   final String? date;
@@ -269,7 +270,7 @@ class _HabitFormState extends State<HabitForm> {
               ),
             ),
             MyRadioInput(
-              label: 'Repetition',
+              label: translate('Repetition'),
               groupKey: 'repetition',
               onChanged: selectRepetition,
               options: ['Daily', 'Weekly', 'Monthly'],
@@ -334,7 +335,7 @@ class _HabitFormState extends State<HabitForm> {
                     Padding(
                       padding: EdgeInsets.only(left: 8.0),
                       child: Text(
-                        'Frequency',
+                        translate('Frequency'),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
@@ -390,8 +391,8 @@ class _HabitFormState extends State<HabitForm> {
                         ),
                       ),
                       onPressed: navigateBack,
-                      child: const Text(
-                        "Cancel",
+                      child:  Text(
+                       translate( "Cancel"),
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Outfit',
@@ -409,8 +410,8 @@ class _HabitFormState extends State<HabitForm> {
                         ),
                       ),
                       onPressed: saveHabit,
-                      child: const Text(
-                        "Save",
+                      child:  Text(
+                        translate("Save"),
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Outfit',

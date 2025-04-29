@@ -16,6 +16,7 @@ import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/components/inputs/scroll.selector.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:time_interval_picker/time_interval_picker.dart';
 
@@ -182,7 +183,7 @@ class _TodoFormState extends State<TodoForm> {
                 .width * 0.0025,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Task Time',style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+              Text(translate('Task Time'),style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
               // Row(
     //           Row(
     //             crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,7 +334,7 @@ class _TodoFormState extends State<TodoForm> {
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-                                  hintText: 'Start Time',
+                                  hintText:translate( 'Start Time'),
                                   filled: true,
                                   fillColor: Theme.of(context).scaffoldBackgroundColor,
                                   suffixIcon: Icon(Icons.access_time,color: Colors.grey.withOpacity(.7),),
@@ -376,7 +377,7 @@ class _TodoFormState extends State<TodoForm> {
                                 decoration: InputDecoration(
 
                                   contentPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-                                  hintText: 'End Time',
+                                  hintText: translate('End Time'),
                                   filled: true,
                                   fillColor: Theme.of(context).scaffoldBackgroundColor,// Color for end time
                                   suffixIcon: Icon(Icons.access_time, color: Colors.grey.withOpacity(.5),),
@@ -414,7 +415,7 @@ class _TodoFormState extends State<TodoForm> {
               .size
               .width * 0.04,),
           MyTextInput(
-            label: 'Task Name',
+            label: translate('Task Name'),
             textFields: TextFields(
               hinttext: widget.name.hint,
               whatIsInput: widget.name.type,
@@ -427,7 +428,7 @@ class _TodoFormState extends State<TodoForm> {
               .size
               .width * 0.015,),
           MyRadioInput(
-            label: 'Priority',
+            label: translate('Priority'),
             groupKey: 'todo-types',
             options:
             TodoForm.todoTypes
@@ -442,7 +443,7 @@ class _TodoFormState extends State<TodoForm> {
               .width * 0.04,),
           Container(
             child: MyDateTimeInput(
-              label: 'Date',
+              label: translate('Date'),
               dateFields: DateSelector(
                 controller: widget.date.controller,
                 hintText: widget.date.hint,
@@ -459,7 +460,7 @@ class _TodoFormState extends State<TodoForm> {
               .width * 0.04,),
           Container(
             child: MySelector(
-              label: 'Notify Me',
+              label: translate('Notify Me'),
               myDropdownItems: TodoForm.notifyMeOptions,
               onSelect: setNotifyMe,
               currentValue: widget.notifyMe.controller.text,
@@ -470,7 +471,7 @@ class _TodoFormState extends State<TodoForm> {
               .size
               .width * 0.04,),
           MyMultiLineTextInput(
-            label: 'Description',
+            label: translate('Description'),
             textFields: MultiLineTextField(
               hintText: widget.description.hint,
               controller: widget.description.controller,
@@ -501,13 +502,13 @@ class _TodoFormState extends State<TodoForm> {
                   headerBuilder:
                       (context, isExpanded) =>
                       MyExpansionPanelHeader(
-                        title: 'Sub tasks you got in mind',
+                        title: translate('Sub tasks you got in mind'),
                       ),
                   isExpanded: subTasksIsOpen,
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   // body: Text(subGoal.value.goal),
                   body: SubDailyTasksExpansion(
-                    title: 'Sub Tasks',
+                    title: translate('Sub Tasks'),
                     tasks: widget.subTasks,
                     addSubTask: widget.addSubTask,
                   ),
