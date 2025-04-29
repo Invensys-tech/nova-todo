@@ -26,6 +26,7 @@ class AddTodoPage extends StatefulWidget {
 class _AddTodoPageState extends State<AddTodoPage> {
   TextEditingController taskTimeController = TextEditingController();
   TextEditingController taskEndTimeController = TextEditingController();
+
   // TextEditingController();
   FormInput name = FormInput(
     label: 'Task Name',
@@ -97,6 +98,8 @@ class _AddTodoPageState extends State<AddTodoPage> {
     ),
   );
 
+  bool isSaving = false;
+
   clearForm() {
     name.controller.clear();
     time.controller.clear();
@@ -146,61 +149,80 @@ class _AddTodoPageState extends State<AddTodoPage> {
     return true;
   }
 
-  saveTodo() {
+  saveTodo() async {
     setState(() {
-      if (widget.isEditing && widget.dailyTask != null) {
-        final updatedData = {
+      try {
+        isSaving = true;
+
+        bool parsedCorrectly = parseStartEndTime();
+        if (!parsedCorrectly) {
+          return;
+        }
+
+        if (widget.isEditing && widget.dailyTask != null) {
+          final updatedData = {
+            'name': name.controller.text,
+            'type': type.controller.text,
+            'description': description.controller.text,
+          };
+
+          DailyTaskRepository()
+              .updateDailyTask(updatedData, widget.dailyTask!.id!)
+              .then((value) {
+                if (value) {
+                  clearForm();
+                  widget.refetchData();
+                  Navigator.pop(context);
+                }
+              });
+
+          return;
+        }
+
+        Map<String, dynamic> formData = {
           'name': name.controller.text,
+          // 'time': formatDate(time.controller.text),
           'type': type.controller.text,
+          'date': formatDate(date.controller.text),
+          'notifyMe': notifyMe.controller.text,
+          'taskTime': taskTimeController.text,
+          'taskEndTime': taskEndTimeController.text,
           'description': description.controller.text,
+          'daily_sub_tasks': subTasks,
         };
+        // clearForm();
 
-        DailyTaskRepository().updateDailyTask(
-            updatedData,
-            widget.dailyTask!.id!,
-        ).then((value) {
-          if (value) {
-            clearForm();
-            widget.refetchData();
-            Navigator.pop(context);
-          }
+        print(jsonEncode(formData));
+
+        DailyTask dailyTaskData = DailyTask.fromUserInputJson(formData);
+        // DailyTaskRepository().addDailyTaskFromJson(dailyTaskData);
+        DailyTaskRepository()
+            .addDailyTask(dailyTaskData)
+            .then((value) {
+              clearForm();
+              setState(() {
+                isSaving = false;
+              });
+              widget.refetchData();
+              Navigator.pop(context);
+            })
+            .catchError((error) {
+              setState(() {
+                isSaving = false;
+              });
+            });
+      } catch (e) {
+        setState(() {
+          isSaving = false;
         });
-
-        return;
+        rethrow;
       }
-
-      bool parsedCorrectly = parseStartEndTime();
-      if (!parsedCorrectly) {
-        return;
-      }
-
-      Map<String, dynamic> formData = {
-        'name': name.controller.text,
-        // 'time': formatDate(time.controller.text),
-        'type': type.controller.text,
-        'date': formatDate(date.controller.text),
-        'notifyMe': notifyMe.controller.text,
-        'taskTime': taskTimeController.text,
-        'taskEndTime': taskEndTimeController.text,
-        'description': description.controller.text,
-        'daily_sub_tasks': subTasks,
-      };
-      // clearForm();
-
-      print(jsonEncode(formData));
-
-      DailyTask dailyTaskData = DailyTask.fromUserInputJson(formData);
-      // DailyTaskRepository().addDailyTaskFromJson(dailyTaskData);
-      DailyTaskRepository().addDailyTask(dailyTaskData).then((value) {
-        clearForm();
-        widget.refetchData();
-        Navigator.pop(context);
-      });
       // widget.saveTodo();
     });
   }
 
   List<dynamic> subTasks = [];
+
   addSubTask(subTask) {
     setState(() {
       subTasks.add(subTask);
@@ -240,14 +262,12 @@ class _AddTodoPageState extends State<AddTodoPage> {
             ),
           ],
         ),
-        title: const Text(
-          "Add New Todo",
-        ),
+        title: const Text("Add New Todo"),
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height*.9,
-        child:  SingleChildScrollView(
-          physics:  AlwaysScrollableScrollPhysics(),
+        height: MediaQuery.of(context).size.height * .9,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               TodoForm(
@@ -294,13 +314,25 @@ class _AddTodoPageState extends State<AddTodoPage> {
                         ),
                       ),
                       onPressed: () {
-                        // Navigator.pop(context);
+                        if (isSaving) {
+                          return;
+                        }
+
                         saveTodo();
                       },
-                      child: const Text(
-                        "Save Todo",
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child:
+                          isSaving
+                              ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.grey.shade300,
+                                ),
+                              )
+                              : const Text(
+                                "Save Todo",
+                                style: TextStyle(color: Colors.white),
+                              ),
                     ),
                   ],
                 ),

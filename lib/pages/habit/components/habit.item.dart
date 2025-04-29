@@ -8,6 +8,7 @@ import 'package:lottie/lottie.dart';
 
 class HabitItem extends StatefulWidget {
   final Habit habit;
+
   const HabitItem({super.key, required this.habit});
 
   @override
@@ -16,6 +17,7 @@ class HabitItem extends StatefulWidget {
 
 class _HabitItemState extends State<HabitItem> {
   late Habit habit;
+  bool isSaving = false;
 
   @override
   void initState() {
@@ -23,26 +25,41 @@ class _HabitItemState extends State<HabitItem> {
     habit = widget.habit;
   }
 
-  extendStreak() {
+  changeSavingState(bool savingState) {
     setState(() {
-      HabitsRepository().extendHabitStreak(widget.habit, DateTime.now()).then((
-        value,
-      ) {
-        if (value) {
-          // widget.habit.extendStreak(DateTime.now());
-        }
-      });
+      isSaving = savingState;
     });
   }
 
+  extendStreak() {
+    HabitsRepository()
+        .extendHabitStreak(widget.habit, DateTime.now())
+        .then((value) {
+          if (value) {
+            changeSavingState(false);
+            // widget.habit.extendStreak(DateTime.now());
+          }
+          changeSavingState(true);
+        })
+        .catchError((error) {
+          changeSavingState(false);
+        });
+  }
+
   removeTerm() {
-    setState(() {
-      HabitsRepository().removeTerm(widget.habit, DateTime.now()).then((value) {
-        if (value) {
-          widget.habit.removeTerm(DateTime.now());
-        }
-      });
-    });
+    changeSavingState(true);
+    HabitsRepository()
+        .removeTerm(widget.habit, DateTime.now())
+        .then((value) {
+          if (value) {
+            widget.habit.removeTerm(DateTime.now());
+          }
+          changeSavingState(false);
+        })
+        .catchError((error) {
+          changeSavingState(false);
+        });
+    ;
   }
 
   @override
@@ -66,13 +83,22 @@ class _HabitItemState extends State<HabitItem> {
               color: Color(0xFFEC003F),
               child: Center(
                 child: ElevatedButton(
-                  onPressed: () => removeTerm(),
+                  onPressed: () {
+                    if (isSaving || habit.isNotStartedToday) {
+                      return;
+                    }
+
+                    removeTerm();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey.withOpacity(.4),
                   ),
                   child: Text(
                     '😔 I didn\'t',
-                    style: TextStyle(color: Color(0xFFF4F4F5)),
+                    style: TextStyle(
+                      color:
+                          habit.isDoneToday ? Colors.grey : Color(0xFFF4F4F5),
+                    ),
                   ),
                 ),
               ),
@@ -96,7 +122,13 @@ class _HabitItemState extends State<HabitItem> {
               color: Color(0xFF009966),
               child: Center(
                 child: ElevatedButton(
-                  onPressed: () => extendStreak(),
+                  onPressed: () {
+                    if (isSaving || habit.isDoneToday) {
+                      return;
+                    }
+
+                    extendStreak();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF555B59),
                   ),
@@ -112,12 +144,9 @@ class _HabitItemState extends State<HabitItem> {
       ),
       child: GestureDetector(
         onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder:
-              (context) => HabitView(habit: habit),
-            ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HabitView(habit: habit)),
           );
         },
         child: Padding(
@@ -125,15 +154,12 @@ class _HabitItemState extends State<HabitItem> {
             horizontal: MediaQuery.of(context).size.width * .025,
           ),
           child: Container(
-            height: MediaQuery.of(context).size.height*.1,
+            height: MediaQuery.of(context).size.height * .1,
             padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
             decoration: BoxDecoration(
               // color: Colors.blueGrey.shade900,
               borderRadius: BorderRadius.circular(7),
-              border: Border.all(
-                color: Colors.grey.withOpacity(.5),
-                width: 1,
-              ),
+              border: Border.all(color: Colors.grey.withOpacity(.5), width: 1),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,16 +201,19 @@ class _HabitItemState extends State<HabitItem> {
                     Column(
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child:Lottie.asset(
-                            widget.habit.streak.toString() == "1" ? 'assets/LottieAnimations/FirstStreak.json':
-                            widget.habit.streak.toString() == "2" ? 'assets/LottieAnimations/Scond2Streak.json':
-                            widget.habit.streak.toString() == "3" ? 'assets/LottieAnimations/ThirdStreak.json':
-                            widget.habit.streak.toString() == "4" ? 'assets/LottieAnimations/FourthStreak.json':
-                            widget.habit.streak.toString() == "5" ? 'assets/LottieAnimations/LastStreak.json':
-                            'assets/LottieAnimations/ZeroStreak.json',
+                          decoration: BoxDecoration(shape: BoxShape.circle),
+                          child: Lottie.asset(
+                            widget.habit.streak.toString() == "1"
+                                ? 'assets/LottieAnimations/FirstStreak.json'
+                                : widget.habit.streak.toString() == "2"
+                                ? 'assets/LottieAnimations/Scond2Streak.json'
+                                : widget.habit.streak.toString() == "3"
+                                ? 'assets/LottieAnimations/ThirdStreak.json'
+                                : widget.habit.streak.toString() == "4"
+                                ? 'assets/LottieAnimations/FourthStreak.json'
+                                : widget.habit.streak.toString() == "5"
+                                ? 'assets/LottieAnimations/LastStreak.json'
+                                : 'assets/LottieAnimations/ZeroStreak.json',
                             // height: widget.habit.streak.toString() == "1" ? 40:
                             // widget.habit.streak.toString() == "2" ? 45:
                             // widget.habit.streak.toString() == "3" ? 50:
@@ -198,14 +227,15 @@ class _HabitItemState extends State<HabitItem> {
                             height: 45,
                             width: 40,
                             fit: BoxFit.contain,
-                          )
+                          ),
                         ),
-
                       ],
                     ),
                     Column(
                       children: [
-                        SizedBox(height: MediaQuery.of(context).size.height*.015,),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * .015,
+                        ),
                         Text(
                           widget.habit.streak.toString(),
                           style: TextStyle(fontSize: 20),
@@ -218,9 +248,13 @@ class _HabitItemState extends State<HabitItem> {
                     ),
                     Column(
                       children: [
-
-                        SizedBox(height: MediaQuery.of(context).size.height*.015,),
-                        Icon(Icons.keyboard_arrow_right, color: Color(0xFF009966)),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * .015,
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Color(0xFF009966),
+                        ),
                       ],
                     ),
                   ],

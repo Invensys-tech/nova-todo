@@ -50,6 +50,8 @@ class _HabitFormState extends State<HabitForm> {
     type: "0",
   );
 
+  bool isSaving = false;
+
   @override
   void initState() {
     super.initState();
@@ -143,6 +145,12 @@ class _HabitFormState extends State<HabitForm> {
     });
   }
 
+  changeSavingState(bool savingState) {
+    setState(() {
+      isSaving = savingState;
+    });
+  }
+
   saveHabit() {
     // Map<String, dynamic> jsonValue = {
     //   'name': name.controller.text,
@@ -154,9 +162,11 @@ class _HabitFormState extends State<HabitForm> {
     // };
 
     // printDays();
+    changeSavingState(true);
 
     if (name.controller.text == '') {
       print('Name is required');
+      changeSavingState(false);
       return;
     }
 
@@ -169,10 +179,11 @@ class _HabitFormState extends State<HabitForm> {
           return;
         }
       } catch (e) {
+        changeSavingState(false);
         print(
           'Frequency needs to be specified for ${repetition.controller.text} habits',
         );
-        print(e);
+        // print(e);
         return;
       }
     } else if (repetition.controller.text == 'Weekly') {
@@ -180,6 +191,7 @@ class _HabitFormState extends State<HabitForm> {
         print(
           'Repetition days must be specified for ${repetition.controller.text} habits',
         );
+        changeSavingState(false);
         return;
       }
     }
@@ -209,21 +221,36 @@ class _HabitFormState extends State<HabitForm> {
     // });
 
     if (widget.isEditing && widget.habit != null) {
-      HabitsRepository().updateById(newHabit, widget.habit!.id!).then((value) {
-        if (value) {
-          navigateBack(buildContext: context);
-          widget.refetchData();
-          resetForm();
-        }
-      });
+      HabitsRepository()
+          .updateById(newHabit, widget.habit!.id!)
+          .then((value) {
+            if (value) {
+              navigateBack(buildContext: context);
+              widget.refetchData();
+              resetForm();
+            }
+          })
+          .then((value) {
+            changeSavingState(false);
+          })
+          .catchError((e) {
+            changeSavingState(false);
+          });
     } else {
-      HabitsRepository().createHabit(newHabit).then((value) {
-        if (value) {
-          navigateBack();
-          widget.refetchData();
-          resetForm();
-        }
-      });
+      HabitsRepository()
+          .createHabit(newHabit)
+          .then((value) {
+            if (value) {
+              navigateBack();
+              widget.refetchData();
+              resetForm();
+            }
+            changeSavingState(false);
+          })
+          .catchError((e) {
+            changeSavingState(false);
+          });
+      ;
     }
   }
 
@@ -409,13 +436,19 @@ class _HabitFormState extends State<HabitForm> {
                         ),
                       ),
                       onPressed: saveHabit,
-                      child: const Text(
-                        "Save",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Outfit',
-                        ),
-                      ),
+                      child:
+                          isSaving
+                              ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.grey.shade300,
+                                ),
+                              )
+                              : const Text(
+                                "Save",
+                                style: TextStyle(color: Colors.white),
+                              ),
                     ),
                   ),
                 ],
