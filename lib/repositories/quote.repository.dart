@@ -64,7 +64,7 @@ class QuoteRepository {
       }
       return true;
     } catch (e) {
-      // print(e);
+      print(e);
       rethrow;
     }
   }

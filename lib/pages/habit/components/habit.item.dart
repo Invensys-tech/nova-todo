@@ -80,7 +80,7 @@ class _HabitItemState extends State<HabitItem> {
           Expanded(
             flex: 1,
             child: Container(
-              color: Color(0xFFEC003F),
+              color: habit.isNotStartedToday ? Colors.grey.shade200 : Color(0xFFEC003F),
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
@@ -119,7 +119,7 @@ class _HabitItemState extends State<HabitItem> {
           Expanded(
             flex: 1,
             child: Container(
-              color: Color(0xFF009966),
+              color:  habit.isDoneToday ? Colors.grey.shade200 : Color(0xFF009966),
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {

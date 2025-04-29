@@ -48,6 +48,7 @@ class _QuoteFormState extends State<QuoteForm> {
   void initState() {
     super.initState();
     if (widget.quote != null) {
+      textController.text = widget.quote!.text;
       authorInput.controller.text = widget.quote!.author;
       sourceInput.controller.text = widget.quote!.source;
       selectedCategory = widget.quote!.category;
@@ -74,11 +75,15 @@ class _QuoteFormState extends State<QuoteForm> {
     changeSavingState(true);
 
     Quote quote = Quote(
+      id: widget.quote!.id,
       text: textController.text,
       author: authorInput.controller.text,
       source: sourceInput.controller.text,
       category: selectedCategory,
     );
+
+    print('Quote to json');
+    print(quote.toJson());
 
     if (widget.quote != null) {
       //   Update quote here

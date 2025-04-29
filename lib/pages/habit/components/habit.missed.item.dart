@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/entities/habit-history.entitiy.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 
-class HabitMissedDateItem extends StatelessWidget {
-  final String dateString;
-  const HabitMissedDateItem({super.key, required this.dateString});
+class HabitHistoryItem extends StatelessWidget {
+  // final String dateString;
+  final HabitHistory habitHistory;
+
+  const HabitHistoryItem({super.key, required this.habitHistory});
+
+  // const HabitMissedDateItem({super.key, required this.dateString});
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +33,13 @@ class HabitMissedDateItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                getDayFromDateTime(DateTime.parse(dateString)),
+                // getDayFromDateTime(DateTime.parse(dateString)),
+                habitHistory.startedAt,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               Text(
-                '${getMonthFromDateTime(DateTime.parse(dateString))} ${DateTime.parse(dateString).day}',
+                habitHistory.streak.toString()
+                // '${getMonthFromDateTime(DateTime.parse(dateString))} ${DateTime.parse(dateString).day}',
               ),
             ],
           ),

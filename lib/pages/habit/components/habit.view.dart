@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/entities/habit-history.entitiy.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/habit/components/habit.missed.item.dart';
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 
-class HabitView extends StatelessWidget {
+class HabitView extends StatefulWidget {
   final Habit habit;
 
   const HabitView({super.key, required this.habit});
+
+  @override
+  State<HabitView> createState() => _HabitViewState();
+}
+
+class _HabitViewState extends State<HabitView> {
+  late Future<List<HabitHistory>> habitHistories;
+
+  @override
+  void initState() {
+    habitHistories = HabitsRepository().getStreakHistories(widget.habit.id!);
+  }
 
   Widget _buildCircle(double radius, Color color) {
     return Container(
@@ -35,7 +48,9 @@ class HabitView extends StatelessWidget {
             TextButton(
               child: Text("Delete", style: TextStyle(color: Color(0xFFEC003F))),
               onPressed: () async {
-                final deleted = await HabitsRepository().deleteById(habit!.id!);
+                final deleted = await HabitsRepository().deleteById(
+                  widget.habit!.id!,
+                );
                 if (deleted) {
                   Navigator.of(context).pop();
                   Navigator.of(pageContext).pop();
@@ -53,7 +68,7 @@ class HabitView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          habit.name,
+          widget.habit.name,
           style: TextStyle(
             color: Color(0xFFD4D4D8),
             fontWeight: FontWeight.w600,
@@ -83,11 +98,11 @@ class HabitView extends StatelessWidget {
                 spacing: MediaQuery.of(context).size.height * 0.005,
                 children: [
                   Text(
-                    habit.type,
+                    widget.habit.type,
                     style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 14),
                   ),
                   Text(
-                    'Created At: ${getDateOnly(DateTime.parse(habit.date))}',
+                    'Created At: ${getDateOnly(DateTime.parse(widget.habit.date))}',
                     style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 12),
                   ),
                 ],
@@ -175,7 +190,7 @@ class HabitView extends StatelessWidget {
                                         Row(
                                           children: [
                                             Text(
-                                              '${habit.goingOnFor.toString()} Days',
+                                              '${widget.habit.goingOnFor.toString()} Days',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 32.0,
@@ -222,7 +237,7 @@ class HabitView extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '${habit.streakDates.length} Days',
+                                      '${widget.habit.streakDates.length} Days',
                                       style: TextStyle(
                                         color: Color(0xFFF4F4F5),
                                         fontSize: 20,
@@ -258,7 +273,7 @@ class HabitView extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '${habit.goingOnFor - (habit.streakDates.length)} Days',
+                                      '${widget.habit.goingOnFor - (widget.habit.streakDates.length)} Days',
                                       style: TextStyle(
                                         color: Color(0xFFF4F4F5),
                                         fontSize: 20,
@@ -282,7 +297,8 @@ class HabitView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Text(
-                        'Skipped Days',
+                        // 'Skipped Days',
+                        'Previous Streaks',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w300,
@@ -302,16 +318,30 @@ class HabitView extends StatelessWidget {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 Container(
                   padding: const EdgeInsets.only(left: 10.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children:
-                        habit.missedDates
-                            .map(
-                              (missedDate) =>
-                                  HabitMissedDateItem(dateString: missedDate),
-                            )
-                            .toList(),
+                  child: FutureBuilder(
+                    future: habitHistories,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children:
+                              snapshot.data!
+                                  .map(
+                                    (habitHistory) => HabitHistoryItem(
+                                      habitHistory: habitHistory,
+                                    ),
+                                  )
+                                  .toList(),
+                        );
+                      } else {
+                        if (snapshot.hasError) {
+                          return Center(child: Text('Error getting habit histories'));
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }
+                    },
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -338,7 +368,7 @@ class HabitView extends StatelessWidget {
                               builder:
                                   (context) => HabitForm(
                                     refetchData: () {},
-                                    habit: habit,
+                                    habit: widget.habit,
                                     isEditing: true,
                                   ),
                             ),
@@ -379,22 +409,22 @@ class HabitView extends StatelessWidget {
   }
 }
 
-class BottomSemiCircleClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    path.moveTo(0, 0);
-    path.arcToPoint(
-      Offset(size.width, 0),
-      radius: Radius.circular(size.width),
-      clockwise: false,
-    );
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
+// class BottomSemiCircleClipper extends CustomClipper<Path> {
+//   @override
+//   Path getClip(Size size) {
+//     final path = Path();
+//     path.moveTo(0, 0);
+//     path.arcToPoint(
+//       Offset(size.width, 0),
+//       radius: Radius.circular(size.width),
+//       clockwise: false,
+//     );
+//     path.lineTo(size.width, size.height);
+//     path.lineTo(0, size.height);
+//     path.close();
+//     return path;
+//   }
+//
+//   @override
+//   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+// }

@@ -6,12 +6,10 @@ class PricingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Row(
@@ -21,7 +19,6 @@ class PricingScreen extends StatelessWidget {
               "Pricing",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
               ),
             ),
             Row(
@@ -30,13 +27,12 @@ class PricingScreen extends StatelessWidget {
                 const Text(
                   "ETB ",
                   style: TextStyle(
-                    color: Colors.white60,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
                 const Text(
-                  "2,500",
+                  "1,000",
                   style: TextStyle(
                     color: Colors.greenAccent,
                     fontSize: 18,
@@ -48,7 +44,7 @@ class PricingScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 const Text(
-                  "25% off",
+                  "Yearly",
                   style: TextStyle(
                     color: Colors.greenAccent,
                     fontSize: 12,
@@ -80,22 +76,22 @@ class PricingScreen extends StatelessWidget {
           children: [
             Text(
               "Get the full experience of",
-              style: TextStyle(color: Color(0xFFF4F4F5), fontSize: 20),
+              style: TextStyle( fontSize: 20),
             ),
             const SizedBox(height: 8),
             RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Nova ',
+                    text: 'Vita ',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 32,
+                      color: Theme.of(context).primaryColorLight,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   TextSpan(
-                    text: 'Tracker',
+                    text: 'Board',
                     style: TextStyle(
                       color: Color(0xFF009966),
                       fontSize: 32,
@@ -108,13 +104,14 @@ class PricingScreen extends StatelessWidget {
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.09),
             ...[
-              "No daily limits",
-              "Lorem ipsum dolor lolos karos",
-              "Lorem ipsum dolor",
-              "Lorem ipsum dolor tecra",
-              "Lorem ipsum dolor polos hermanos",
+              "Plan Your Daily Movement ",
+              "Control your  Time and Focus on your Goal",
+              "Build and Develop new Habit",
+              "Improve your productivity",
+              "Save your Interesting Quotes",
+              "Be Better that the thing you are now",
             ].map(
-              (text) => Padding(
+                  (text) => Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: MediaQuery.of(context).size.height * 0.01,
                 ),
@@ -125,7 +122,7 @@ class PricingScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         text,
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: TextStyle( fontSize: 20),
                       ),
                     ),
                   ],
@@ -164,8 +161,8 @@ class PricingScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '12-Day ',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        '3-Day ',
+                        style: TextStyle( fontSize: 20),
                       ),
                       Text.rich(
                         TextSpan(
@@ -183,7 +180,7 @@ class PricingScreen extends StatelessWidget {
                   SizedBox(height: 4),
                   Text(
                     '100% Money-back Guarantee',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    style: TextStyle( fontSize: 16),
                   ),
                 ],
               ),

@@ -201,6 +201,7 @@ class _HabitFormState extends State<HabitForm> {
     // }
 
     Habit newHabit = Habit.fromJson({
+      'id': widget.habit?.id,
       'name': name.controller.text,
       'type': repetition.controller.text,
       'date': widget.date ?? getDateOnly(DateTime.now()),
