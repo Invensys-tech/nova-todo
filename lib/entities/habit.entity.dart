@@ -183,7 +183,7 @@ class Habit {
   }
 
   bool get isNotStartedToday {
-    return streakDates.any(
+    return !streakDates.any(
       (streakDate) => streakDate == getDateOnly(DateTime.now()),
     );
   }

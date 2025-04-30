@@ -229,47 +229,43 @@ class _IncomeViewState extends State<IncomeView> {
             startActionPane: ActionPane(
               motion: const ScrollMotion(),
               children: [
-                Column(
-                  children: [
-                    SlidableAction(
-                      onPressed: (context) {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (_) => AlertDialog(
-                                title: const Text('Confirm Delete'),
-                                content: const Text(
-                                  'Are you sure you want to delete this income?',
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed:
-                                        () => Navigator.of(context).pop(),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await IncomeRepository().deleteIncome(
-                                        income.id,
-                                      );
-                                      Navigator.of(context).pop();
-                                      setState(_loadIncomes);
-                                    },
-                                    child: const Text(
-                                      'Delete',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                ],
+                SlidableAction(
+                  onPressed: (context) {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (_) => AlertDialog(
+                            title: const Text('Confirm Delete'),
+                            content: const Text(
+                              'Are you sure you want to delete this income?',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed:
+                                    () => Navigator.of(context).pop(),
+                                child: const Text('Cancel'),
                               ),
-                        );
-                      },
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete,
-                      label: 'Delete',
-                    ),
-                  ],
+                              TextButton(
+                                onPressed: () async {
+                                  await IncomeRepository().deleteIncome(
+                                    income.id,
+                                  );
+                                  Navigator.of(context).pop();
+                                  setState(_loadIncomes);
+                                },
+                                child: const Text(
+                                  'Delete',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                    );
+                  },
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  label: 'Delete',
                 ),
               ],
             ),

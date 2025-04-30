@@ -11,6 +11,7 @@ import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class HabitForm extends StatefulWidget {
   final String? date;
@@ -32,7 +33,7 @@ class HabitForm extends StatefulWidget {
 
 class _HabitFormState extends State<HabitForm> {
   FormInput name = FormInput(
-    label: 'Title',
+    label: translate('Title'),
     hint: 'eg: Books and Music',
     controller: TextEditingController(),
     type: "1",
@@ -160,6 +161,9 @@ class _HabitFormState extends State<HabitForm> {
     //   'repetitions': customRepetitionItems.toList(),
     //   'is_done': false,
     // };
+    if (isSaving) {
+      return;
+    }
 
     // printDays();
     changeSavingState(true);
@@ -264,9 +268,8 @@ class _HabitFormState extends State<HabitForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Add New Habit",
+         translate( "Add New Habit"),
           style: TextStyle(
-            color: Color(0xFFD4D4D8),
             fontWeight: FontWeight.w600,
             fontSize: 16.0,
           ),
@@ -297,7 +300,7 @@ class _HabitFormState extends State<HabitForm> {
               ),
             ),
             MyRadioInput(
-              label: 'Repetition',
+              label: translate('Repetition'),
               groupKey: 'repetition',
               onChanged: selectRepetition,
               options: ['Daily', 'Weekly', 'Monthly'],
@@ -362,7 +365,7 @@ class _HabitFormState extends State<HabitForm> {
                     Padding(
                       padding: EdgeInsets.only(left: 8.0),
                       child: Text(
-                        'Frequency',
+                       translate( 'Frequency'),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
@@ -418,8 +421,8 @@ class _HabitFormState extends State<HabitForm> {
                         ),
                       ),
                       onPressed: navigateBack,
-                      child: const Text(
-                        "Cancel",
+                      child:  Text(
+                        translate("Cancel"),
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: 'Outfit',
@@ -446,8 +449,8 @@ class _HabitFormState extends State<HabitForm> {
                                   color: Colors.grey.shade300,
                                 ),
                               )
-                              : const Text(
-                                "Save",
+                              :  Text(
+                                translate("Save"),
                                 style: TextStyle(color: Colors.white),
                               ),
                     ),

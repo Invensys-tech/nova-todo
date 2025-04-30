@@ -285,6 +285,7 @@ import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
 class NoteQuil extends StatefulWidget {
   final String note;
   int? id;
@@ -512,22 +513,78 @@ class _NoteQuilState extends State<NoteQuil> {
              SizedBox(height: MediaQuery.of(context).size.height*.025),
 
             // Quill toolbar + editor
-            Container(
-              height: MediaQuery.of(context).size.height * 0.757,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  Container(
-                    width:MediaQuery.of(context).size.width*1,
-                    child: QuillSimpleToolbar(
-                      controller: _controller,
+            Localizations.override(
+              context: context,
+              locale:Locale ('en','US'),
+              delegates: [
+                FlutterQuillLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,],
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.757,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: [
+                    Container(
+                      width:MediaQuery.of(context).size.width*1,
+                      child: QuillSimpleToolbar(
+                        controller: _controller,
 
+                        config: QuillSimpleToolbarConfig(
+                            toolbarIconAlignment: WrapAlignment.start,
+                            toolbarRunSpacing: 0,
+                            showUndo:
+                            false, // Set this to false to remove the undo button
+                            showRedo: false,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              border: Border.all(color: Colors.blueAccent),
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                )
+                              ],
+                            ),
+
+                            showStrikeThrough: false,
+                            showInlineCode: false,
+                            showClearFormat: false,
+                            showCodeBlock: false,
+                            showSearchButton: false,
+                            showLink: false,
+                            showCenterAlignment: false,
+                            showQuote: false,
+                            showRightAlignment: false,
+                            showListCheck: false,
+                            showListBullets: false,
+                            showListNumbers: false,
+                            showSmallButton: false,
+                            showLeftAlignment: false,
+                            showJustifyAlignment: false,
+                            showAlignmentButtons: false,
+                            showLineHeightButton: false,
+                            showIndent: false,
+                            headerStyleType: HeaderStyleType.original,
+                            axis: Axis.horizontal
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: QuillEditor.basic(
+                        controller: _controller,
+                        config: QuillEditorConfig(
+                          scrollable: true,
+                        ),
+                      ),
+                    ),
+                    QuillSimpleToolbar(
+
+                      controller: _controller,
                       config: QuillSimpleToolbarConfig(
-                          toolbarIconAlignment: WrapAlignment.start,
-                          toolbarRunSpacing: 0,
-                          showUndo:
-                          false, // Set this to false to remove the undo button
-                          showRedo: false,
                           decoration: BoxDecoration(
                             color: Colors.grey[100],
                             border: Border.all(color: Colors.blueAccent),
@@ -541,77 +598,31 @@ class _NoteQuilState extends State<NoteQuil> {
                             ],
                           ),
 
+                          showUndo:
+                          false, // Set this to false to remove the undo button
+                          showRedo: false,
                           showStrikeThrough: false,
                           showInlineCode: false,
                           showClearFormat: false,
                           showCodeBlock: false,
                           showSearchButton: false,
                           showLink: false,
-                          showCenterAlignment: false,
-                          showQuote: false,
-                          showRightAlignment: false,
-                          showListCheck: false,
-                          showListBullets: false,
-                          showListNumbers: false,
-                          showSmallButton: false,
-                          showLeftAlignment: false,
-                          showJustifyAlignment: false,
-                          showAlignmentButtons: false,
-                          showLineHeightButton: false,
-                          showIndent: false,
+                          showBackgroundColorButton: false,
+                          showColorButton: false,
+                          showFontSize: false,
+                          showFontFamily: false,
+                          showBoldButton: false,
+                          showItalicButton: false,
+                          showUnderLineButton: false,
+                          showSubscript: false,
+                          showSuperscript: false,
+                          showHeaderStyle: false,
                           headerStyleType: HeaderStyleType.original,
                           axis: Axis.horizontal
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: QuillEditor.basic(
-                      controller: _controller,
-                      config: QuillEditorConfig(
-                        scrollable: true,
-                      ),
-                    ),
-                  ),
-                  QuillSimpleToolbar(
-                    controller: _controller,
-                    config: QuillSimpleToolbarConfig(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          border: Border.all(color: Colors.blueAccent),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 4,
-                              offset: Offset(0, 2),
-                            )
-                          ],
-                        ),
-
-                        showUndo:
-                        false, // Set this to false to remove the undo button
-                        showRedo: false,
-                        showStrikeThrough: false,
-                        showInlineCode: false,
-                        showClearFormat: false,
-                        showCodeBlock: false,
-                        showSearchButton: false,
-                        showLink: false,
-                        showBackgroundColorButton: false,
-                        showColorButton: false,
-                        showFontSize: false,
-                        showFontFamily: false,
-                        showBoldButton: false,
-                        showItalicButton: false,
-                        showUnderLineButton: false,
-                        showSubscript: false,
-                        showSuperscript: false,
-                        showHeaderStyle: false,
-                        headerStyleType: HeaderStyleType.original,
-                        axis: Axis.horizontal
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

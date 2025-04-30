@@ -61,7 +61,7 @@ class _MainScreenPageState extends State<MainScreenPage> {
       PersistentBottomNavBarItem(
         icon: FaIcon(FontAwesomeIcons.locationArrow),
        // icon: FaIcon(FontAwesomeIcons.refresh),
-        title: translate("Habit"),
+        title: translate("Habits"),
         iconSize: 22,
         textStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
         activeColorPrimary: const Color(0xff0E7831),

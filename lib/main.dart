@@ -265,7 +265,7 @@ class _MyAppState extends State<MyApp> {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
-              FlutterQuillLocalizations.delegate// Add this line for FlutterQuill localization
+              // FlutterQuillLocalizations.delegate// Add this line for FlutterQuill localization
             ],
             //locale: Locale('en', 'US'),
             routes: {
