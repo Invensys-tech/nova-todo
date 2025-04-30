@@ -59,6 +59,9 @@ class HabitsRepository {
 
             // For weakly habits
             if (habit.type == 'Weekly') {
+              // print(getDateOnly(dateTime));
+              // print(habit.repetitions);
+              // print(getDayFromDateTime(dateTime));
               return habit.repetitions.contains(getDayFromDateTime(dateTime));
             }
 
@@ -198,7 +201,7 @@ class HabitsRepository {
           .insert({
             'habit_id': createdHabit['id'],
             'frequency': habit.frequency,
-            'repetitions': habit.repetitions,
+            'repetitions': habit.repetitions ?? [],
             'started_at': getDateOnly(DateTime.now()),
             'dates': [],
             'type': habit.type,
@@ -309,7 +312,7 @@ class HabitsRepository {
       final habitHistory =
           await supabaseClient
               .from(Entities.HABITHISTORY.dbName)
-              .select('id, streak_dates')
+              .select('id, dates')
               .eq('habit_id', habit.id!)
               .order('created_at')
               .maybeSingle();
@@ -322,12 +325,20 @@ class HabitsRepository {
           'type': habit.type,
         });
       } else {
-        await supabaseClient.from(Entities.HABITHISTORY.dbName).update({
-          'streak_dates': [
-            ...habitHistory['streak_dates'],
-            getDateOnly(dateTime),
-          ],
-        });
+        await supabaseClient
+            .from(Entities.HABITHISTORY.dbName)
+            .update({
+              'dates': [...habitHistory['dates'], getDateOnly(dateTime)],
+            })
+            .eq('id', habitHistory['id']);
+
+        final newHabitHistory =
+            await supabaseClient
+                .from(Entities.HABITHISTORY.dbName)
+                .select('id, dates')
+                .eq('habit_id', habit.id!)
+                .order('created_at')
+                .maybeSingle();
       }
 
       if (response.count == 0) {
@@ -371,19 +382,33 @@ class HabitsRepository {
       final habitHistory =
           await supabaseClient
               .from(Entities.HABITHISTORY.dbName)
-              .select('id, streak_dates')
+              .select('id, dates')
               .eq('habit_id', habit.id!)
               .order('created_at')
               .maybeSingle();
 
       if (habitHistory != null) {
+        bool isFound = false;
         final newStreakDates =
-            habitHistory['streak_dates']
-                .where((streakDate) => streakDate != dateString)
-                .toList();
-        await supabaseClient.from(Entities.HABITHISTORY.dbName).update({
-          'streak_dates': newStreakDates,
-        });
+            habitHistory['dates'].where((streakDate) {
+              if (isFound) {
+                return true;
+              }
+              isFound = (streakDate == dateString);
+              return false;
+            }).toList();
+        await supabaseClient
+            .from(Entities.HABITHISTORY.dbName)
+            .update({'dates': newStreakDates})
+            .eq('id', habitHistory['id']);
+
+        final newHabitHistory =
+            await supabaseClient
+                .from(Entities.HABITHISTORY.dbName)
+                .select('id, dates')
+                .eq('habit_id', habit.id!)
+                .order('created_at')
+                .maybeSingle();
       }
 
       if (response.count == 0) {
@@ -427,7 +452,7 @@ class HabitsRepository {
             .insert({
               'habit_id': id,
               'frequency': habit.frequency,
-              'repetitions': habit.repetitions,
+              'repetitions': habit.repetitions ?? [],
               'started_at': getDateOnly(DateTime.now()),
               'dates': [],
               'type': habit.type,
@@ -469,10 +494,13 @@ class HabitsRepository {
 
   Future<List<HabitHistory>> getStreakHistories(int habitId) async {
     try {
+      print(habitId);
       final response = await supabaseClient
           .from(Entities.HABITHISTORY.dbName)
           .select()
           .eq('habit_id', habitId);
+
+      print(response);
 
       List<HabitHistory> habitHistories =
           response

@@ -1,7 +1,7 @@
 class HabitHistory {
   final int id;
   final int habitId;
-  final List<String> streakDates;
+  final List<String> dates;
   final String type;
   final int? frequency;
   final String startedAt;
@@ -10,7 +10,7 @@ class HabitHistory {
   HabitHistory({
     required this.id,
     required this.habitId,
-    required this.streakDates,
+    required this.dates,
     required this.type,
     required this.startedAt,
     this.repetitions,
@@ -20,10 +20,14 @@ class HabitHistory {
   factory HabitHistory.fromJson(Map<String, dynamic> jsonValue) => HabitHistory(
     id: jsonValue['id'],
     habitId: jsonValue['habit_id'],
-    streakDates: jsonValue['streak_dates'],
+    dates: jsonValue['dates'] != null
+        ? (jsonValue['dates'] as List<dynamic>).map((e) => e.toString()).toList()
+        : [],
     type: jsonValue['type'],
     startedAt: jsonValue['started_at'],
-    repetitions: jsonValue['repetitions'],
+    repetitions: jsonValue['repetitions'] != null
+        ? (jsonValue['repetitions'] as List<dynamic>).map((e) => e.toString()).toList()
+        : [],
     frequency: jsonValue['frequency'],
   );
 
@@ -31,7 +35,7 @@ class HabitHistory {
     return {
       'id': id,
       'habit_id': habitId,
-      'streak_dates': streakDates,
+      'streak_dates': dates,
       'type': type,
       'started_at': startedAt,
       'repetitions': repetitions,
@@ -40,6 +44,6 @@ class HabitHistory {
   }
 
   int get streak {
-    return streakDates.length;
+    return dates.length;
   }
 }

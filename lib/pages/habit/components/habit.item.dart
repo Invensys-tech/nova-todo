@@ -36,10 +36,10 @@ class _HabitItemState extends State<HabitItem> {
         .extendHabitStreak(widget.habit, DateTime.now())
         .then((value) {
           if (value) {
-            changeSavingState(false);
+            // changeSavingState(false);
             // widget.habit.extendStreak(DateTime.now());
           }
-          changeSavingState(true);
+          changeSavingState(false);
         })
         .catchError((error) {
           changeSavingState(false);
@@ -80,7 +80,10 @@ class _HabitItemState extends State<HabitItem> {
           Expanded(
             flex: 1,
             child: Container(
-              color: habit.isNotStartedToday ? Colors.grey.shade200 : Color(0xFFEC003F),
+              color:
+                  habit.isNotStartedToday
+                      ? Colors.grey.shade200
+                      : Color(0xFFEC003F),
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
@@ -93,13 +96,24 @@ class _HabitItemState extends State<HabitItem> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey.withOpacity(.4),
                   ),
-                  child: Text(
-                    '😔 I didn\'t',
-                    style: TextStyle(
-                      color:
-                          habit.isDoneToday ? Colors.grey : Color(0xFFF4F4F5),
-                    ),
-                  ),
+                  child:
+                      isSaving
+                          ? SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey.shade300,
+                            ),
+                          )
+                          : Text(
+                            '😔 I didn\'t',
+                            style: TextStyle(
+                              color:
+                                  habit.isNotStartedToday
+                                      ? Colors.grey
+                                      : Color(0xFFF4F4F5),
+                            ),
+                          ),
                 ),
               ),
             ),
@@ -119,7 +133,8 @@ class _HabitItemState extends State<HabitItem> {
           Expanded(
             flex: 1,
             child: Container(
-              color:  habit.isDoneToday ? Colors.grey.shade200 : Color(0xFF009966),
+              color:
+                  habit.isDoneToday ? Colors.grey.shade200 : Color(0xFF009966),
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
@@ -132,10 +147,19 @@ class _HabitItemState extends State<HabitItem> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF555B59),
                   ),
-                  child: Text(
-                    '🙂 I did it!',
-                    style: TextStyle(color: Color(0xFFF4F4F5)),
-                  ),
+                  child:
+                      isSaving
+                          ? SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              color: Colors.grey.shade300,
+                            ),
+                          )
+                          : Text(
+                            '🙂 I did it!',
+                            style: TextStyle(color: Color(0xFFF4F4F5)),
+                          ),
                 ),
               ),
             ),
@@ -178,7 +202,7 @@ class _HabitItemState extends State<HabitItem> {
                       ),
                     ),
                     Text(
-                      'Motivation here',
+                      widget.habit.type,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,

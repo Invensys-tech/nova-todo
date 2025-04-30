@@ -12,7 +12,7 @@ class QuoteItem extends StatelessWidget {
 
   QuoteItem({super.key, required this.quote});
 
-  final backgroundColorWhite =
+  final backgroundColorBlack =
       [
         Color(0xFF0B211C),
         Color(0xFF371A12),
@@ -21,7 +21,7 @@ class QuoteItem extends StatelessWidget {
         Color(0xFF09090B),
       ][Random().nextInt(5)];
 
-  final backgroundColorBlack =
+  final backgroundColorWhite =
       [
         Color(0xff5EE9B5),
         Color(0xffFFB86A),
@@ -44,7 +44,9 @@ class QuoteItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => QuoteForm(quote: quote, refetch: () {})),
+          MaterialPageRoute(
+            builder: (_) => QuoteForm(quote: quote, refetch: () {}),
+          ),
         );
       },
       child: ClipRRect(
@@ -57,7 +59,10 @@ class QuoteItem extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             // color: Colors.grey.shade800,
-            color: isDark ? backgroundColorWhite : backgroundColorBlack,
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? backgroundColorBlack
+                    : backgroundColorWhite,
           ),
           child: Stack(
             children: [
@@ -70,9 +75,11 @@ class QuoteItem extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * .035,
-                  vertical: 20.0,
+                padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * .035,
+                  right: MediaQuery.of(context).size.width * .035,
+                  top: 20.0,
+                  bottom: 35.0,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

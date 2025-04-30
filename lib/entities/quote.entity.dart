@@ -1,3 +1,6 @@
+import 'package:flutter_application_1/services/hive.service.dart';
+import 'package:flutter_application_1/utils/supabase.clients.dart';
+
 class Quote {
   final int? id;
   final String text;
@@ -13,7 +16,7 @@ class Quote {
     required this.category,
   });
 
-  factory Quote.fromJson(Map<String, dynamic> json) => Quote(
+  factory Quote.fromJson(Map<dynamic, dynamic> json) => Quote(
     id: json['id'],
     text: json['text'],
     author: json['author'],
@@ -28,4 +31,34 @@ class Quote {
     'source': source,
     'category': category,
   };
+}
+
+class QuoteService {
+  static final hiveService = HiveService();
+
+  static Future<List<Quote>>? getOfflineQuotes() async {
+    await QuoteService.hiveService.initHive(boxName: Entities.QUOTES.dbName);
+    final List<dynamic>? quotes = await QuoteService.hiveService
+        .getData('all');
+
+    return quotes?.map((quote) => Quote.fromJson(quote)).toList() ?? [];
+  }
+
+  static syncQuotes(List<Quote> quotes) async {
+    await QuoteService.hiveService.initHive(boxName: Entities.QUOTES.dbName);
+    await QuoteService.hiveService.upsertData(
+      'all',
+      quotes.map((quote) => quote.toJson()).toList(),
+    );
+  }
+
+  static createOfflineQuote(Quote quote) async {
+    await QuoteService.hiveService.initHive(boxName: Entities.QUOTES.dbName);
+    final List<Map<String, dynamic>> quotes = await QuoteService.hiveService
+        .getData('all');
+    await QuoteService.hiveService.upsertData('all', [
+      ...quotes,
+      quote.toJson(),
+    ]);
+  }
 }
