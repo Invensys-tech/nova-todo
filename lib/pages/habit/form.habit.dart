@@ -161,6 +161,9 @@ class _HabitFormState extends State<HabitForm> {
     //   'repetitions': customRepetitionItems.toList(),
     //   'is_done': false,
     // };
+    if (isSaving) {
+      return;
+    }
 
     // printDays();
     changeSavingState(true);

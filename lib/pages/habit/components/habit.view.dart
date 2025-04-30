@@ -152,7 +152,7 @@ class _HabitViewState extends State<HabitView> {
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Column(
-                      spacing: MediaQuery.of(context).size.height * 0.03,
+                      // spacing: MediaQuery.of(context).size.height * 0.03,
                       children: [
                         Stack(
                           children: [
@@ -221,81 +221,83 @@ class _HabitViewState extends State<HabitView> {
                             ),
                           ],
                         ),
-                        Row(
-                          spacing: MediaQuery.of(context).size.height * 0.02,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(10.0),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.09,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    color: Color(0xFF3F3F47),
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Accomplished',
-                                      style: TextStyle(
-                                        color: Color(0xFF009966),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${widget.habit.streakDates.length} Days',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(10.0),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.09,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    color: Color(0xFF3F3F47),
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Failed',
-                                      style: TextStyle(
-                                        color: Color(0xFFEC003F),
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${widget.habit.goingOnFor - (widget.habit.streakDates.length)} Days',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   spacing: MediaQuery.of(context).size.height * 0.02,
+                        //   children: [
+                        //     Expanded(
+                        //       flex: 1,
+                        //       child: Container(
+                        //         padding: EdgeInsets.all(10.0),
+                        //         height:
+                        //             MediaQuery.of(context).size.height * 0.1,
+                        //         decoration: BoxDecoration(
+                        //           borderRadius: BorderRadius.circular(8),
+                        //           border: Border.all(
+                        //             color: Color(0xFF3F3F47),
+                        //             width: 1,
+                        //           ),
+                        //         ),
+                        //         child: Column(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             const Text(
+                        //               'Accomplished',
+                        //               style: TextStyle(
+                        //                 color: Color(0xFF009966),
+                        //                 fontSize: 16,
+                        //               ),
+                        //             ),
+                        //             Text(
+                        //               '${widget.habit.streakDates.length} Days',
+                        //               style: TextStyle(
+                        //                 color: Color(0xFFF4F4F5),
+                        //                 fontSize: 20,
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     Expanded(
+                        //       flex: 1,
+                        //       child: Container(
+                        //         padding: EdgeInsets.all(10.0),
+                        //         height:
+                        //             MediaQuery.of(context).size.height * 0.1,
+                        //         decoration: BoxDecoration(
+                        //           borderRadius: BorderRadius.circular(8),
+                        //           border: Border.all(
+                        //             color: Color(0xFF3F3F47),
+                        //             width: 1,
+                        //           ),
+                        //         ),
+                        //         child: Column(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             const Text(
+                        //               'Failed',
+                        //               style: TextStyle(
+                        //                 color: Color(0xFFEC003F),
+                        //                 fontSize: 16,
+                        //               ),
+                        //             ),
+                        //             Text(
+                        //               '${widget.habit.goingOnFor - (widget.habit.streakDates.length)} Days',
+                        //               style: TextStyle(
+                        //                 color: Color(0xFFF4F4F5),
+                        //                 fontSize: 20,
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),

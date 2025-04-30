@@ -10,6 +10,7 @@ import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuotesPage extends StatefulWidget {
@@ -88,18 +89,23 @@ class _QuotesPageState extends State<QuotesPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-        child: FutureBuilder(
-          future: quotes,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return QuotesList(quotes: snapshot.data!);
-            } else {
-              if (snapshot.hasError) {
-                return Text('Error fetching quotes!');
-              }
-              return Center(child: CircularProgressIndicator());
-            }
+        child: LiquidPullToRefresh(
+          onRefresh: () async {
+            quotes = QuoteRepository().fetchAll();
           },
+          child:  FutureBuilder(
+            future: quotes,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return QuotesList(quotes: snapshot.data!);
+              } else {
+                if (snapshot.hasError) {
+                  return Text('Error fetching quotes!');
+                }
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
         ),
         // child: QuotesList(
         //   quotes: [

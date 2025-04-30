@@ -75,6 +75,7 @@ dependencies:
   intl_phone_number_input: ^0.7.4
   get_time_ago: ^2.3.0
   liquid_pull_to_refresh: ^3.0.1
+  connectivity_plus: ^5.0.2
 
 flutter_icons:
   android: true

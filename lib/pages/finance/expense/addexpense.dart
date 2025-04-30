@@ -342,7 +342,6 @@ class _AddExpenseState extends State<AddExpense> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.02,
                           ),
-                          // Additional UI elements…
                         ],
                       );
                     },
@@ -368,7 +367,6 @@ class _AddExpenseState extends State<AddExpense> {
                         flex: 1,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Clear all input controllers
                             _amountController.clear();
                             _expenseNameController.clear();
                             _paidByController.clear();
@@ -397,7 +395,11 @@ class _AddExpenseState extends State<AddExpense> {
                         child: ElevatedButton(
                           onPressed:
                               isLoading
+<<<<<<< HEAD
+                                  ? null
+=======
                                   ? null // 👈 Disables the button when loading
+>>>>>>> fc95da0aa80e7ee29b66a84a717bc935dde9a8eb
                                   : () async {
                                     if (_formKey.currentState!.validate()) {
                                       setState(() {
@@ -418,9 +420,12 @@ class _AddExpenseState extends State<AddExpense> {
                                                 .select('balance')
                                                 .eq('id', bankId)
                                                 .single();
+<<<<<<< HEAD
+=======
                                         // if (bankRes.error != null) {
                                         //   throw bankRes.error!;
                                         // }
+>>>>>>> fc95da0aa80e7ee29b66a84a717bc935dde9a8eb
 
                                         print(bankRes);
                                         final currentBalance =
