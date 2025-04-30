@@ -8,6 +8,7 @@ import 'package:flutter_application_1/pages/homepage/dashboard-components/dashbo
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
 import 'package:flutter_application_1/services/analytics.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
@@ -102,7 +103,14 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   FaIcon(FontAwesomeIcons.rocket,size: 36,),
                   SizedBox(width: MediaQuery.of(context).size.width*.05,),
-                  Text("2 Days Left From trial",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),),
+                  Container(
+                    width: MediaQuery.of(context).size.width*.375,
+                      child: Row(
+                        children: [
+                          Text(  "2 ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),),
+                          Text(  translate("Days Left From trial"),style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),),
+                        ],
+                      )),
                   SizedBox(width: MediaQuery.of(context).size.width*.05,),
                   GestureDetector(
                     onTap: (){
@@ -122,7 +130,7 @@ class _DashboardState extends State<Dashboard> {
                         color: Colors.white
                       ),
                       child: Center(
-                        child: Text("Join Now!", style: TextStyle(color: Colors.green),),
+                        child: Text(translate("Join Now!"), style: TextStyle(color: Colors.green),),
                       ),
                     ),
                   ),
@@ -183,7 +191,7 @@ class _DashboardState extends State<Dashboard> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              "Good Morning",
+                             translate( "Good Morning"),
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
@@ -273,7 +281,7 @@ class _DashboardState extends State<Dashboard> {
                                                     .01,
                                               ),
                                               Text(
-                                                'Total Balance',
+                                                translate('Total Balance'),
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w500,
@@ -312,7 +320,7 @@ class _DashboardState extends State<Dashboard> {
                                                 spacing: 4,
                                                 children: [
                                                   Text(
-                                                    '${snapshot.data!.balance} : Banks',
+                                                    '${snapshot.data!.balance} : ${translate("Banks")}',
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w300,
                                                       fontSize: 14,
@@ -338,7 +346,7 @@ class _DashboardState extends State<Dashboard> {
                                                 spacing: 4,
                                                 children: [
                                                   Text(
-                                                    '${snapshot.data!.receivableLoan} : Recivable Loan',
+                                                    '${snapshot.data!.receivableLoan} : ${translate("Recivable Loan")}',
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w300,
                                                       fontSize: 14,
@@ -365,7 +373,7 @@ class _DashboardState extends State<Dashboard> {
                                                 spacing: 4,
                                                 children: [
                                                   Text(
-                                                    '${snapshot.data!.payableLoan} : Payable Loan',
+                                                    '${snapshot.data!.payableLoan} : ${translate("Payable Loan")}',
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w300,
                                                       fontSize: 14,
@@ -437,11 +445,11 @@ class _DashboardState extends State<Dashboard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Financial Overview',
+                            translate('Financial Overview'),
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
-                            'This Month',
+                            translate('This Month'),
                             style: TextStyle(
                               color: Color(0xFF009966),
                               fontSize: 12,
@@ -476,7 +484,7 @@ class _DashboardState extends State<Dashboard> {
                                             CrossAxisAlignment.start,
 
                                         children: [
-                                          Text('Expenses OverView'),
+                                          Text(translate('Expenses OverView')),
                                           Row(
                                             children: [
                                               Text(
@@ -513,7 +521,7 @@ class _DashboardState extends State<Dashboard> {
                                               spacing: 4,
                                               children: [
                                                 Text(
-                                                  '${snapshot.data!.must} : Must',
+                                                  '${snapshot.data!.must} : ${translate("Must")}',
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w300,
                                                     fontSize: 12,
@@ -532,7 +540,7 @@ class _DashboardState extends State<Dashboard> {
                                               spacing: 4,
                                               children: [
                                                 Text(
-                                                  '${snapshot.data!.maybe} : Maybe',
+                                                  '${snapshot.data!.maybe} : ${translate("Maybe")}',
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w300,
                                                     fontSize: 12,
@@ -551,7 +559,7 @@ class _DashboardState extends State<Dashboard> {
                                               spacing: 4,
                                               children: [
                                                 Text(
-                                                  '${snapshot.data!.unwanted} : Unwanted',
+                                                  '${snapshot.data!.unwanted} : ${translate("Unwanted")}',
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w300,
                                                     fontSize: 12,
@@ -611,7 +619,7 @@ class _DashboardState extends State<Dashboard> {
                                             CrossAxisAlignment.start,
 
                                         children: [
-                                          Text('Income OverView'),
+                                          Text(translate('Income OverView')),
                                           Row(
                                             children: [
                                               Text(
@@ -698,11 +706,11 @@ class _DashboardState extends State<Dashboard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Top Community Challenges',
+                            translate('VisionBoardSummery'),
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
-                            'See All',
+                            translate('See All'),
                             style: TextStyle(
                               color: Color(0xFF009966),
                               fontSize: 12,

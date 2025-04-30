@@ -364,7 +364,7 @@ class _BankPageState extends State<BankPage> {
                                   backgroundColor: Colors.blue,
                                   foregroundColor: Colors.white,
                                   icon: Icons.edit,
-                                  label: 'Edit',
+                                  label: translate('Edit'),
                                 ),
                               ],
                             ),

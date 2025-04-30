@@ -470,7 +470,7 @@ class _ExpensespageState extends State<Expensespage> {
                           children: [
                             Row(
                               children: [
-                                const Spacer(),
+                                SizedBox(width: MediaQuery.of(context).size.width*.25,),
                                 const Icon(
                                   Icons.trending_up_outlined,
                                   color: Color(0xff0d805e),
@@ -478,7 +478,7 @@ class _ExpensespageState extends State<Expensespage> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  "${_grandTotal.toStringAsFixed(2)} ETB",
+                                  "${_grandTotal.toStringAsFixed(2)} ${translate("ETB")}",
                                   style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -510,8 +510,8 @@ class _ExpensespageState extends State<Expensespage> {
                         left: MediaQuery.of(context).size.width * .05,
                         top: MediaQuery.of(context).size.height * .045,
                       ),
-                      child: const Text(
-                        "Transaction List",
+                      child:  Text(
+                        translate("Transaction List"),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

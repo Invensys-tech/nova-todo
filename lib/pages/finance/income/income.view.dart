@@ -310,6 +310,11 @@ class _IncomeViewState extends State<IncomeView> {
                         size: 17,
                         color: Colors.green,
                       ),
+                      const Icon(
+                        Icons.circle_rounded,
+                        size: 17,
+                        color: Colors.green,
+                      ),
                       SizedBox(width: MediaQuery.of(context).size.width * .05),
                       Expanded(
                         child: Column(
