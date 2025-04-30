@@ -51,7 +51,7 @@ class _BankWidgetState extends State<BankWidget> {
           vertical: MediaQuery.of(context).size.height * 0.003,
         ),
         decoration: BoxDecoration(
-          border: Border.all(width: 1,color: Colors.grey.withOpacity(.4)),
+          border: Border.all(width: 1, color: Colors.grey.withOpacity(.4)),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Row(
@@ -67,10 +67,13 @@ class _BankWidgetState extends State<BankWidget> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.grey,
-                  image: DecorationImage(image: CachedNetworkImageProvider("https://combanketh.et/cbeapi/uploads/logo_1ae2fb1df4.jpg"),fit: BoxFit.cover)
+                  image: DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      "https://combanketh.et/cbeapi/uploads/logo_1ae2fb1df4.jpg",
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-
-
               ),
             ),
             SizedBox(width: MediaQuery.of(context).size.width * 0.035),
@@ -80,27 +83,18 @@ class _BankWidgetState extends State<BankWidget> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                 Text(
                   '${widget.accountname}',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                 ),
                 Text(
                   '${widget.accoutnumber}',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                 ),
               ],
             ),
             Spacer(),
             Text(
               '${widget.balance}',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
             ),
           ],
         ),

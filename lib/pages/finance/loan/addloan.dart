@@ -400,6 +400,8 @@ class _AddLoanState extends State<AddLoan> {
         });
   }
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -650,43 +652,69 @@ class _AddLoanState extends State<AddLoan> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              try {
-                                final response = await Supabase.instance.client
-                                    .from('loan')
-                                    .insert({
-                                      'amount':
-                                          double.tryParse(_amount.text) ?? 0.0,
-                                      'loanerName': _loanerName.text,
-                                      'type': _type.text,
-                                      'bank': _bank.text,
-                                      'phoneNumber': _phoneNumber.text,
-                                      'userId': 1,
-                                      'date': formatDate(_dateController.text),
-                                    });
-                                print(response);
-                                print("Loan added successfully!");
-                                final updatedLoans =
-                                    await Datamanager().fetchLoan();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Loan added successfully!"),
-                                  ),
-                                );
-                                Navigator.pop(context, updatedLoans);
-                              } catch (e) {
-                                print("Error inserting loan: $e");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: $e")),
-                                );
-                              }
-                            }
+                          onPressed:
+                              isLoading
+                                  ? null
+                                  : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      try {
+                                        final response = await Supabase
+                                            .instance
+                                            .client
+                                            .from('loan')
+                                            .insert({
+                                              'amount':
+                                                  double.tryParse(
+                                                    _amount.text,
+                                                  ) ??
+                                                  0.0,
+                                              'loanerName': _loanerName.text,
+                                              'type': _type.text,
+                                              'bank': _bank.text,
+                                              'phoneNumber': _phoneNumber.text,
+                                              'userId': 1,
+                                              'date': formatDate(
+                                                _dateController.text,
+                                              ),
+                                            });
+                                        print(response);
+                                        print("Loan added successfully!");
+                                        final updatedLoans =
+                                            await Datamanager().fetchLoan();
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Loan added successfully!",
+                                            ),
+                                          ),
+                                        );
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        Navigator.pop(context, updatedLoans);
+                                      } catch (e) {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        print("Error inserting loan: $e");
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(content: Text("Error: $e")),
+                                        );
+                                      }
+                                    }
 
-                            // insert your Supabase logic here...
-                          },
+                                    // insert your Supabase logic here...
+                                  },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff009966),
+                            backgroundColor:
+                                isLoading ? Colors.grey : Color(0xff009966),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),

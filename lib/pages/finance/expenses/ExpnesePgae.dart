@@ -517,15 +517,27 @@ class _ExpensespageState extends State<Expensespage> {
                         return Column(
                           children: [
                             GestureDetector(
-                              onTap:(){
+                              onTap: () {
                                 Navigator.of(context, rootNavigator: true).push(
                                   PageRouteBuilder(
                                     opaque: false,
-                                    barrierColor: Colors.black.withOpacity(0.5), // background dim
-                                    pageBuilder: (_, __, ___) => SingleEpensesFullViewPage(),
+                                    barrierColor: Colors.black.withOpacity(
+                                      0.5,
+                                    ), // background dim
+                                    pageBuilder:
+                                        (_, __, ___) =>
+                                            SingleEpensesFullViewPage(
+                                              amount: e.amount,
+                                              category: e.category,
+                                              expenseName: e.expenseName,
+                                              paidBy: e.paidBy,
+                                              type: e.type,
+                                              date: e.date,
+                                              description: e.description,
+                                            ),
                                   ),
                                 );
-                        },
+                              },
                               child: Slidable(
                                 key: ValueKey(e.id),
                                 startActionPane: ActionPane(
@@ -553,7 +565,8 @@ class _ExpensespageState extends State<Expensespage> {
                                           MaterialPageRoute(
                                             builder:
                                                 (_) => EditExpense(
-                                                  datamanager: widget.datamanager,
+                                                  datamanager:
+                                                      widget.datamanager,
                                                   expenseId: e.id,
                                                 ),
                                           ),

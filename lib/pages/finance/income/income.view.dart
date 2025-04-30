@@ -207,12 +207,20 @@ class _IncomeViewState extends State<IncomeView> {
     return Column(
       children: [
         GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.of(context, rootNavigator: true).push(
               PageRouteBuilder(
                 opaque: false,
                 barrierColor: Colors.black.withOpacity(0.5), // background dim
-                pageBuilder: (_, __, ___) => SingleIcomeFullViewPage(),
+                pageBuilder:
+                    (_, __, ___) => SingleIcomeFullViewPage(
+                      amount: income.amount,
+                      category: income.category,
+                      date: income.date,
+                      incomename: income.name,
+                      paidBy: income.paidBy,
+                      notes: income.description,
+                    ),
               ),
             );
           },
@@ -235,12 +243,15 @@ class _IncomeViewState extends State<IncomeView> {
                                 ),
                                 actions: [
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).pop(),
+                                    onPressed:
+                                        () => Navigator.of(context).pop(),
                                     child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () async {
-                                      await IncomeRepository().deleteIncome(income.id);
+                                      await IncomeRepository().deleteIncome(
+                                        income.id,
+                                      );
                                       Navigator.of(context).pop();
                                       setState(_loadIncomes);
                                     },
@@ -294,7 +305,11 @@ class _IncomeViewState extends State<IncomeView> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.circle_rounded, size: 17, color: Colors.green),
+                      const Icon(
+                        Icons.circle_rounded,
+                        size: 17,
+                        color: Colors.green,
+                      ),
                       SizedBox(width: MediaQuery.of(context).size.width * .05),
                       Expanded(
                         child: Column(
@@ -334,7 +349,6 @@ class _IncomeViewState extends State<IncomeView> {
             ),
           ),
         ),
-
 
         const Divider(),
       ],
