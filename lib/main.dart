@@ -184,13 +184,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<void> saveTheme(int themeId) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('ThemeOfApp', themeId);
-    setState(() {
-      _currentThemeId = themeId;
-    });
-  }
+  // Future<void> saveTheme(int themeId) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.setInt('ThemeOfApp', themeId);
+  //   setState(() {
+  //     _currentThemeId = themeId;
+  //   });
+  // }
 
   final Telephony telephony = Telephony.instance;
   // StreamSubscription<SmsMessage>? _onSmsReceived;
@@ -242,7 +242,7 @@ class _MyAppState extends State<MyApp> {
           child: MaterialApp(
 
            // supportedLocales: localizationDelegate.supportedLocales,
-            locale: localizationDelegate.currentLocale ?? Locale('en'),
+            locale: localizationDelegate.currentLocale,
             supportedLocales: const [
               Locale('en'), // English
               Locale('am'), // Amharic
@@ -264,8 +264,7 @@ class _MyAppState extends State<MyApp> {
               localizationDelegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              FlutterQuillLocalizations.delegate// Add this line for FlutterQuill localization
+              GlobalCupertinoLocalizations.delegate
             ],
             //locale: Locale('en', 'US'),
             routes: {
@@ -296,3 +295,8 @@ class AppThemes {
   static const int LightRed = 1;
   static const int Dark = 2;
 }
+
+
+
+
+

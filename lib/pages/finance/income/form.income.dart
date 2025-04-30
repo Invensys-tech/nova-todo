@@ -17,6 +17,7 @@ import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../main.dart';
 
@@ -83,6 +84,24 @@ class _IncomeFormState extends State<IncomeForm> {
 
   saveIncome() async {
     print("Income data ${specific_from.controller.text}");
+
+    final bankId = specific_from.controller.text;
+    final incomeAmt = double.tryParse(amount.controller.text) ?? 0.0;
+
+    final bankRes =
+        await Supabase.instance.client
+            .from('bank')
+            .select('balance')
+            .eq('id', bankId)
+            .single();
+    final currentBalance = (bankRes['balance'] as num).toDouble();
+    final newBalance = currentBalance + incomeAmt;
+
+    final upd = await Supabase.instance.client
+        .from('bank')
+        .update({'balance': newBalance})
+        .eq('id', bankId);
+
     Income income = await IncomeRepository().createIncome({
       "name": name.controller.text,
       'category': category.controller.text,
@@ -93,6 +112,7 @@ class _IncomeFormState extends State<IncomeForm> {
       'user_id': 1,
       'description': description.controller.text,
     });
+
     print("Income Saved");
   }
 
@@ -162,6 +182,7 @@ class _IncomeFormState extends State<IncomeForm> {
   @override
   void initState() {
     super.initState();
+    paid_from.controller.text = 'Bank';
     _updateFuture();
     _loadIncomeList();
     date.controller.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
@@ -183,6 +204,7 @@ class _IncomeFormState extends State<IncomeForm> {
   }
 
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +230,7 @@ class _IncomeFormState extends State<IncomeForm> {
             color: Color(0xff006045),
           ),
         ),
-        title:  Text(
+        title: Text(
           translate("Add Income"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -237,7 +259,7 @@ class _IncomeFormState extends State<IncomeForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                   Text(
+                  Text(
                     translate("Income Name"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
@@ -255,7 +277,7 @@ class _IncomeFormState extends State<IncomeForm> {
                     // icon: Icons.fingerprint,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                   Text(
+                  Text(
                     translate("Amount"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
@@ -284,7 +306,7 @@ class _IncomeFormState extends State<IncomeForm> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text(
+                            Text(
                               translate("Category"),
                               style: TextStyle(
                                 fontSize: 13,
@@ -335,7 +357,7 @@ class _IncomeFormState extends State<IncomeForm> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text(
+                            Text(
                               translate("Date"),
                               style: TextStyle(
                                 fontSize: 13,
@@ -394,7 +416,7 @@ class _IncomeFormState extends State<IncomeForm> {
                   ),
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                   Text(
+                  Text(
                     translate("Description"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
@@ -424,46 +446,68 @@ class _IncomeFormState extends State<IncomeForm> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child:  Text(translate("Cancel")),
+                          child: Text(translate("Cancel")),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         flex: 3,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            if (!_formKey.currentState!.validate()) {
-                              try {
-                                // Insert expense
-                                saveIncome();
+                          onPressed:
+                              isLoading
+                                  ? null
+                                  : () async {
+                                    print("Who am i ");
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      try {
+                                        // Insert expense
+                                        saveIncome();
 
-                                print("Income added successfully!");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      "Expense added successfully!",
-                                    ),
-                                  ),
-                                );
+                                        print("Income added successfully!");
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Income added successfully!",
+                                            ),
+                                          ),
+                                        );
+                                        setState(() {
+                                          isLoading = false;
+                                        });
 
-                                Navigator.pop(context);
-                              } catch (e) {
-                                print("Error inserting expense: $e");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: $e")),
-                                );
-                              }
-                            }
-                          },
+                                        Navigator.pop(context);
+                                      } catch (e) {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        print("Error inserting expense: $e");
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(content: Text("Error: $e")),
+                                        );
+                                      }
+                                    } else {
+                                      print("This shit isnt validated");
+                                    }
+                                  },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff009966),
+                            backgroundColor:
+                                isLoading
+                                    ? Colors.grey
+                                    : const Color(0xff009966),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child:  Text(
-                            translate("Add Expense"),
+                          child: const Text(
+                            "Add Income",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
