@@ -150,7 +150,8 @@ class Habit {
             )
             .toList();
 
-    if (!streakDates.contains(date) && getDateOnly(DateTime.parse(date)) != getDateOnly(DateTime.now())) {
+    if (!streakDates.contains(date) &&
+        getDateOnly(DateTime.parse(date)) != getDateOnly(DateTime.now())) {
       missedDates = [date, ...missedDates];
     }
 
@@ -160,9 +161,12 @@ class Habit {
   bool get isDoneToday {
     switch (type) {
       case 'Daily':
-        final todayFrequency = streakDates.where(
-                (streakDate) => streakDate == getDateOnly(DateTime.now())
-        ).length;
+        final todayFrequency =
+            streakDates
+                .where(
+                  (streakDate) => streakDate == getDateOnly(DateTime.now()),
+                )
+                .length;
 
         return todayFrequency >= frequency ? true : false;
         break;
@@ -176,6 +180,12 @@ class Habit {
       default:
         return false;
     }
+  }
+
+  bool get isNotStartedToday {
+    return streakDates.any(
+      (streakDate) => streakDate == getDateOnly(DateTime.now()),
+    );
   }
 
   // type

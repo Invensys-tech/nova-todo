@@ -8,10 +8,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class QuoteRepository {
   Future<bool> createQuote(Quote quote) async {
     try {
-      // int userId = (await AuthService().findSession())['id'];
+      int userId = (await AuthService().findSession())['id'];
       final response = await supabaseClient
           .from(Entities.QUOTES.dbName)
-          .insert({...quote.toJson(), 'user_id': 25})
+          .insert({...quote.toJson(), 'user_id': userId})
+          // .insert({...quote.toJson(), 'user_id': 25})
           // Todo: check other options of CountOption
           .count(CountOption.exact);
 
@@ -27,11 +28,12 @@ class QuoteRepository {
 
   Future<List<Quote>> fetchAll() async {
     try {
-      // int userId = (await AuthService().findSession())['id'];
+      int userId = (await AuthService().findSession())['id'];
       final data = await supabaseClient
           .from(Entities.QUOTES.dbName)
           .select()
-          .eq('user_id', 25);
+          .eq('user_id', userId);
+      // .eq('user_id', 25);
 
       List<Quote> quotes =
           data.map((quoteData) {
@@ -40,6 +42,27 @@ class QuoteRepository {
           }).toList();
 
       return quotes;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<bool> updateQuoteById(int id, Quote quote) async {
+    try {
+      int userId = (await AuthService().findSession())['id'];
+      final response = await supabaseClient
+          .from(Entities.QUOTES.dbName)
+          // .insert({...quote.toJson(), 'user_id': 25})
+          .update({...quote.toJson()})
+          .eq('id', id)
+          // Todo: check other options of CountOption
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Error creating quote!');
+      }
+      return true;
     } catch (e) {
       print(e);
       rethrow;

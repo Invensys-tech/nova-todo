@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_application_1/entities/habit-history.entitiy.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
@@ -458,6 +459,27 @@ class HabitsRepository {
       }
 
       return true;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  // Streak and history related queries
+
+  Future<List<HabitHistory>> getStreakHistories(int habitId) async {
+    try {
+      final response = await supabaseClient
+          .from(Entities.HABITHISTORY.dbName)
+          .select()
+          .eq('habit_id', habitId);
+
+      List<HabitHistory> habitHistories =
+          response
+              .map((habitHistory) => HabitHistory.fromJson(habitHistory))
+              .toList();
+
+      return habitHistories;
     } catch (e) {
       print(e);
       rethrow;
