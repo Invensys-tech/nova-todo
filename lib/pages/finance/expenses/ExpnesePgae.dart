@@ -526,7 +526,15 @@ class _ExpensespageState extends State<Expensespage> {
                                     ), // background dim
                                     pageBuilder:
                                         (_, __, ___) =>
-                                            SingleEpensesFullViewPage(),
+                                            SingleEpensesFullViewPage(
+                                              amount: e.amount,
+                                              category: e.category,
+                                              expenseName: e.expenseName,
+                                              paidBy: e.paidBy,
+                                              type: e.type,
+                                              date: e.date,
+                                              description: e.description,
+                                            ),
                                   ),
                                 );
                               },

@@ -425,6 +425,7 @@ class Singlebankfullviewpage extends StatefulWidget {
   final int id;
   final String name;
   final Datamanager datamanager;
+
   const Singlebankfullviewpage({
     super.key,
     required this.id,
@@ -449,26 +450,40 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
 
   // Unified widget to build a transaction row for both expenses and incomes.
   Widget _buildTransactionRow({
+    Income? income,
+    Expense? expense,
     required String transactionType, // "expense" or "income"
     required String title,
     required String date,
     required num amount,
   }) {
-    // Determine properties based on transaction type
+    print("what ois this ");
+    print(income?.toJson());
+    print(expense);
     final isIncome = transactionType == "income";
     final iconData = isIncome ? Icons.arrow_upward : Icons.arrow_downward;
     final iconColor = isIncome ? Colors.green : Colors.red;
     final sign = isIncome ? "+" : "-";
     final amountColor = isIncome ? Colors.green : Colors.red;
 
-
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.of(context, rootNavigator: true).push(
           PageRouteBuilder(
             opaque: false,
             barrierColor: Colors.black.withOpacity(0.5), // background dim
-            pageBuilder: (_, __, ___) => SingleTransactionDetails(),
+            pageBuilder:
+                (_, __, ___) => SingleTransactionDetails(
+                  amount:
+                      transactionType == "income"
+                          ? (income?.amount ?? 0)
+                          : (expense?.amount ?? 0),
+                  date: expense?.date ?? income?.date ?? DateTime.now(),
+                  name: expense?.expenseName ?? income?.name ?? '',
+                  notes: expense?.description ?? income?.description ?? '',
+                  type: transactionType,
+                  whatType: transactionType == "income" ? "Debit" : "Credit",
+                ),
           ),
         );
       },
@@ -477,7 +492,7 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
         margin: const EdgeInsets.symmetric(vertical: 4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 1,color: Colors.grey.withOpacity(.2))
+          border: Border.all(width: 1, color: Colors.grey.withOpacity(.2)),
         ),
         child: Row(
           children: [
@@ -520,65 +535,98 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
+    return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-        
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height*.03,),
+            SizedBox(height: MediaQuery.of(context).size.height * .03),
             Container(
-              height: MediaQuery.of(context).size.height*.1,
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.02,vertical: MediaQuery.of(context).size.height*.01),
+              height: MediaQuery.of(context).size.height * .1,
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * .02,
+                vertical: MediaQuery.of(context).size.height * .01,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                GestureDetector(
-                  onTap: (){
-                    Navigator.pop(context);
-                  },
-                  child: Row(
-                    children: [
-                      Icon(Icons.keyboard_arrow_left,size: 30,color:Color(0xff009966) ,),
-                      Text("Awash bank",style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),)
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.keyboard_arrow_left,
+                          size: 30,
+                          color: Color(0xff009966),
+                        ),
+                        Text(
+                          "Awash bank",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ), Row(
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                     Column(
-                       children: [
-                         SizedBox(height: MediaQuery.of(context).size.height*.0175,),
-                         Text("Dejat wube brnach",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),),
-                         Text("Created at 12-02-2015",style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),),
-                       ],
-                     ),
-                      SizedBox(width: MediaQuery.of(context).size.width*.02,),
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * .0175,
+                          ),
+                          Text(
+                            "Dejat wube brnach",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          Text(
+                            "Created at 12-02-2015",
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: MediaQuery.of(context).size.width * .02),
                       ColorFiltered(
                         colorFilter: ColorFilter.mode(
-                          Colors.grey.withOpacity(0.5), // Choose your color and opacity
-                          BlendMode.modulate, // Or try `BlendMode.color` or others
+                          Colors.grey.withOpacity(
+                            0.5,
+                          ), // Choose your color and opacity
+                          BlendMode
+                              .modulate, // Or try `BlendMode.color` or others
                         ),
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.05,
                           width: MediaQuery.of(context).size.height * 0.045,
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey,
-                              image: DecorationImage(image: CachedNetworkImageProvider("https://combanketh.et/cbeapi/uploads/logo_1ae2fb1df4.jpg"),fit: BoxFit.cover)
+                            shape: BoxShape.circle,
+                            color: Colors.grey,
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                "https://combanketh.et/cbeapi/uploads/logo_1ae2fb1df4.jpg",
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-        
-        
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
             SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 0,),
+                  SizedBox(height: 0),
                   FutureBuilder<Map<String, dynamic>>(
                     future: _bankView,
                     builder: (context, snapshot) {
@@ -595,134 +643,265 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                             snapshot.data!['expenses'] as List<dynamic>;
                         final List<Income> incomeList =
                             (snapshot.data!['incomes'] as List<dynamic>)
-                                .map((e) => Income.fromJson(e as Map<String, dynamic>))
+                                .map(
+                                  (e) => Income.fromJson(
+                                    e as Map<String, dynamic>,
+                                  ),
+                                )
                                 .toList();
-                        
+
                         return Column(
                           children: [
-                        Container(
-                        height: MediaQuery.of(context).size.height*.2675,
-                        width: MediaQuery.of(context).size.width*.95,
-                        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025, vertical: MediaQuery.of(context).size.height*.02),
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColorDark,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            border: Border.all(color: Colors.grey.withOpacity(.2))
-                        ),
-                        child: Column(
-                          children: [
                             Container(
-                              width: MediaQuery.of(context).size.width*.9,
-                              height: MediaQuery.of(context).size.height*.12,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color:Theme.of(context).disabledColor
+                              height:
+                                  MediaQuery.of(context).size.height * .2675,
+                              width: MediaQuery.of(context).size.width * .95,
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    MediaQuery.of(context).size.width * .025,
+                                vertical:
+                                    MediaQuery.of(context).size.height * .02,
                               ),
-                              child:   Stack(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorDark,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15),
+                                ),
+                                border: Border.all(
+                                  color: Colors.grey.withOpacity(.2),
+                                ),
+                              ),
+                              child: Column(
                                 children: [
-        
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.035, vertical: MediaQuery.of(context).size.height*.01),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * .9,
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        .12,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Theme.of(context).disabledColor,
+                                    ),
+                                    child: Stack(
                                       children: [
-                                        SizedBox(height: MediaQuery.of(context).size.height*.01,),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              translate('Total Balance'),
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                .035,
+                                            vertical:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .01,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height:
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).size.height *
+                                                    .01,
                                               ),
-                                            ),
-                                            Spacer(),
-                                            Text(
-                                              translate('Today'),
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500,
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    translate('Total Balance'),
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  Text(
+                                                    translate('Today'),
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons.arrow_drop_down,
+                                                    size: 20,
+                                                    color: Colors.white,
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                            Icon(Icons.arrow_drop_down, size: 20,color: Colors.white,),
-                                          ],
+                                              SizedBox(
+                                                height:
+                                                    MediaQuery.of(
+                                                      context,
+                                                    ).size.height *
+                                                    .005,
+                                              ),
+                                              Text(
+                                                "\$ 99,000",
+                                                style: TextStyle(
+                                                  fontSize: 27,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        SizedBox(height: MediaQuery.of(context).size.height*.005,),
-                                        Text(
-                                          "\$ 99,000",
-                                          style: TextStyle(
-                                            fontSize: 27,
-                                            fontWeight: FontWeight.w700,
+                                        Positioned(
+                                          top:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.height *
+                                              .03,
+                                          left:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
+                                              .4,
+                                          child: Container(
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                .3,
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .1,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color(
+                                                0xff009966,
+                                              ).withOpacity(.1),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.height *
+                                              .05,
+                                          left:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
+                                              .5,
+                                          child: Container(
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                .35,
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .15,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color(
+                                                0xffFAFAFA,
+                                              ).withOpacity(.1),
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Positioned(
-                                    top: MediaQuery.of(context).size.height*.03,
-                                    left: MediaQuery.of(context).size.width*.4,
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width*.3,
-                                      height: MediaQuery.of(context).size.height*.1,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xff009966).withOpacity(.1)
-                                      ),
-                                    ),
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        .015,
                                   ),
-                                  Positioned(
-                                    top: MediaQuery.of(context).size.height*.05,
-                                    left: MediaQuery.of(context).size.width*.5,
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width*.35,
-                                      height: MediaQuery.of(context).size.height*.15,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xffFAFAFA).withOpacity(.1)
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: MediaQuery.of(context).size.height*.015,),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.035),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
                                   Container(
-                                    height: MediaQuery.of(context).size.height*.09,
-                                    width: MediaQuery.of(context).size.width*.82,
-                                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.02,vertical: MediaQuery.of(context).size.height*.01),
-                                    decoration: BoxDecoration(
-                                        color: Theme.of(context).cardColor,
-                                        border: Border.all(width: 1 , color: Colors.grey.withOpacity(.2),
-                                        ),
-                                        borderRadius: BorderRadius.circular(10)
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width *
+                                          .035,
                                     ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("Demeqe Zewdu ",style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),),
-                                        Row(
-                                          children: [
-                                            Text("1000221126037",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
-                                          ],
+                                        Container(
+                                          height:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.height *
+                                              .09,
+                                          width:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
+                                              .82,
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                .02,
+                                            vertical:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                .01,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).cardColor,
+                                            border: Border.all(
+                                              width: 1,
+                                              color: Colors.grey.withOpacity(
+                                                .2,
+                                              ),
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Demeqe Zewdu ",
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "1000221126037",
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-        
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                                              ),
-        
-                            SizedBox(height: MediaQuery.of(context).size.height * .015),
-        
+
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * .015,
+                            ),
+
                             // Transactions Section
                             Container(
                               width: MediaQuery.of(context).size.width,
@@ -743,6 +922,7 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                                     // Adjust field names as needed; assuming expense JSON has keys:
                                     // 'bankAccount', 'date', 'amount'
                                     return _buildTransactionRow(
+                                      expense: expense,
                                       transactionType: "expense",
                                       title:
                                           "Expense: ${expense['bankAccount'] ?? 'Unknown'}",
@@ -763,8 +943,11 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                                   ...incomeList.map((income) {
                                     // Convert the date to a readable format if needed.
                                     String formattedDate =
-                                        "${income.date.toLocal()}".split(' ')[0];
+                                        "${income.date.toLocal()}".split(
+                                          ' ',
+                                        )[0];
                                     return _buildTransactionRow(
+                                      income: income,
                                       transactionType: "income",
                                       title: "Income: ${income.name}",
                                       date: formattedDate,

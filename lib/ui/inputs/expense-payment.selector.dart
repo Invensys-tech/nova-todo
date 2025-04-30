@@ -7,6 +7,8 @@ class PaidByAndSpecificFromInput extends FormField<void> {
     Key? key,
     required TextEditingController paidByController,
     required TextEditingController specificFromController,
+    TextEditingController? bankController,
+
     required Future<List<dynamic>> dataFuture,
     void Function(String newPaidBy)? onPaidByChanged,
   }) : super(
@@ -101,7 +103,10 @@ class _PaidByAndSpecificFromInputContentState
                           ? const Color(0xff27272A)
                           : const Color(0xffD4D4D8),
                   value: selectedPaidBy,
-                  hint:  Text(translate("Paid By"), style: TextStyle(fontSize: 12)),
+                  hint: Text(
+                    translate("Paid By"),
+                    style: TextStyle(fontSize: 12),
+                  ),
                   icon: const Icon(Icons.arrow_drop_down),
                   style: TextStyle(
                     fontSize: 13,
@@ -134,7 +139,7 @@ class _PaidByAndSpecificFromInputContentState
               child: FutureBuilder<List<dynamic>>(
                 future: widget.dataFuture,
                 builder: (context, snapshot) {
-                  List<String> dynamicItems = [];
+                  List<Map<String, dynamic>> dynamicItems = [];
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Padding(
@@ -155,11 +160,25 @@ class _PaidByAndSpecificFromInputContentState
                       for (var loan in snapshot.data as List) {
                         partnerMapping[loan.loanerName] = loan.id;
                       }
-                      dynamicItems = partnerMapping.keys.toList();
+
+                      dynamicItems =
+                          partnerMapping.entries
+                              .map(
+                                (partner) => {
+                                  "value": partner.key,
+                                  "label": partner.key,
+                                },
+                              )
+                              .toList();
                     } else if (selectedPaidBy == "Bank") {
                       dynamicItems =
                           (snapshot.data as List)
-                              .map((bank) => bank.accountHolder as String)
+                              .map(
+                                (bank) => {
+                                  "value": bank.id,
+                                  "label": bank.accountHolder,
+                                },
+                              )
                               .toList();
                     }
                   }
@@ -188,7 +207,7 @@ class _PaidByAndSpecificFromInputContentState
                                 : const Color(0xffD4D4D8),
                         isExpanded: true,
                         value: selectedSpecificFrom,
-                        hint:  Text(
+                        hint: Text(
                           translate("Specific From"),
                           style: TextStyle(fontSize: 12),
                         ),
@@ -198,10 +217,10 @@ class _PaidByAndSpecificFromInputContentState
                           color: Theme.of(context).primaryColorLight,
                         ),
                         items:
-                            dynamicItems.map((String value) {
+                            dynamicItems.map((value) {
                               return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
+                                value: value['value'].toString(),
+                                child: Text(value['label']),
                               );
                             }).toList(),
                         onChanged: (value) {

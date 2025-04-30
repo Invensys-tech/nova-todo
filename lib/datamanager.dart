@@ -201,10 +201,11 @@ class Datamanager {
     final bank = Bank.fromJson(bankResponse);
 
     // 2. Fetch expenses where bankAccount == name
+
     final expenses = await supabase
         .from('expense')
         .select('*')
-        .eq('bankAccount', name);
+        .eq('bankAccount', id);
 
     // 3. Fetch incomes where specific_from == name
     final incomes = await supabase

@@ -17,6 +17,7 @@ import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../main.dart';
 
@@ -83,6 +84,24 @@ class _IncomeFormState extends State<IncomeForm> {
 
   saveIncome() async {
     print("Income data ${specific_from.controller.text}");
+
+    final bankId = specific_from.controller.text;
+    final incomeAmt = double.tryParse(amount.controller.text) ?? 0.0;
+
+    final bankRes =
+        await Supabase.instance.client
+            .from('bank')
+            .select('balance')
+            .eq('id', bankId)
+            .single();
+    final currentBalance = (bankRes['balance'] as num).toDouble();
+    final newBalance = currentBalance + incomeAmt;
+
+    final upd = await Supabase.instance.client
+        .from('bank')
+        .update({'balance': newBalance})
+        .eq('id', bankId);
+
     Income income = await IncomeRepository().createIncome({
       "name": name.controller.text,
       'category': category.controller.text,
@@ -93,6 +112,7 @@ class _IncomeFormState extends State<IncomeForm> {
       'user_id': 1,
       'description': description.controller.text,
     });
+
     print("Income Saved");
   }
 
@@ -437,9 +457,10 @@ class _IncomeFormState extends State<IncomeForm> {
                               isLoading
                                   ? null
                                   : () async {
-                                    if (!_formKey.currentState!.validate()) {
+                                    print("Who am i ");
+                                    if (_formKey.currentState!.validate()) {
                                       setState(() {
-                                        isLoading = false;
+                                        isLoading = true;
                                       });
                                       try {
                                         // Insert expense
@@ -451,7 +472,7 @@ class _IncomeFormState extends State<IncomeForm> {
                                         ).showSnackBar(
                                           const SnackBar(
                                             content: Text(
-                                              "Expense added successfully!",
+                                              "Income added successfully!",
                                             ),
                                           ),
                                         );
@@ -471,6 +492,8 @@ class _IncomeFormState extends State<IncomeForm> {
                                           SnackBar(content: Text("Error: $e")),
                                         );
                                       }
+                                    } else {
+                                      print("This shit isnt validated");
                                     }
                                   },
                           style: ElevatedButton.styleFrom(
