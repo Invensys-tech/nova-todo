@@ -297,6 +297,7 @@ import 'package:flutter_application_1/repositories/expense.repository.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import '../../../drawer/Seeting Page/SeetingPage.dart';
@@ -340,7 +341,18 @@ class _ExpensespageState extends State<Expensespage> {
     // 2) seed _selectedDate & _queryDate based on the mode
     if (_dateType == 'Ethiopian') {
       final et = _today.convertToEthiopian();
+      print("{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}");
+      print(et.day);
       _selectedDate = DateTime(et.year, et.month, et.day);
+
+      String weekday = DateFormat('EEEE').format(et);
+
+      // If you want it in Amharic (after you've initialized 'am_ET'):
+      String amWeekday = DateFormat('EEEE', 'am_ET').format(et);
+
+      print(amWeekday);
+      print(weekday);
+
       // convert back to Gregorian midnight for querying
       final g = ETDateTime(et.year, et.month, et.day).convertToGregorian();
       _queryDate = DateTime(g.year, g.month, g.day);
@@ -430,7 +442,6 @@ class _ExpensespageState extends State<Expensespage> {
               activeDayColor: Colors.white,
               activeBackgroundDayColor: Theme.of(context).disabledColor,
               shrink: true,
-              locale: _dateType == 'Ethiopian' ? 'am' : 'en',
             ),
             const SizedBox(height: 24),
             FutureBuilder<List<Expense>>(
@@ -582,7 +593,7 @@ class _ExpensespageState extends State<Expensespage> {
                                 child: ExpenseList(
                                   amountofexpenses: e.amount,
                                   catagoryofexpenses: e.category,
-                                  titleofExpenses: e.category,
+                                  titleofExpenses: e.expenseName,
                                   typeofexpenses: e.type,
                                 ),
                               ),
