@@ -444,6 +444,7 @@ import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../main.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart'; // provides supabaseClient
@@ -464,7 +465,6 @@ class EditIncome extends StatefulWidget {
 class _EditIncomeState extends State<EditIncome> {
   final _formKey = GlobalKey<FormState>();
 
-  // exactly the same FormInput fields as your Add form
   final name = FormInput(
     label: "Income Name",
     hint: "Income Name",
@@ -597,6 +597,56 @@ class _EditIncomeState extends State<EditIncome> {
       return;
     } finally {
       setState(() => _isLoading = false);
+    }
+  }
+
+  bool _isUpdating = false;
+
+  Future<void> updateIncome() async {
+    if (_isUpdating) return;
+
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isUpdating = true);
+
+    try {
+      final bankId = specific_from.controller.text;
+      final incomeAmt = double.tryParse(amount.controller.text) ?? 0.0;
+
+      final bankRes =
+          await Supabase.instance.client
+              .from('bank')
+              .select('balance')
+              .eq('id', bankId)
+              .single();
+      final currentBalance = (bankRes['balance'] as num).toDouble();
+
+      final newBalance = currentBalance + incomeAmt;
+      await Supabase.instance.client
+          .from('bank')
+          .update({'balance': newBalance})
+          .eq('id', bankId);
+
+      await IncomeRepository().editIncome(widget.incomeId, {
+        "name": name.controller.text,
+        "category": category.controller.text,
+        "date": formatDate(date.controller.text),
+        "paid_from": paid_from.controller.text,
+        "specific_from": specific_from.controller.text,
+        "amount": amount.controller.text,
+        "description": description.controller.text,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Income updated successfully!")),
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error updating income: $e")));
+    } finally {
+      setState(() => _isUpdating = false);
     }
   }
 
@@ -837,32 +887,45 @@ class _EditIncomeState extends State<EditIncome> {
                       Expanded(
                         flex: 3,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            if (!_formKey.currentState!.validate()) return;
-                            try {
-                              await IncomeRepository()
-                                  .editIncome(widget.incomeId, {
-                                    "name": name.controller.text,
-                                    "category": category.controller.text,
-                                    "date": formatDate(date.controller.text),
-                                    "paid_from": paid_from.controller.text,
-                                    "specific_from":
-                                        specific_from.controller.text,
-                                    "amount": amount.controller.text,
-                                    "description": description.controller.text,
-                                  });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Income updated successfully!"),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Error: $e")),
-                              );
-                            }
-                          },
+                          onPressed:
+                              _isUpdating
+                                  ? null
+                                  : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        _isUpdating = true;
+                                      });
+                                      try {
+                                        await updateIncome();
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Income added successfully!",
+                                            ),
+                                          ),
+                                        );
+                                        setState(() {
+                                          _isUpdating = false;
+                                        });
+
+                                        Navigator.pop(context);
+                                      } catch (e) {
+                                        setState(() {
+                                          _isUpdating = false;
+                                        });
+                                        print("Error inserting expense: $e");
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(content: Text("Error: $e")),
+                                        );
+                                      }
+                                    } else {
+                                      print("This shit isnt validated");
+                                    }
+                                  },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xff009966),
                             padding: const EdgeInsets.symmetric(vertical: 15),

@@ -69,7 +69,6 @@ void main() async {
     if (isSubscriptionActive) {
       initPage = InitPage.HOME;
     }
-
   } catch (e) {
     print('Error getting sub end date initializing Supabase');
   }
@@ -80,8 +79,8 @@ void main() async {
   if (languageCode != null) {
     await delegate.changeLocale(Locale(languageCode));
   }
+  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
   //runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
-   runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
 }
 
 Future<void> requestNotificationPermission() async {
@@ -230,7 +229,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext appContext) {
-
     final localizationDelegate = LocalizedApp.of(context).delegate;
     return DynamicTheme(
       themeCollection: themeCollection,
@@ -240,8 +238,7 @@ class _MyAppState extends State<MyApp> {
           state: LocalizationProvider.of(appContext).state,
           // state: LocalizedApp.of(context).,
           child: MaterialApp(
-
-           // supportedLocales: localizationDelegate.supportedLocales,
+            // supportedLocales: localizationDelegate.supportedLocales,
             locale: localizationDelegate.currentLocale ?? Locale('en'),
             supportedLocales: const [
               Locale('en'), // English

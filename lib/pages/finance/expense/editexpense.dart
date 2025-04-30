@@ -446,6 +446,8 @@
 //   }
 // }
 
+import 'dart:math';
+
 import 'package:chapasdk/domain/constants/extentions.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -489,11 +491,13 @@ class _EditExpenseState extends State<EditExpense> {
   final _paidByController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _dateController = TextEditingController();
+  late double _firstAmount;
 
   bool _isLoading = true;
   int? _parentLoanId;
   List<Expense> _expenseList = [];
   Future<List<dynamic>>? _dataFuture;
+  bool isLoading = false;
 
   final List<String> banks = [
     'Abay Bank',
@@ -559,11 +563,12 @@ class _EditExpenseState extends State<EditExpense> {
       if (resp != null && resp is Map<String, dynamic>) {
         // Populate controllers
         _amountController.text = (resp['amount'] ?? '').toString();
+        _firstAmount = double.tryParse(_amountController.text) ?? 0.0;
         _expenseNameController.text = resp['expenseName'] ?? '';
         _expenseCategoryController.text = resp['category'] ?? '';
         _expenseTypeController.text = resp['type'] ?? '';
         _paidByController.text = resp['paidBy'] ?? '';
-        _paymentController.text = resp['bankAccount'] ?? '';
+        _paymentController.text = resp['bankAccount'].toString() ?? '';
         _descriptionController.text = resp['description'] ?? '';
 
         // Date is stored as 'YYYY-MM-DD'
@@ -843,61 +848,204 @@ class _EditExpenseState extends State<EditExpense> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Expanded(
-                        flex: 3,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if (!_formKey.currentState!.validate()) return;
 
-                            try {
-                              await Supabase.instance.client
-                                  .from('expense')
-                                  .update({
-                                    'amount':
-                                        double.tryParse(
-                                          _amountController.text,
-                                        ) ??
-                                        0.0,
-                                    'expenseName': _expenseNameController.text,
-                                    'category': _expenseCategoryController.text,
-                                    'type': _expenseTypeController.text,
-                                    'bankAccount':
-                                        _paidByController.text == "Partner"
-                                            ? null
-                                            : _paymentController.text,
-                                    'paidBy': _paidByController.text,
-                                    'description': _descriptionController.text,
-                                    'date': formatDate(_dateController.text),
-                                  })
-                                  .eq('id', widget.expenseId);
+                      ElevatedButton(
+                        onPressed:
+                            isLoading
+                                ? null
+                                : () async {
+                                  // 1️⃣ Validate form
+                                  if (!_formKey.currentState!.validate())
+                                    return;
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    "Expense updated successfully!",
-                                  ),
-                                ),
-                              );
-                              Navigator.pop(context);
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Error: $e")),
-                              );
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff009966),
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                          child: const Text(
-                            "Update Expense",
-                            style: TextStyle(color: Colors.white),
+                                  setState(() => isLoading = true);
+
+                                  final bankId = _paymentController.text;
+                                  final expenseAmt =
+                                      double.tryParse(_amountController.text) ??
+                                      0.0;
+
+                                  try {
+                                    // 2️⃣ Fetch current bank balance
+                                    final bankRes =
+                                        await Supabase.instance.client
+                                            .from('bank')
+                                            .select('balance')
+                                            .eq('id', bankId)
+                                            .single();
+
+                                    final currentBalance =
+                                        (bankRes['balance'] as num).toDouble();
+
+                                    if (_paidByController.text != "Partner") {
+                                      if (currentBalance < expenseAmt) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              'Insufficient balance in selected bank account.',
+                                            ),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                        setState(() => isLoading = false);
+                                        return;
+                                      }
+
+                                      final change = expenseAmt - _firstAmount;
+
+                                      final newBalance =
+                                          currentBalance - change;
+                                      await Supabase.instance.client
+                                          .from('bank')
+                                          .update({'balance': newBalance})
+                                          .eq('id', bankId);
+                                    }
+
+                                    await Supabase.instance.client
+                                        .from('expense')
+                                        .update({
+                                          'amount': expenseAmt,
+                                          'expenseName':
+                                              _expenseNameController.text,
+                                          'category':
+                                              _expenseCategoryController.text,
+                                          'type': _expenseTypeController.text,
+                                          'bankAccount':
+                                              _paidByController.text ==
+                                                      "Partner"
+                                                  ? null
+                                                  : bankId,
+                                          'paidBy': _paidByController.text,
+                                          'description':
+                                              _descriptionController.text,
+                                          'date': formatDate(
+                                            _dateController.text,
+                                          ),
+                                        })
+                                        .eq('id', widget.expenseId);
+
+                                    if (_paidByController.text == "Partner") {
+                                      final specific = _paymentController.text;
+                                      final loanLookup =
+                                          await Supabase.instance.client
+                                              .from('loan')
+                                              .select('phonenumber')
+                                              .eq('loanerName', specific)
+                                              .single();
+
+                                      await Supabase.instance.client
+                                          .from('loan')
+                                          .insert({
+                                            'amount': expenseAmt,
+                                            'type': "Payable",
+                                            'date': formatDate(
+                                              _dateController.text,
+                                            ),
+                                            'bank': "Expense",
+                                            'loanerName': specific,
+                                            'phoneNumber':
+                                                loanLookup['phonenumber'],
+                                            'userId': 1,
+                                          });
+                                    }
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Expense updated successfully!",
+                                        ),
+                                      ),
+                                    );
+                                    Navigator.pop(context);
+                                  } catch (e) {
+                                    // 7️⃣ Error handling
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text("Error: $e")),
+                                    );
+                                  } finally {
+                                    setState(() => isLoading = false);
+                                  }
+                                },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              isLoading ? Colors.grey : const Color(0xff009966),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
                           ),
                         ),
+                        child:
+                            isLoading
+                                ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                                : const Text(
+                                  "Update Expense",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                       ),
+                      // Expanded(
+                      //   flex: 3,
+                      //   child: ElevatedButton(
+                      //     onPressed: () async {
+                      //       if (!_formKey.currentState!.validate()) return;
+
+                      //       try {
+                      //         await Supabase.instance.client
+                      //             .from('expense')
+                      //             .update({
+                      //               'amount':
+                      //                   double.tryParse(
+                      //                     _amountController.text,
+                      //                   ) ??
+                      //                   0.0,
+                      //               'expenseName': _expenseNameController.text,
+                      //               'category': _expenseCategoryController.text,
+                      //               'type': _expenseTypeController.text,
+                      //               'bankAccount':
+                      //                   _paidByController.text == "Partner"
+                      //                       ? null
+                      //                       : _paymentController.text,
+                      //               'paidBy': _paidByController.text,
+                      //               'description': _descriptionController.text,
+                      //               'date': formatDate(_dateController.text),
+                      //             })
+                      //             .eq('id', widget.expenseId);
+
+                      //         ScaffoldMessenger.of(context).showSnackBar(
+                      //           const SnackBar(
+                      //             content: Text(
+                      //               "Expense updated successfully!",
+                      //             ),
+                      //           ),
+                      //         );
+                      //         Navigator.pop(context);
+                      //       } catch (e) {
+                      //         ScaffoldMessenger.of(context).showSnackBar(
+                      //           SnackBar(content: Text("Error: $e")),
+                      //         );
+                      //       }
+                      //     },
+                      //     style: ElevatedButton.styleFrom(
+                      //       backgroundColor: const Color(0xff009966),
+                      //       padding: const EdgeInsets.symmetric(vertical: 15),
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //       ),
+                      //     ),
+                      //     child: const Text(
+                      //       "Update Expense",
+                      //       style: TextStyle(color: Colors.white),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.04),
