@@ -184,13 +184,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  // Future<void> saveTheme(int themeId) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   await prefs.setInt('ThemeOfApp', themeId);
-  //   setState(() {
-  //     _currentThemeId = themeId;
-  //   });
-  // }
+  Future<void> saveTheme(int themeId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('ThemeOfApp', themeId);
+    setState(() {
+      _currentThemeId = themeId;
+    });
+  }
 
   final Telephony telephony = Telephony.instance;
   // StreamSubscription<SmsMessage>? _onSmsReceived;
