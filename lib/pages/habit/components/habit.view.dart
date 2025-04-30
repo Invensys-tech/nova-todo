@@ -5,6 +5,7 @@ import 'package:flutter_application_1/pages/habit/components/habit.missed.item.d
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HabitView extends StatefulWidget {
   final Habit habit;
@@ -70,7 +71,6 @@ class _HabitViewState extends State<HabitView> {
         title: Text(
           widget.habit.name,
           style: TextStyle(
-            color: Color(0xFFD4D4D8),
             fontWeight: FontWeight.w600,
             fontSize: 16.0,
           ),
@@ -100,24 +100,35 @@ class _HabitViewState extends State<HabitView> {
                 children: [
                   Text(
                     widget.habit.type,
-                    style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 14),
+                    style: TextStyle( fontSize: 14),
                   ),
                   Text(
                     'Created At: ${getDateOnly(DateTime.parse(widget.habit.date))}',
-                    style: TextStyle(color: Color(0xFFD4D4D8), fontSize: 12),
+                    style: TextStyle( fontSize: 12),
                   ),
                 ],
               ),
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Color(0xFF27272A),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.book_online_outlined,
-                  color: Color(0xFF009966),
-                  size: 20,
+              GestureDetector(
+                onTap: (){
+                  MaterialPageRoute(
+                    builder:
+                        (context) => HabitForm(
+                      refetchData: () {},
+                      habit: widget.habit,
+                      isEditing: true,
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).disabledColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: FaIcon(
+                    FontAwesomeIcons.pencil,
+                    size: 20,
+                  ),
                 ),
               ),
             ],
@@ -132,10 +143,11 @@ class _HabitViewState extends State<HabitView> {
             child: (Column(
               children: [
                 Container(
-                  // height: MediaQuery.of(context).size.height * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Color(0xFF27272A),
+                    color: Theme.of(context).primaryColorDark,
+                    border: Border.all(width: 1,color: Colors.grey.withOpacity(.4))
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
@@ -147,7 +159,7 @@ class _HabitViewState extends State<HabitView> {
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF006045),
+                                color: Theme.of(context).disabledColor,
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Stack(
@@ -346,61 +358,59 @@ class _HabitViewState extends State<HabitView> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF27272A),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(
-                              color: Color(0xFF27272A),
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => HabitForm(
-                                    refetchData: () {},
-                                    habit: widget.habit,
-                                    isEditing: true,
-                                  ),
-                            ),
-                          );
-                          print('Editing...');
-                        },
-                        child: Text(
-                          "Edit",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    Expanded(flex: 2, child: SizedBox()),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF27272A),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(color: Color(0xFFEC003F), width: 2),
-                        ),
-                      ),
-                      onPressed: () {
-                        _showAlertDialog(context);
-                      },
-                      child: Text(
-                        "Delete",
-                        style: TextStyle(color: Color(0xFFEC003F)),
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     Expanded(
+                //       flex: 2,
+                //       child: ElevatedButton(
+                //         style: ElevatedButton.styleFrom(
+                //           shape: RoundedRectangleBorder(
+                //             borderRadius: BorderRadius.circular(8),
+                //             side: BorderSide(
+                //               color: Theme.of(context).disabledColor,
+                //               width: 1,
+                //             ),
+                //           ),
+                //         ),
+                //         onPressed: () {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder:
+                //                   (context) => HabitForm(
+                //                     refetchData: () {},
+                //                     habit: widget.habit,
+                //                     isEditing: true,
+                //                   ),
+                //             ),
+                //           );
+                //           print('Editing...');
+                //         },
+                //         child: Text(
+                //           "Edit",
+                //         ),
+                //       ),
+                //     ),
+                //     Expanded(flex: 2, child: SizedBox()),
+                //     ElevatedButton(
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: Color(0xFF27272A),
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(8),
+                //           side: BorderSide(color: Color(0xFFEC003F), width: 2),
+                //         ),
+                //       ),
+                //       onPressed: () {
+                //         _showAlertDialog(context);
+                //       },
+                //       child: Text(
+                //         "Delete",
+                //         style: TextStyle(color: Color(0xFFEC003F)),
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             )),
           ),

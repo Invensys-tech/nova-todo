@@ -459,7 +459,7 @@ class _ExpensespageState extends State<Expensespage> {
                           children: [
                             Row(
                               children: [
-                                const Spacer(),
+                                SizedBox(width: MediaQuery.of(context).size.width*.25,),
                                 const Icon(
                                   Icons.trending_up_outlined,
                                   color: Color(0xff0d805e),
@@ -467,7 +467,7 @@ class _ExpensespageState extends State<Expensespage> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  "${_grandTotal.toStringAsFixed(2)} ETB",
+                                  "${_grandTotal.toStringAsFixed(2)} ${translate("ETB")}",
                                   style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -499,8 +499,8 @@ class _ExpensespageState extends State<Expensespage> {
                         left: MediaQuery.of(context).size.width * .05,
                         top: MediaQuery.of(context).size.height * .045,
                       ),
-                      child: const Text(
-                        "Transaction List",
+                      child:  Text(
+                        translate("Transaction List"),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -517,15 +517,27 @@ class _ExpensespageState extends State<Expensespage> {
                         return Column(
                           children: [
                             GestureDetector(
-                              onTap:(){
+                              onTap: () {
                                 Navigator.of(context, rootNavigator: true).push(
                                   PageRouteBuilder(
                                     opaque: false,
-                                    barrierColor: Colors.black.withOpacity(0.5), // background dim
-                                    pageBuilder: (_, __, ___) => SingleEpensesFullViewPage(),
+                                    barrierColor: Colors.black.withOpacity(
+                                      0.5,
+                                    ), // background dim
+                                    pageBuilder:
+                                        (_, __, ___) =>
+                                            SingleEpensesFullViewPage(
+                                              amount: e.amount,
+                                              category: e.category,
+                                              expenseName: e.expenseName,
+                                              paidBy: e.paidBy,
+                                              type: e.type,
+                                              date: e.date,
+                                              description: e.description,
+                                            ),
                                   ),
                                 );
-                        },
+                              },
                               child: Slidable(
                                 key: ValueKey(e.id),
                                 startActionPane: ActionPane(
@@ -553,7 +565,8 @@ class _ExpensespageState extends State<Expensespage> {
                                           MaterialPageRoute(
                                             builder:
                                                 (_) => EditExpense(
-                                                  datamanager: widget.datamanager,
+                                                  datamanager:
+                                                      widget.datamanager,
                                                   expenseId: e.id,
                                                 ),
                                           ),

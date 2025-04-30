@@ -35,7 +35,7 @@ class Expense {
   String type;
   DateTime date;
   String paidBy;
-  String? bankAccount;
+  num? bankAccount;
   String description;
   num amount;
   int userId;
@@ -56,7 +56,7 @@ class Expense {
   factory Expense.fromJson(Map<String, dynamic> json) {
     return (Expense(
       amount: json['amount'] as num,
-      bankAccount: json['bankAccount'] as String?,
+      bankAccount: json['bankAccount'] as num?,
       category: json['category'] as String,
       type: json['type'] as String,
       date: DateTime.parse(json['date'] as String),

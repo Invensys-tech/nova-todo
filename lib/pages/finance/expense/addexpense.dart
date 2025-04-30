@@ -34,11 +34,11 @@ class _AddExpenseState extends State<AddExpense> {
   final TextEditingController _paidByController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _bankId = TextEditingController();
 
   String? _paidBySelection;
   int? _parentLoanId;
   List<Expense> _expenseList = [];
-
 
   final List<String> banks = [
     'Abay Bank',
@@ -68,6 +68,7 @@ class _AddExpenseState extends State<AddExpense> {
   ];
 
   bool isFromNotification = false;
+  bool isLoading = false;
 
   @override
   void didChangeDependencies() {
@@ -92,10 +93,11 @@ class _AddExpenseState extends State<AddExpense> {
   @override
   void initState() {
     super.initState();
+    _paidByController.text = "Bank";
     _updateFuture();
 
     _dateController.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
-    _expenseTypeController.text = "Must"; // or any default you want
+    _expenseTypeController.text = "Must";
 
     Datamanager()
         .getExpense()
@@ -108,21 +110,6 @@ class _AddExpenseState extends State<AddExpense> {
           print("Error loading expenses: $e");
         });
   }
-
-  // void initState() {
-  //   super.initState();
-  //   _updateFuture();
-  //   Datamanager()
-  //       .getExpense()
-  //       .then((expense) {
-  //         setState(() {
-  //           _expenseList = expense;
-  //         });
-  //       })
-  //       .catchError((e) {
-  //         print("Error loading loans: $e");
-  //       });
-  // }
 
   void _updateFuture() {
     if (_paidByController.text == "Partner") {
@@ -187,7 +174,7 @@ class _AddExpenseState extends State<AddExpense> {
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
-                   Text(
+                  Text(
                     translate("Amount"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
@@ -208,7 +195,7 @@ class _AddExpenseState extends State<AddExpense> {
                     },
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                   Text(
+                  Text(
                     translate("Expense Name"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
@@ -234,7 +221,7 @@ class _AddExpenseState extends State<AddExpense> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text(
+                            Text(
                               translate("Category"),
                               style: TextStyle(
                                 fontSize: 12,
@@ -245,38 +232,45 @@ class _AddExpenseState extends State<AddExpense> {
                               height:
                                   MediaQuery.of(context).size.height * 0.0025,
                             ),
-                            _expenseList.isEmpty
-                                ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                                : AutoCompleteText(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please select a Category';
-                                    }
-                                    return null;
-                                  },
+                            // _expenseList.
+                            //     ? const Center(
+                            //       child: CircularProgressIndicator(),
+                            //     )
+                            //     :
+                            AutoCompleteText(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please select a Category';
+                                }
+                                return null;
+                              },
 
-                                  suggestions:
-                                      _expenseList
+                              suggestions:
+                                  _expenseList
                                           .map((exp) => exp.category)
                                           .toSet()
-                                          .toList(),
-                                  controller: _expenseCategoryController,
-                                  hintText: "Search for a Category...",
-                                  icon: Icons.search,
-                                  suggestionBuilder: (String text) {
-                                    return ListTile(
-                                      title: Text(
-                                        text,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
+                                          .toList()
+                                          .isNotEmpty
+                                      ? _expenseList
+                                          .map((exp) => exp.category)
+                                          .toSet()
+                                          .toList()
+                                      : [],
+                              controller: _expenseCategoryController,
+                              hintText: "Search for a Category...",
+                              icon: Icons.search,
+                              suggestionBuilder: (String text) {
+                                return ListTile(
+                                  title: Text(
+                                    text,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -286,8 +280,8 @@ class _AddExpenseState extends State<AddExpense> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text(
-                             translate( "Date"),
+                            Text(
+                              translate("Date"),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w300,
@@ -318,24 +312,12 @@ class _AddExpenseState extends State<AddExpense> {
 
                   ExpenseTypeSelector(controller: _expenseTypeController),
 
-                  // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
-                  // CustomDateSelectorRow(
-                  //   hintText: "Select a date",
-                  //   controller: _dateController,
-                  //   icon: Icons.calendar_today,
-                  //   firstDate: DateTime(2000),
-                  //   lastDate: DateTime(2100),
-                  //   initialDate: DateTime.now(),
-                  // ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                   Text(
+                  Text(
                     translate("Paid By"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
 
-                  // Inside your AddExpense build method...
-                  // Inside your AddExpense widget build method (or wherever you include the combined dropdown)
                   FutureBuilder(
                     future: _dataFuture,
                     builder: (context, snapshot) {
@@ -349,6 +331,7 @@ class _AddExpenseState extends State<AddExpense> {
                             paidByController: _paidByController,
                             specificFromController: _paymentController,
                             dataFuture: _dataFuture ?? Future.value([]),
+                            bankController: _bankId,
                             // When Paid By changes, update the future.
                             onPaidByChanged: (newPaidBy) {
                               setState(() {
@@ -366,7 +349,7 @@ class _AddExpenseState extends State<AddExpense> {
                   ),
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                   Text(
+                  Text(
                     translate("Description"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
@@ -405,100 +388,199 @@ class _AddExpenseState extends State<AddExpense> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child:  Text(translate("Cancel")),
+                          child: Text(translate("Cancel")),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         flex: 3,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              try {
-                                print(_dateController.text);
-                                // Insert expense
-                                final expenseResponse = await Supabase
-                                    .instance
-                                    .client
-                                    .from('expense')
-                                    .insert({
-                                      'amount':
+                          onPressed:
+                              isLoading
+                                  ? null // 👈 Disables the button when loading
+                                  : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+
+                                      final bankId = _paymentController.text;
+                                      final expenseAmt =
                                           double.tryParse(
                                             _amountController.text,
                                           ) ??
-                                          0.0,
-                                      'expenseName':
-                                          _expenseNameController.text,
-                                      'category':
-                                          _expenseCategoryController.text,
-                                      'type': _expenseTypeController.text,
-                                      'bankAccount':
-                                          _paidByController.text == "Partner"
-                                              ? null
-                                              : _paymentController.text,
+                                          0.0;
 
-                                      'paidBy': _paidByController.text,
-                                      'description':
-                                          _descriptionController.text,
-                                      'date': formatDate(_dateController.text),
-                                      'userid': 1,
-                                    });
-                                print(expenseResponse);
-                                print("Expense added successfully!");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      "Expense added successfully!",
-                                    ),
-                                  ),
-                                );
+                                      try {
+                                        final bankRes =
+                                            await Supabase.instance.client
+                                                .from('bank')
+                                                .select('balance')
+                                                .eq('id', bankId)
+                                                .single();
+                                        // if (bankRes.error != null) {
+                                        //   throw bankRes.error!;
+                                        // }
 
-                                if (_paidByController.text == "Partner") {
-                                  final singleLoanResponse = await Supabase
-                                      .instance
-                                      .client
-                                      .from('single_loan')
-                                      .insert({
-                                        'amount':
-                                            double.tryParse(
-                                              _amountController.text,
-                                            ) ??
-                                            0.0,
-                                        'type': "Payable",
-                                        'paidFrom': "Partner",
-                                        'specificFrom': _paymentController.text,
-                                        'parentId': _parentLoanId,
-                                        'date': (_dateController.text),
-                                        'source': "Expense",
-                                      });
-                                  print(
-                                    '-----------------------------------------',
-                                  );
-                                  print(singleLoanResponse);
-                                  print(
-                                    '-----------------------------------------',
-                                  );
-                                }
-                                Navigator.pop(context);
-                              } catch (e) {
-                                print("Error inserting expense: $e");
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Error: $e")),
-                                );
-                              }
-                            }
-                          },
+                                        print(bankRes);
+                                        final currentBalance =
+                                            (bankRes['balance'] as num)
+                                                .toDouble();
+                                        if (currentBalance >= expenseAmt) {
+                                          final newBalance =
+                                              currentBalance - expenseAmt;
+                                          final upd = await Supabase
+                                              .instance
+                                              .client
+                                              .from('bank')
+                                              .update({'balance': newBalance})
+                                              .eq('id', bankId);
+                                          final expenseResponse = await Supabase
+                                              .instance
+                                              .client
+                                              .from('expense')
+                                              .insert({
+                                                'amount':
+                                                    double.tryParse(
+                                                      _amountController.text,
+                                                    ) ??
+                                                    0.0,
+                                                'expenseName':
+                                                    _expenseNameController.text,
+                                                'category':
+                                                    _expenseCategoryController
+                                                        .text,
+                                                'type':
+                                                    _expenseTypeController.text,
+                                                'bankAccount':
+                                                    _paidByController.text ==
+                                                            "Partner"
+                                                        ? null
+                                                        : _paymentController
+                                                            .text,
+                                                'paidBy':
+                                                    _paidByController.text,
+                                                'description':
+                                                    _descriptionController.text,
+                                                'date': formatDate(
+                                                  _dateController.text,
+                                                ),
+                                                'userid': 1,
+                                              });
+                                          print("Expense added successfully!");
+
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                "Expense added successfully!",
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          // Not enough funds
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                'Insufficient balance in selected bank account.',
+                                              ),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
+                                        // Insert expense
+
+                                        if (_paidByController.text ==
+                                            "Partner") {
+                                          var specific =
+                                              _paymentController.text;
+
+                                          final x = await Supabase
+                                              .instance
+                                              .client
+                                              .from('loan')
+                                              .select("*")
+                                              .eq("loanerName", specific);
+
+                                          try {
+                                            final singleLoanResponse =
+                                                await Supabase.instance.client
+                                                    .from('loan')
+                                                    .insert({
+                                                      'amount':
+                                                          double.tryParse(
+                                                            _amountController
+                                                                .text,
+                                                          ) ??
+                                                          0.0,
+                                                      'type': "Payable",
+
+                                                      'date': formatDate(
+                                                        _dateController.text,
+                                                      ),
+                                                      'bank': "Expense",
+                                                      'loanerName': specific,
+                                                      'phoneNumber':
+                                                          x[0]['phonenumber'],
+                                                      'userId': 1,
+                                                    });
+                                          } catch (e) {
+                                            print("Error inserting loan: $e");
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text("Error: $e"),
+                                              ),
+                                            );
+                                          }
+                                        }
+
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+
+                                        Navigator.pop(context);
+                                      } catch (e) {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        print("Error inserting expense: $e");
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(content: Text("Error: $e")),
+                                        );
+                                      }
+                                    }
+                                  },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff009966),
+                            backgroundColor:
+                                isLoading
+                                    ? Colors.grey
+                                    : const Color(0xff009966),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child:  Text(
-                           translate( "Add Expense"),
-                            style: TextStyle(color: Colors.white),
-                          ),
+                          child:
+                              isLoading
+                                  ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                  : const Text(
+                                    "Add Expense",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                         ),
                       ),
                     ],

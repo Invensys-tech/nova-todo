@@ -133,188 +133,187 @@ class _TodoItemState extends State<TodoItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Slidable(
-          startActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            // dismissible: DismissiblePane(onDismissed: () {}),
-            children: [
-              SlidableAction(
-                onPressed: showCompletionPercentageUpdateDialog,
-                backgroundColor: Colors.yellow.shade900,
-                foregroundColor: Colors.white,
-                icon: Icons.percent,
-                label: 'Custom',
-              ),
-              SlidableAction(
-                onPressed: (context) => updateDailyTaskPercentage(100),
-                backgroundColor: Color(0xFF1D9402),
-                foregroundColor: Colors.white,
-                icon: Icons.sentiment_satisfied,
-                label: 'Done',
-              ),
-            ],
-          ),
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              // SlidableAction(
-              //   onPressed: (context) => {},
-              //   backgroundColor: Color(0xFFFE4A49),
-              //   foregroundColor: Colors.white,
-              //   icon: Icons.delete,
-              //   label: 'Delete',
-              // ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  color: Color(0xFFEC003F),
-                  child: Center(
-                    child: ElevatedButton(
-                      onPressed: () => updateDailyTaskPercentage(0),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF555B59),
-                      ),
-                      child: Text(
-                        '😔 I didn\'t',
-                        style: TextStyle(color: Color(0xFFF4F4F5)),
-                      ),
+    return Container(
+      height: MediaQuery.of(context).size.height*.165,
+      child: Slidable(
+        startActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          // dismissible: DismissiblePane(onDismissed: () {}),
+          children: [
+            SlidableAction(
+              onPressed: showCompletionPercentageUpdateDialog,
+              backgroundColor: Colors.yellow.shade900,
+              foregroundColor: Colors.white,
+              icon: Icons.percent,
+              label: 'Custom',
+            ),
+            SlidableAction(
+              onPressed: (context) => updateDailyTaskPercentage(100),
+              backgroundColor: Color(0xFF1D9402),
+              foregroundColor: Colors.white,
+              icon: Icons.sentiment_satisfied,
+              label: 'Done',
+            ),
+          ],
+        ),
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          children: [
+            // SlidableAction(
+            //   onPressed: (context) => {},
+            //   backgroundColor: Color(0xFFFE4A49),
+            //   foregroundColor: Colors.white,
+            //   icon: Icons.delete,
+            //   label: 'Delete',
+            // ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: Color(0xFFEC003F),
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () => updateDailyTaskPercentage(0),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF555B59),
+                    ),
+                    child: Text(
+                      '😔 I didn\'t',
+                      style: TextStyle(color: Color(0xFFF4F4F5)),
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => TodoViewPage(
-                        dailyTask: widget.dailyTask,
-                        addSubTask: addSubTask,
-                        resetList: widget.setParentState,
-                      ),
-                ),
-              );
-            },
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * .035,
+            ),
+          ],
+        ),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => TodoViewPage(
+                      dailyTask: widget.dailyTask,
+                      addSubTask: addSubTask,
+                      resetList: widget.setParentState,
+                    ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * .05,
-                      vertical: MediaQuery.of(context).size.height * .015,
-                    ),
-                    width: MediaQuery.of(context).size.width * .93,
-                    decoration: BoxDecoration(
-                      color:
-                          widget.dailyTask.type == 'High'
-                              ? Color(0xff0d805e)
-                              : widget.dailyTask.type == 'Medium'
-                              ? Color.fromARGB(
-                                255,
-                                128,
-                                120,
-                                13,
-                              )
-                              : Color.fromARGB(
-                                255,
-                                128,
-                                13,
-                                13,
-                              ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              widget.dailyTask.name,
-                              style: GoogleFonts.lato(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width * .035,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * .05,
+                    vertical: MediaQuery.of(context).size.height * .015,
+                  ),
+                  width: MediaQuery.of(context).size.width * .93,
+                  decoration: BoxDecoration(
+                    color:
+                        widget.dailyTask.type == 'High'
+                            ? Color(0xff0d805e)
+                            : widget.dailyTask.type == 'Medium'
+                            ? Color.fromARGB(
+                              255,
+                              128,
+                              120,
+                              13,
+                            )
+                            : Color.fromARGB(
+                              255,
+                              128,
+                              13,
+                              13,
                             ),
-                            Text(
-                              '${widget.dailyTask.taskTime} - ${widget.dailyTask.endTime}',
-                              style: GoogleFonts.lato(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white.withOpacity(.75),
-                              ),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.dailyTask.name,
+                            style: GoogleFonts.lato(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
                             ),
-                          ],
-                        ),
-
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .0125,
-                        ),
-                        Text(
-                          widget.dailyTask.description,
-                          style: GoogleFonts.lato(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white.withOpacity(.8),
                           ),
-                        ),
-
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .015,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Icon(
-                              Icons.lock_clock,
-                              size: 20,
-                              color: Colors.white,
+                          Text(
+                            '${widget.dailyTask.taskTime} - ${widget.dailyTask.endTime}',
+                            style: GoogleFonts.lato(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white.withOpacity(.75),
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Status : ",
-                                  style: GoogleFonts.lato(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Text(
-                                  // widget.dailyTask.isDone ? 'Done' : 'Waiting',
-                                  Random().nextBool() ? 'Done' : 'Waiting',
-                                  style: GoogleFonts.lato(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.yellow,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
 
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .01,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .0125,
+                      ),
+                      Text(
+                        widget.dailyTask.description,
+                        style: GoogleFonts.lato(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white.withOpacity(.8),
                         ),
-                      ],
-                    ),
+                      ),
+
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .015,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(
+                            Icons.lock_clock,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Status : ",
+                                style: GoogleFonts.lato(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                // widget.dailyTask.isDone ? 'Done' : 'Waiting',
+                                Random().nextBool() ? 'Done' : 'Waiting',
+                                style: GoogleFonts.lato(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.yellow,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .01,
+                      ),
+                    ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * .02),
-                ],
-              ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * .02),
+              ],
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 }
