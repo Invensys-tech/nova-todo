@@ -11,6 +11,7 @@ import 'package:flutter_application_1/pages/finance/income/edit.income.dart';
 import 'package:flutter_application_1/repositories/income.repository.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
@@ -236,7 +237,7 @@ class _IncomeViewState extends State<IncomeView> {
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.of(context).pop(),
-                                    child: const Text('Cancel'),
+                                    child:  Text(translate('Cancel')),
                                   ),
                                   TextButton(
                                     onPressed: () async {
@@ -244,8 +245,8 @@ class _IncomeViewState extends State<IncomeView> {
                                       Navigator.of(context).pop();
                                       setState(_loadIncomes);
                                     },
-                                    child: const Text(
-                                      'Delete',
+                                    child:  Text(
+                                      translate('Delete'),
                                       style: TextStyle(color: Colors.red),
                                     ),
                                   ),
@@ -256,7 +257,7 @@ class _IncomeViewState extends State<IncomeView> {
                       backgroundColor: Colors.red,
                       foregroundColor: Colors.white,
                       icon: Icons.delete,
-                      label: 'Delete',
+                      label: translate('Delete'),
                     ),
                   ],
                 ),
@@ -281,7 +282,7 @@ class _IncomeViewState extends State<IncomeView> {
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
                   icon: Icons.edit,
-                  label: 'Edit',
+                  label: translate('Edit'),
                 ),
               ],
             ),
@@ -321,7 +322,7 @@ class _IncomeViewState extends State<IncomeView> {
                         ),
                       ),
                       Text(
-                        "\$ ${income.amount.toStringAsFixed(2)} ETB",
+                        "\$ ${income.amount.toStringAsFixed(2)} ${translate("ETB")}",
                         style: GoogleFonts.lato(
                           fontSize: 13,
                           fontWeight: FontWeight.w400,

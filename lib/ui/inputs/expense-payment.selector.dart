@@ -298,7 +298,7 @@ class _PaidByAndSpecificFromInputContentState
                           ? const Color(0xff27272A)
                           : const Color(0xffD4D4D8),
                   value: selectedPaidBy,
-                  hint:  Text(translate("Paid By"), style: TextStyle(fontSize: 12)),
+                  hint:  Text(translate("Paid by"), style: TextStyle(fontSize: 12)),
                   icon: const Icon(Icons.arrow_drop_down),
                   style: TextStyle(
                     fontSize: 13,
@@ -386,7 +386,7 @@ class _PaidByAndSpecificFromInputContentState
                         isExpanded: true,
                         value: selectedSpecificFrom,
                         hint:  Text(
-                          translate("Specific From"),
+                          translate("Specific from"),
                           style: TextStyle(fontSize: 12),
                         ),
                         icon: const Icon(Icons.arrow_drop_down),

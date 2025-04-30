@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
@@ -35,7 +36,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Expenses Details ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),),
+                    Text(translate("Expenses Details"),style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),),
                     GestureDetector(
                       onTap: (){
 
@@ -54,7 +55,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Expenses Name",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+                            Text(translate("Expenses Name"),style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
                             Text("Lunch At Bole",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
                           ],
                         ),
@@ -62,7 +63,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Amount",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+                          Text(translate("Amount"),style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
                           SizedBox(height: MediaQuery.of(context).size.height*.00,),
                           Text("ETB 3,200",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
                         ],
@@ -81,7 +82,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Paid Via",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+                            Text(translate("Paid Via"),style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
                             Text("BOA",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
                           ],
                         ),
@@ -89,7 +90,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Account Number",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+                          Text(translate("Account Number"),style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
                           SizedBox(height: MediaQuery.of(context).size.height*.00,),
                           Text("10023289433",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
                         ],
@@ -109,7 +110,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Catagory",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+                            Text(translate("Catagory"),style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
                             Text("Foods And Beverages",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
                           ],
                         ),
@@ -117,7 +118,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Type",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+                          Text(translate("Type"),style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
                           SizedBox(height: MediaQuery.of(context).size.height*.00,),
                           Row(
                             children: [
@@ -142,7 +143,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Date",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+                            Text(translate("Date"),style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
                             Text("12-08-2025 , 12:43 (last Week)",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),),
                           ],
                         ),
@@ -163,7 +164,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Addtional Note",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
+                            Text(translate("Additional Note"),style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),),
                             Text("lorem Ipsume is the one and only in the best way to include int he best way to intemisate but ",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w200),),
                           ],
                         ),
