@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,8 +15,8 @@ class GoalRepository {
     try {
       final data = await supabaseClient
           .from(Entities.GOAL.dbName)
-          .select()
-          .eq('userId', (await authService.findSession())['id']);
+          .select("*")
+          .eq('userId', userId);
 
       return data.map((goal) => Goal.fromJson(goal)).toList();
     } catch (e) {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
 import 'package:flutter_application_1/pages/goal/common/form.finance-impact.dart';
 import 'package:flutter_application_1/pages/goal/common/form.goal.dart';
@@ -123,7 +124,7 @@ class _AccordionAxampleState extends State<AddGoal> {
         'priority': _controllers["goals"]["priority"].controller.text,
         'description': _controllers["goals"]["description"].controller.text,
         'term': _controllers["goals"]["term"].controller.text,
-        'userId': 1,
+        'userId': userId,
         'deadline': formatDate(
           _controllers["subGoalsWithDeadline"]["deadline"].controller.text,
         ),
