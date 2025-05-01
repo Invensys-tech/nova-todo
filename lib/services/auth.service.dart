@@ -231,4 +231,17 @@ class AuthService {
       return null;
     }
   }
+
+  Future<Duration> getExpirationTime() async {
+    try {
+      final session = await findSession();
+      final phoneNumber = session['phoneNumber'];
+      final endDate = await UserRepository().getSubscriptionEndDate(phoneNumber);
+
+      return endDate.difference(DateTime.now());
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
 }

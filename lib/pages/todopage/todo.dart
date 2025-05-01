@@ -49,7 +49,6 @@ class _TodoPageState extends State<TodoPage> {
       completionPercentage = DailyTaskRepository().fetchCompletionPercentage(
         getDateOnly(DateTime.now()),
       );
-      print(now.toIso8601String());
     });
   }
 
@@ -100,7 +99,7 @@ class _TodoPageState extends State<TodoPage> {
     if (filterValue == 'All') return todos;
     return todos.where((todo) {
       if (filterValue == 'Completed') return todo.completionPercentage == 100;
-      return todo.completionPercentage < 100;
+      return (todo.completionPercentage ?? 0) < 100;
     }).toList();
   }
 
@@ -185,14 +184,14 @@ class _TodoPageState extends State<TodoPage> {
                                   animation: true,
                                   lineHeight: MediaQuery.of(context).size.height * .01,
                                   animationDuration: 2500,
-                                  percent: .8,
+                                  percent: snapshot.data!,
 
                                   backgroundColor: Theme.of(context).primaryColorDark,
                                   linearStrokeCap: LinearStrokeCap.roundAll,
                                   progressColor: Color(0xff0d805e),
                                 ),
                               ),
-                              Text('   ${snapshot.data!.toString()} Of the work is done'),
+                              Text('${(snapshot.data! * 100).toString()} Of the work is done'),
                             ],
                           );
                         } else {
@@ -203,7 +202,7 @@ class _TodoPageState extends State<TodoPage> {
                             MediaQuery.of(context).size.height * .025,
                             animationDuration: 2500,
                             backgroundColor: Theme.of(context).primaryColorDark,
-                            percent: .5,
+                            percent: 0,
                             linearStrokeCap: LinearStrokeCap.roundAll,
                             progressColor: Color(0xff0d805e),
                           );

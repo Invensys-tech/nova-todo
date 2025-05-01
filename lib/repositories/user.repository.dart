@@ -145,7 +145,7 @@ class UserRepository {
               .eq('phoneNumber', phoneNumber)
               .maybeSingle();
 
-      print(jsonEncode(userData));
+      // print(userData);
 
       if (userData == null) {
         throw Exception('User not found');

@@ -50,7 +50,10 @@ class _HabitsListState extends State<HabitsList> {
                 physics: AlwaysScrollableScrollPhysics(),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                  return HabitItem(habit: snapshot.data![index]);
+                  return HabitItem(
+                    habit: snapshot.data![index],
+                    hasActions: false,
+                  );
                 },
               );
             } else {

@@ -143,7 +143,6 @@ class _HabitViewState extends State<HabitView> {
             child: (Column(
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Theme.of(context).primaryColorDark,
