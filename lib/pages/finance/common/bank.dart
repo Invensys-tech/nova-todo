@@ -11,6 +11,10 @@ class BankWidget extends StatefulWidget {
     required this.balance,
     required this.id,
     required this.datamanager,
+    required this.bankName,
+    required this.accountBank,
+    required this.branch,
+    required this.balace,
   });
 
   final String accountname;
@@ -18,6 +22,10 @@ class BankWidget extends StatefulWidget {
   final num balance;
   final int id;
   final Datamanager datamanager;
+  final String bankName;
+  final String accountBank;
+  final String branch;
+  final num balace;
 
   @override
   State<BankWidget> createState() => _BankWidgetState();
@@ -36,6 +44,10 @@ class _BankWidgetState extends State<BankWidget> {
                   id: widget.id,
                   name: widget.accountname,
                   datamanager: widget.datamanager,
+                  accountBank: widget.accountBank,
+                  branch: widget.branch,
+                  balace: widget.balace,
+                  accountNumber: widget.accoutnumber,
                 ),
           ),
         );
@@ -92,9 +104,20 @@ class _BankWidgetState extends State<BankWidget> {
               ],
             ),
             Spacer(),
-            Text(
-              '${widget.balance}',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+
+                Text(
+                  '${widget.balance}',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                ),
+                Text(
+                  '${widget.bankName}',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                ),
+              ],
             ),
           ],
         ),

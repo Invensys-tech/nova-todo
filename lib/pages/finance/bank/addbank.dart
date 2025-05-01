@@ -67,7 +67,7 @@ class _AddBankState extends State<AddBank> {
             color: Color(0xff006045),
           ),
         ),
-        title:  Text(
+        title: Text(
           translate("Add Bank"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -98,8 +98,8 @@ class _AddBankState extends State<AddBank> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                   Text(
-                   translate( "Account Owner"),
+                  Text(
+                    translate("Account Owner"),
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -116,7 +116,7 @@ class _AddBankState extends State<AddBank> {
                     // icon: Icons.attach_money,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                   Text(
+                  Text(
                     translate("Bank"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
@@ -154,7 +154,7 @@ class _AddBankState extends State<AddBank> {
                   // BankInput(bankController: _bank, valueController: _accNo),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
-                   Text(
+                  Text(
                     translate("AccountNumber"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
@@ -175,7 +175,7 @@ class _AddBankState extends State<AddBank> {
                     // icon: Icons.attach_money,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                   Text(
+                  Text(
                     translate("Branch"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
@@ -254,7 +254,7 @@ class _AddBankState extends State<AddBank> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child:  Text(translate("Cancel")),
+                          child: Text(translate("Cancel")),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -269,6 +269,9 @@ class _AddBankState extends State<AddBank> {
                                       setState(() {
                                         isLoading = true;
                                       });
+                                      print("userid");
+                                      print(userId);
+
                                       try {
                                         final response = await Supabase
                                             .instance
@@ -331,7 +334,7 @@ class _AddBankState extends State<AddBank> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child:  Text(
+                          child: Text(
                             translate("Save"),
                             style: TextStyle(color: Colors.white),
                           ),

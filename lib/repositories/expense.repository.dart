@@ -1,6 +1,7 @@
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/entities/expense-entity.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ExpenseRepository {
   Future<List<Expense>> fetchAll() async {
@@ -33,8 +34,28 @@ class ExpenseRepository {
     }
   }
 
-  Future<dynamic> deleteExpense(int id) async {
+  Future<dynamic> deleteExpense(int id, int? bankId, num? amouont) async {
+    print("-----------------------");
+    print(bankId);
+    print(amouont);
     try {
+      if (bankId != null) {
+        final response =
+            await Supabase.instance.client
+                .from('bank')
+                .select('balance')
+                .eq('id', bankId)
+                .single();
+
+        final currentBalance = response['balance'] as num;
+        final newBalance = currentBalance + amouont!;
+
+        await Supabase.instance.client
+            .from('bank')
+            .update({'balance': newBalance})
+            .eq('id', bankId);
+      }
+
       final data = await supabaseClient
           .from(Entities.EXPENSE.dbName)
           .delete()

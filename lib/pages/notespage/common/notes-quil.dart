@@ -96,6 +96,11 @@ class _NoteQuilState extends State<NoteQuil> {
     Navigator.pop(context);
   }
 
+  Future<void> deleteJournal() async {
+    await NotesRepository().deleteNote(widget.id!);
+    Navigator.pop(context, true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,6 +110,53 @@ class _NoteQuilState extends State<NoteQuil> {
           icon: Icon(Icons.arrow_back),
         ),
         actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder:
+                      (context) => AlertDialog(
+                        title: Text(translate("Confirm Delete")),
+                        content: Text(
+                          translate(
+                            "Are you sure you want to delete this journal?",
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: Text(translate("Cancel")),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: Text(
+                              translate("Delete"),
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                );
+
+                if (confirm == true) {
+                  deleteJournal();
+                }
+              },
+
+              child: Text(
+                translate("Delete"),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: ElevatedButton(

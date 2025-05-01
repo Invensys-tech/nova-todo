@@ -8,7 +8,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class NotesRepository {
   Future<List<Note>> getNotes() async {
     try {
-      final data = await supabaseClient.from(Entities.NOTE.dbName).select('*').eq("user_id", userId);
+      final data = await supabaseClient
+          .from(Entities.NOTE.dbName)
+          .select('*')
+          .eq("user_id", userId);
       return data.map((note) => Note.fromJson(note)).toList();
     } catch (e) {
       throw Exception("Error getting notes!");
@@ -47,6 +50,17 @@ class NotesRepository {
     } catch (e) {
       print(e);
       print("sssssssssssssssssssssss");
+      rethrow;
+    }
+  }
+
+  Future<void> deleteNote(int id) async {
+    try {
+      await supabaseClient.from(Entities.NOTE.dbName).delete().eq('id', id);
+      print("Note with ID $id deleted successfully");
+    } catch (e) {
+      print("ARE WE ERROR");
+      print(e);
       rethrow;
     }
   }
