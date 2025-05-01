@@ -123,8 +123,8 @@ class _HabitFormState extends State<HabitForm> {
     });
   }
 
-  navigateBack({BuildContext? buildContext}) {
-    Navigator.pop(buildContext ?? context);
+  navigateBack() {
+    Navigator.pop(context);
   }
 
   // printDays() {
@@ -230,13 +230,13 @@ class _HabitFormState extends State<HabitForm> {
           .updateById(newHabit, widget.habit!.id!)
           .then((value) {
             if (value) {
-              navigateBack(buildContext: context);
-              widget.refetchData();
+              changeSavingState(false);
               resetForm();
+              widget.refetchData();
+              navigateBack();
             }
           })
           .then((value) {
-            changeSavingState(false);
           })
           .catchError((e) {
             changeSavingState(false);
@@ -245,7 +245,9 @@ class _HabitFormState extends State<HabitForm> {
       HabitsRepository()
           .createHabit(newHabit)
           .then((value) {
+            print('in then');
             if (value) {
+              print('returned true');
               navigateBack();
               widget.refetchData();
               resetForm();

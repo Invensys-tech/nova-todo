@@ -12,6 +12,10 @@ class GoalRepository {
   dynamic session;
 
   Future<List<Goal>> fetchAll() async {
+    print(
+      "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[object]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
+    );
+    print(userId);
     try {
       final data = await supabaseClient
           .from(Entities.GOAL.dbName)

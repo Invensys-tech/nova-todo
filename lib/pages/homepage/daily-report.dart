@@ -14,6 +14,13 @@ class _DailyReportState extends State<DailyReport> {
   final incomeAnalytics = AnalyticsService.getDailyIncomeSummary();
   final expenseAnalytics = AnalyticsService.getDailyExpenseSummary();
   final habits = AnalyticsService.getHabitAnalytics();
+  late Future<double> completionPercentage;
+
+  @override
+  initState() {
+    super.initState();
+    completionPercentage = AnalyticsService.getSuccessRate(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,23 +73,39 @@ class _DailyReportState extends State<DailyReport> {
                       ),
                     ),
 
-                    LinearProgressIndicator(
-                      value: .4,
-                      minHeight: 8,
-                      borderRadius: BorderRadius.circular(4),
-                      backgroundColor: Color(0xFF3F3F47),
-                      color: Color(0xFF009966),
-                    ),
+                    FutureBuilder(future: completionPercentage, builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          spacing: 8,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LinearProgressIndicator(
+                              value: snapshot.data,
+                              minHeight: 8,
+                              borderRadius: BorderRadius.circular(4),
+                              backgroundColor: Color(0xFF3F3F47),
+                              color: Color(0xFF009966),
+                            ),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          '40 % of the work done',
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '${(snapshot.data ?? 0) * 100} % of the work done',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      } else {
+                        if (snapshot.hasError) {
+                          return Center(child: Text('Error'));
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }
+                    }),
                   ],
                 ),
               ),

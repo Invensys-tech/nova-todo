@@ -62,18 +62,12 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                 width: MediaQuery.of(context).size.width * 0.45,
                 child: Text(
                   "$type",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 ),
               ),
               Text(
                 "\$ ${amount.toStringAsFixed(2)} ETB",
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -109,7 +103,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
     final today = DateTime.now();
     final threeMonthsAgo = DateTime(today.year, today.month - 3, today.day);
     _endDateController.text = formatDate(today);
-   _startDateController.text = formatDate(threeMonthsAgo);
+    _startDateController.text = formatDate(threeMonthsAgo);
     _refreshExpenses();
   }
 
@@ -118,8 +112,15 @@ class _AnalyticsViewState extends State<AnalyticsView> {
     final startDate = DateTime.tryParse(_startDateController.text);
     final endDate = DateTime.tryParse(_endDateController.text);
 
+    print("Start Date: $startDate");
+    print("End Date: $endDate");
+
     if (startDate != null && endDate != null) {
-      _expensesFuture = widget.datamanager.getExpense(dateTime: startDate);
+      _expensesFuture = widget.datamanager.getExpense(
+        dateTime: startDate,
+        endDate: endDate,
+        analytics: true,
+      );
     } else {
       _expensesFuture = widget.datamanager.getExpense();
     }
@@ -132,11 +133,11 @@ class _AnalyticsViewState extends State<AnalyticsView> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: FaIcon(FontAwesomeIcons.chevronLeft,color: Color(0xff006045),)
+          icon: FaIcon(FontAwesomeIcons.chevronLeft, color: Color(0xff006045)),
         ),
         title: const Text(
           "Expenses Details",
-          style: TextStyle(fontWeight: FontWeight.bold,),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
       ),
@@ -148,15 +149,17 @@ class _AnalyticsViewState extends State<AnalyticsView> {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.05, vertical: MediaQuery.of(context).size.height*.01),
-               width: MediaQuery.of(context).size.width*.93,
-               height: MediaQuery.of(context).size.height*.1,
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * .05,
+                  vertical: MediaQuery.of(context).size.height * .01,
+                ),
+                width: MediaQuery.of(context).size.width * .93,
+                height: MediaQuery.of(context).size.height * .1,
                 decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor.withOpacity(.5),
-                  borderRadius: BorderRadius.circular(10)
+                  color: Theme.of(context).cardColor.withOpacity(.5),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,19 +168,20 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
                           Text("From"),
-                          SizedBox(height: MediaQuery.of(context).size.height*.0025,),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * .0025,
+                          ),
                           Container(
-                            height: MediaQuery.of(context).size.height*.045,
+                            height: MediaQuery.of(context).size.height * .045,
                             decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColorDark
+                              color: Theme.of(context).primaryColorDark,
                             ),
                             child: DateSelector(
                               hintText: "Start Date",
                               controller: _startDateController,
                               icon: Icons.calendar_today,
-                              firstDate: DateTime(1990),
+                              firstDate: DateTime(2000),
                               lastDate: DateTime(2100),
                               initialDate: DateTime.now(),
                             ),
@@ -186,10 +190,14 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*.015),
-                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.0075,),
-                      width: MediaQuery.of(context).size.width*.25,
-                      child:   DottedLine(
+                      margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * .015,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * .0075,
+                      ),
+                      width: MediaQuery.of(context).size.width * .25,
+                      child: DottedLine(
                         dashLength: 5,
                         dashColor: Color(0xff009966),
                         dashGapLength: 3,
@@ -199,18 +207,19 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                     ),
                     Expanded(
                       child: Column(
-
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("To"),
-                          SizedBox(height: MediaQuery.of(context).size.height*.0025,),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * .0025,
+                          ),
                           Container(
-                            height: MediaQuery.of(context).size.height*.045,
+                            height: MediaQuery.of(context).size.height * .045,
                             child: DateSelector(
-                              hintText: "Start Date",
+                              hintText: "End Date",
                               controller: _endDateController,
                               icon: Icons.calendar_today,
-                              firstDate: DateTime(1990),
+                              firstDate: DateTime(2000),
                               lastDate: DateTime(2100),
                               initialDate: DateTime.now(),
                             ),
@@ -233,9 +242,6 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                   });
                 },
                 children: [
-                  // ------------------------------
-                  // Panel 0: Importance of Expense (Totals & Breakdown)
-                  // ------------------------------
                   ExpansionPanel(
                     headerBuilder: (context, isExpanded) {
                       return MyExpansionPanelHeader(
@@ -265,7 +271,6 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                             Map<String, double>.from(totalsData["type"]);
                         return Column(
                           children: [
-                            // Grand T
                             Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal:
@@ -297,7 +302,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                                         0.45,
                                     child: Text(
                                       "Total Expense",
-                                      style:TextStyle(
+                                      style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -305,7 +310,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                                   ),
                                   Text(
                                     "\$ ${totalExpense.toStringAsFixed(2)} ETB",
-                                    style:TextStyle(
+                                    style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -314,7 +319,6 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                               ),
                             ),
                             Divider(),
-                            // Importance rows for each type:
                             Importance("Must", typeTotals["Must"] ?? 0.0),
                             Importance("Maybe", typeTotals["Maybe"] ?? 0.0),
                             Importance(
@@ -327,9 +331,6 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                     ),
                     isExpanded: _expandedIndex == 0,
                   ),
-                  // ------------------------------
-                  // Panel 1: Category of Expense
-                  // ------------------------------
                   ExpansionPanel(
                     headerBuilder: (context, isExpanded) {
                       return MyExpansionPanelHeader(
@@ -355,7 +356,10 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                         }
                         final categoryData = snapshot.data!;
                         return Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.015),
+                          padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * .015,
+                          ),
                           child: Column(
                             children:
                                 categoryData.entries.map((entry) {
@@ -389,9 +393,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                           );
                         }
                         if (snapshot.hasError) {
-                          return Text(
-                            "Error: ${snapshot.error}",
-                          );
+                          return Text("Error: ${snapshot.error}");
                         }
                         final expenses = snapshot.data!;
                         return Column(

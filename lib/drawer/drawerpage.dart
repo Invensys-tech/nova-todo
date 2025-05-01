@@ -9,6 +9,8 @@ import 'package:flutter_application_1/pages/goal/goal.dart';
 import 'package:flutter_application_1/pages/habit/habits.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
 import 'package:flutter_application_1/pages/quotes/quotes.dart';
+import 'package:flutter_application_1/services/analytics.service.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -24,7 +26,17 @@ class Drawerpage extends StatefulWidget {
 }
 
 class _DrawerpageState extends State<Drawerpage> {
+  final userInfo = AuthService().findSession();
+  late Future<double> completionPercentage;
+
+  @override
+  void initState() {
+    super.initState();
+    completionPercentage = AnalyticsService.getSuccessRate(DateTime.now());
+  }
+
   var dataManager = Datamanager();
+
   routeToHabits() {
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
@@ -174,7 +186,7 @@ class _DrawerpageState extends State<Drawerpage> {
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .025),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                 context,
                 screen: CommunityChallenges(),
@@ -300,37 +312,114 @@ class _DrawerpageState extends State<Drawerpage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Abebe kebede ",
-                        style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      FutureBuilder(
+                        future: userInfo,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data?['name'] ?? '',
+                              style: TextStyle(
+                                fontSize: 19,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            );
+                          } else {
+                            if (snapshot.hasError) {
+                              return Text(
+                                'Hello',
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              );
+                            } else {
+                              return Text(
+                                '',
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              );
+                            }
+                          }
+                        },
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * .015,
                       ),
-                      LinearPercentIndicator(
-                        width: MediaQuery.of(context).size.width * .335,
-                        animation: true,
-                        padding: EdgeInsets.all(0),
-                        lineHeight: MediaQuery.of(context).size.height * .0065,
-                        animationDuration: 2500,
-                        percent: .83,
-                        linearStrokeCap: LinearStrokeCap.round,
-                        progressColor: Color(0xff009966),
-                      ),
+                      FutureBuilder(future: completionPercentage, builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                LinearPercentIndicator(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * .335,
+                                  animation: true,
+                                  padding: EdgeInsets.all(0),
+                                  lineHeight: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * .0065,
+                                  animationDuration: 2500,
+                                  percent: snapshot.data!,
+                                  linearStrokeCap: LinearStrokeCap.round,
+                                  progressColor: Color(0xff009966),
+                                ),
 
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * .0015,
-                      ),
-                      Text(
-                        "84% Compoleted ",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
+                                SizedBox(
+                                  height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * .0015,
+                                ),
+                                Text(
+                                  "${snapshot.data! * 100}% Completed ",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ]);
+                        } else {
+                          return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                LinearPercentIndicator(
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * .335,
+                                  animation: true,
+                                  padding: EdgeInsets.all(0),
+                                  lineHeight: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * .0065,
+                                  animationDuration: 2500,
+                                  percent: 0,
+                                  linearStrokeCap: LinearStrokeCap.round,
+                                  progressColor: Color(0xff009966),
+                                ),
+
+                                SizedBox(
+                                  height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * .0015,
+                                ),
+                                Text(
+                                  "0% Completed",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ]);
+                        }
+                      })
                     ],
                   ),
 

@@ -28,14 +28,13 @@ class _IncomeViewState extends State<IncomeView> {
   final DateTime _today = DateTime.now();
   DateTime _selectedDate = DateTime.now();
   final HiveService _hiveService = HiveService();
-  String _dateType = 'Gregorian';
+  // String _dateType = 'Gregorian';
 
   @override
   void initState() {
     super.initState();
     _loadIncomes();
     checkDate();
-    //initAll();
   }
 
   checkDate() {
@@ -49,8 +48,9 @@ class _IncomeViewState extends State<IncomeView> {
   Future<void> initAll() async {
     await _hiveService.initHive(boxName: 'dateTime');
     final stored = await _hiveService.getData('dateType');
+
     setState(() {
-      _dateType = stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
+      stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
       if (stored == "Ethiopian") {
         setState(() {
           _selectedDate = noww;

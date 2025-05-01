@@ -192,3 +192,12 @@ String formatPhoneNumberToShowable(String phoneNumber) {
 
   return '${phoneNumber.substring(0, 4)} ${phoneNumber.substring(4, 7)}-${phoneNumber.substring(7, 9)}-${phoneNumber.substring(9)}';
 }
+
+String trimString(String value, {int length = 10}) {
+  print(length);
+  if (value.length <= length) {
+    return value;
+  }
+
+  return value.substring(0, length);
+}

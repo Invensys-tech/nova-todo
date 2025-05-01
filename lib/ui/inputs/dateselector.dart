@@ -51,7 +51,7 @@ class _DateSelectorState extends State<DateSelector> {
   Widget build(BuildContext context) {
     return Container(
       child: TextFormField(
-        readOnly: true, // Prevents keyboard from showing
+        readOnly: true,
         controller: widget.controller,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),

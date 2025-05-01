@@ -345,12 +345,12 @@ class _ExpensespageState extends State<Expensespage> {
       print(et.day);
       _selectedDate = DateTime(et.year, et.month, et.day);
 
-     // String weekday = DateFormat('EEEE').format(et);
+      // String weekday = DateFormat('EEEE').format(et);
 
       // If you want it in Amharic (after you've initialized 'am_ET'):
       //String amWeekday = DateFormat('EEEE', 'am_ET').format(et);
 
-     // print(amWeekday);
+      // print(amWeekday);
       //print(weekday);
 
       // convert back to Gregorian midnight for querying
@@ -470,7 +470,10 @@ class _ExpensespageState extends State<Expensespage> {
                           children: [
                             Row(
                               children: [
-                                SizedBox(width: MediaQuery.of(context).size.width*.25,),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * .25,
+                                ),
                                 const Icon(
                                   Icons.trending_up_outlined,
                                   color: Color(0xff0d805e),
@@ -510,7 +513,7 @@ class _ExpensespageState extends State<Expensespage> {
                         left: MediaQuery.of(context).size.width * .05,
                         top: MediaQuery.of(context).size.height * .045,
                       ),
-                      child:  Text(
+                      child: Text(
                         translate("Transaction List"),
                         style: TextStyle(
                           fontSize: 16,
@@ -556,7 +559,14 @@ class _ExpensespageState extends State<Expensespage> {
                                   children: [
                                     SlidableAction(
                                       onPressed: (_) {
-                                        _expenseRepository.deleteExpense(e.id);
+                                        _expenseRepository.deleteExpense(
+                                          e.id,
+                                          (e.paidBy == "Bank"
+                                                  ? e.bankAccount
+                                                  : null)
+                                              as int?,
+                                          e.paidBy == "Bank" ? e.amount : null,
+                                        );
                                         _loadExpenses();
                                       },
                                       backgroundColor: Colors.red,
