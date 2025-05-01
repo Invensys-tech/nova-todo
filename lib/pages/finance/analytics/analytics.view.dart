@@ -109,7 +109,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
     final today = DateTime.now();
     final threeMonthsAgo = DateTime(today.year, today.month - 3, today.day);
     _endDateController.text = formatDate(today);
-    _startDateController.text = formatDate(threeMonthsAgo);
+   _startDateController.text = formatDate(threeMonthsAgo);
     _refreshExpenses();
   }
 
@@ -177,7 +177,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                               hintText: "Start Date",
                               controller: _startDateController,
                               icon: Icons.calendar_today,
-                              firstDate: DateTime(2000),
+                              firstDate: DateTime(1990),
                               lastDate: DateTime(2100),
                               initialDate: DateTime.now(),
                             ),
@@ -208,9 +208,9 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                             height: MediaQuery.of(context).size.height*.045,
                             child: DateSelector(
                               hintText: "Start Date",
-                              controller: _startDateController,
+                              controller: _endDateController,
                               icon: Icons.calendar_today,
-                              firstDate: DateTime(2000),
+                              firstDate: DateTime(1990),
                               lastDate: DateTime(2100),
                               initialDate: DateTime.now(),
                             ),

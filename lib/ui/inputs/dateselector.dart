@@ -98,7 +98,7 @@ class _DateSelectorState extends State<DateSelector> {
           DateTime initDate =
               widget.controller.text.isNotEmpty
                   ? widget.dateFormat.parse(widget.controller.text)
-                  : (widget.initialDate ?? DateTime.now());
+                  : DateTime.now();
 
           // DateTime initDate = initialDate ?? DateTime.now();
           DateTime? pickedDate = await showDatePicker(
@@ -108,9 +108,9 @@ class _DateSelectorState extends State<DateSelector> {
                     : const Locale('en'),
             context: context,
             initialDate:
-                _dateType == 'Ethiopian'
-                    ? DateTime.now().convertToEthiopian()
-                    : initDate,
+            _dateType == 'Ethiopian'
+                ? DateTime.now().convertToEthiopian()
+                : initDate,
             firstDate: widget.firstDate,
             lastDate: widget.lastDate,
             builder: (context, child) {

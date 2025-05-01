@@ -96,8 +96,7 @@ class _LoanViewState extends State<LoanView> {
                           "Alex Jhonson",
                           style: TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.w200,
-                            color: Colors.white.withOpacity(0.8),
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
 
@@ -121,9 +120,8 @@ class _LoanViewState extends State<LoanView> {
                           child: Text(
                             "Owes Me",
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w200,
-                              color: Colors.white.withOpacity(0.8),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
@@ -141,8 +139,7 @@ class _LoanViewState extends State<LoanView> {
                               "Phone",
                               style: TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.white.withOpacity(0.8),
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             SizedBox(
@@ -152,9 +149,8 @@ class _LoanViewState extends State<LoanView> {
                             Text(
                               "0911561789",
                               style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],
