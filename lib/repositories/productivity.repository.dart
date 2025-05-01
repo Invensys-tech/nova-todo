@@ -1,4 +1,5 @@
 import 'package:flutter_application_1/entities/productivity-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 
 class ProductivityRepository {
@@ -6,7 +7,7 @@ class ProductivityRepository {
     try {
       final data = await supabaseClient
           .from(Entities.PRODUCTIVITY.dbName)
-          .select('*');
+          .select('*').eq("user_id", userId);
       return data
           .map((productivity) => Productivity.fromJson(productivity))
           .toList();

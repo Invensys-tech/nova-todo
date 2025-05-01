@@ -125,6 +125,7 @@ import 'dart:convert';
 
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/entities/income-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -133,7 +134,7 @@ class Datamanager {
   Future<List<Expense>> fetchExpenseWithDateFilter(DateTime dateTime) async {
     final data = await Supabase.instance.client
         .from('expense')
-        .select('*')
+        .select('*').eq("userid",userId )
         .eq('date', getDateOnly(dateTime));
 
     return (data as List<dynamic>)
@@ -142,12 +143,20 @@ class Datamanager {
   }
 
   Future<List<Expense>> getExpense({DateTime? dateTime}) async {
-    print("My date time in the data manager");
-    print(dateTime);
-    if (dateTime != null) {
-      return await fetchExpenseWithDateFilter(dateTime);
-    } else {
-      return await fetchExpense();
+    try {
+      print("My date time in the data manager");
+      print(dateTime);
+      if (dateTime != null) {
+        return await fetchExpenseWithDateFilter(dateTime);
+      } else {
+        return await fetchExpense();
+      }
+    } catch (e) {
+      print('error type');
+      print(e.runtimeType);
+      print('error');
+      print(e);
+      rethrow;
     }
   }
 
@@ -159,7 +168,7 @@ class Datamanager {
   }
 
   Future<List<Loan>> fetchLoan() async {
-    final data = await Supabase.instance.client.from('loan').select('*');
+    final data = await Supabase.instance.client.from('loan').select('*').eq("userId", userId);
     return (data as List<dynamic>)
         .map((e) => Loan.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -185,7 +194,7 @@ class Datamanager {
   }
 
   Future<List<Bank>> fetchBanks() async {
-    final data = await Supabase.instance.client.from('bank').select('*');
+    final data = await Supabase.instance.client.from('bank').select('*').eq("userId", userId);
     return (data as List<dynamic>)
         .map((e) => Bank.fromJson(e as Map<String, dynamic>))
         .toList();

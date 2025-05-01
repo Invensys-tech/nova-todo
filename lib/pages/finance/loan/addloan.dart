@@ -675,7 +675,7 @@ class _AddLoanState extends State<AddLoan> {
                                               'type': _type.text,
                                               'bank': _bank.text,
                                               'phoneNumber': _phoneNumber.text,
-                                              'userId': 1,
+                                              'userId': userId,
                                               'date': formatDate(
                                                 _dateController.text,
                                               ),

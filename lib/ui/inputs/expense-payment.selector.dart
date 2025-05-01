@@ -71,10 +71,41 @@ class _PaidByAndSpecificFromInputContentState
         widget.paidByController.text.isNotEmpty
             ? widget.paidByController.text
             : null;
-    selectedSpecificFrom =
-        widget.specificFromController.text.isNotEmpty
-            ? widget.specificFromController.text
-            : null;
+    // selectedSpecificFrom =
+    //     widget.specificFromController.text.isNotEmpty
+    //         ? widget.specificFromController.text
+    //         : null;
+
+    if (selectedPaidBy != null && widget.onPaidByChanged != null) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        widget.onPaidByChanged!(selectedPaidBy!);
+      });
+    }
+
+    // 3️⃣ Once that future resolves, build your same mapping logic
+    widget.dataFuture.then((list) {
+      if (selectedPaidBy == "Partner") {
+        // mirror your build(): build partnerMapping
+        partnerMapping.clear();
+        for (var loan in list) {
+          partnerMapping[loan.loanerName] = loan.id;
+        }
+
+        // now find the controller’s saved value among those keys
+        final saved = widget.specificFromController.text;
+        if (saved.isNotEmpty && partnerMapping.containsKey(saved)) {
+          selectedSpecificFrom = saved;
+        }
+      } else if (selectedPaidBy == "Bank") {
+        // for banks you store the bank ID in the controller already
+        final saved = widget.specificFromController.text;
+        if (saved.isNotEmpty) {
+          selectedSpecificFrom = saved;
+        }
+      }
+      // trigger a rebuild so your dropdown picks up the initial value
+      setState(() {});
+    });
   }
 
   @override

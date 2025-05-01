@@ -7,6 +7,7 @@ import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/pages/auth/payment.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/localization/localization_delegate.dart';
@@ -30,7 +31,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'drawer/Seeting Page/SeetingPage.dart';
 
 bool isDark = true;
-
+int userId = 0;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   requestNotificationPermission();
@@ -69,7 +70,6 @@ void main() async {
     if (isSubscriptionActive) {
       initPage = InitPage.HOME;
     }
-
   } catch (e) {
     print('Error getting sub end date initializing Supabase');
   }
@@ -80,8 +80,8 @@ void main() async {
   if (languageCode != null) {
     await delegate.changeLocale(Locale(languageCode));
   }
+  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
   //runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
-   runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
 }
 
 Future<void> requestNotificationPermission() async {
@@ -150,6 +150,14 @@ class _MyAppState extends State<MyApp> {
     loadTheme();
     _checkAndListenSms();
     loabThemeApp();
+    GeId();
+  }
+
+  GeId() async {
+    int id=(await AuthService().findSession())['id'];
+    setState(() {
+      userId = id;
+    });
   }
 
   Future<void> initAll() async {
@@ -230,7 +238,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext appContext) {
-
     final localizationDelegate = LocalizedApp.of(context).delegate;
     return DynamicTheme(
       themeCollection: themeCollection,
@@ -240,8 +247,7 @@ class _MyAppState extends State<MyApp> {
           state: LocalizationProvider.of(appContext).state,
           // state: LocalizedApp.of(context).,
           child: MaterialApp(
-
-           // supportedLocales: localizationDelegate.supportedLocales,
+            // supportedLocales: localizationDelegate.supportedLocales,
             locale: localizationDelegate.currentLocale ?? Locale('en'),
             supportedLocales: const [
               Locale('en'), // English
