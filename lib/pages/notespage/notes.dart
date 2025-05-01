@@ -52,8 +52,11 @@ class _NotesPageState extends State<NotesPage> {
                     title: note.title,
                   ),
             ),
-          );
+          ).then((value) {
+            fetchNotes();
+          });
         },
+
         child: Container(
           width: MediaQuery.of(context).size.width * 0.45,
           padding: const EdgeInsets.all(8),
@@ -93,19 +96,20 @@ class _NotesPageState extends State<NotesPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         leading: GestureDetector(
-            onTap: (){
-              _scaffoldKey.currentState?.openDrawer();
-            },
-            child: Icon(Icons.menu, size: 27, )),
+          onTap: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+          child: Icon(Icons.menu, size: 27),
+        ),
         title: Row(
           children: [
             Text(translate("Notes")),
-            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            SizedBox(width: MediaQuery.of(context).size.width * .015),
             Container(
-                height: MediaQuery.of(context).size.height*.03,
-                width: MediaQuery.of(context).size.width*.06,
-                child: Image.asset('assets/Gif/Quotes.gif'))
-
+              height: MediaQuery.of(context).size.height * .03,
+              width: MediaQuery.of(context).size.width * .06,
+              child: Image.asset('assets/Gif/Quotes.gif'),
+            ),
           ],
         ),
       ),
@@ -114,7 +118,6 @@ class _NotesPageState extends State<NotesPage> {
         backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () async {
-
           PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
             context,
             screen: NoteQuil(note: ''),
@@ -129,12 +132,11 @@ class _NotesPageState extends State<NotesPage> {
         child: const Icon(Icons.add, color: Colors.white, size: 30),
       ),
 
-      drawer: Drawer(child: Drawerpage(),  backgroundColor: Colors.transparent),
+      drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-
             Expanded(
               child:
                   notes.isEmpty
@@ -146,43 +148,6 @@ class _NotesPageState extends State<NotesPage> {
                       )
                       : NotesList(notes: notes),
             ),
-
-            // Expanded(
-            //   child:
-            //       notes.isEmpty
-            //           ? const Center(
-            //             child: Text(
-            //               "No Notes Found",
-            //               style: TextStyle(color: Colors.white),
-            //             ),
-            //           )
-            //           : SingleChildScrollView(
-            //             child: Row(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 // Even index notes
-            //                 Expanded(
-            //                   child: Column(
-            //                     children: [
-            //                       for (int i = 0; i < notes.length; i += 2)
-            //                         buildNoteCard(notes[i]),
-            //                     ],
-            //                   ),
-            //                 ),
-            //                 const SizedBox(width: 8),
-            //                 // Odd index notes
-            //                 Expanded(
-            //                   child: Column(
-            //                     children: [
-            //                       for (int i = 1; i < notes.length; i += 2)
-            //                         buildNoteCard(notes[i]),
-            //                     ],
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            // ),
           ],
         ),
       ),

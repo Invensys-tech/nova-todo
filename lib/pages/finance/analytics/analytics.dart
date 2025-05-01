@@ -1,610 +1,10 @@
-// import 'package:flutter/material.dart';
-
-// class AnalyticsPage extends StatefulWidget {
-//   const AnalyticsPage({super.key});
-
-//   @override
-//   State<AnalyticsPage> createState() => _AnalyticsPageState();
-// }
-
-// class _AnalyticsPageState extends State<AnalyticsPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: EdgeInsets.symmetric(
-//         horizontal: MediaQuery.of(context).size.width * 0.045,
-//       ),
-//       child: Column(
-//         children: [
-//           Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-//               Container(
-//                 width: MediaQuery.of(context).size.width * 0.9,
-//                 height: MediaQuery.of(context).size.height * 0.12,
-//                 decoration: BoxDecoration(
-//                   color: Color(0xff202020),
-//                   borderRadius: BorderRadius.all(Radius.circular(15)),
-//                 ),
-//                 padding: EdgeInsets.symmetric(
-//                   horizontal: MediaQuery.of(context).size.width * 0.045,
-//                   vertical: MediaQuery.of(context).size.height * 0.0095,
-//                 ),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Row(
-//                       children: [
-//                         Text(
-//                           'Total Balance',
-//                           style: TextStyle(
-//                             fontSize: 12,
-//                             fontWeight: FontWeight.w200,
-//                             color: Colors.white.withOpacity(0.8),
-//                           ),
-//                         ),
-//                         SizedBox(
-//                           width: MediaQuery.of(context).size.width * 0.29,
-//                         ),
-//                         Text(
-//                           'Total Balance',
-//                           style: TextStyle(
-//                             fontSize: 12,
-//                             fontWeight: FontWeight.w200,
-//                             color: Colors.white.withOpacity(0.8),
-//                           ),
-//                         ),
-//                         IconButton(
-//                           onPressed: () {},
-//                           icon: Icon(Icons.arrow_drop_down),
-//                           color: Colors.white,
-//                         ),
-//                       ],
-//                     ),
-//                     Text(
-//                       "\$ 99,000",
-//                       style: TextStyle(
-//                         fontSize: 18,
-//                         fontWeight: FontWeight.w500,
-//                         color: Colors.white.withOpacity(0.8),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   Container(
-//                     width: MediaQuery.of(context).size.width * 0.43,
-//                     height: MediaQuery.of(context).size.height * 0.085,
-//                     decoration: BoxDecoration(
-//                       color: Color(0xff202020),
-//                       borderRadius: BorderRadius.all(Radius.circular(11)),
-//                     ),
-//                     padding: EdgeInsets.symmetric(
-//                       horizontal: MediaQuery.of(context).size.width * 0.045,
-//                       vertical: MediaQuery.of(context).size.height * 0.0095,
-//                     ),
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         Text(
-//                           'Total Income',
-//                           style: TextStyle(
-//                             fontSize: 11,
-//                             fontWeight: FontWeight.w200,
-//                             color: Colors.white.withOpacity(0.8),
-//                           ),
-//                         ),
-//                         SizedBox(
-//                           height: MediaQuery.of(context).size.height * 0.003,
-//                         ),
-//                         Text(
-//                           '\$ 15,000',
-//                           style: TextStyle(
-//                             fontSize: 15,
-//                             fontWeight: FontWeight.w200,
-//                             color: Colors.white.withOpacity(0.8),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                   Container(
-//                     width: MediaQuery.of(context).size.width * 0.43,
-//                     height: MediaQuery.of(context).size.height * 0.085,
-//                     decoration: BoxDecoration(
-//                       color: Color(0xff202020),
-//                       borderRadius: BorderRadius.all(Radius.circular(11)),
-//                     ),
-//                     padding: EdgeInsets.symmetric(
-//                       horizontal: MediaQuery.of(context).size.width * 0.045,
-//                       vertical: MediaQuery.of(context).size.height * 0.0095,
-//                     ),
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         Text(
-//                           'Total Expense',
-//                           style: TextStyle(
-//                             fontSize: 11,
-//                             fontWeight: FontWeight.w200,
-//                             color: Colors.white.withOpacity(0.8),
-//                           ),
-//                         ),
-//                         SizedBox(
-//                           height: MediaQuery.of(context).size.height * 0.003,
-//                         ),
-//                         Text(
-//                           '\$ -5,000',
-//                           style: TextStyle(
-//                             fontSize: 15,
-//                             fontWeight: FontWeight.w200,
-//                             color: Colors.white.withOpacity(0.8),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ],
-//               ),
-
-//               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-//               Container(
-//                 child: Column(
-//                   children: [
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: [
-//                         Text(
-//                           "Account",
-//                           style: TextStyle(fontWeight: FontWeight.w500),
-//                         ),
-//                         Text("See All"),
-//                       ],
-//                     ),
-
-//                     Container(
-//                       margin: EdgeInsets.symmetric(
-//                         vertical: MediaQuery.of(context).size.height * 0.01,
-//                       ),
-//                       width: MediaQuery.of(context).size.width * 1,
-//                       height: MediaQuery.of(context).size.height * 0.083,
-//                       padding: EdgeInsets.symmetric(
-//                         horizontal: MediaQuery.of(context).size.width * 0.02,
-//                         vertical: MediaQuery.of(context).size.height * 0.003,
-//                       ),
-//                       decoration: BoxDecoration(
-//                         color: Color(0xff292929),
-//                         borderRadius: BorderRadius.all(Radius.circular(10)),
-//                       ),
-//                       child: Row(
-//                         children: [
-//                           Container(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.height * 0.045,
-//                             decoration: BoxDecoration(
-//                               color: Color(0xff8466fc),
-//                               shape: BoxShape.circle,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.width * 0.045,
-//                           ),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               SizedBox(
-//                                 height:
-//                                     MediaQuery.of(context).size.height * 0.01,
-//                               ),
-//                               Text(
-//                                 "Commercial bank of eth.",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                               Text(
-//                                 "10000000000000",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           SizedBox(
-//                             width: MediaQuery.of(context).size.width * 0.185,
-//                           ),
-//                           Text(
-//                             '\$ 1,000,000',
-//                             style: TextStyle(
-//                               fontSize: 14,
-//                               fontWeight: FontWeight.w200,
-//                               color: Colors.white.withOpacity(0.8),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     Container(
-//                       margin: EdgeInsets.symmetric(
-//                         vertical: MediaQuery.of(context).size.height * 0.01,
-//                       ),
-//                       width: MediaQuery.of(context).size.width * 1,
-//                       height: MediaQuery.of(context).size.height * 0.083,
-//                       padding: EdgeInsets.symmetric(
-//                         horizontal: MediaQuery.of(context).size.width * 0.02,
-//                         vertical: MediaQuery.of(context).size.height * 0.003,
-//                       ),
-//                       decoration: BoxDecoration(
-//                         color: Color(0xff292929),
-//                         borderRadius: BorderRadius.all(Radius.circular(10)),
-//                       ),
-//                       child: Row(
-//                         children: [
-//                           Container(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.height * 0.045,
-//                             decoration: BoxDecoration(
-//                               color: Color(0xff8466fc),
-//                               shape: BoxShape.circle,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.width * 0.045,
-//                           ),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               SizedBox(
-//                                 height:
-//                                     MediaQuery.of(context).size.height * 0.01,
-//                               ),
-//                               Text(
-//                                 "Commercial bank of eth.",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                               Text(
-//                                 "10000000000000",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           SizedBox(
-//                             width: MediaQuery.of(context).size.width * 0.185,
-//                           ),
-//                           Text(
-//                             '\$ 1,000,000',
-//                             style: TextStyle(
-//                               fontSize: 14,
-//                               fontWeight: FontWeight.w200,
-//                               color: Colors.white.withOpacity(0.8),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     Container(
-//                       margin: EdgeInsets.symmetric(
-//                         vertical: MediaQuery.of(context).size.height * 0.01,
-//                       ),
-//                       width: MediaQuery.of(context).size.width * 1,
-//                       height: MediaQuery.of(context).size.height * 0.083,
-//                       padding: EdgeInsets.symmetric(
-//                         horizontal: MediaQuery.of(context).size.width * 0.02,
-//                         vertical: MediaQuery.of(context).size.height * 0.003,
-//                       ),
-//                       decoration: BoxDecoration(
-//                         color: Color(0xff292929),
-//                         borderRadius: BorderRadius.all(Radius.circular(10)),
-//                       ),
-//                       child: Row(
-//                         children: [
-//                           Container(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.height * 0.045,
-//                             decoration: BoxDecoration(
-//                               color: Color(0xff8466fc),
-//                               shape: BoxShape.circle,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.width * 0.045,
-//                           ),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               SizedBox(
-//                                 height:
-//                                     MediaQuery.of(context).size.height * 0.01,
-//                               ),
-//                               Text(
-//                                 "Commercial bank of eth.",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                               Text(
-//                                 "10000000000000",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           SizedBox(
-//                             width: MediaQuery.of(context).size.width * 0.185,
-//                           ),
-//                           Text(
-//                             '\$ 1,000,000',
-//                             style: TextStyle(
-//                               fontSize: 14,
-//                               fontWeight: FontWeight.w200,
-//                               color: Colors.white.withOpacity(0.8),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-
-//               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-
-//               Container(
-//                 child: Column(
-//                   children: [
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: [
-//                         Text(
-//                           "Account",
-//                           style: TextStyle(fontWeight: FontWeight.w500),
-//                         ),
-//                         Text("See All"),
-//                       ],
-//                     ),
-
-//                     Container(
-//                       margin: EdgeInsets.symmetric(
-//                         vertical: MediaQuery.of(context).size.height * 0.01,
-//                       ),
-//                       width: MediaQuery.of(context).size.width * 1,
-//                       height: MediaQuery.of(context).size.height * 0.083,
-//                       padding: EdgeInsets.symmetric(
-//                         horizontal: MediaQuery.of(context).size.width * 0.02,
-//                         vertical: MediaQuery.of(context).size.height * 0.003,
-//                       ),
-//                       decoration: BoxDecoration(
-//                         color: Color(0xff292929),
-//                         borderRadius: BorderRadius.all(Radius.circular(10)),
-//                       ),
-//                       child: Row(
-//                         children: [
-//                           Container(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.height * 0.045,
-//                             decoration: BoxDecoration(
-//                               color: Color(0xff8466fc),
-//                               shape: BoxShape.circle,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.width * 0.045,
-//                           ),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               SizedBox(
-//                                 height:
-//                                     MediaQuery.of(context).size.height * 0.01,
-//                               ),
-//                               Text(
-//                                 "Commercial bank of eth.",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                               Text(
-//                                 "10000000000000",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           SizedBox(
-//                             width: MediaQuery.of(context).size.width * 0.185,
-//                           ),
-//                           Text(
-//                             '\$ 1,000,000',
-//                             style: TextStyle(
-//                               fontSize: 14,
-//                               fontWeight: FontWeight.w200,
-//                               color: Colors.white.withOpacity(0.8),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     Container(
-//                       margin: EdgeInsets.symmetric(
-//                         vertical: MediaQuery.of(context).size.height * 0.01,
-//                       ),
-//                       width: MediaQuery.of(context).size.width * 1,
-//                       height: MediaQuery.of(context).size.height * 0.083,
-//                       padding: EdgeInsets.symmetric(
-//                         horizontal: MediaQuery.of(context).size.width * 0.02,
-//                         vertical: MediaQuery.of(context).size.height * 0.003,
-//                       ),
-//                       decoration: BoxDecoration(
-//                         color: Color(0xff292929),
-//                         borderRadius: BorderRadius.all(Radius.circular(10)),
-//                       ),
-//                       child: Row(
-//                         children: [
-//                           Container(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.height * 0.045,
-//                             decoration: BoxDecoration(
-//                               color: Color(0xff8466fc),
-//                               shape: BoxShape.circle,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.width * 0.045,
-//                           ),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               SizedBox(
-//                                 height:
-//                                     MediaQuery.of(context).size.height * 0.01,
-//                               ),
-//                               Text(
-//                                 "Commercial bank of eth.",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                               Text(
-//                                 "10000000000000",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           SizedBox(
-//                             width: MediaQuery.of(context).size.width * 0.185,
-//                           ),
-//                           Text(
-//                             '\$ 1,000,000',
-//                             style: TextStyle(
-//                               fontSize: 14,
-//                               fontWeight: FontWeight.w200,
-//                               color: Colors.white.withOpacity(0.8),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     Container(
-//                       margin: EdgeInsets.symmetric(
-//                         vertical: MediaQuery.of(context).size.height * 0.01,
-//                       ),
-//                       width: MediaQuery.of(context).size.width * 1,
-//                       height: MediaQuery.of(context).size.height * 0.083,
-//                       padding: EdgeInsets.symmetric(
-//                         horizontal: MediaQuery.of(context).size.width * 0.02,
-//                         vertical: MediaQuery.of(context).size.height * 0.003,
-//                       ),
-//                       decoration: BoxDecoration(
-//                         color: Color(0xff292929),
-//                         borderRadius: BorderRadius.all(Radius.circular(10)),
-//                       ),
-//                       child: Row(
-//                         children: [
-//                           Container(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.height * 0.045,
-//                             decoration: BoxDecoration(
-//                               color: Color(0xff8466fc),
-//                               shape: BoxShape.circle,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: MediaQuery.of(context).size.height * 0.045,
-//                             width: MediaQuery.of(context).size.width * 0.045,
-//                           ),
-//                           Column(
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               SizedBox(
-//                                 height:
-//                                     MediaQuery.of(context).size.height * 0.01,
-//                               ),
-//                               Text(
-//                                 "Commercial bank of eth.",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                               Text(
-//                                 "10000000000000",
-//                                 style: TextStyle(
-//                                   fontSize: 11,
-//                                   fontWeight: FontWeight.w200,
-//                                   color: Colors.white.withOpacity(0.8),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                           SizedBox(
-//                             width: MediaQuery.of(context).size.width * 0.185,
-//                           ),
-//                           Text(
-//                             '\$ 1,000,000',
-//                             style: TextStyle(
-//                               fontSize: 14,
-//                               fontWeight: FontWeight.w200,
-//                               color: Colors.white.withOpacity(0.8),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
+import 'package:flutter_application_1/entities/income-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/finance/analytics/analytics.view.dart';
 import 'package:flutter_application_1/pages/finance/common/Expenses.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
@@ -613,6 +13,7 @@ import 'package:flutter_application_1/repositories/expense.repository.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:slider_bar_chart/slider_bar_chart.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AnalyticsPage extends StatefulWidget {
   final Datamanager datamanager;
@@ -623,6 +24,43 @@ class AnalyticsPage extends StatefulWidget {
 }
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
+  double _totalBankExpense = 0.0;
+  double _totalBankIncome = 0.0;
+  late Future<List<Bank>> _banksFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _banksFuture = Datamanager().getBanks();
+  }
+
+  Future<void> _fetchAndComputeBankStats() async {
+    // final expenses = await widget.datamanager.fetchExpense();
+    final expenses = await Supabase.instance.client
+        .from('expense')
+        .select('*')
+        .eq('userid', userId);
+
+    final incomes = await Supabase.instance.client
+        .from('incomes')
+        .select('*')
+        .eq('user_id', userId);
+
+    final parsedIncomes =
+        (incomes as List)
+            .map((e) => Income.fromJson(e as Map<String, dynamic>))
+            .toList();
+    final parsedExpenses =
+        (expenses as List)
+            .map((e) => Expense.fromJson(e as Map<String, dynamic>))
+            .toList();
+
+    setState(() {
+      _totalBankExpense = widget.datamanager.totalBankExpense(parsedExpenses);
+      _totalBankIncome = widget.datamanager.totalBankIncome(parsedIncomes);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -639,8 +77,33 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                 CrossAxisAlignment.start, // Move this up from the nested Column
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
               // Balance container
-              BankBalance(total: 34.0, expense: 10.0, income: 90.8),
+              FutureBuilder(
+                future: _banksFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text("Error: ${snapshot.error}"));
+                  }
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Text("No bank data found.");
+                  }
+                  List<Bank> banks = snapshot.data!;
+                  double totalBalance = banks.fold(
+                    0.0,
+                    (sum, bank) => sum + bank.balance,
+                  );
+                  return BankBalance(
+                    total: totalBalance,
+                    expense: _totalBankExpense,
+                    income: _totalBankIncome,
+                  );
+                },
+              ),
+
               // Income and Expense containers
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               // Add more content to ensure scrolling
@@ -664,8 +127,14 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(translate("Account"), style: TextStyle(fontWeight: FontWeight.w500)),
-            Text(translate("See All"), style: TextStyle(fontWeight: FontWeight.w500)),
+            Text(
+              translate("Account"),
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            Text(
+              translate("See All"),
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
           ],
         ),
         SizedBox(height: MediaQuery.of(context).size.height * .005),
@@ -691,6 +160,10 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                         accoutnumber: banks[index].accountNumber,
                         balance: banks[index].balance,
                         datamanager: widget.datamanager,
+                        bankName: banks[index].accountBank,
+                        accountBank: bank.accountBank,
+                        branch: bank.branch,
+                        balace: bank.balance,
                       ),
                     ],
                   );

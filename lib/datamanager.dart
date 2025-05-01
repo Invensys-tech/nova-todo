@@ -126,6 +126,7 @@ import 'dart:convert';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/entities/income-entity.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -134,7 +135,8 @@ class Datamanager {
   Future<List<Expense>> fetchExpenseWithDateFilter(DateTime dateTime) async {
     final data = await Supabase.instance.client
         .from('expense')
-        .select('*').eq("userid",userId )
+        .select('*')
+        .eq("userid", userId)
         .eq('date', getDateOnly(dateTime));
 
     return (data as List<dynamic>)
@@ -142,11 +144,46 @@ class Datamanager {
         .toList();
   }
 
-  Future<List<Expense>> getExpense({DateTime? dateTime}) async {
+  Future<List<Expense>> fetchExpensesBetweenDates({
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    // convert to "YYYY-MM-DD" (or whatever your getDateOnly produces)
+    final start = getDateOnly(startDate);
+    final end = getDateOnly(endDate);
+
+    print("IN the datamager");
+    print(start);
+    print(end);
+
+    final data = await Supabase.instance.client
+        .from('expense')
+        .select('*')
+        .eq('userid', userId)
+        .gte('date', start) // date >= start
+        .lte('date', end) // date <= end
+        .order('date', ascending: true);
+
+    return (data as List<dynamic>)
+        .map((e) => Expense.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<Expense>> getExpense({
+    DateTime? dateTime,
+    bool? analytics = false,
+    DateTime? endDate = null,
+  }) async {
     try {
       print("My date time in the data manager");
       print(dateTime);
       if (dateTime != null) {
+        if (analytics == true) {
+          return await fetchExpensesBetweenDates(
+            startDate: dateTime,
+            endDate: endDate ?? DateTime.now(),
+          );
+        }
         return await fetchExpenseWithDateFilter(dateTime);
       } else {
         return await fetchExpense();
@@ -168,7 +205,10 @@ class Datamanager {
   }
 
   Future<List<Loan>> fetchLoan() async {
-    final data = await Supabase.instance.client.from('loan').select('*').eq("userId", userId);
+    final data = await Supabase.instance.client
+        .from('loan')
+        .select('*')
+        .eq("userId", (await AuthService().findSession())['id']);
     return (data as List<dynamic>)
         .map((e) => Loan.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -194,7 +234,10 @@ class Datamanager {
   }
 
   Future<List<Bank>> fetchBanks() async {
-    final data = await Supabase.instance.client.from('bank').select('*').eq("userId", userId);
+    final data = await Supabase.instance.client
+        .from('bank')
+        .select('*')
+        .eq("userId", userId);
     return (data as List<dynamic>)
         .map((e) => Bank.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -226,9 +269,12 @@ class Datamanager {
   }
 
   Future<List<Goal>> fetchGoals() async {
+    print("My user id");
+    print(userId);
     final data = await Supabase.instance.client
         .from('goal')
         .select('*  ,sub_goal(*,  sub_goal_task(*))')
+        .eq('userId', userId)
         .order('created_at', ascending: false);
     return (data as List<dynamic>).map((e) => Goal.fromJson(e)).toList();
   }

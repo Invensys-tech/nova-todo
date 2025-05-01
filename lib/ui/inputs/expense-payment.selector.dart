@@ -62,7 +62,7 @@ class _PaidByAndSpecificFromInputContentState
     extends State<_PaidByAndSpecificFromInputContent> {
   String? selectedPaidBy;
   String? selectedSpecificFrom;
-  Map<String, int> partnerMapping = {};
+  Map<String, String> partnerMapping = {};
 
   @override
   void initState() {
@@ -88,8 +88,12 @@ class _PaidByAndSpecificFromInputContentState
         // mirror your build(): build partnerMapping
         partnerMapping.clear();
         for (var loan in list) {
-          partnerMapping[loan.loanerName] = loan.id;
+          final key = '${loan.loanerName}-${loan.bank}-${loan.phoneNumber}';
+          partnerMapping[key] = loan.id;
         }
+        // for (var loan in list) {
+        //   partnerMapping[loan.loanerName] = loan.id;
+        // }
 
         // now find the controller’s saved value among those keys
         final saved = widget.specificFromController.text;
@@ -189,14 +193,20 @@ class _PaidByAndSpecificFromInputContentState
                     if (selectedPaidBy == "Partner") {
                       partnerMapping.clear();
                       for (var loan in snapshot.data as List) {
-                        partnerMapping[loan.loanerName] = loan.id;
+                        final key =
+                            '${loan.loanerName}-${loan.bank}-${loan.phoneNumber}';
+                        partnerMapping[key] = loan.loanerName;
                       }
+                      print(partnerMapping);
+                      // for (var loan in snapshot.data as List) {
+                      //   partnerMapping[loan.loanerName] = loan.id;
+                      // }
 
                       dynamicItems =
                           partnerMapping.entries
                               .map(
                                 (partner) => {
-                                  "value": partner.key,
+                                  "value": partner.value,
                                   "label": partner.key,
                                 },
                               )

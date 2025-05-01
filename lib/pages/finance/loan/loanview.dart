@@ -93,7 +93,7 @@ class _LoanViewState extends State<LoanView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "Alex Jhonson",
+                          widget.name,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w200,
@@ -150,7 +150,7 @@ class _LoanViewState extends State<LoanView> {
                                   MediaQuery.of(context).size.height * 0.007,
                             ),
                             Text(
-                              "0911561789",
+                              widget.phoneNumber,
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w200,
@@ -175,7 +175,7 @@ class _LoanViewState extends State<LoanView> {
                                   MediaQuery.of(context).size.height * 0.007,
                             ),
                             Text(
-                              "\$ 500,000",
+                              "ETB ${widget.loanAmount}",
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w200,

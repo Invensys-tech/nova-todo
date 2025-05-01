@@ -154,7 +154,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   GeId() async {
-    int id=(await AuthService().findSession())['id'];
+    int id = (await AuthService().findSession())['id'];
     setState(() {
       userId = id;
     });
@@ -163,7 +163,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> initAll() async {
     HiveService hiveService3 = HiveService();
     await hiveService3.initHive(boxName: "dateTime");
-    final stored = await hiveService3.getData('dateType');
+    final stored = await hiveService3.getData('dateTime');
     setState(() {
       stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
       if (stored == "Ethiopian") {

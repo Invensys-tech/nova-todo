@@ -559,7 +559,14 @@ class _ExpensespageState extends State<Expensespage> {
                                   children: [
                                     SlidableAction(
                                       onPressed: (_) {
-                                        _expenseRepository.deleteExpense(e.id);
+                                        _expenseRepository.deleteExpense(
+                                          e.id,
+                                          (e.paidBy == "Bank"
+                                                  ? e.bankAccount
+                                                  : null)
+                                              as int?,
+                                          e.paidBy == "Bank" ? e.amount : null,
+                                        );
                                         _loadExpenses();
                                       },
                                       backgroundColor: Colors.red,
