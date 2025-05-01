@@ -470,7 +470,7 @@ class _AddExpenseState extends State<AddExpense> {
                                             'date': formatDate(
                                               _dateController.text,
                                             ),
-                                            'userid': 1,
+                                            'userid': userId,
                                           });
 
                                       ScaffoldMessenger.of(
@@ -509,7 +509,7 @@ class _AddExpenseState extends State<AddExpense> {
                                               'bank': 'Expense',
                                               'loanerName': loanerIdOrName,
                                               'phoneNumber': phone,
-                                              'userId': 1,
+                                              'userId': userId,
                                             });
                                       }
 

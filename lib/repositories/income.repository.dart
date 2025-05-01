@@ -1,5 +1,6 @@
 import 'package:ethiopian_datetime/ethiopian_datetime.dart';
 import 'package:flutter_application_1/entities/income-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
@@ -36,7 +37,7 @@ class IncomeRepository {
       if (queryDate != null) {
         rawData = await supabaseClient
             .from(Entities.INCOME.dbName)
-            .select("*")
+            .select("*").eq('user_id', userId)
             .eq('date', getDateOnly(queryDate));
       } else {
         rawData = await supabaseClient.from(Entities.INCOME.dbName).select("*");

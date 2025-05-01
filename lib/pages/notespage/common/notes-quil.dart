@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/notes-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/repositories/notes.repository.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
@@ -81,7 +82,7 @@ class _NoteQuilState extends State<NoteQuil> {
     await NotesRepository().createNote({
       'title': title.controller.text,
       'notes': json,
-      'user_id': 1,
+      'user_id': userId,
       'color': _selectedHex,
     });
     Navigator.pop(context);

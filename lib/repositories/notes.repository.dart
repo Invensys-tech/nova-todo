@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/entities/notes-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class NotesRepository {
   Future<List<Note>> getNotes() async {
     try {
-      final data = await supabaseClient.from(Entities.NOTE.dbName).select('*');
+      final data = await supabaseClient.from(Entities.NOTE.dbName).select('*').eq("user_id", userId);
       return data.map((note) => Note.fromJson(note)).toList();
     } catch (e) {
       throw Exception("Error getting notes!");

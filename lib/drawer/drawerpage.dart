@@ -83,7 +83,7 @@ class _DrawerpageState extends State<Drawerpage> {
               children: [
                 Image.asset(
                   "assets/Images/VitaNew.png",
-                  width: MediaQuery.of(context).size.width * .1,
+                  width: MediaQuery.of(context).size.width * .09,
                   height: MediaQuery.of(context).size.height * .045,
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * .005),

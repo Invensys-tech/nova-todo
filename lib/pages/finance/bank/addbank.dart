@@ -280,7 +280,7 @@ class _AddBankState extends State<AddBank> {
                                               'accountNumber': _accNo.text,
                                               'accountBank': _bank.text,
                                               'branch': _branch.text,
-                                              'userId': 1,
+                                              'userId': userId,
                                               'accountType': _type.text,
                                             });
 
