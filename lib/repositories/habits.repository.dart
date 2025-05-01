@@ -185,26 +185,26 @@ class HabitsRepository {
         throw Exception('Error creating habit');
       }
 
-      final createdHabit =
-          await supabaseClient
-              .from(Entities.HABITS.dbName)
-              .select('id')
-              .order('created_at', ascending: false)
-              .maybeSingle();
+      final createdHabit = await supabaseClient
+          .from(Entities.HABITS.dbName)
+          .select('id')
+          .order('created_at', ascending: false)
+          .limit(1);
 
-      if (createdHabit == null) {
+      if (createdHabit.isEmpty) {
         throw Exception('Habit not created');
       }
 
       final habitHistoryResponse = await supabaseClient
           .from(Entities.HABITHISTORY.dbName)
           .insert({
-            'habit_id': createdHabit['id'],
+            'habit_id': createdHabit[0]['id'],
             'frequency': habit.frequency,
             'repetitions': habit.repetitions ?? [],
             'started_at': getDateOnly(DateTime.now()),
             'dates': [],
             'type': habit.type,
+            'is_active': true,
           })
           .count(CountOption.exact);
 
@@ -212,13 +212,13 @@ class HabitsRepository {
         await supabaseClient
             .from(Entities.HABITS.dbName)
             .delete()
-            .eq('id', createdHabit['id']);
+            .eq('id', createdHabit[0]['id']);
       }
 
       return true;
     } catch (e) {
       print('error creating habit');
-      // print(e);
+      print(e);
       rethrow;
     }
   }
@@ -456,6 +456,7 @@ class HabitsRepository {
               'started_at': getDateOnly(DateTime.now()),
               'dates': [],
               'type': habit.type,
+              'is_active': false,
             })
             .count(CountOption.exact);
       }
@@ -498,9 +499,10 @@ class HabitsRepository {
       final response = await supabaseClient
           .from(Entities.HABITHISTORY.dbName)
           .select()
-          .eq('habit_id', habitId);
+          .eq('habit_id', habitId)
+          .neq('is_active', true);
 
-      print(response);
+      // print(response);
 
       List<HabitHistory> habitHistories =
           response

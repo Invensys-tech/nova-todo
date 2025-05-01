@@ -7,10 +7,12 @@ import 'package:flutter_application_1/pages/homepage/daily-report.dart';
 import 'package:flutter_application_1/pages/homepage/dashboard-components/dashboard.expense.item.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
 import 'package:flutter_application_1/services/analytics.service.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:time_interval_picker/time_interval_picker.dart';
 
@@ -28,6 +30,7 @@ class _DashboardState extends State<Dashboard> {
   final expenseAnalytics = AnalyticsService.getExpense();
   final incomeAnalytics = AnalyticsService.getIncome();
   final goalAnalytics = AnalyticsService.getGoalAnalytics();
+  final userInfo = AuthService().findSession();
 
   List<dynamic> expenses = [
     {
@@ -178,7 +181,7 @@ class _DashboardState extends State<Dashboard> {
                             );
                           },
                           child: Text(
-                            "Jan 23, 2025",
+                            DateFormat('MMM d, y').format(DateTime.now()),
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
@@ -187,25 +190,35 @@ class _DashboardState extends State<Dashboard> {
                         ),
 
                         SizedBox(width: MediaQuery.of(context).size.width * .35),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                             translate( "Good Morning"),
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                            Text(
-                              "Abebe",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
+                        FutureBuilder(future: userInfo, builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  translate( "Good Morning"),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                                Text(
+                                  snapshot.data?['name'] ?? '',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            if (snapshot.hasError) {
+                              return Center(child: Text('oh snap...'));
+                            } else {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                          }
+                        }),
                       ],
                     ),
                   ),
