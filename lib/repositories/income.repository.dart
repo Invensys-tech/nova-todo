@@ -21,6 +21,7 @@ class IncomeRepository {
     try {
       final List<dynamic> rawData;
       print('Original dateTime: $dateTime');
+      print(isEthiopian);
 
       DateTime? queryDate = dateTime;
 

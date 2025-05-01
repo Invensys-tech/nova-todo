@@ -35,7 +35,6 @@ class _IncomeViewState extends State<IncomeView> {
     super.initState();
     _loadIncomes();
     checkDate();
-    //initAll();
   }
 
   checkDate() {

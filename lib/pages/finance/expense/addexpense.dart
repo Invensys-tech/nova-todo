@@ -395,96 +395,36 @@ class _AddExpenseState extends State<AddExpense> {
                         child: ElevatedButton(
                           onPressed:
                               isLoading
-<<<<<<< HEAD
                                   ? null
-=======
-                                  ? null // 👈 Disables the button when loading
->>>>>>> fc95da0aa80e7ee29b66a84a717bc935dde9a8eb
                                   : () async {
-                                    if (_formKey.currentState!.validate()) {
-                                      setState(() {
-                                        isLoading = true;
-                                      });
+                                    if (!_formKey.currentState!.validate())
+                                      return;
 
-                                      final bankId = _paymentController.text;
-                                      final expenseAmt =
-                                          double.tryParse(
-                                            _amountController.text,
-                                          ) ??
-                                          0.0;
+                                    setState(() => isLoading = true);
 
-                                      try {
+                                    final paidBy = _paidByController.text;
+                                    final paymentValue =
+                                        _paymentController.text;
+                                    final expenseAmt =
+                                        double.tryParse(
+                                          _amountController.text,
+                                        ) ??
+                                        0.0;
+
+                                    try {
+                                      // 1) If paying by Bank, check & update bank balance first
+                                      if (paidBy == 'Bank') {
                                         final bankRes =
                                             await Supabase.instance.client
                                                 .from('bank')
                                                 .select('balance')
-                                                .eq('id', bankId)
+                                                .eq('id', paymentValue)
                                                 .single();
-<<<<<<< HEAD
-=======
-                                        // if (bankRes.error != null) {
-                                        //   throw bankRes.error!;
-                                        // }
->>>>>>> fc95da0aa80e7ee29b66a84a717bc935dde9a8eb
-
-                                        print(bankRes);
                                         final currentBalance =
                                             (bankRes['balance'] as num)
                                                 .toDouble();
-                                        if (currentBalance >= expenseAmt) {
-                                          final newBalance =
-                                              currentBalance - expenseAmt;
-                                          final upd = await Supabase
-                                              .instance
-                                              .client
-                                              .from('bank')
-                                              .update({'balance': newBalance})
-                                              .eq('id', bankId);
-                                          final expenseResponse = await Supabase
-                                              .instance
-                                              .client
-                                              .from('expense')
-                                              .insert({
-                                                'amount':
-                                                    double.tryParse(
-                                                      _amountController.text,
-                                                    ) ??
-                                                    0.0,
-                                                'expenseName':
-                                                    _expenseNameController.text,
-                                                'category':
-                                                    _expenseCategoryController
-                                                        .text,
-                                                'type':
-                                                    _expenseTypeController.text,
-                                                'bankAccount':
-                                                    _paidByController.text ==
-                                                            "Partner"
-                                                        ? null
-                                                        : _paymentController
-                                                            .text,
-                                                'paidBy':
-                                                    _paidByController.text,
-                                                'description':
-                                                    _descriptionController.text,
-                                                'date': formatDate(
-                                                  _dateController.text,
-                                                ),
-                                                'userid': 1,
-                                              });
-                                          print("Expense added successfully!");
 
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                "Expense added successfully!",
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          // Not enough funds
+                                        if (currentBalance < expenseAmt) {
                                           ScaffoldMessenger.of(
                                             context,
                                           ).showSnackBar(
@@ -495,71 +435,94 @@ class _AddExpenseState extends State<AddExpense> {
                                               backgroundColor: Colors.red,
                                             ),
                                           );
-                                        }
-                                        // Insert expense
-
-                                        if (_paidByController.text ==
-                                            "Partner") {
-                                          var specific =
-                                              _paymentController.text;
-
-                                          final x = await Supabase
-                                              .instance
-                                              .client
-                                              .from('loan')
-                                              .select("*")
-                                              .eq("loanerName", specific);
-
-                                          try {
-                                            final singleLoanResponse =
-                                                await Supabase.instance.client
-                                                    .from('loan')
-                                                    .insert({
-                                                      'amount':
-                                                          double.tryParse(
-                                                            _amountController
-                                                                .text,
-                                                          ) ??
-                                                          0.0,
-                                                      'type': "Payable",
-
-                                                      'date': formatDate(
-                                                        _dateController.text,
-                                                      ),
-                                                      'bank': "Expense",
-                                                      'loanerName': specific,
-                                                      'phoneNumber':
-                                                          x[0]['phonenumber'],
-                                                      'userId': 1,
-                                                    });
-                                          } catch (e) {
-                                            print("Error inserting loan: $e");
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text("Error: $e"),
-                                              ),
-                                            );
-                                          }
+                                          setState(() => isLoading = false);
+                                          return;
                                         }
 
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-
-                                        Navigator.pop(context);
-                                      } catch (e) {
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        print("Error inserting expense: $e");
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          SnackBar(content: Text("Error: $e")),
-                                        );
+                                        // Deduct and save new balance
+                                        final newBalance =
+                                            currentBalance - expenseAmt;
+                                        await Supabase.instance.client
+                                            .from('bank')
+                                            .update({'balance': newBalance})
+                                            .eq('id', paymentValue);
                                       }
+
+                                      // 2) Insert the expense
+                                      final expenseResponse = await Supabase
+                                          .instance
+                                          .client
+                                          .from('expense')
+                                          .insert({
+                                            'amount': expenseAmt,
+                                            'expenseName':
+                                                _expenseNameController.text,
+                                            'category':
+                                                _expenseCategoryController.text,
+                                            'type': _expenseTypeController.text,
+                                            'bankAccount':
+                                                paidBy == 'Bank'
+                                                    ? int.tryParse(paymentValue)
+                                                    : null,
+                                            'paidBy': paidBy,
+                                            'description':
+                                                _descriptionController.text,
+                                            'date': formatDate(
+                                              _dateController.text,
+                                            ),
+                                            'userid': 1,
+                                          });
+
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Expense added successfully!',
+                                          ),
+                                        ),
+                                      );
+
+                                      // 3) If paying by Partner, create a loan record afterward
+                                      if (paidBy == 'Partner') {
+                                        final loanerIdOrName = paymentValue;
+                                        // fetch partner’s phone (if needed)
+                                        final partners = await Supabase
+                                            .instance
+                                            .client
+                                            .from('loan')
+                                            .select('phoneNumber')
+                                            .eq('loanerName', loanerIdOrName);
+                                        final phone =
+                                            partners.isNotEmpty
+                                                ? partners[0]['phoneNumber']
+                                                : null;
+
+                                        await Supabase.instance.client
+                                            .from('loan')
+                                            .insert({
+                                              'amount': expenseAmt,
+                                              'type': 'Payable',
+                                              'date': formatDate(
+                                                _dateController.text,
+                                              ),
+                                              'bank': 'Expense',
+                                              'loanerName': loanerIdOrName,
+                                              'phoneNumber': phone,
+                                              'userId': 1,
+                                            });
+                                      }
+
+                                      Navigator.pop(context);
+                                    } catch (e) {
+                                      print("Error inserting expense: $e");
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(content: Text("Error: $e")),
+                                      );
+                                    } finally {
+                                      setState(() => isLoading = false);
                                     }
                                   },
                           style: ElevatedButton.styleFrom(
@@ -588,6 +551,208 @@ class _AddExpenseState extends State<AddExpense> {
                                   ),
                         ),
                       ),
+
+                      // Expanded(
+                      //   flex: 3,
+                      //   child: ElevatedButton(
+                      //     onPressed:
+                      //         isLoading
+                      //             ? null
+                      //             : () async {
+                      //               if (_formKey.currentState!.validate()) {
+                      //                 setState(() {
+                      //                   isLoading = true;
+                      //                 });
+
+                      //                 print(_paymentController.text);
+                      //                 print(_paidByController.text);
+                      //                 print(_expenseNameController.text);
+                      //                 print(_expenseCategoryController.text);
+                      //                 print(_expenseTypeController.text);
+                      //                 print(_descriptionController.text);
+                      //                 print(_dateController.text);
+                      //                 print(_amountController.text);
+
+                      //                 final bankId = _paymentController.text;
+                      //                 final expenseAmt =
+                      //                     double.tryParse(
+                      //                       _amountController.text,
+                      //                     ) ??
+                      //                     0.0;
+
+                      //                 try {
+                      //                   final bankRes =
+                      //                       await Supabase.instance.client
+                      //                           .from('bank')
+                      //                           .select('balance')
+                      //                           .eq('id', bankId)
+                      //                           .single();
+
+                      //                   print(bankRes);
+                      //                   final currentBalance =
+                      //                       (bankRes['balance'] as num)
+                      //                           .toDouble();
+                      //                   if (currentBalance >= expenseAmt) {
+                      //                     final newBalance =
+                      //                         currentBalance - expenseAmt;
+                      //                     final upd = await Supabase
+                      //                         .instance
+                      //                         .client
+                      //                         .from('bank')
+                      //                         .update({'balance': newBalance})
+                      //                         .eq('id', bankId);
+                      //                     final expenseResponse = await Supabase
+                      //                         .instance
+                      //                         .client
+                      //                         .from('expense')
+                      //                         .insert({
+                      //                           'amount':
+                      //                               double.tryParse(
+                      //                                 _amountController.text,
+                      //                               ) ??
+                      //                               0.0,
+                      //                           'expenseName':
+                      //                               _expenseNameController.text,
+                      //                           'category':
+                      //                               _expenseCategoryController
+                      //                                   .text,
+                      //                           'type':
+                      //                               _expenseTypeController.text,
+                      //                           'bankAccount':
+                      //                               _paidByController.text ==
+                      //                                       "Partner"
+                      //                                   ? null
+                      //                                   : _paymentController
+                      //                                       .text,
+                      //                           'paidBy':
+                      //                               _paidByController.text,
+                      //                           'description':
+                      //                               _descriptionController.text,
+                      //                           'date': formatDate(
+                      //                             _dateController.text,
+                      //                           ),
+                      //                           'userid': 1,
+                      //                         });
+                      //                     print("Expense added successfully!");
+
+                      //                     ScaffoldMessenger.of(
+                      //                       context,
+                      //                     ).showSnackBar(
+                      //                       const SnackBar(
+                      //                         content: Text(
+                      //                           "Expense added successfully!",
+                      //                         ),
+                      //                       ),
+                      //                     );
+                      //                   } else {
+                      //                     // Not enough funds
+                      //                     ScaffoldMessenger.of(
+                      //                       context,
+                      //                     ).showSnackBar(
+                      //                       const SnackBar(
+                      //                         content: Text(
+                      //                           'Insufficient balance in selected bank account.',
+                      //                         ),
+                      //                         backgroundColor: Colors.red,
+                      //                       ),
+                      //                     );
+                      //                   }
+                      //                   // Insert expense
+
+                      //                   if (_paidByController.text ==
+                      //                       "Partner") {
+                      //                     var specific =
+                      //                         _paymentController.text;
+                      //                     print("Specific: $specific");
+                      //                     print(specific.runtimeType);
+
+                      //                     final x = await Supabase
+                      //                         .instance
+                      //                         .client
+                      //                         .from('loan')
+                      //                         .select("*")
+                      //                         .eq("loanerName", specific);
+
+                      //                     print(x);
+
+                      //                     try {
+                      //                       final singleLoanResponse =
+                      //                           await Supabase.instance.client
+                      //                               .from('loan')
+                      //                               .insert({
+                      //                                 'amount':
+                      //                                     double.tryParse(
+                      //                                       _amountController
+                      //                                           .text,
+                      //                                     ) ??
+                      //                                     0.0,
+                      //                                 'type': "Payable",
+
+                      //                                 'date': formatDate(
+                      //                                   _dateController.text,
+                      //                                 ),
+                      //                                 'bank': "Expense",
+                      //                                 'loanerName': specific,
+                      //                                 'phoneNumber':
+                      //                                     x[0]['phoneNumber'],
+                      //                                 'userId': 1,
+                      //                               });
+                      //                     } catch (e) {
+                      //                       print("Error inserting loan: $e");
+                      //                       ScaffoldMessenger.of(
+                      //                         context,
+                      //                       ).showSnackBar(
+                      //                         SnackBar(
+                      //                           content: Text("Error: $e"),
+                      //                         ),
+                      //                       );
+                      //                     }
+                      //                   }
+
+                      //                   setState(() {
+                      //                     isLoading = false;
+                      //                   });
+
+                      //                   Navigator.pop(context);
+                      //                 } catch (e) {
+                      //                   setState(() {
+                      //                     isLoading = false;
+                      //                   });
+                      //                   print("Error inserting expense: $e");
+                      //                   ScaffoldMessenger.of(
+                      //                     context,
+                      //                   ).showSnackBar(
+                      //                     SnackBar(content: Text("Error: $e")),
+                      //                   );
+                      //                 }
+                      //               }
+                      //             },
+                      //     style: ElevatedButton.styleFrom(
+                      //       backgroundColor:
+                      //           isLoading
+                      //               ? Colors.grey
+                      //               : const Color(0xff009966),
+                      //       padding: const EdgeInsets.symmetric(vertical: 15),
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //       ),
+                      //     ),
+                      //     child:
+                      //         isLoading
+                      //             ? const SizedBox(
+                      //               height: 20,
+                      //               width: 20,
+                      //               child: CircularProgressIndicator(
+                      //                 color: Colors.white,
+                      //                 strokeWidth: 2,
+                      //               ),
+                      //             )
+                      //             : const Text(
+                      //               "Add Expense",
+                      //               style: TextStyle(color: Colors.white),
+                      //             ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.04),
