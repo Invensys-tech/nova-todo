@@ -7,7 +7,8 @@ class ProductivityRepository {
     try {
       final data = await supabaseClient
           .from(Entities.PRODUCTIVITY.dbName)
-          .select('*').eq("user_id", userId);
+          .select('*')
+          .eq("user_id", userId);
       return data
           .map((productivity) => Productivity.fromJson(productivity))
           .toList();
@@ -27,6 +28,7 @@ class ProductivityRepository {
             'frequency': productivity['frequency'],
             'time': productivity['time'],
             'user_id': productivity['user_id'],
+            'streak_count': productivity['streak_count'],
           }).select();
 
       final data = await supabaseClient

@@ -29,7 +29,7 @@ class _AddExpenseState extends State<AddExpense> {
   final TextEditingController _expenseNameController = TextEditingController();
   final TextEditingController _expenseTypeController = TextEditingController();
   final TextEditingController _expenseCategoryController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _paymentController = TextEditingController();
   final TextEditingController _paidByController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -102,13 +102,13 @@ class _AddExpenseState extends State<AddExpense> {
     Datamanager()
         .getExpense()
         .then((expense) {
-      setState(() {
-        _expenseList = expense;
-      });
-    })
+          setState(() {
+            _expenseList = expense;
+          });
+        })
         .catchError((e) {
-      print("Error loading expenses: $e");
-    });
+          print("Error loading expenses: $e");
+        });
   }
 
   void _updateFuture() {
@@ -230,7 +230,7 @@ class _AddExpenseState extends State<AddExpense> {
                             ),
                             SizedBox(
                               height:
-                              MediaQuery.of(context).size.height * 0.0025,
+                                  MediaQuery.of(context).size.height * 0.0025,
                             ),
                             // _expenseList.
                             //     ? const Center(
@@ -246,16 +246,16 @@ class _AddExpenseState extends State<AddExpense> {
                               },
 
                               suggestions:
-                              _expenseList
-                                  .map((exp) => exp.category)
-                                  .toSet()
-                                  .toList()
-                                  .isNotEmpty
-                                  ? _expenseList
-                                  .map((exp) => exp.category)
-                                  .toSet()
-                                  .toList()
-                                  : [],
+                                  _expenseList
+                                          .map((exp) => exp.category)
+                                          .toSet()
+                                          .toList()
+                                          .isNotEmpty
+                                      ? _expenseList
+                                          .map((exp) => exp.category)
+                                          .toSet()
+                                          .toList()
+                                      : [],
                               controller: _expenseCategoryController,
                               hintText: "Search for a Category...",
                               icon: Icons.search,
@@ -289,7 +289,7 @@ class _AddExpenseState extends State<AddExpense> {
                             ),
                             SizedBox(
                               height:
-                              MediaQuery.of(context).size.height * 0.0025,
+                                  MediaQuery.of(context).size.height * 0.0025,
                             ),
                             Container(
                               height: MediaQuery.of(context).size.height * .05,
@@ -380,7 +380,7 @@ class _AddExpenseState extends State<AddExpense> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                            isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
+                                isDark ? Color(0xff27272A) : Color(0xffD4D4D8),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -394,161 +394,161 @@ class _AddExpenseState extends State<AddExpense> {
                         flex: 3,
                         child: ElevatedButton(
                           onPressed:
-                          isLoading
-                              ? null
-                              : () async {
-                            if (!_formKey.currentState!.validate())
-                              return;
+                              isLoading
+                                  ? null
+                                  : () async {
+                                    if (!_formKey.currentState!.validate())
+                                      return;
 
-                            setState(() => isLoading = true);
+                                    setState(() => isLoading = true);
 
-                            final paidBy = _paidByController.text;
-                            final paymentValue =
-                                _paymentController.text;
-                            final expenseAmt =
-                                double.tryParse(
-                                  _amountController.text,
-                                ) ??
-                                    0.0;
+                                    final paidBy = _paidByController.text;
+                                    final paymentValue =
+                                        _paymentController.text;
+                                    final expenseAmt =
+                                        double.tryParse(
+                                          _amountController.text,
+                                        ) ??
+                                        0.0;
 
-                            try {
-                              // 1) If paying by Bank, check & update bank balance first
-                              if (paidBy == 'Bank') {
-                                final bankRes =
-                                await Supabase.instance.client
-                                    .from('bank')
-                                    .select('balance')
-                                    .eq('id', paymentValue)
-                                    .single();
-                                final currentBalance =
-                                (bankRes['balance'] as num)
-                                    .toDouble();
+                                    try {
+                                      // 1) If paying by Bank, check & update bank balance first
+                                      if (paidBy == 'Bank') {
+                                        final bankRes =
+                                            await Supabase.instance.client
+                                                .from('bank')
+                                                .select('balance')
+                                                .eq('id', paymentValue)
+                                                .single();
+                                        final currentBalance =
+                                            (bankRes['balance'] as num)
+                                                .toDouble();
 
-                                if (currentBalance < expenseAmt) {
-                                  ScaffoldMessenger.of(
-                                    context,
-                                  ).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'Insufficient balance in selected bank account.',
-                                      ),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  );
-                                  setState(() => isLoading = false);
-                                  return;
-                                }
+                                        if (currentBalance < expenseAmt) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                'Insufficient balance in selected bank account.',
+                                              ),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                          setState(() => isLoading = false);
+                                          return;
+                                        }
 
-                                // Deduct and save new balance
-                                final newBalance =
-                                    currentBalance - expenseAmt;
-                                await Supabase.instance.client
-                                    .from('bank')
-                                    .update({'balance': newBalance})
-                                    .eq('id', paymentValue);
-                              }
+                                        // Deduct and save new balance
+                                        final newBalance =
+                                            currentBalance - expenseAmt;
+                                        await Supabase.instance.client
+                                            .from('bank')
+                                            .update({'balance': newBalance})
+                                            .eq('id', paymentValue);
+                                      }
 
-                              // 2) Insert the expense
-                              final expenseResponse = await Supabase
-                                  .instance
-                                  .client
-                                  .from('expense')
-                                  .insert({
-                                'amount': expenseAmt,
-                                'expenseName':
-                                _expenseNameController.text,
-                                'category':
-                                _expenseCategoryController.text,
-                                'type': _expenseTypeController.text,
-                                'bankAccount':
-                                paidBy == 'Bank'
-                                    ? int.tryParse(paymentValue)
-                                    : null,
-                                'paidBy': paidBy,
-                                'description':
-                                _descriptionController.text,
-                                'date': formatDate(
-                                  _dateController.text,
-                                ),
-                                'userid': userId,
-                              });
+                                      // 2) Insert the expense
+                                      final expenseResponse = await Supabase
+                                          .instance
+                                          .client
+                                          .from('expense')
+                                          .insert({
+                                            'amount': expenseAmt,
+                                            'expenseName':
+                                                _expenseNameController.text,
+                                            'category':
+                                                _expenseCategoryController.text,
+                                            'type': _expenseTypeController.text,
+                                            'bankAccount':
+                                                paidBy == 'Bank'
+                                                    ? int.tryParse(paymentValue)
+                                                    : null,
+                                            'paidBy': paidBy,
+                                            'description':
+                                                _descriptionController.text,
+                                            'date': formatDate(
+                                              _dateController.text,
+                                            ),
+                                            'userid': userId,
+                                          });
 
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Expense added successfully!',
-                                  ),
-                                ),
-                              );
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Expense added successfully!',
+                                          ),
+                                        ),
+                                      );
 
-                              // 3) If paying by Partner, create a loan record afterward
-                              if (paidBy == 'Partner') {
-                                final loanerIdOrName = paymentValue;
-                                // fetch partner’s phone (if needed)
-                                final partners = await Supabase
-                                    .instance
-                                    .client
-                                    .from('loan')
-                                    .select('phoneNumber')
-                                    .eq('loanerName', loanerIdOrName);
-                                final phone =
-                                partners.isNotEmpty
-                                    ? partners[0]['phoneNumber']
-                                    : null;
+                                      // 3) If paying by Partner, create a loan record afterward
+                                      if (paidBy == 'Partner') {
+                                        final loanerIdOrName = paymentValue;
+                                        // fetch partner’s phone (if needed)
+                                        final partners = await Supabase
+                                            .instance
+                                            .client
+                                            .from('loan')
+                                            .select('phoneNumber')
+                                            .eq('loanerName', loanerIdOrName);
+                                        final phone =
+                                            partners.isNotEmpty
+                                                ? partners[0]['phoneNumber']
+                                                : null;
 
-                                await Supabase.instance.client
-                                    .from('loan')
-                                    .insert({
-                                  'amount': expenseAmt,
-                                  'type': 'Payable',
-                                  'date': formatDate(
-                                    _dateController.text,
-                                  ),
-                                  'bank': 'Expense',
-                                  'loanerName': loanerIdOrName,
-                                  'phoneNumber': phone,
-                                  'userId': userId,
-                                });
-                              }
+                                        await Supabase.instance.client
+                                            .from('loan')
+                                            .insert({
+                                              'amount': expenseAmt,
+                                              'type': 'Payable',
+                                              'date': formatDate(
+                                                _dateController.text,
+                                              ),
+                                              'bank': 'Expense',
+                                              'loanerName': loanerIdOrName,
+                                              'phoneNumber': phone,
+                                              'userId': userId,
+                                            });
+                                      }
 
-                              Navigator.pop(context);
-                            } catch (e) {
-                              print("Error inserting expense: $e");
-                              ScaffoldMessenger.of(
-                                context,
-                              ).showSnackBar(
-                                SnackBar(content: Text("Error: $e")),
-                              );
-                            } finally {
-                              setState(() => isLoading = false);
-                            }
-                          },
+                                      Navigator.pop(context);
+                                    } catch (e) {
+                                      print("Error inserting expense: $e");
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(content: Text("Error: $e")),
+                                      );
+                                    } finally {
+                                      setState(() => isLoading = false);
+                                    }
+                                  },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                            isLoading
-                                ? Colors.grey
-                                : const Color(0xff009966),
+                                isLoading
+                                    ? Colors.grey
+                                    : const Color(0xff009966),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
                           child:
-                          isLoading
-                              ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                              : const Text(
-                            "Add Expense",
-                            style: TextStyle(color: Colors.white),
-                          ),
+                              isLoading
+                                  ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                  : const Text(
+                                    "Add Expense",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                         ),
                       ),
 

@@ -58,6 +58,7 @@ class TextFields extends StatelessWidget {
                       : TextInputType.text,
 
               decoration: InputDecoration(
+                hintText: hinttext,
                 filled: filled,
                 border: OutlineInputBorder(
                   borderRadius:

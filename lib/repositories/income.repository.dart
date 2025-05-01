@@ -15,13 +15,15 @@ class IncomeRepository {
   Future<List<Income>> getIncome(DateTime? dateTime) async {
     final HiveService _hiveService = HiveService();
 
-    await _hiveService.initHive(boxName: 'dateTime');
+    await _hiveService.initHive(boxName: 'dateType');
     final stored = await _hiveService.getData('dateType');
+    print('Stored date type: $stored');
     final isEthiopian = stored == 'Ethiopian';
 
     try {
       final List<dynamic> rawData;
       print('Original dateTime: $dateTime');
+      print(isEthiopian);
 
       DateTime? queryDate = dateTime;
 
@@ -36,7 +38,8 @@ class IncomeRepository {
       if (queryDate != null) {
         rawData = await supabaseClient
             .from(Entities.INCOME.dbName)
-            .select("*").eq('user_id', userId)
+            .select("*")
+            .eq('user_id', userId)
             .eq('date', getDateOnly(queryDate));
       } else {
         rawData = await supabaseClient.from(Entities.INCOME.dbName).select("*");

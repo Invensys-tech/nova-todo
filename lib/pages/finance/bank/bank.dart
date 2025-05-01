@@ -214,6 +214,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/entities/income-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/finance/bank/addbank.dart';
 import 'package:flutter_application_1/pages/finance/bank/editbank.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
@@ -246,9 +247,15 @@ class _BankPageState extends State<BankPage> {
 
   Future<void> _fetchAndComputeBankStats() async {
     // final expenses = await widget.datamanager.fetchExpense();
-    final expenses = await Supabase.instance.client.from('expense').select('*');
+    final expenses = await Supabase.instance.client
+        .from('expense')
+        .select('*')
+        .eq('userid', userId);
 
-    final incomes = await Supabase.instance.client.from('incomes').select('*');
+    final incomes = await Supabase.instance.client
+        .from('incomes')
+        .select('*')
+        .eq('user_id', userId);
 
     final parsedIncomes =
         (incomes as List)
@@ -386,15 +393,15 @@ class _BankPageState extends State<BankPage> {
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
-                                              child:  Text(translate('Cancel')),
+                                              child: Text(translate('Cancel')),
                                             ),
                                             TextButton(
                                               onPressed: () {
                                                 print('Deleted ${bank.id}');
                                                 Navigator.of(context).pop();
                                               },
-                                              child:  Text(
-                                               translate( 'Delete'),
+                                              child: Text(
+                                                translate('Delete'),
                                                 style: TextStyle(
                                                   color: Colors.red,
                                                 ),
@@ -418,6 +425,10 @@ class _BankPageState extends State<BankPage> {
                               accoutnumber: bank.accountNumber,
                               balance: bank.balance,
                               datamanager: widget.datamanager,
+                              bankName: bank.accountBank,
+                              accountBank: bank.accountBank,
+                              branch: bank.branch,
+                              balace: bank.balance,
                             ),
                           ),
                         ],

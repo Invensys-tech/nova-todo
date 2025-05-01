@@ -34,7 +34,7 @@ class ProductivityHabitForm extends StatefulWidget {
 }
 
 class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
-  int _expandedIndex = -1;
+  int _expandedIndex = 0;
 
   final List<dynamic> _controller = [
     {
@@ -49,13 +49,13 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
           key: FormInput(
             label: "Frequency",
             hint: "Frequency",
-            type: "0",
+            type: "1",
             controller: TextEditingController(),
           ),
           value: FormInput(
             label: "Time",
             hint: "Time",
-            type: "0",
+            type: "1",
             controller: TextEditingController(),
           ),
         ),
@@ -118,13 +118,13 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
             key: FormInput(
               label: "Frequency",
               hint: "Frequency",
-              type: "0",
+              type: "1",
               controller: TextEditingController(),
             ),
             value: FormInput(
               label: "Time",
               hint: "Time",
-              type: "0",
+              type: "1",
               controller: TextEditingController(),
             ),
           ),
@@ -143,13 +143,13 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
           key: FormInput(
             label: "New Frequency",
             hint: "Frequency",
-            type: "0",
+            type: "1",
             controller: TextEditingController(),
           ),
           value: FormInput(
             label: "New Time",
             hint: "Time",
-            type: "0",
+            type: "1",
             controller: TextEditingController(),
           ),
         ),
@@ -274,8 +274,8 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
             color: Color(0xff006045),
           ),
         ),
-        title:  Text(
-         " Add Productivity",
+        title: Text(
+          " Add Productivity",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -314,11 +314,11 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                                             : item["title"].controller.text,
                                   );
                                 },
+
                                 body: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
 
                                   children: [
-                                    // For the title field: if a productivity exists, use autocomplete.
                                     widget.productivity_id == null
                                         ? Padding(
                                           padding: EdgeInsets.all(

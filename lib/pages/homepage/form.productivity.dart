@@ -20,6 +20,7 @@ class ProductivityForm extends StatefulWidget {
 }
 
 class _ProductivityFormState extends State<ProductivityForm> {
+  bool isLoading = false;
   final title = FormInput(
     label: "Title",
     hint: "Enter your title",
@@ -54,6 +55,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
       'time': (time.controller.text),
       'description': description.controller.text,
       'user_id': userId,
+      'streak_count': 1,
     });
 
     print(" Step 2: Productivity created: ${productivity.id}");
@@ -73,7 +75,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
             color: Color(0xff006045),
           ),
         ),
-        title:  Text(
+        title: Text(
           "Add Productivity",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -100,10 +102,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 const Text(
                   "Topic Title",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 TextFields(
@@ -116,10 +115,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 const Text(
                   "Frequency",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
 
@@ -132,10 +128,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.019),
                 const Text(
                   "Description",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                 MultiLineTextField(
@@ -151,29 +144,43 @@ class _ProductivityFormState extends State<ProductivityForm> {
                     Expanded(
                       flex: 1,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          try {
-                            await saveProductivity();
+                        onPressed:
+                            isLoading
+                                ? null
+                                : () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  try {
+                                    await saveProductivity();
 
-                            setState(() {});
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  "Productivity added successfully!",
-                                ),
-                              ),
-                            );
-                          } catch (e, stacktrace) {
-                            print(" Crash in saveProductivity: $e");
-                            print(stacktrace); // This helps a lot
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $e")),
-                            );
-                          }
-                        },
+                                    setState(() {});
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Productivity added successfully!",
+                                        ),
+                                      ),
+                                    );
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.pop(context);
+                                  } catch (e, stacktrace) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    print(" Crash in saveProductivity: $e");
+                                    print(stacktrace); // This helps a lot
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text("Error: $e")),
+                                    );
+                                  }
+                                },
 
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor:
+                              isLoading ? Colors.grey : Colors.green,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -189,29 +196,42 @@ class _ProductivityFormState extends State<ProductivityForm> {
                     Expanded(
                       flex: 3,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          try {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (context) => ProductivityHabitForm(
-                                      description: description,
-                                      frequency: frequency,
-                                      time: time,
-                                      title: title,
-                                    ),
-                              ),
-                            );
-                          } catch (e) {
-                            print("Error inserting expense: $e");
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Error: $e")),
-                            );
-                          }
-                        },
+                        onPressed:
+                            isLoading
+                                ? null
+                                : () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  try {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => ProductivityHabitForm(
+                                              description: description,
+                                              frequency: frequency,
+                                              time: time,
+                                              title: title,
+                                            ),
+                                      ),
+                                    );
+                                  } catch (e) {
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    print("Error inserting expense: $e");
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text("Error: $e")),
+                                    );
+                                  }
+                                },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor:
+                              isLoading ? Colors.grey : Colors.blue,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
