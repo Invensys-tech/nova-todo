@@ -186,7 +186,7 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
 
-                        SizedBox(width: MediaQuery.of(context).size.width * .35),
+                        SizedBox(width: MediaQuery.of(context).size.width * .3),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [

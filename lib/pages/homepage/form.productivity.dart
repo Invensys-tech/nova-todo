@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
 import 'package:flutter_application_1/pages/homepage/form.productivity-habit.dart';
 import 'package:flutter_application_1/repositories/productivity.repository.dart';
@@ -52,7 +53,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
       'frequency': frequency.controller.text,
       'time': (time.controller.text),
       'description': description.controller.text,
-      'user_id': 1,
+      'user_id': userId,
     });
 
     print(" Step 2: Productivity created: ${productivity.id}");

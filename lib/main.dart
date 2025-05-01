@@ -7,6 +7,7 @@ import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/pages/auth/payment.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/localization/localization_delegate.dart';
@@ -30,7 +31,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'drawer/Seeting Page/SeetingPage.dart';
 
 bool isDark = true;
-
+int userId = 0;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   requestNotificationPermission();
@@ -149,6 +150,14 @@ class _MyAppState extends State<MyApp> {
     loadTheme();
     _checkAndListenSms();
     loabThemeApp();
+    GeId();
+  }
+
+  GeId() async {
+    int id=(await AuthService().findSession())['id'];
+    setState(() {
+      userId = id;
+    });
   }
 
   Future<void> initAll() async {

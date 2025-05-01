@@ -345,13 +345,13 @@ class _ExpensespageState extends State<Expensespage> {
       print(et.day);
       _selectedDate = DateTime(et.year, et.month, et.day);
 
-      String weekday = DateFormat('EEEE').format(et);
+     // String weekday = DateFormat('EEEE').format(et);
 
       // If you want it in Amharic (after you've initialized 'am_ET'):
-      String amWeekday = DateFormat('EEEE', 'am_ET').format(et);
+      //String amWeekday = DateFormat('EEEE', 'am_ET').format(et);
 
-      print(amWeekday);
-      print(weekday);
+     // print(amWeekday);
+      //print(weekday);
 
       // convert back to Gregorian midnight for querying
       final g = ETDateTime(et.year, et.month, et.day).convertToGregorian();
