@@ -33,12 +33,15 @@ class _HabitItemState extends State<HabitItem> {
   }
 
   extendStreak() {
+    changeSavingState(true);
     HabitsRepository()
         .extendHabitStreak(widget.habit, DateTime.now())
         .then((value) {
           if (value) {
+            setState(() {
+              widget.habit.extendStreak(DateTime.now());
+            });
             // changeSavingState(false);
-            // widget.habit.extendStreak(DateTime.now());
           }
           changeSavingState(false);
         })
@@ -53,7 +56,9 @@ class _HabitItemState extends State<HabitItem> {
         .removeTerm(widget.habit, DateTime.now())
         .then((value) {
           if (value) {
-            widget.habit.removeTerm(DateTime.now());
+            setState(() {
+              widget.habit.removeTerm(DateTime.now());
+            });
           }
           changeSavingState(false);
         })
@@ -67,7 +72,6 @@ class _HabitItemState extends State<HabitItem> {
   Widget build(BuildContext context) {
     if (widget.hasActions) {
       return Slidable(
-        // Todo:
         startActionPane: ActionPane(
           motion: const ScrollMotion(),
           // dismissible: DismissiblePane(onDismissed: () {}),
@@ -83,7 +87,7 @@ class _HabitItemState extends State<HabitItem> {
               flex: 1,
               child: Container(
                 color:
-                    habit.isNotStartedToday
+                    widget.habit.isNotStartedToday
                         ? Colors.grey.shade200
                         : Color(0xFFEC003F),
                 child: Center(
@@ -136,7 +140,7 @@ class _HabitItemState extends State<HabitItem> {
               flex: 1,
               child: Container(
                 color:
-                    habit.isDoneToday
+                    widget.habit.isDoneToday
                         ? Colors.grey.shade200
                         : Color(0xFF009966),
                 child: Center(
@@ -145,7 +149,6 @@ class _HabitItemState extends State<HabitItem> {
                       if (isSaving || habit.isDoneToday) {
                         return;
                       }
-
                       extendStreak();
                     },
                     style: ElevatedButton.styleFrom(
@@ -308,7 +311,7 @@ class _HabitItemState extends State<HabitItem> {
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * .025,
-          vertical: MediaQuery.of(context).size.height * .01
+          vertical: MediaQuery.of(context).size.height * .01,
         ),
         child: Container(
           height: MediaQuery.of(context).size.height * .1,

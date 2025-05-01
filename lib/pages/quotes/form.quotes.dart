@@ -72,20 +72,19 @@ class _QuoteFormState extends State<QuoteForm> {
   }
 
   saveQuote() {
-    changeSavingState(true);
-
-    Quote quote = Quote(
-      id: widget.quote!.id,
-      text: textController.text,
-      author: authorInput.controller.text,
-      source: sourceInput.controller.text,
-      category: selectedCategory,
-    );
-
-    print('Quote to json');
-    print(quote.toJson());
+    changeSavingState(true);;
 
     if (widget.quote != null) {
+
+      Quote quote = Quote(
+        id: widget.quote?.id,
+        text: textController.text,
+        author: authorInput.controller.text,
+        source: sourceInput.controller.text,
+        category: selectedCategory,
+      );
+
+      print('in update');
       //   Update quote here
       QuoteRepository()
           .updateQuoteById(widget.quote!.id!, quote)
@@ -101,6 +100,13 @@ class _QuoteFormState extends State<QuoteForm> {
           });
       return;
     }
+
+    Quote quote = Quote(
+      text: textController.text,
+      author: authorInput.controller.text,
+      source: sourceInput.controller.text,
+      category: selectedCategory,
+    );
 
     QuoteRepository()
         .createQuote(quote)

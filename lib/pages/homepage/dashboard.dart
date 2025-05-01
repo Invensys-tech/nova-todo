@@ -6,6 +6,7 @@ import 'package:flutter_application_1/components/customized/billboard.dart';
 import 'package:flutter_application_1/pages/homepage/daily-report.dart';
 import 'package:flutter_application_1/pages/homepage/dashboard-components/dashboard.expense.item.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
+import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/analytics.service.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
@@ -31,6 +32,22 @@ class _DashboardState extends State<Dashboard> {
   final incomeAnalytics = AnalyticsService.getIncome();
   final goalAnalytics = AnalyticsService.getGoalAnalytics();
   final userInfo = AuthService().findSession();
+  String daysLeft = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    AuthService().getExpirationTime().then((value) {
+      // print(value.inDays);
+      if (value.inDays <= 3) {
+        setState(() {
+          showJoin = true;
+          daysLeft = "${value.inDays.toString()} ";
+        });
+      }
+    });
+  }
 
   List<dynamic> expenses = [
     {
@@ -72,8 +89,7 @@ class _DashboardState extends State<Dashboard> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
- bool showJoin = true;
+  bool showJoin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -84,78 +100,98 @@ class _DashboardState extends State<Dashboard> {
       body: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
-
           children: [
             SizedBox(height: MediaQuery.of(context).size.height * .035),
 
-            showJoin?  Container(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.035,vertical: MediaQuery.of(context).size.height*.01),
-              height: MediaQuery.of(context).size.height*.075,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                colors: [
-                Color(0xff009966),
-                Color(0xff00D492),
-                Color(0xff009966),
-                ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              ),
-              ),
-              child: Row(
-                children: [
-                  FaIcon(FontAwesomeIcons.rocket,size: 36,),
-                  SizedBox(width: MediaQuery.of(context).size.width*.05,),
-                  Container(
-                    width: MediaQuery.of(context).size.width*.375,
-                      child: Row(
-                        children: [
-                          Text(  "2 ",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),),
-                          Text(  translate("Days Left From trial"),style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),),
-                        ],
-                      )),
-                  SizedBox(width: MediaQuery.of(context).size.width*.05,),
-                  GestureDetector(
-                    onTap: (){
-                      PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-                        context,
-                        screen: PricingScreen(),
-                        withNavBar: false,
-                        pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                        settings: const RouteSettings(),
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width*.25,
-                      height: MediaQuery.of(context).size.height*.055,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.white
-                      ),
-                      child: Center(
-                        child: Text(translate("Join Now!"), style: TextStyle(color: Colors.green),),
-                      ),
+            showJoin
+                ? Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * .035,
+                    vertical: MediaQuery.of(context).size.height * .01,
+                  ),
+                  height: MediaQuery.of(context).size.height * .075,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xff009966),
+                        Color(0xff00D492),
+                        Color(0xff009966),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
                   ),
+                  child: Row(
+                    children: [
+                      FaIcon(FontAwesomeIcons.rocket, size: 36),
+                      SizedBox(width: MediaQuery.of(context).size.width * .05),
+                      Container(
+                        width: MediaQuery.of(context).size.width * .375,
+                        child: Row(
+                          children: [
+                            Text(
+                              daysLeft,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              translate("Days Left From trial"),
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: MediaQuery.of(context).size.width * .05),
+                      GestureDetector(
+                        onTap: () {
+                          PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                            context,
+                            screen: PricingScreen(),
+                            withNavBar: false,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                            settings: const RouteSettings(),
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .25,
+                          height: MediaQuery.of(context).size.height * .055,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white,
+                          ),
+                          child: Center(
+                            child: Text(
+                              translate("Join Now!"),
+                              style: TextStyle(color: Colors.green),
+                            ),
+                          ),
+                        ),
+                      ),
 
+                      SizedBox(width: MediaQuery.of(context).size.width * .05),
 
-                  SizedBox(width: MediaQuery.of(context).size.width*.05,),
-
-                  GestureDetector(
-                      onTap: (){
-                        setState(() {
-                          showJoin = false;
-                        });
-                      },
-                      child: Text("X",style: TextStyle(fontSize: 25),))
-                ],
-              ),
-            ) : Container(),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showJoin = false;
+                          });
+                        },
+                        child: Text("X", style: TextStyle(fontSize: 25)),
+                      ),
+                    ],
+                  ),
+                )
+                : Container(),
             Padding(
               padding: EdgeInsets.all(10),
               child: Column(
                 children: [
-
                   Container(
                     child: Row(
                       children: [
@@ -169,14 +205,17 @@ class _DashboardState extends State<Dashboard> {
                             color: Theme.of(context).primaryColorLight,
                           ),
                         ),
-                        SizedBox(width: MediaQuery.of(context).size.width * .015),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .015,
+                        ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                               context,
                               screen: DailyReport(),
                               withNavBar: false,
-                              pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
                               settings: const RouteSettings(),
                             );
                           },
@@ -189,36 +228,43 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
 
-                        SizedBox(width: MediaQuery.of(context).size.width * .35),
-                        FutureBuilder(future: userInfo, builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  translate( "Good Morning"),
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w300,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .35,
+                        ),
+                        FutureBuilder(
+                          future: userInfo,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    translate("Good Morning"),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  snapshot.data?['name'] ?? '',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w700,
+                                  Text(
+                                    snapshot.data?['name'] ?? '',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            if (snapshot.hasError) {
-                              return Center(child: Text('oh snap...'));
+                                ],
+                              );
                             } else {
-                              return Center(child: CircularProgressIndicator());
+                              if (snapshot.hasError) {
+                                return Center(child: Text('oh snap...'));
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
                             }
-                          }
-                        }),
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -335,7 +381,8 @@ class _DashboardState extends State<Dashboard> {
                                                   Text(
                                                     '${snapshot.data!.balance} : ${translate("Banks")}',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                       fontSize: 14,
                                                     ),
                                                   ),
@@ -361,7 +408,8 @@ class _DashboardState extends State<Dashboard> {
                                                   Text(
                                                     '${snapshot.data!.receivableLoan} : ${translate("Recivable Loan")}',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                       fontSize: 14,
                                                     ),
                                                   ),
@@ -388,7 +436,8 @@ class _DashboardState extends State<Dashboard> {
                                                   Text(
                                                     '${snapshot.data!.payableLoan} : ${translate("Payable Loan")}',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                       fontSize: 14,
                                                     ),
                                                   ),
@@ -422,7 +471,8 @@ class _DashboardState extends State<Dashboard> {
                                 left: MediaQuery.of(context).size.width * .4,
                                 child: Container(
                                   width: MediaQuery.of(context).size.width * .3,
-                                  height: MediaQuery.of(context).size.height * .1,
+                                  height:
+                                      MediaQuery.of(context).size.height * .1,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Color(0xff009966).withOpacity(.1),
@@ -433,8 +483,10 @@ class _DashboardState extends State<Dashboard> {
                                 top: MediaQuery.of(context).size.height * .05,
                                 left: MediaQuery.of(context).size.width * .5,
                                 child: Container(
-                                  width: MediaQuery.of(context).size.width * .35,
-                                  height: MediaQuery.of(context).size.height * .15,
+                                  width:
+                                      MediaQuery.of(context).size.width * .35,
+                                  height:
+                                      MediaQuery.of(context).size.height * .15,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Color(0xffFAFAFA).withOpacity(.1),
@@ -444,7 +496,9 @@ class _DashboardState extends State<Dashboard> {
                             ],
                           ),
                         ),
-                        SizedBox(height: MediaQuery.of(context).size.height * .015),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * .015,
+                        ),
                       ],
                     ),
                   ),
@@ -491,7 +545,9 @@ class _DashboardState extends State<Dashboard> {
                                   Expanded(
                                     flex: 3,
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 8),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 8,
+                                      ),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -520,7 +576,8 @@ class _DashboardState extends State<Dashboard> {
                                   Expanded(
                                     flex: 2,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       spacing: 8,
                                       children: [
                                         Column(
@@ -626,7 +683,9 @@ class _DashboardState extends State<Dashboard> {
                                   Expanded(
                                     flex: 3,
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 8),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 8,
+                                      ),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -655,7 +714,8 @@ class _DashboardState extends State<Dashboard> {
                                   Expanded(
                                     flex: 2,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       spacing: 8,
                                       children: [
                                         Column(
@@ -674,7 +734,8 @@ class _DashboardState extends State<Dashboard> {
                                                   Text(
                                                     '${incomeType.key} : ${incomeType.value}',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w300,
+                                                      fontWeight:
+                                                          FontWeight.w300,
                                                       fontSize: 12,
                                                     ),
                                                   ),
@@ -739,13 +800,17 @@ class _DashboardState extends State<Dashboard> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return Row(
-                                spacing: MediaQuery.of(context).size.width * .035,
+                                spacing:
+                                    MediaQuery.of(context).size.width * .035,
                                 children: [
                                   ...snapshot.data!.map((goalAnalysis) {
                                     return Container(
-                                      width: MediaQuery.of(context).size.width * .3,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          .3,
                                       height:
-                                          MediaQuery.of(context).size.height * .2,
+                                          MediaQuery.of(context).size.height *
+                                          .2,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
@@ -781,7 +846,9 @@ class _DashboardState extends State<Dashboard> {
                                           ),
                                           SizedBox(
                                             height:
-                                                MediaQuery.of(context).size.height *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
                                                 .015,
                                           ),
                                           Center(
@@ -829,9 +896,11 @@ class _DashboardState extends State<Dashboard> {
                                                       ).primaryColorDark,
                                                 ),
                                                 child: DashedCircularProgressBar.aspectRatio(
-                                                  aspectRatio: 1, // width ÷ height
+                                                  aspectRatio: 1,
+                                                  // width ÷ height
                                                   valueNotifier: _valueNotifier,
-                                                  progress: goalAnalysis.percent,
+                                                  progress:
+                                                      goalAnalysis.percent,
                                                   startAngle: 360,
                                                   sweepAngle: -360,
                                                   foregroundColor: Color(
@@ -859,7 +928,8 @@ class _DashboardState extends State<Dashboard> {
                                                             __,
                                                           ) => Column(
                                                             mainAxisSize:
-                                                                MainAxisSize.min,
+                                                                MainAxisSize
+                                                                    .min,
                                                             children: [
                                                               Text(
                                                                 '${goalAnalysis.percent}%',
@@ -890,7 +960,9 @@ class _DashboardState extends State<Dashboard> {
                                   child: Text('Error getting goal analytics'),
                                 );
                               } else {
-                                return Center(child: CircularProgressIndicator());
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
                               }
                             }
                           },
@@ -1161,6 +1233,7 @@ class _DashboardState extends State<Dashboard> {
 
 class DashboardHabitItem extends StatelessWidget {
   final dynamic habit;
+
   const DashboardHabitItem({super.key, required this.habit});
 
   @override

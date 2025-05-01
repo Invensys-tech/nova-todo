@@ -8,13 +8,14 @@ import 'package:roundcheckbox/roundcheckbox.dart';
 
 class TodoViewPage extends StatefulWidget {
   final DailyTask? dailyTask;
-  final void Function(Map<String, dynamic>) addSubTask;
+  final Future<bool> Function(Map<String, dynamic>) addSubTask;
   final void Function() resetList;
+
   const TodoViewPage({
     super.key,
     this.dailyTask,
     required this.addSubTask,
-    required this.resetList
+    required this.resetList,
   });
 
   @override
@@ -22,6 +23,8 @@ class TodoViewPage extends StatefulWidget {
 }
 
 class _TodoViewPageState extends State<TodoViewPage> {
+  bool isSaving = false;
+
   updateSubTask(int id, bool isDone) {
     DailyTaskRepository().updateSubTask(id, isDone);
   }
@@ -39,10 +42,19 @@ class _TodoViewPageState extends State<TodoViewPage> {
 
   final subTaskTextController = TextEditingController();
 
-  addNewSubTask() {
+  addNewSubTask() async {
     setState(() {
-      widget.addSubTask({'text': subTaskTextController.text, 'is_done': false});
+      isSaving = true;
     });
+
+    final response = await widget.addSubTask({'text': subTaskTextController.text, 'is_done': false});
+
+    if (response) {
+      setState(() {
+        subTaskTextController.text = '';
+        isSaving = false;
+      });
+    }
   }
 
   _showAlertDialog(BuildContext pageContext) {
@@ -63,7 +75,9 @@ class _TodoViewPageState extends State<TodoViewPage> {
               child: Text("Delete", style: TextStyle(color: Color(0xFFEC003F))),
               onPressed: () async {
                 if (widget.dailyTask != null) {
-                  final deleted = await DailyTaskRepository().deleteById(widget.dailyTask!.id!);
+                  final deleted = await DailyTaskRepository().deleteById(
+                    widget.dailyTask!.id!,
+                  );
                   if (deleted) {
                     widget.resetList();
                     Navigator.of(context).pop();
@@ -86,7 +100,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
           },
           child: Icon(
@@ -96,7 +110,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
           ),
         ),
         title: Text(
-         translate( "View Single Daily task"),
+          translate("View Single Daily task"),
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         elevation: 2,
@@ -111,7 +125,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   vertical: MediaQuery.of(context).size.height * .01,
                 ),
                 width: MediaQuery.of(context).size.width * .95,
-                height: MediaQuery.of(context).size.height * .11,
+                // height: MediaQuery.of(context).size.height * .11,
                 child: Column(
                   children: [
                     Row(
@@ -138,7 +152,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                 translate( "Task Time "),
+                                  translate("Task Time "),
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w300,
@@ -173,7 +187,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                               // ],
                               children: [
                                 Text(
-                                 translate( "Task Date "),
+                                  translate("Task Date "),
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w300,
@@ -194,6 +208,48 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                 ),
                               ],
                             ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 10,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    translate('Priority'),
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(widget.dailyTask?.type ?? ''),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    translate('Description'),
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    widget.dailyTask?.description ?? '',
+                                    softWrap: true,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -224,12 +280,12 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                   refetchData: () {},
                                   dailyTask: widget.dailyTask,
                                   isEditing: true,
-                            ),
+                                ),
                           ),
                         );
                       },
                       child: Text(
-                       translate( "Edit"),
+                        translate("Edit"),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -264,7 +320,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   spacing: MediaQuery.of(context).size.height * .005,
                   children: [
                     Text(
-                     translate( "Sub Tasks"),
+                      translate("Sub Tasks"),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w300,
@@ -410,10 +466,19 @@ class _TodoViewPageState extends State<TodoViewPage> {
                             padding: EdgeInsets.symmetric(vertical: 15),
                             backgroundColor: Color(0xFF009966).withAlpha(33),
                           ),
-                          child: Text(
-                            translate('Add'),
-                            style: TextStyle(color: Color(0xFF009966)),
-                          ),
+                          child:
+                              isSaving
+                                  ? SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.grey.shade300,
+                                    ),
+                                  )
+                                  : Text(
+                                    translate('Add'),
+                                    style: TextStyle(color: Color(0xFF009966)),
+                                  ),
                         ),
                       ),
                     ),

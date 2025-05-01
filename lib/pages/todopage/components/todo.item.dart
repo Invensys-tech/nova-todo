@@ -59,19 +59,22 @@ class _TodoItemState extends State<TodoItem> {
     return updated;
   }
 
-  addSubTask(Map<String, dynamic> subTask) {
+  Future<bool> addSubTask(Map<String, dynamic> subTask) async {
     Map<String, dynamic> newSubTask = {
       ...subTask,
       'daily_task_id': widget.dailyTask.id,
     };
-    DailyTaskRepository().addDailySubTask(newSubTask).then((value) {
-      if (value) {
-        widget.dailyTask.subTasks.add(newSubTask);
-        setState(() {
-          widget.setParentState();
-        });
-      }
-    });
+    final response = await DailyTaskRepository().addDailySubTask(newSubTask);
+    if (response) {
+      widget.dailyTask.subTasks.add(newSubTask);
+      setState(() {
+        widget.setParentState();
+      });
+
+      return true;
+    }
+
+    return false;
   }
 
   showCompletionPercentageUpdateDialog(BuildContext context) {

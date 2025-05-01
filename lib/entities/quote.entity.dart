@@ -31,6 +31,13 @@ class Quote {
     'source': source,
     'category': category,
   };
+
+  Map<String, dynamic> toDBJson() => {
+    'text': text,
+    'author': author,
+    'source': source,
+    'category': category,
+  };
 }
 
 class QuoteService {

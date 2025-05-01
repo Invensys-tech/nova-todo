@@ -223,8 +223,10 @@ class HabitsRepository {
     }
   }
 
-  Future<bool> extendHabitStreak(Habit habit, DateTime dateTime) async {
+  Future<bool> extendHabitStreak(Habit existingHabit, DateTime dateTime) async {
     try {
+      final habit = existingHabit.copy();
+
       if (habit.id == null) {
         throw Exception('Habit with no id');
       }
@@ -249,13 +251,11 @@ class HabitsRepository {
         final habitDates = habit.streakDates.where(
           (streakDate) => streakDate == getDateOnly(dateTime),
         );
-        print(habitDates.length);
         if (habitDates.length >= habit.frequency) {
           print('Already extended streak for this date');
           return false;
         }
-        habit.streak += 1;
-        habit.streakDates.add(getDateOnly(dateTime));
+        habit.extendStreak(dateTime);
         if (habit.miniStreak == habit.frequency) {
           habit.miniStreak = 0;
         }
@@ -268,8 +268,7 @@ class HabitsRepository {
             print('Already extended streak for this date');
             return false;
           }
-          habit.streakDates.add(getDateOnly(dateTime));
-          habit.streak += 1;
+          habit.extendStreak(dateTime);
           // if (habit.streakDates.length == habit.repetitions.length) {
           //   habit.miniStreak = 0;
           // } else {
@@ -277,22 +276,18 @@ class HabitsRepository {
           // }
         }
       } else if (habit.type == 'Monthly') {
-        print(jsonEncode(habit.toJson()));
         if (habit.streakDates.contains(getDateOnly(dateTime))) {
           print('Already extended streak for this date');
           return false;
         }
-        habit.streakDates.add(getDateOnly(dateTime));
-        habit.streak += 1;
+        habit.extendStreak(dateTime);
         // habit.miniStreak += 1;
         // if (habit.miniStreak == habit.frequency) {
         //   habit.miniStreak = 0;
         // }
       }
 
-      print(jsonEncode(habit.toJson()));
-
-      String dateString = getDateOnly(dateTime);
+      // String dateString = getDateOnly(dateTime);
 
       // if (habit.streakDates.contains(dateString)) {
       //   print('Already extended streak for this date');
@@ -341,6 +336,8 @@ class HabitsRepository {
                 .maybeSingle();
       }
 
+      print(existingHabit.streakDates);
+
       if (response.count == 0) {
         throw Exception('Error extending habit streak');
       }
@@ -352,10 +349,14 @@ class HabitsRepository {
     }
   }
 
-  Future<bool> removeTerm(Habit habit, DateTime dateTime) async {
+  Future<bool> removeTerm(Habit existingHabit, DateTime dateTime) async {
     try {
+      final habit = existingHabit.copy();
+
+
       if (habit.streak == 0) {
         print('Habit streak is already 0');
+        // return false;
       }
 
       String dateString = getDateOnly(dateTime);
