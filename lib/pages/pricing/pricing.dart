@@ -1,8 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/MainScreen%20Page.dart';
+import 'package:flutter_application_1/repositories/user.repository.dart';
+import 'package:flutter_application_1/services/auth.service.dart';
+import 'package:flutter_application_1/services/chapa.service.dart';
 
-class PricingScreen extends StatelessWidget {
+class PricingScreen extends StatefulWidget {
   const PricingScreen({Key? key}) : super(key: key);
 
+  @override
+  State<PricingScreen> createState() => _PricingScreenState();
+}
+
+class _PricingScreenState extends State<PricingScreen> {
+  bool isPaid = false;
+  ChapaService chapaService = ChapaService();
+
+  handleMakePayment() {
+    chapaService.makePayment(context);
+  }
+
+  verifyPayment() async {
+    bool isPaid = await chapaService.verifyPayment();
+    if (isPaid) {
+      dynamic session = await AuthService().findSession();
+      await UserRepository().addSubscription(null, session['phoneNumber']);
+      print('before routing');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreenPage()),
+      );
+      print('after routing');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,10 +170,36 @@ class PricingScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
                 onPressed: () {
+                  handleMakePayment();
                   // Action on Continue
                 },
                 child: const Text(
                   'Continue',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ),
+            const Spacer(),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF00D084),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                onPressed: () {
+                  verifyPayment();
+                  // Action on Continue
+                },
+                child: const Text(
+                  'Verify',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

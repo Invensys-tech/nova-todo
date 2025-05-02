@@ -79,7 +79,10 @@ class _TodoItemState extends State<TodoItem> {
 
   showCompletionPercentageUpdateDialog(BuildContext context) {
     TextEditingController percentageController = TextEditingController(
-      text: widget.dailyTask.completionPercentage.toString(),
+      text:
+          widget.dailyTask.completionPercentage == null
+              ? '0'
+              : widget.dailyTask.completionPercentage.toString(),
     );
     String errorMessage = 'Invalid Completion Percentage';
     bool hasError = false;
@@ -117,7 +120,7 @@ class _TodoItemState extends State<TodoItem> {
                 decimal: true,
                 signed: false,
               ),
-              maxLength: 2,
+              maxLength: 5,
               controller: percentageController,
               errorMessage: errorMessage,
               hasError: hasError,
@@ -178,10 +181,7 @@ class _TodoItemState extends State<TodoItem> {
             Expanded(
               flex: 1,
               child: Container(
-                color:
-                    widget.dailyTask.completionPercentage != null
-                        ? Colors.grey.shade300
-                        : Color(0xFFEC003F),
+                color: Color(0xFFEC003F),
                 child: Center(
                   child: ElevatedButton(
                     onPressed:
@@ -231,7 +231,9 @@ class _TodoItemState extends State<TodoItem> {
                   width: MediaQuery.of(context).size.width * .93,
                   decoration: BoxDecoration(
                     color:
-                        widget.dailyTask.type == 'High'
+                        widget.dailyTask.completionPercentage != null
+                            ? Colors.grey.shade600
+                            : widget.dailyTask.type == 'High'
                             ? Color(0xff0d805e)
                             : widget.dailyTask.type == 'Medium'
                             ? Color.fromARGB(255, 128, 120, 13)
@@ -294,7 +296,10 @@ class _TodoItemState extends State<TodoItem> {
                                 // widget.dailyTask.isDone ? 'Done' : 'Waiting',
                                 widget.dailyTask.completionPercentage == 100
                                     ? 'Done'
-                                    : 'Waiting',
+                                    : widget.dailyTask.completionPercentage ==
+                                        null
+                                    ? 'Waiting'
+                                    : '${widget.dailyTask.completionPercentage.toString()}%',
                                 style: GoogleFonts.lato(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,

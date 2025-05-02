@@ -142,9 +142,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
     }
 
     taskTimeController.text =
-        '${startTimeInput.key.controller.text}:${startTimeInput.value.controller.text}';
+    '${startTimeInput.key.controller.text}:${startTimeInput.value.controller
+        .text}';
     taskEndTimeController.text =
-        '${endTimeInput.key.controller.text}:${endTimeInput.value.controller.text}';
+    '${endTimeInput.key.controller.text}:${endTimeInput.value.controller.text}';
 
     return true;
   }
@@ -160,21 +161,35 @@ class _AddTodoPageState extends State<AddTodoPage> {
         }
 
         if (widget.isEditing && widget.dailyTask != null) {
-          final updatedData = {
+          // final updatedData = {
+          //   'name': name.controller.text,
+          //   'type': type.controller.text,
+          //   'description': description.controller.text,
+          //   'date': date.controller.text,
+          // };
+
+          Map<String, dynamic> formData = {
             'name': name.controller.text,
+            // 'time': formatDate(time.controller.text),
             'type': type.controller.text,
+            'date': date.controller.text,
+            'notifyMe': notifyMe.controller.text,
+            'taskTime': taskTimeController.text,
+            'taskEndTime': taskEndTimeController.text,
             'description': description.controller.text,
           };
 
+          final updatedDailyTask = DailyTask.fromUserInputJson(formData);
+
           DailyTaskRepository()
-              .updateDailyTask(updatedData, widget.dailyTask!.id!)
+              .updateDailyTask(updatedDailyTask, widget.dailyTask!.id!)
               .then((value) {
-                if (value) {
-                  clearForm();
-                  widget.refetchData();
-                  Navigator.pop(context);
-                }
-              });
+            if (value) {
+              clearForm();
+              widget.refetchData();
+              Navigator.pop(context);
+            }
+          });
 
           return;
         }
@@ -199,18 +214,18 @@ class _AddTodoPageState extends State<AddTodoPage> {
         DailyTaskRepository()
             .addDailyTask(dailyTaskData)
             .then((value) {
-              clearForm();
-              setState(() {
-                isSaving = false;
-              });
-              widget.refetchData();
-              Navigator.pop(context);
-            })
+          clearForm();
+          setState(() {
+            isSaving = false;
+          });
+          widget.refetchData();
+          Navigator.pop(context);
+        })
             .catchError((error) {
-              setState(() {
-                isSaving = false;
-              });
-            });
+          setState(() {
+            isSaving = false;
+          });
+        });
       } catch (e) {
         setState(() {
           isSaving = false;
@@ -235,11 +250,18 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
     if (widget.isEditing && widget.dailyTask != null) {
       name.controller.text = widget.dailyTask!.name;
-      // 'time': formatDate(time.controller.text),
       type.controller.text = widget.dailyTask!.type;
-      // notifyMe.controller.text = widget.dailyTask.;
-      // taskTimeController.text;
-      // taskEndTimeController.text;
+      date.controller.text = widget.dailyTask!.date;
+
+      final taskTime = getTimePartFromDateTimeString(
+          widget.dailyTask!.taskTime);
+      final endTime = getTimePartFromDateTimeString(widget.dailyTask!.endTime);
+
+      startTimeInput.key.controller.text = taskTime.split(':')[0];
+      startTimeInput.value.controller.text = taskTime.split(':')[1];
+      endTimeInput.key.controller.text = endTime.split(':')[0];
+      endTimeInput.value.controller.text = endTime.split(':')[1];
+
       description.controller.text = widget.dailyTask!.description;
     }
   }
@@ -249,7 +271,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
     return Scaffold(
       appBar: AppBar(
         leading: Row(
-          spacing: MediaQuery.of(context).size.width * 0.04,
+          spacing: MediaQuery
+              .of(context)
+              .size
+              .width * 0.04,
           children: [
             IconButton(
               onPressed: () {
@@ -265,7 +290,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
         title: const Text("Add New Todo"),
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height * .9,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * .9,
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
@@ -283,10 +311,14 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 startTimeInput: startTimeInput,
                 endTimeInput: endTimeInput,
                 addSubTask: addSubTask,
+                isEditing: widget.isEditing,
               ),
               Padding(
                 padding: EdgeInsets.all(
-                  MediaQuery.of(context).size.height * 0.02,
+                  MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.02,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -321,18 +353,18 @@ class _AddTodoPageState extends State<AddTodoPage> {
                         saveTodo();
                       },
                       child:
-                          isSaving
-                              ? SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.grey.shade300,
-                                ),
-                              )
-                              : const Text(
-                                "Save Todo",
-                                style: TextStyle(color: Colors.white),
-                              ),
+                      isSaving
+                          ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.grey.shade300,
+                        ),
+                      )
+                          : Text(
+                        widget.isEditing ? "Edit" : "Save",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ],
                 ),

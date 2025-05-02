@@ -271,7 +271,7 @@ class AnalyticsService {
   static Future<double> getSuccessRate(DateTime dateTime) async {
     try {
       double completionPercentage = await DailyTaskRepository()
-          .fetchCompletionPercentage(getDateOnly(dateTime));
+          .fetchCompletionPercentage(dateTime);
 
       return completionPercentage;
     } catch (e) {

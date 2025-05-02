@@ -15,7 +15,8 @@ class DailyTask {
   String endTime;
   String date;
   String description;
-  String reminderTime;
+  String? reminderTime;
+
   // List<DailySubTask> subTasks;
   List<dynamic> subTasks;
   late DateTime dateDate;
@@ -30,7 +31,7 @@ class DailyTask {
     required this.date,
     required this.taskTime,
     required this.endTime,
-    required this.reminderTime,
+    this.reminderTime,
     required this.subTasks,
     required this.description,
     this.completionPercentage,
@@ -83,10 +84,14 @@ class DailyTask {
 
   factory DailyTask.fromUserInputJson(Map<String, dynamic> json) {
     TimeOfDay timeOfDay = timeOfDayFromString(json['taskTime']);
-    TimeOfDay reminderTime = getTimeMinus(
-      time: timeOfDay,
-      minutes: int.parse(json['notifyMe']),
-    );
+    TimeOfDay? reminderTime;
+
+    if (['2', '5', '10', '15'].contains(json['notifyMe'])) {
+      reminderTime = getTimeMinus(
+        time: timeOfDay,
+        minutes: int.parse(json['notifyMe']),
+      );
+    }
 
     return DailyTask.fromJson({
       // ...json,
@@ -98,7 +103,9 @@ class DailyTask {
       'description': json['description'],
       'daily_sub_tasks': json['daily_sub_tasks'],
       'reminder_time':
-          "${json['date']}T${formatTimeOfDayToString(reminderTime)}",
+          reminderTime == null
+              ? "${json['date']}T${json['taskTime']}"
+              : "${json['date']}T${formatTimeOfDayToString(reminderTime)}",
     });
     // return {
     //   'name': json['name'],
