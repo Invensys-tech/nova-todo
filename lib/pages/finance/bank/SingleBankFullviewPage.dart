@@ -155,7 +155,7 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                           color: Color(0xff009966),
                         ),
                         Text(
-                          widget.accountBank,
+                            widget.accountBank.length >15? widget.accountBank.substring(0,15): widget.accountBank,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
@@ -168,6 +168,7 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           SizedBox(
                             height: MediaQuery.of(context).size.height * .0175,

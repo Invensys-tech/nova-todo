@@ -335,7 +335,8 @@ class _ExpensespageState extends State<Expensespage> {
   Future<void> _initAll() async {
     // 1) init Hive and read saved dateType
     await _hiveService.initHive(boxName: 'dateTime');
-    final stored = await _hiveService.getData('dateType');
+    final stored = await _hiveService.getData('dateTime');
+    print('Stored date type: $stored');
     _dateType = stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
 
     // 2) seed _selectedDate & _queryDate based on the mode
@@ -581,22 +582,23 @@ class _ExpensespageState extends State<Expensespage> {
                                   children: [
                                     SlidableAction(
                                       onPressed: (_) {
-                                        Navigator.push(
+
+                                        PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                                           context,
-                                          MaterialPageRoute(
-                                            builder:
-                                                (_) => EditExpense(
-                                                  datamanager:
-                                                      widget.datamanager,
-                                                  expenseId: e.id,
-                                                ),
-                                          ),
+                                          screen: EditExpense(datamanager: widget.datamanager, expenseId: e.id,),
+                                          withNavBar: false,
+                                          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                                          settings: const RouteSettings(),
                                         ).then((_) => _loadExpenses());
+
+
+
+
                                       },
                                       backgroundColor: Colors.blue,
                                       foregroundColor: Colors.white,
                                       icon: Icons.edit,
-                                      label: 'Edit',
+                                      label: translate('Edit'),
                                     ),
                                   ],
                                 ),

@@ -464,7 +464,7 @@ class _IncomeFormState extends State<IncomeForm> {
                                       });
                                       try {
                                         // Insert expense
-                                        saveIncome();
+                                        await saveIncome();
 
                                         print("Income added successfully!");
                                         ScaffoldMessenger.of(
@@ -480,7 +480,7 @@ class _IncomeFormState extends State<IncomeForm> {
                                           isLoading = false;
                                         });
 
-                                        Navigator.pop(context);
+                                        Navigator.of(context).pop(true);
                                       } catch (e) {
                                         setState(() {
                                           isLoading = false;

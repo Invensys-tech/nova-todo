@@ -6,6 +6,7 @@ import 'package:flutter_application_1/pages/finance/loan/singleloan.dart';
 import 'package:flutter_application_1/pages/finance/loan/singleloanedit.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class LoanView extends StatefulWidget {
   final String name;
@@ -31,39 +32,37 @@ class _LoanViewState extends State<LoanView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) => SingleLoan(parentLoanId: widget.parentLoanId),
-            ), // Navigate to NewScreen
-          );
-        },
-        backgroundColor: Colors.green, // Green background
-        child: Icon(
-          Icons.add,
-          color: Colors.white, // White icon color
-          size: 30, // Adjust size if needed
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder:
+      //             (context) => SingleLoan(parentLoanId: widget.parentLoanId),
+      //       ), // Navigate to NewScreen
+      //     );
+      //   },
+      //   backgroundColor: Colors.green, // Green background
+      //   child: Icon(
+      //     Icons.add,
+      //     color: Colors.white, // White icon color
+      //     size: 30, // Adjust size if needed
+      //   ),
+      // ),
       appBar: AppBar(
-        backgroundColor: Color(0xff2F2F2F),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back,),
         ),
         title: Text(
-          "Back to Loans",
+          translate("Back to Loans"),
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
           ), // Bold title
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -96,8 +95,7 @@ class _LoanViewState extends State<LoanView> {
                           widget.name,
                           style: TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.w200,
-                            color: Colors.white.withOpacity(0.8),
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
 
@@ -119,11 +117,10 @@ class _LoanViewState extends State<LoanView> {
                             ), // Rounded corners
                           ),
                           child: Text(
-                            "Owes Me",
+                            translate("Owes Me"),
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w200,
-                              color: Colors.white.withOpacity(0.8),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
@@ -138,11 +135,10 @@ class _LoanViewState extends State<LoanView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Phone",
+                             translate( "Phone"),
                               style: TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.white.withOpacity(0.8),
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             SizedBox(
@@ -152,9 +148,8 @@ class _LoanViewState extends State<LoanView> {
                             Text(
                               widget.phoneNumber,
                               style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],
@@ -163,11 +158,10 @@ class _LoanViewState extends State<LoanView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Amount",
+                              translate("Amount"),
                               style: TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.white.withOpacity(0.8),
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             SizedBox(
@@ -175,11 +169,10 @@ class _LoanViewState extends State<LoanView> {
                                   MediaQuery.of(context).size.height * 0.007,
                             ),
                             Text(
-                              "ETB ${widget.loanAmount}",
+                              "${translate(("ETB"))} ${widget.loanAmount}",
                               style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],
@@ -194,19 +187,17 @@ class _LoanViewState extends State<LoanView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Transactions",
+                    translate("Transactions"),
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w200,
-                      color: Colors.white.withOpacity(0.8),
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   Text(
-                    "See All",
+                    translate("See All"),
                     style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w200,
-                      color: Colors.white.withOpacity(0.8),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ],

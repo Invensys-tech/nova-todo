@@ -357,16 +357,24 @@ class _BankPageState extends State<BankPage> {
                               children: [
                                 SlidableAction(
                                   onPressed: (context) {
-                                    Navigator.push(
+
+
+
+
+                                    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                                       context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => EditBank(
-                                              bankId: bank.id,
-                                              datamanager: widget.datamanager,
-                                            ),
+                                      screen: EditBank(
+                                        bankId: bank.id,
+                                        datamanager: widget.datamanager,
                                       ),
+
+                                      withNavBar: false,
+                                      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                                      settings: const RouteSettings(),
                                     );
+
+
+
                                   },
                                   backgroundColor: Colors.blue,
                                   foregroundColor: Colors.white,
@@ -384,9 +392,9 @@ class _BankPageState extends State<BankPage> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: const Text('Confirm Delete'),
-                                          content: const Text(
-                                            'Are you sure you want to delete this bank?',
+                                          title:  Text(translate('Confirm Delete')),
+                                          content:  Text(
+                                            translate('Are you sure you want to delete this bank?'),
                                           ),
                                           actions: [
                                             TextButton(
@@ -415,7 +423,7 @@ class _BankPageState extends State<BankPage> {
                                   backgroundColor: Colors.red,
                                   foregroundColor: Colors.white,
                                   icon: Icons.delete,
-                                  label: 'Delete',
+                                  label: translate('Delete'),
                                 ),
                               ],
                             ),
