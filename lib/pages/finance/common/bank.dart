@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/pages/finance/bank/SingleBankFullviewPage.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class BankWidget extends StatefulWidget {
   const BankWidget({
@@ -51,6 +52,10 @@ class _BankWidgetState extends State<BankWidget> {
                 ),
           ),
         );
+
+
+
+
       },
       child: Container(
         margin: EdgeInsets.symmetric(
@@ -105,7 +110,7 @@ class _BankWidgetState extends State<BankWidget> {
             ),
             Spacer(),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.01),
 

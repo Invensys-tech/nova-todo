@@ -582,22 +582,23 @@ class _ExpensespageState extends State<Expensespage> {
                                   children: [
                                     SlidableAction(
                                       onPressed: (_) {
-                                        Navigator.push(
+
+                                        PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                                           context,
-                                          MaterialPageRoute(
-                                            builder:
-                                                (_) => EditExpense(
-                                                  datamanager:
-                                                      widget.datamanager,
-                                                  expenseId: e.id,
-                                                ),
-                                          ),
+                                          screen: EditExpense(datamanager: widget.datamanager, expenseId: e.id,),
+                                          withNavBar: false,
+                                          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                                          settings: const RouteSettings(),
                                         ).then((_) => _loadExpenses());
+
+
+
+
                                       },
                                       backgroundColor: Colors.blue,
                                       foregroundColor: Colors.white,
                                       icon: Icons.edit,
-                                      label: 'Edit',
+                                      label: translate('Edit'),
                                     ),
                                   ],
                                 ),

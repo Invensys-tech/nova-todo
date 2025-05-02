@@ -152,20 +152,25 @@ class _HabitItemState extends State<HabitItem> {
                       extendStreak();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF555B59),
+                      backgroundColor: Theme.of(context).primaryColorDark,
                     ),
                     child:
                         isSaving
                             ? SizedBox(
                               width: 16,
                               height: 16,
-                              child: CircularProgressIndicator(
-                                color: Colors.grey.shade300,
+                              child:  Container(
+                                decoration: BoxDecoration(shape: BoxShape.circle),
+                                child: Lottie.asset(
+                                      'assets/LottieAnimations/HabitLoading.json',
+                                  width: 20,
+                                  height: 20,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
                             )
                             : Text(
                               '🙂 I did it!',
-                              style: TextStyle(color: Color(0xFFF4F4F5)),
                             ),
                   ),
                 ),

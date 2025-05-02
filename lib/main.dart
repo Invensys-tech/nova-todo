@@ -80,8 +80,8 @@ void main() async {
   if (languageCode != null) {
     await delegate.changeLocale(Locale(languageCode));
   }
-  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
-  //runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
+  // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+  runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
 }
 
 Future<void> requestNotificationPermission() async {
@@ -187,8 +187,10 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
+    bool isdarki = true;
     setState(() {
-      _currentThemeId = prefs.getInt('ThemeOfApp') ?? AppThemes.Dark;
+       isdarki == prefs.getBool('ThemeOfApp');
+      _currentThemeId = isdarki ?  AppThemes.Dark: AppThemes.LightBlue;
     });
   }
 

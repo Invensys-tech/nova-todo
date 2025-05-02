@@ -133,7 +133,7 @@ class _TodoItemState extends State<TodoItem> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          backgroundColor: Color(0xff0d805e).withOpacity(.8),
+          backgroundColor: Theme.of(context).primaryColorDark,
         );
       },
       barrierDismissible: true,
@@ -143,7 +143,7 @@ class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .165,
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height*.015),
       child: Slidable(
         startActionPane: ActionPane(
           motion: const ScrollMotion(),
@@ -162,6 +162,7 @@ class _TodoItemState extends State<TodoItem> {
               foregroundColor: Colors.white,
               icon: Icons.sentiment_satisfied,
               label: 'Done',
+              borderRadius: BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7)),
             ),
           ],
         ),
@@ -178,10 +179,13 @@ class _TodoItemState extends State<TodoItem> {
             Expanded(
               flex: 1,
               child: Container(
-                color:
-                    widget.dailyTask.completionPercentage != null
-                        ? Colors.grey.shade300
-                        : Color(0xFFEC003F),
+                decoration: BoxDecoration(
+                  color:
+                  widget.dailyTask.completionPercentage != null
+                      ? Colors.grey.shade300
+                      : Color(0xFFEC003F),
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(7), topLeft: Radius.circular(7)),
+                ),
                 child: Center(
                   child: ElevatedButton(
                     onPressed:
@@ -236,7 +240,7 @@ class _TodoItemState extends State<TodoItem> {
                             : widget.dailyTask.type == 'Medium'
                             ? Color.fromARGB(255, 128, 120, 13)
                             : Color.fromARGB(255, 128, 13, 13),
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(7),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +316,6 @@ class _TodoItemState extends State<TodoItem> {
                     ],
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * .02),
               ],
             ),
           ),

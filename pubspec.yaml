@@ -128,6 +128,7 @@ flutter:
     - assets/LottieAnimations/ZeroStreak.json
     - assets/LottieAnimations/UnderConstruction.json
     - assets/LottieAnimations/UnderConstruction2.json
+    - assets/LottieAnimations/HabitLoading.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

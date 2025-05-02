@@ -40,7 +40,7 @@ class TextFields extends StatelessWidget {
                 prefixText!,
                 style: const TextStyle(
                   fontSize: 13,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w300,
                 ),
               ),
             ),
@@ -59,6 +59,7 @@ class TextFields extends StatelessWidget {
 
               decoration: InputDecoration(
                 hintText: hinttext,
+                hintStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
                 filled: filled,
                 border: OutlineInputBorder(
                   borderRadius:

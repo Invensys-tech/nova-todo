@@ -36,8 +36,8 @@ class _DailyReportState extends State<DailyReport> {
             color: Color(0xff006045),
           ),
         ),
-        title: const Text(
-          "Daily Report",
+        title:  Text(
+         translate( "Daily Report"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -53,9 +53,14 @@ class _DailyReportState extends State<DailyReport> {
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 width: MediaQuery.of(context).size.width * .95,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
+                  border: Border.all(color: Colors.grey.withOpacity(.25), width: 1),
+                  borderRadius: BorderRadius.circular(7),
+                  gradient: Theme.of(context).brightness == Brightness.dark ? LinearGradient(
                     colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ) : LinearGradient(
+                    colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -65,9 +70,8 @@ class _DailyReportState extends State<DailyReport> {
                   spacing: 8,
                   children: [
                     Text(
-                      translate('Success Rate'),
+                      translate('Daily Task Success Rate'),
                       style: TextStyle(
-                        color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
@@ -121,9 +125,14 @@ class _DailyReportState extends State<DailyReport> {
                       ),
                       width: MediaQuery.of(context).size.width * .95,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        gradient: LinearGradient(
+                        border: Border.all(color: Colors.grey.withOpacity(.25), width: 1),
+                        borderRadius: BorderRadius.circular(7),
+                        gradient: Theme.of(context).brightness == Brightness.dark ? LinearGradient(
                           colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ) : LinearGradient(
+                          colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -138,7 +147,6 @@ class _DailyReportState extends State<DailyReport> {
                               Text(
                                 translate('Expenses'),
                                 style: TextStyle(
-                                  color: Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -213,14 +221,16 @@ class _DailyReportState extends State<DailyReport> {
                                     horizontal: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFF27272A),
-                                        Color(0xFF18181B),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
+                                   // border: Border.all(color: Colors.grey.withOpacity(.25), width: 1),
+                                    borderRadius: BorderRadius.circular(7),
+                                    gradient: Theme.of(context).brightness == Brightness.dark ? LinearGradient(
+                                      colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                                      begin: Alignment.bottomRight,
+                                      end: Alignment.topLeft,
+                                    ) : LinearGradient(
+                                      colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
+                                      begin: Alignment.bottomRight,
+                                      end: Alignment.topLeft,
                                     ),
                                   ),
                                   child: Column(
@@ -241,7 +251,6 @@ class _DailyReportState extends State<DailyReport> {
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.white,
                                         ),
                                       ),
                                     ],
@@ -256,14 +265,16 @@ class _DailyReportState extends State<DailyReport> {
                                     horizontal: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFF27272A),
-                                        Color(0xFF18181B),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
+                                   // border: Border.all(color: Colors.grey.withOpacity(.25), width: 1),
+                                    borderRadius: BorderRadius.circular(7),
+                                    gradient: Theme.of(context).brightness == Brightness.dark ? LinearGradient(
+                                      colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                                      begin: Alignment.bottomRight,
+                                      end: Alignment.topLeft,
+                                    ) : LinearGradient(
+                                      colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
+                                      begin: Alignment.bottomRight,
+                                      end: Alignment.topLeft,
                                     ),
                                   ),
                                   child: Column(
@@ -276,7 +287,6 @@ class _DailyReportState extends State<DailyReport> {
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
-                                          color: Color(0xFFD4D4D8),
                                         ),
                                       ),
                                       Text(
@@ -284,7 +294,6 @@ class _DailyReportState extends State<DailyReport> {
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.white,
                                         ),
                                       ),
                                     ],
@@ -299,14 +308,16 @@ class _DailyReportState extends State<DailyReport> {
                                     horizontal: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFF27272A),
-                                        Color(0xFF18181B),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
+                                    //border: Border.all(color: Colors.grey.withOpacity(.25), width: 1),
+                                    borderRadius: BorderRadius.circular(7),
+                                    gradient: Theme.of(context).brightness == Brightness.dark ? LinearGradient(
+                                      colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                                      begin: Alignment.bottomRight,
+                                      end: Alignment.topLeft,
+                                    ) : LinearGradient(
+                                      colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
+                                      begin: Alignment.bottomRight,
+                                      end: Alignment.topLeft,
                                     ),
                                   ),
                                   child: Column(
@@ -327,7 +338,6 @@ class _DailyReportState extends State<DailyReport> {
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600,
-                                          color: Colors.white,
                                         ),
                                       ),
                                     ],
@@ -353,9 +363,14 @@ class _DailyReportState extends State<DailyReport> {
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 width: MediaQuery.of(context).size.width * .95,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
+                  border: Border.all(color: Colors.grey.withOpacity(.25), width: 1),
+                  borderRadius: BorderRadius.circular(7),
+                  gradient: Theme.of(context).brightness == Brightness.dark ? LinearGradient(
                     colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ) : LinearGradient(
+                    colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -367,7 +382,6 @@ class _DailyReportState extends State<DailyReport> {
                     Text(
                       translate('Income'),
                       style: TextStyle(
-                        color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
@@ -379,7 +393,6 @@ class _DailyReportState extends State<DailyReport> {
                           return Text(
                             '\$ ${snapshot.data!['total']}',
                             style: TextStyle(
-                              color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                             ),
@@ -401,9 +414,14 @@ class _DailyReportState extends State<DailyReport> {
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 width: MediaQuery.of(context).size.width * .95,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
+                  border: Border.all(color: Colors.grey.withOpacity(.25), width: 1),
+                  borderRadius: BorderRadius.circular(7),
+                  gradient: Theme.of(context).brightness == Brightness.dark ? LinearGradient(
                     colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ) : LinearGradient(
+                    colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -426,7 +444,6 @@ class _DailyReportState extends State<DailyReport> {
                                   Text(
                                     translate('Habit Summary'),
                                     style: TextStyle(
-                                      color: Colors.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -434,7 +451,6 @@ class _DailyReportState extends State<DailyReport> {
                                   Text(
                                     '${snapshot.data!.where((habit) => habit.isDoneToday).length}/${snapshot.data!.length}',
                                     style: TextStyle(
-                                      color: Colors.white,
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -452,7 +468,7 @@ class _DailyReportState extends State<DailyReport> {
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Color(0xFF27272A),
+                                    color: Theme.of(context).primaryColorDark
                                   ),
                                   child:
                                       habit.isDoneToday
@@ -487,9 +503,14 @@ class _DailyReportState extends State<DailyReport> {
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 width: MediaQuery.of(context).size.width * .95,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
+                  border: Border.all(color: Colors.grey.withOpacity(.25), width: 1),
+                  borderRadius: BorderRadius.circular(7),
+                  gradient: Theme.of(context).brightness == Brightness.dark ? LinearGradient(
                     colors: [Color(0xFF18181B), Color(0xFF27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ) : LinearGradient(
+                    colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -504,7 +525,6 @@ class _DailyReportState extends State<DailyReport> {
                         Text(
                           translate('Productivity Summary'),
                           style: TextStyle(
-                            color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                           ),
@@ -512,7 +532,6 @@ class _DailyReportState extends State<DailyReport> {
                         Text(
                           translate('7/10'),
                           style: TextStyle(
-                            color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
@@ -533,10 +552,12 @@ class _DailyReportState extends State<DailyReport> {
                           child: Text('☹️', style: TextStyle(fontSize: 24)),
                         ),
                         Expanded(
-                          child: Text(
-                            'You need to make improvements. You Got It',
-                            softWrap: true,
-                            style: TextStyle(fontSize: 16),
+                          child: Center(
+                            child: Text(
+                              'You need to make improvements. You Got It',
+                              softWrap: true,
+                              style: TextStyle(fontSize: 16),
+                            ),
                           ),
                         ),
                       ],
@@ -553,7 +574,7 @@ class _DailyReportState extends State<DailyReport> {
                   spacing: 8,
                   children: [
                     Text(
-                      'Share',
+                      'Share This InOrder To Inspire Others ',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -564,12 +585,12 @@ class _DailyReportState extends State<DailyReport> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFFF637E).withAlpha(20),
+                            backgroundColor: Color(0xFFFF637E).withOpacity(.3),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                               side: BorderSide(
                                 color: Color(0xFFFF637E),
-                                width: 2,
+                                width: 1,
                               ),
                             ),
                           ),
@@ -579,7 +600,7 @@ class _DailyReportState extends State<DailyReport> {
 
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white.withAlpha(20),
+                            backgroundColor: Theme.of(context).primaryColorLight,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                               side: BorderSide(color: Colors.white, width: 2),
@@ -591,7 +612,7 @@ class _DailyReportState extends State<DailyReport> {
 
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF00D492).withAlpha(20),
+                            backgroundColor: Color(0xFF00D492).withOpacity(.3),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                               side: BorderSide(
