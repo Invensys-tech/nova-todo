@@ -202,6 +202,14 @@ class Habit {
     return !streakDates.contains(getDateOnly(DateTime.now()));
   }
 
+  int get trueStreak {
+    if (type == 'Daily') {
+      return streakDates.length ~/ frequency;
+    }
+
+    return streakDates.length;
+  }
+
   Habit copy() {
     return Habit(
       name: name,

@@ -35,9 +35,7 @@ class _TodoPageState extends State<TodoPage> {
     dailyJournal = DailyJournalRepository().fetchByDate(
       getDateOnly(DateTime.now()),
     );
-    completionPercentage = DailyTaskRepository().fetchCompletionPercentage(
-      getDateOnly(DateTime.now()),
-    );
+    completionPercentage = DailyTaskRepository().fetchCompletionPercentage(now);
   }
 
   void refetchData() {
@@ -47,7 +45,7 @@ class _TodoPageState extends State<TodoPage> {
         getDateOnly(DateTime.now()),
       );
       completionPercentage = DailyTaskRepository().fetchCompletionPercentage(
-        getDateOnly(DateTime.now()),
+        now,
       );
     });
   }
@@ -67,7 +65,6 @@ class _TodoPageState extends State<TodoPage> {
   void newTodo() async {
     // final newGoals = await Navigator.push(
 
-
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
       screen: AddTodoPage(refetchData: refetchData),
@@ -78,12 +75,12 @@ class _TodoPageState extends State<TodoPage> {
   }
 
   openDailyJournalQuill(dynamic content) async {
-
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
       screen: DailyJournalQuill(date: getDateOnly(now), content: content),
       withNavBar: false,
-      pageTransitionAnimation: PageTransitionAnimation.cupertino, settings: const RouteSettings(),
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      settings: const RouteSettings(),
     );
   }
 
@@ -114,12 +111,13 @@ class _TodoPageState extends State<TodoPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-          leading: GestureDetector(
-              onTap: (){
-                _scaffoldKey.currentState?.openDrawer();
-              },
-              child: Icon(Icons.menu, size: 27, )),
-      title: Text(translate("DailyToDo List")),
+        leading: GestureDetector(
+          onTap: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+          child: Icon(Icons.menu, size: 27),
+        ),
+        title: Text(translate("DailyToDo List")),
       ),
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
@@ -129,7 +127,7 @@ class _TodoPageState extends State<TodoPage> {
         child: Icon(Icons.add),
       ),
 
-      drawer: Drawer(child: Drawerpage(),  backgroundColor: Colors.transparent),
+      drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
       body: FutureBuilder(
         future: todos,
         builder: (context, snapshot) {
@@ -180,18 +178,23 @@ class _TodoPageState extends State<TodoPage> {
                                   horizontal: 0,
                                 ),
                                 child: LinearPercentIndicator(
-                                  width: MediaQuery.of(context).size.width * .94,
+                                  width:
+                                      MediaQuery.of(context).size.width * .94,
                                   animation: true,
-                                  lineHeight: MediaQuery.of(context).size.height * .01,
+                                  lineHeight:
+                                      MediaQuery.of(context).size.height * .01,
                                   animationDuration: 2500,
                                   percent: snapshot.data!,
 
-                                  backgroundColor: Theme.of(context).primaryColorDark,
+                                  backgroundColor:
+                                      Theme.of(context).primaryColorDark,
                                   linearStrokeCap: LinearStrokeCap.roundAll,
                                   progressColor: Color(0xff0d805e),
                                 ),
                               ),
-                              Text('${(snapshot.data! * 100).toString()} Of the work is done'),
+                              Text(
+                                '${(snapshot.data! * 100).toString()} Of the work is done',
+                              ),
                             ],
                           );
                         } else {
@@ -199,7 +202,7 @@ class _TodoPageState extends State<TodoPage> {
                             width: MediaQuery.of(context).size.width * .9,
                             animation: true,
                             lineHeight:
-                            MediaQuery.of(context).size.height * .025,
+                                MediaQuery.of(context).size.height * .025,
                             animationDuration: 2500,
                             backgroundColor: Theme.of(context).primaryColorDark,
                             percent: 0,
@@ -252,36 +255,48 @@ class _TodoPageState extends State<TodoPage> {
                               GestureDetector(
                                 onTap:
                                     () => openDailyJournalQuill(
-                                  // jsonDecode(
-                                  //   jsonDecode(
-                                  //     jsonEncode(snapshot.data?['content']),
-                                  //   ),
-                                  // ),
-                                  snapshot.data?['content'],
-                                ),
+                                      // jsonDecode(
+                                      //   jsonDecode(
+                                      //     jsonEncode(snapshot.data?['content']),
+                                      //   ),
+                                      // ),
+                                      snapshot.data?['content'],
+                                    ),
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                     horizontal:
-                                    MediaQuery.of(context).size.width * .035,
+                                        MediaQuery.of(context).size.width *
+                                        .035,
                                     vertical:
-                                    MediaQuery.of(context).size.height *
+                                        MediaQuery.of(context).size.height *
                                         .015,
                                   ),
                                   width:
-                                  MediaQuery.of(context).size.width * .93,
+                                      MediaQuery.of(context).size.width * .93,
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).disabledColor,
                                     borderRadius: BorderRadius.circular(15),
-
                                   ),
                                   child: Column(
                                     children: [
                                       snapshot.data?['content'] != null
-                                          ? Text('Update Daily Journal',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),)
-                                          : Text('Add Daily Journal',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),),
+                                          ? Text(
+                                            'Update Daily Journal',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          )
+                                          : Text(
+                                            'Add Daily Journal',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          ),
                                       SizedBox(
                                         height:
-                                        MediaQuery.of(context).size.height *
+                                            MediaQuery.of(context).size.height *
                                             .015,
                                       ),
                                       Row(
@@ -294,9 +309,9 @@ class _TodoPageState extends State<TodoPage> {
                                           ),
                                           SizedBox(
                                             width:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.width *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
                                                 .015,
                                           ),
                                           Text(
@@ -313,7 +328,7 @@ class _TodoPageState extends State<TodoPage> {
                                       ),
                                       SizedBox(
                                         height:
-                                        MediaQuery.of(context).size.height *
+                                            MediaQuery.of(context).size.height *
                                             .005,
                                       ),
                                       Row(
@@ -326,9 +341,9 @@ class _TodoPageState extends State<TodoPage> {
                                           ),
                                           SizedBox(
                                             width:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.width *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
                                                 .015,
                                           ),
                                           Text(
@@ -345,7 +360,7 @@ class _TodoPageState extends State<TodoPage> {
                                       ),
                                       SizedBox(
                                         height:
-                                        MediaQuery.of(context).size.height *
+                                            MediaQuery.of(context).size.height *
                                             .005,
                                       ),
                                       Row(
@@ -358,9 +373,9 @@ class _TodoPageState extends State<TodoPage> {
                                           ),
                                           SizedBox(
                                             width:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.width *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
                                                 .015,
                                           ),
                                           Text(
@@ -377,7 +392,7 @@ class _TodoPageState extends State<TodoPage> {
                                       ),
                                       SizedBox(
                                         height:
-                                        MediaQuery.of(context).size.height *
+                                            MediaQuery.of(context).size.height *
                                             .005,
                                       ),
                                       Row(
@@ -390,9 +405,9 @@ class _TodoPageState extends State<TodoPage> {
                                           ),
                                           SizedBox(
                                             width:
-                                            MediaQuery.of(
-                                              context,
-                                            ).size.width *
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
                                                 .015,
                                           ),
                                           Text(
@@ -413,7 +428,7 @@ class _TodoPageState extends State<TodoPage> {
                               ),
                               SizedBox(
                                 height:
-                                MediaQuery.of(context).size.height * .02,
+                                    MediaQuery.of(context).size.height * .02,
                               ),
                             ],
                           );
@@ -422,14 +437,14 @@ class _TodoPageState extends State<TodoPage> {
                             return GestureDetector(
                               onTap:
                                   () => openDailyJournalQuill(
-                                snapshot.data?['content'],
-                              ),
+                                    snapshot.data?['content'],
+                                  ),
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal:
-                                  MediaQuery.of(context).size.width * .05,
+                                      MediaQuery.of(context).size.width * .05,
                                   vertical:
-                                  MediaQuery.of(context).size.height * .015,
+                                      MediaQuery.of(context).size.height * .015,
                                 ),
                                 width: MediaQuery.of(context).size.width * .93,
                                 decoration: BoxDecoration(
@@ -453,10 +468,18 @@ class _TodoPageState extends State<TodoPage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Center(child: Text('Add Daily Journal',style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),)),
+                                    Center(
+                                      child: Text(
+                                        'Add Daily Journal',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
+                                    ),
                                     SizedBox(
                                       height:
-                                      MediaQuery.of(context).size.height *
+                                          MediaQuery.of(context).size.height *
                                           .0125,
                                     ),
                                     Row(
@@ -467,9 +490,9 @@ class _TodoPageState extends State<TodoPage> {
                                         ),
                                         SizedBox(
                                           width:
-                                          MediaQuery.of(
-                                            context,
-                                          ).size.width *
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
                                               .015,
                                         ),
                                         Text(
@@ -483,7 +506,7 @@ class _TodoPageState extends State<TodoPage> {
                                     ),
                                     SizedBox(
                                       height:
-                                      MediaQuery.of(context).size.height *
+                                          MediaQuery.of(context).size.height *
                                           .005,
                                     ),
                                     Row(
@@ -494,9 +517,9 @@ class _TodoPageState extends State<TodoPage> {
                                         ),
                                         SizedBox(
                                           width:
-                                          MediaQuery.of(
-                                            context,
-                                          ).size.width *
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
                                               .015,
                                         ),
                                         Text(
@@ -510,7 +533,7 @@ class _TodoPageState extends State<TodoPage> {
                                     ),
                                     SizedBox(
                                       height:
-                                      MediaQuery.of(context).size.height *
+                                          MediaQuery.of(context).size.height *
                                           .005,
                                     ),
                                     Row(
@@ -521,9 +544,9 @@ class _TodoPageState extends State<TodoPage> {
                                         ),
                                         SizedBox(
                                           width:
-                                          MediaQuery.of(
-                                            context,
-                                          ).size.width *
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
                                               .015,
                                         ),
                                         Text(
@@ -537,7 +560,7 @@ class _TodoPageState extends State<TodoPage> {
                                     ),
                                     SizedBox(
                                       height:
-                                      MediaQuery.of(context).size.height *
+                                          MediaQuery.of(context).size.height *
                                           .005,
                                     ),
                                     Row(
@@ -548,9 +571,9 @@ class _TodoPageState extends State<TodoPage> {
                                         ),
                                         SizedBox(
                                           width:
-                                          MediaQuery.of(
-                                            context,
-                                          ).size.width *
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
                                               .015,
                                         ),
                                         Text(
@@ -660,7 +683,6 @@ class _TodoPageState extends State<TodoPage> {
                   // ),
                   // ),
                   SizedBox(height: MediaQuery.of(context).size.height * .025),
-
                 ],
               ),
             );

@@ -21,6 +21,7 @@ class _HabitViewState extends State<HabitView> {
 
   @override
   void initState() {
+    super.initState();
     habitHistories = HabitsRepository().getStreakHistories(widget.habit.id!);
   }
 
@@ -70,10 +71,7 @@ class _HabitViewState extends State<HabitView> {
       appBar: AppBar(
         title: Text(
           widget.habit.name,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 16.0,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16.0),
         ),
         leading: Row(
           spacing: MediaQuery.of(context).size.width * 0.04,
@@ -98,25 +96,22 @@ class _HabitViewState extends State<HabitView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 spacing: MediaQuery.of(context).size.height * 0.005,
                 children: [
-                  Text(
-                    widget.habit.type,
-                    style: TextStyle( fontSize: 14),
-                  ),
+                  Text(widget.habit.type, style: TextStyle(fontSize: 14)),
                   Text(
                     'Created At: ${getDateOnly(DateTime.parse(widget.habit.date))}',
-                    style: TextStyle( fontSize: 12),
+                    style: TextStyle(fontSize: 12),
                   ),
                 ],
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   MaterialPageRoute(
                     builder:
                         (context) => HabitForm(
-                      refetchData: () {},
-                      habit: widget.habit,
-                      isEditing: true,
-                    ),
+                          refetchData: () {},
+                          habit: widget.habit,
+                          isEditing: true,
+                        ),
                   );
                 },
                 child: Container(
@@ -125,10 +120,7 @@ class _HabitViewState extends State<HabitView> {
                     color: Theme.of(context).disabledColor,
                     shape: BoxShape.circle,
                   ),
-                  child: FaIcon(
-                    FontAwesomeIcons.pencil,
-                    size: 20,
-                  ),
+                  child: FaIcon(FontAwesomeIcons.pencil, size: 20),
                 ),
               ),
             ],
@@ -146,7 +138,10 @@ class _HabitViewState extends State<HabitView> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Theme.of(context).primaryColorDark,
-                    border: Border.all(width: 1,color: Colors.grey.withOpacity(.4))
+                    border: Border.all(
+                      width: 1,
+                      color: Colors.grey.withOpacity(.4),
+                    ),
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
@@ -220,83 +215,115 @@ class _HabitViewState extends State<HabitView> {
                             ),
                           ],
                         ),
-                        // Row(
-                        //   spacing: MediaQuery.of(context).size.height * 0.02,
-                        //   children: [
-                        //     Expanded(
-                        //       flex: 1,
-                        //       child: Container(
-                        //         padding: EdgeInsets.all(10.0),
-                        //         height:
-                        //             MediaQuery.of(context).size.height * 0.1,
-                        //         decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(8),
-                        //           border: Border.all(
-                        //             color: Color(0xFF3F3F47),
-                        //             width: 1,
-                        //           ),
-                        //         ),
-                        //         child: Column(
-                        //           mainAxisAlignment:
-                        //               MainAxisAlignment.spaceBetween,
-                        //           crossAxisAlignment: CrossAxisAlignment.start,
-                        //           children: [
-                        //             const Text(
-                        //               'Accomplished',
-                        //               style: TextStyle(
-                        //                 color: Color(0xFF009966),
-                        //                 fontSize: 16,
-                        //               ),
-                        //             ),
-                        //             Text(
-                        //               '${widget.habit.streakDates.length} Days',
-                        //               style: TextStyle(
-                        //                 color: Color(0xFFF4F4F5),
-                        //                 fontSize: 20,
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     Expanded(
-                        //       flex: 1,
-                        //       child: Container(
-                        //         padding: EdgeInsets.all(10.0),
-                        //         height:
-                        //             MediaQuery.of(context).size.height * 0.1,
-                        //         decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(8),
-                        //           border: Border.all(
-                        //             color: Color(0xFF3F3F47),
-                        //             width: 1,
-                        //           ),
-                        //         ),
-                        //         child: Column(
-                        //           mainAxisAlignment:
-                        //               MainAxisAlignment.spaceBetween,
-                        //           crossAxisAlignment: CrossAxisAlignment.start,
-                        //           children: [
-                        //             const Text(
-                        //               'Failed',
-                        //               style: TextStyle(
-                        //                 color: Color(0xFFEC003F),
-                        //                 fontSize: 16,
-                        //               ),
-                        //             ),
-                        //             Text(
-                        //               '${widget.habit.goingOnFor - (widget.habit.streakDates.length)} Days',
-                        //               style: TextStyle(
-                        //                 color: Color(0xFFF4F4F5),
-                        //                 fontSize: 20,
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
+                        Row(
+                          spacing: MediaQuery.of(context).size.height * 0.02,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Color(0xFF3F3F47),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Accomplished',
+                                      style: TextStyle(
+                                        color: Color(0xFF009966),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${widget.habit.trueStreak} Days',
+                                      style: TextStyle(
+                                        color: Color(0xFFF4F4F5),
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Color(0xFF3F3F47),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Failed',
+                                      style: TextStyle(
+                                        color: Color(0xFFEC003F),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    FutureBuilder(
+                                      future: habitHistories,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Text(
+                                            '${snapshot.data!.length}',
+                                            style: TextStyle(
+                                              color: Color(0xFFF4F4F5),
+                                              fontSize: 20,
+                                            ),
+                                          );
+                                        } else {
+                                          if (snapshot.hasError) {
+                                            return Text(
+                                              '0',
+                                              style: TextStyle(
+                                                color: Color(0xFFF4F4F5),
+                                                fontSize: 20,
+                                              ),
+                                            );
+                                          } else {
+                                            return Text(
+                                              '',
+                                              style: TextStyle(
+                                                color: Color(0xFFF4F4F5),
+                                                fontSize: 20,
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
+                                    ),
+                                    // Text(
+                                    //   '${8} Days',
+                                    //   style: TextStyle(
+                                    //     color: Color(0xFFF4F4F5),
+                                    //     fontSize: 20,
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -348,7 +375,9 @@ class _HabitViewState extends State<HabitView> {
                         );
                       } else {
                         if (snapshot.hasError) {
-                          return Center(child: Text('Error getting habit histories'));
+                          return Center(
+                            child: Text('Error getting habit histories'),
+                          );
                         } else {
                           return Center(child: CircularProgressIndicator());
                         }

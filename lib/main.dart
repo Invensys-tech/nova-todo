@@ -6,6 +6,7 @@ import 'package:another_telephony/telephony.dart';
 import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/pages/auth/payment.dart';
+import 'package:flutter_application_1/pages/pricing/pricing.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
@@ -80,8 +81,8 @@ void main() async {
   if (languageCode != null) {
     await delegate.changeLocale(Locale(languageCode));
   }
-  // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
-  runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
+  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+  // runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
 }
 
 Future<void> requestNotificationPermission() async {
@@ -187,10 +188,8 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    bool isdarki = true;
     setState(() {
-       isdarki == prefs.getBool('ThemeOfApp');
-      _currentThemeId = isdarki ?  AppThemes.Dark: AppThemes.LightBlue;
+      _currentThemeId = prefs.getInt('ThemeOfApp') ?? AppThemes.Dark;
     });
   }
 
@@ -273,7 +272,7 @@ class _MyAppState extends State<MyApp> {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
-              // FlutterQuillLocalizations.delegate// Add this line for FlutterQuill localization
+              FlutterQuillLocalizations.delegate// Add this line for FlutterQuill localization
             ],
             //locale: Locale('en', 'US'),
             routes: {
@@ -282,7 +281,7 @@ class _MyAppState extends State<MyApp> {
                       widget.initPage == InitPage.HOME
                           ? const MainScreenPage()
                           : widget.initPage == InitPage.PAYMENT
-                          ? PaymentPage(context: context)
+                          ? PricingScreen()
                           : const AuthGate(),
               // (context) => const MainScreenPage(),
               '/login': (context) => const AuthGate(),

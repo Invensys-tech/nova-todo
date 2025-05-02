@@ -137,6 +137,21 @@ String getTimeFromDateTime(DateTime dateTime) {
   return "$hour:$minute $amPm";
 }
 
+String getTimePartFromDateTimeString(String time) {
+  String timeNumbers = time.split(' ')[0];
+
+  print(timeNumbers);
+
+  int hours = int.parse(timeNumbers.split(':')[0]);
+  int minutes = int.parse(timeNumbers.split(':')[1]);
+
+  if (time.split(' ')[1] == 'PM') {
+    hours += 12;
+  }
+
+  return "${hours > 10 ? hours : '0$hours'}:${hours > 10 ? minutes : '0$minutes'}";
+}
+
 String getTimeFromDateTimeString(String dateTimeString) {
   DateTime dateTime = DateTime.parse(dateTimeString);
   return getTimeFromDateTime(dateTime);
