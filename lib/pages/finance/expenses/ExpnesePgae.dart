@@ -335,7 +335,8 @@ class _ExpensespageState extends State<Expensespage> {
   Future<void> _initAll() async {
     // 1) init Hive and read saved dateType
     await _hiveService.initHive(boxName: 'dateTime');
-    final stored = await _hiveService.getData('dateType');
+    final stored = await _hiveService.getData('dateTime');
+    print('Stored date type: $stored');
     _dateType = stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
 
     // 2) seed _selectedDate & _queryDate based on the mode

@@ -54,15 +54,15 @@ class _SeetingpageState extends State<Seetingpage> {
   }
 
   Future<void> _loadDateType() async {
-    await _hiveService.initHive(boxName: 'dateType');
-    final stored = await _hiveService.getData('dateType');
+    await _hiveService.initHive(boxName: 'dateTime');
+    final stored = await _hiveService.getData('dateTime');
     setState(() {
       _selectedDateType = stored ?? 'Gregorian';
     });
   }
 
   Future<void> _saveDateType(String newType) async {
-    await _hiveService.upsertData('dateType', newType);
+    await _hiveService.upsertData('dateTime', newType);
     setState(() {
       _selectedDateType = newType;
     });
