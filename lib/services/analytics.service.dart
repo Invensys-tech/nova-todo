@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/entities/habit.entity.dart';
+import 'package:flutter_application_1/repositories/daily-task.repository.dart';
 import 'package:flutter_application_1/repositories/goal.repository.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
@@ -60,7 +61,7 @@ class AnalyticsService {
       final expenses = await supabaseClient
           .from('expense')
           .select('amount, type')
-          .eq('userid', 1);
+          .eq('userid', userId);
 
       num total = 0;
       num maybe = 0;
@@ -102,7 +103,7 @@ class AnalyticsService {
       final incomes = await supabaseClient
           .from('incomes')
           .select('amount, category')
-          .eq('user_id', 1);
+          .eq('user_id', userId);
 
       num total = 0;
 
@@ -168,7 +169,7 @@ class AnalyticsService {
             .from('expense')
             .select('amount, type')
             .eq('date', getDateOnly(DateTime.now()))
-            .eq('userid', 1);
+            .eq('userid', userId);
 
         num total = 0;
         num maybe = 0;
@@ -215,7 +216,7 @@ class AnalyticsService {
           .from('incomes')
           .select('amount, category')
           .eq('date', getDateOnly(DateTime.now()))
-          .eq('user_id', 1);
+          .eq('user_id', userId);
 
       num total = 0;
 
@@ -261,6 +262,18 @@ class AnalyticsService {
       final habits = await HabitsRepository().fetchHabitsByDate(DateTime.now());
 
       return habits;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  static Future<double> getSuccessRate(DateTime dateTime) async {
+    try {
+      double completionPercentage = await DailyTaskRepository()
+          .fetchCompletionPercentage(getDateOnly(dateTime));
+
+      return completionPercentage;
     } catch (e) {
       print(e);
       rethrow;

@@ -21,7 +21,7 @@ class DailyTask {
   late DateTime dateDate;
   late DateTime? endDateTime;
   late Duration? duration;
-  late int completionPercentage;
+  late int? completionPercentage;
 
   DailyTask({
     this.id,
@@ -33,7 +33,7 @@ class DailyTask {
     required this.reminderTime,
     required this.subTasks,
     required this.description,
-    this.completionPercentage = 0,
+    this.completionPercentage,
   }) {
     try {
       duration = DateTime.tryParse(
@@ -62,7 +62,7 @@ class DailyTask {
           json['daily_sub_tasks'] == Null || json['daily_sub_tasks'] == null
               ? []
               : json['daily_sub_tasks'],
-      completionPercentage: json['completion_percentage'] ?? 0,
+      completionPercentage: json['completion_percentage'],
       // : (json['daily_sub_tasks'])
       //     .map((e) => DailySubTask.fromJson(e))
       //     .toList(),

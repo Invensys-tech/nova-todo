@@ -13,7 +13,7 @@ class QuoteRepository {
 
       final response = await supabaseClient
           .from(Entities.QUOTES.dbName)
-          .insert({...quote.toJson(), 'user_id': userId})
+          .insert({...quote.toDBJson(), 'user_id': userId})
           // .insert({...quote.toJson(), 'user_id': 25})
           // Todo: check other options of CountOption
           .count(CountOption.exact);
@@ -23,7 +23,7 @@ class QuoteRepository {
       }
       return true;
     } catch (e) {
-      // print(e);
+      print(e);
       rethrow;
     }
   }

@@ -14,7 +14,6 @@ class DailyTaskRepository {
       final userId = (await authService.findSession())['id'];
       final response = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
-          // .insert({...dailyTask.toJson(), 'user_id': userId})
           .insert({...dailyTask.toJson(), 'user_id': userId})
           .count(CountOption.exact);
 
@@ -73,6 +72,7 @@ class DailyTaskRepository {
   // Future<DailyTask> addDailyTaskFromJson(Map<String, dynamic> dailyTask) async {
   Future<bool> addDailyTaskFromJson(Map<String, dynamic> dailyTask) async {
     try {
+      final userId = (await authService.findSession())['id'];
       // print(jsonEncode(dailyTask));
 
       Map<String, dynamic> convertedData = {
@@ -87,7 +87,7 @@ class DailyTaskRepository {
 
       final response = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
-          .insert(convertedData)
+          .insert({...convertedData, 'user_id': userId})
           .count(CountOption.exact);
 
       if (response.count == 0) {
@@ -122,21 +122,14 @@ class DailyTaskRepository {
     // Future<dynamic> fetchAll(DateTime? date) async {
     try {
       final userId = (await authService.findSession())['id'];
-      // print('---------- Fetching daily tasks ------------');
-      // print(date?.toIso8601String() ?? 'no date');
+
       final data = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
           .select('*, daily_sub_tasks(*)')
           .eq('date', date.toIso8601String())
           .eq('user_id', userId);
-      // .eq('user_id', (await authService.findSession())['id']);
-
-      // for (var d in data) {
-      //   print(jsonEncode(d));
-      // }
 
       return data.map((dailyTask) {
-        print(jsonEncode(dailyTask));
         return DailyTask.fromDBJson(dailyTask);
       }).toList();
     } catch (e) {
@@ -147,11 +140,15 @@ class DailyTaskRepository {
 
   Future<double> fetchCompletionPercentage(String date) async {
     try {
+      final userId = (await authService.findSession())['id'];
       final data = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
-          .select('*')
-          .eq('date', date);
-      // .eq('user_id', (await authService.findSession())['id']);
+          .select('completion_percentage')
+          .eq('date', date)
+          .eq('user_id', userId);
+
+      print('data for completion percentage');
+      print(data);
 
       if (data.isEmpty) {
         return 0;
@@ -160,14 +157,14 @@ class DailyTaskRepository {
       int total = 0;
       int completed = 0;
       for (var d in data) {
-        completed += d['completion_percentage'] as int;
+        completed += (d['completion_percentage'] ?? 0) as int;
         total += 100;
       }
       if (total == 0) {
         return 0;
       }
 
-      return ((completed * 1000) ~/ total) / 10;
+      return ((completed * 1000) ~/ total) / 1000;
     } catch (e) {
       print(e);
       rethrow;
@@ -221,7 +218,6 @@ class DailyTaskRepository {
     int completionPercentage,
   ) async {
     try {
-      print('Updating daily task completion percentage...');
       final data = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
           .update({'completion_percentage': completionPercentage})
@@ -258,7 +254,10 @@ class DailyTaskRepository {
     }
   }
 
-  Future<bool> updateDailyTask(Map<String, dynamic> dailyTaskData, int id) async {
+  Future<bool> updateDailyTask(
+    Map<String, dynamic> dailyTaskData,
+    int id,
+  ) async {
     try {
       final response = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)

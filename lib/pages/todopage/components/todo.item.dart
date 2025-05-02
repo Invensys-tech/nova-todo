@@ -5,6 +5,7 @@ import 'package:flutter_application_1/components/inputs/fixed-length-input.dart'
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
 import 'package:flutter_application_1/pages/todopage/todo-view.dart';
 import 'package:flutter_application_1/repositories/daily-task.repository.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,6 +24,11 @@ class TodoItem extends StatefulWidget {
 }
 
 class _TodoItemState extends State<TodoItem> {
+  @override
+  initState() {
+    super.initState();
+  }
+
   String getCompletionText() {
     if (widget.dailyTask.completionPercentage == 100) return 'Done';
     if (widget.dailyTask.completionPercentage == 0) return 'Not Yet';
@@ -53,19 +59,22 @@ class _TodoItemState extends State<TodoItem> {
     return updated;
   }
 
-  addSubTask(Map<String, dynamic> subTask) {
+  Future<bool> addSubTask(Map<String, dynamic> subTask) async {
     Map<String, dynamic> newSubTask = {
       ...subTask,
       'daily_task_id': widget.dailyTask.id,
     };
-    DailyTaskRepository().addDailySubTask(newSubTask).then((value) {
-      if (value) {
-        widget.dailyTask.subTasks.add(newSubTask);
-        setState(() {
-          widget.setParentState();
-        });
-      }
-    });
+    final response = await DailyTaskRepository().addDailySubTask(newSubTask);
+    if (response) {
+      widget.dailyTask.subTasks.add(newSubTask);
+      setState(() {
+        widget.setParentState();
+      });
+
+      return true;
+    }
+
+    return false;
   }
 
   showCompletionPercentageUpdateDialog(BuildContext context) {
@@ -124,7 +133,7 @@ class _TodoItemState extends State<TodoItem> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          backgroundColor: Color(0xff0d805e).withOpacity(.35),
+          backgroundColor: Color(0xff0d805e).withOpacity(.8),
         );
       },
       barrierDismissible: true,
@@ -134,7 +143,7 @@ class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height*.165,
+      height: MediaQuery.of(context).size.height * .165,
       child: Slidable(
         startActionPane: ActionPane(
           motion: const ScrollMotion(),
@@ -169,10 +178,17 @@ class _TodoItemState extends State<TodoItem> {
             Expanded(
               flex: 1,
               child: Container(
-                color: Color(0xFFEC003F),
+                color:
+                    widget.dailyTask.completionPercentage != null
+                        ? Colors.grey.shade300
+                        : Color(0xFFEC003F),
                 child: Center(
                   child: ElevatedButton(
-                    onPressed: () => updateDailyTaskPercentage(0),
+                    onPressed:
+                        () =>
+                            widget.dailyTask.completionPercentage != null
+                                ? updateDailyTaskPercentage(0)
+                                : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF555B59),
                     ),
@@ -218,18 +234,8 @@ class _TodoItemState extends State<TodoItem> {
                         widget.dailyTask.type == 'High'
                             ? Color(0xff0d805e)
                             : widget.dailyTask.type == 'Medium'
-                            ? Color.fromARGB(
-                              255,
-                              128,
-                              120,
-                              13,
-                            )
-                            : Color.fromARGB(
-                              255,
-                              128,
-                              13,
-                              13,
-                            ),
+                            ? Color.fromARGB(255, 128, 120, 13)
+                            : Color.fromARGB(255, 128, 13, 13),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(
@@ -239,7 +245,7 @@ class _TodoItemState extends State<TodoItem> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.dailyTask.name,
+                            trimString(widget.dailyTask.name, length: 15),
                             style: GoogleFonts.lato(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -260,7 +266,7 @@ class _TodoItemState extends State<TodoItem> {
                         height: MediaQuery.of(context).size.height * .0125,
                       ),
                       Text(
-                        widget.dailyTask.description,
+                        trimString(widget.dailyTask.description, length: 60),
                         style: GoogleFonts.lato(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
@@ -274,11 +280,7 @@ class _TodoItemState extends State<TodoItem> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            Icons.lock_clock,
-                            size: 20,
-                            color: Colors.white,
-                          ),
+                          Icon(Icons.lock_clock, size: 20, color: Colors.white),
                           Row(
                             children: [
                               Text(
@@ -290,7 +292,9 @@ class _TodoItemState extends State<TodoItem> {
                               ),
                               Text(
                                 // widget.dailyTask.isDone ? 'Done' : 'Waiting',
-                                Random().nextBool() ? 'Done' : 'Waiting',
+                                widget.dailyTask.completionPercentage == 100
+                                    ? 'Done'
+                                    : 'Waiting',
                                 style: GoogleFonts.lato(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,

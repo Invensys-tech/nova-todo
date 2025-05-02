@@ -30,9 +30,19 @@ class Habit {
   });
 
   extendStreak(DateTime dateTime) {
-    if (streakDates.contains(getDateOnly(dateTime))) {
-      return;
+    if (type == 'Weekly') {
+      if (streakDates.contains(getDateOnly(dateTime))) {
+        return;
+      }
+    } else {
+      if (frequency <=
+          streakDates
+              .where((streakDate) => streakDate == getDateOnly(dateTime))
+              .length) {
+        return;
+      }
     }
+
     streakDates.add(getDateOnly(dateTime));
     streak++;
     if (streak > maxStreak) {
@@ -44,7 +54,13 @@ class Habit {
     if (!streakDates.contains(getDateOnly(dateTime))) {
       return;
     }
-    streakDates.remove(getDateOnly(dateTime));
+    bool isFound = false;
+
+    streakDates = streakDates.where((streakDate) {
+      bool foundIt = isFound;
+      isFound = (streakDate == getDateOnly(dateTime));
+      return foundIt;
+    }).toList();
     if (streak == 0) {
       return;
     }
@@ -168,7 +184,7 @@ class Habit {
                 )
                 .length;
 
-        return todayFrequency >= frequency ? true : false;
+        return todayFrequency >= frequency;
         break;
       case 'Weekly':
         return streakDates.contains(getDateOnly(DateTime.now()));
@@ -183,8 +199,23 @@ class Habit {
   }
 
   bool get isNotStartedToday {
-    return !streakDates.any(
-      (streakDate) => streakDate == getDateOnly(DateTime.now()),
+    return !streakDates.contains(getDateOnly(DateTime.now()));
+  }
+
+  Habit copy() {
+    return Habit(
+      name: name,
+      type: type,
+      repetitionType: repetitionType,
+      repetitions: repetitions,
+      date: date,
+      isDone: isDone,
+      id: id,
+      streak: streak,
+      miniStreak: miniStreak,
+      maxStreak: maxStreak,
+      frequency: frequency,
+      streakDates: [...streakDates],
     );
   }
 
