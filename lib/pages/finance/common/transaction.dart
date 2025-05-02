@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class Transaction extends StatelessWidget {
   final DateTime date;
@@ -26,7 +27,8 @@ class Transaction extends StatelessWidget {
             vertical: MediaQuery.of(context).size.height * 0.01,
           ),
           decoration: BoxDecoration(
-            color: Color(0xff333333),
+            border: Border.all(width: 1, color: Colors.grey.withOpacity(.4)),
+            color: Theme.of(context).primaryColorDark,
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
           padding: EdgeInsets.symmetric(
@@ -44,8 +46,7 @@ class Transaction extends StatelessWidget {
                     date.toString(),
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w200,
-                      color: Colors.white.withOpacity(0.8),
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ],
@@ -56,11 +57,10 @@ class Transaction extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Payment Amount",
+                   translate( "Payment Amount"),
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w200,
-                      color: Colors.white.withOpacity(0.8),
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.009),
@@ -68,7 +68,7 @@ class Transaction extends StatelessWidget {
                     "\$ ${amount}",
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w200,
+                      fontWeight: FontWeight.w400,
                       color: Colors.red.withOpacity(0.8),
                     ),
                   ),
@@ -78,7 +78,7 @@ class Transaction extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width * 0.98,
                 decoration: BoxDecoration(
-                  color: Color(0xff2F2F2F),
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 padding: EdgeInsets.symmetric(
@@ -98,11 +98,10 @@ class Transaction extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Before",
+                              translate("Before"),
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w300,
-                                color: Colors.white.withOpacity(0.8),
                               ),
                             ),
                             SizedBox(
@@ -112,9 +111,8 @@ class Transaction extends StatelessWidget {
                             Text(
                               "\$ ${before}",
                               style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],
@@ -123,11 +121,10 @@ class Transaction extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "After",
+                             translate( "After"),
                               style: TextStyle(
                                 fontSize: 13,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white.withOpacity(0.8),
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             SizedBox(
@@ -137,9 +134,8 @@ class Transaction extends StatelessWidget {
                             Text(
                               "\$ ${after}",
                               style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],

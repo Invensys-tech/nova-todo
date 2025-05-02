@@ -187,8 +187,10 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
+    bool isdarki = true;
     setState(() {
-      _currentThemeId = prefs.getInt('ThemeOfApp') ?? AppThemes.Dark;
+       isdarki == prefs.getBool('ThemeOfApp');
+      _currentThemeId = isdarki ?  AppThemes.Dark: AppThemes.LightBlue;
     });
   }
 

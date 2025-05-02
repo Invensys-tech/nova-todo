@@ -67,9 +67,7 @@ class _SingleLoanState extends State<SingleLoan> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xff2F2F2F),
       appBar: AppBar(
-        backgroundColor: const Color(0xff2F2F2F),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);

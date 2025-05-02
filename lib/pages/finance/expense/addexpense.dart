@@ -143,7 +143,7 @@ class _AddExpenseState extends State<AddExpense> {
           ),
         ),
         title: Text(
-          translate("Expenses"),
+          translate("Expense"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -184,7 +184,7 @@ class _AddExpenseState extends State<AddExpense> {
                     hinttext: 'eg: 400',
                     whatIsInput: '0',
                     controller: _amountController,
-                    prefixText: 'ETB',
+                    prefixText: translate('ETB'),
                     func: (value) {
                       if (value == null || value.isEmpty)
                         return 'Amount is required';
@@ -257,7 +257,7 @@ class _AddExpenseState extends State<AddExpense> {
                                           .toList()
                                       : [],
                               controller: _expenseCategoryController,
-                              hintText: "Search for a Category...",
+                              hintText: translate("Search for a Category..."),
                               icon: Icons.search,
                               suggestionBuilder: (String text) {
                                 return ListTile(
@@ -314,7 +314,7 @@ class _AddExpenseState extends State<AddExpense> {
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Text(
-                    translate("Paid By"),
+                    translate("Paid by"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
 
@@ -545,8 +545,8 @@ class _AddExpenseState extends State<AddExpense> {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                  : const Text(
-                                    "Add Expense",
+                                  :  Text(
+                                    translate("Add Expense"),
                                     style: TextStyle(color: Colors.white),
                                   ),
                         ),

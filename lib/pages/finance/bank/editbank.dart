@@ -6,6 +6,7 @@ import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/bankinput.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EditBank extends StatefulWidget {
@@ -85,18 +86,15 @@ class _EditBankState extends State<EditBank> {
   Widget build(BuildContext context) {
     return _isLoading
         ? Scaffold(
-          backgroundColor: const Color(0xff2F2F2F),
           appBar: AppBar(
-            backgroundColor: const Color(0xff2F2F2F),
             leading: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(Icons.arrow_back,),
             ),
-            title: const Text(
-              "Edit Bank",
+            title:  Text(
+              translate("Edit Bank"),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
               ),
             ),
             // centerTitle: true,
@@ -104,21 +102,18 @@ class _EditBankState extends State<EditBank> {
           body: const Center(child: CircularProgressIndicator()),
         )
         : Scaffold(
-          backgroundColor: const Color(0xff2F2F2F),
           appBar: AppBar(
-            backgroundColor: const Color(0xff2F2F2F),
             leading: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(Icons.arrow_back, ),
             ),
-            title: const Text(
-              "Edit Bank",
+            title:  Text(
+              translate("Edit Bank"),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
               ),
             ),
-            centerTitle: true,
+            centerTitle: false,
           ),
           body: Padding(
             padding: EdgeInsets.symmetric(
@@ -141,47 +136,44 @@ class _EditBankState extends State<EditBank> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    const Text(
-                      "Account holder name",
+                     Text(
+                      translate("Account holder name"),
                       style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white70,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                     TextFields(
-                      hinttext: 'Account holder name',
+                      hinttext: translate('Account holder name'),
                       whatIsInput: '1',
                       controller: _accHolder,
                       // icon: Icons.attach_money,
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    const Text(
-                      "Bank Account",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white70,
-                      ),
-                    ),
+                    // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    //  Text(
+                    //   translate("Bank Account"),
+                    //   style: TextStyle(
+                    //     fontSize: 13,
+                    //     fontWeight: FontWeight.w400,
+                    //   ),
+                    // ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                     // BankInput(bankController: _bank, valueController: _accNo),
-                    const Text(
-                      "Bank",
+                     Text(
+                      translate("Bank"),
                       style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white70,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
 
                     AutoCompleteText(
                       suggestions: banksList,
                       controller: _bank,
-                      hintText: "Banks",
+                      hintText: translate("Banks"),
                       icon: Icons.search,
                       suggestionBuilder: (String text) {
                         return ListTile(
@@ -204,17 +196,16 @@ class _EditBankState extends State<EditBank> {
                     // BankInput(bankController: _bank, valueController: _accNo),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
-                    const Text(
-                      "AccountNumber",
+                     Text(
+                     translate( "AccountNumber"),
                       style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white70,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                     TextFields(
-                      hinttext: 'Branch',
+                      hinttext: translate('Branch'),
                       whatIsInput: '1',
                       controller: _accNo,
                       // icon: Icons.attach_money,
@@ -258,49 +249,46 @@ class _EditBankState extends State<EditBank> {
                     //   },
                     // ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    const Text(
-                      "Branch",
+                     Text(
+                      translate("Branch"),
                       style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white70,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                     TextFields(
-                      hinttext: 'Branch',
+                      hinttext:translate('Branch'),
                       whatIsInput: '1',
                       controller: _branch,
                       // icon: Icons.attach_money,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    const Text(
-                      "Account type",
+                     Text(
+                      translate("Account type"),
                       style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white70,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                     CustomDropdown(
-                      hintText: "Eg, Saving or Check",
+                      hintText: translate("Eg, Saving or Check"),
                       // icon: Icons.local_mall,
                       items: ["Savings", "Check"],
                       controller: _type,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    const Text(
-                      "Balance",
+                     Text(
+                      translate("Balance"),
                       style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white70,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                     TextFields(
-                      hinttext: 'Balance',
+                      hinttext: translate('Balance'),
                       whatIsInput: '0',
                       controller: _balance,
                       // icon: Icons.attach_money,
@@ -329,8 +317,8 @@ class _EditBankState extends State<EditBank> {
                                 borderRadius: BorderRadius.circular(5),
                               ),
                             ),
-                            child: const Text(
-                              "Cancel",
+                            child:  Text(
+                             translate( "Cancel"),
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -354,8 +342,8 @@ class _EditBankState extends State<EditBank> {
                                     .eq('id', widget.bankId);
                                 print(response);
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Bank updated successfully!"),
+                                   SnackBar(
+                                    content: Text(translate("Bank updated successfully!")),
                                   ),
                                 );
                                 // Optionally, fetch updated banks list and return it:
@@ -376,8 +364,8 @@ class _EditBankState extends State<EditBank> {
                                 borderRadius: BorderRadius.circular(5),
                               ),
                             ),
-                            child: const Text(
-                              "Update Bank",
+                            child:  Text(
+                              translate("Update Bank"),
                               style: TextStyle(color: Colors.white),
                             ),
                           ),

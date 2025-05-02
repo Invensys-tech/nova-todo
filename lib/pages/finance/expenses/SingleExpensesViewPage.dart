@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 
@@ -58,7 +59,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Expenses Details ",
+                     translate( "Expenses Details"),
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -82,7 +83,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Expenses Name",
+                              translate("Expenses Name"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -102,7 +103,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Amount",
+                            translate("Amount"),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -112,7 +113,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                             height: MediaQuery.of(context).size.height * .00,
                           ),
                           Text(
-                            "ETB ${widget.amount}",
+                            "${translate("ETB")} ${widget.amount}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -134,7 +135,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Paid Via",
+                              translate("Paid Via"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -154,7 +155,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Account Number",
+                            translate("Account Number"),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -187,7 +188,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Catagory",
+                              translate("Catagory"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -207,7 +208,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Type",
+                            translate("Type"),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -245,7 +246,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Date",
+                              translate("Date"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -275,7 +276,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Addtional Note",
+                              translate("Addtional Note"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,

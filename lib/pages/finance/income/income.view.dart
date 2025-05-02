@@ -11,6 +11,7 @@ import 'package:flutter_application_1/pages/finance/income/edit.income.dart';
 import 'package:flutter_application_1/repositories/income.repository.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
@@ -171,7 +172,7 @@ class _IncomeViewState extends State<IncomeView> {
                                         .035,
                                   ),
                                   Text(
-                                    "\$ ${total.toStringAsFixed(2)} ETB",
+                                    "\$ ${total.toStringAsFixed(2)} ${translate("ETB")}",
                                     style: GoogleFonts.lato(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20,
@@ -229,47 +230,43 @@ class _IncomeViewState extends State<IncomeView> {
             startActionPane: ActionPane(
               motion: const ScrollMotion(),
               children: [
-                Column(
-                  children: [
-                    SlidableAction(
-                      onPressed: (context) {
-                        showDialog(
-                          context: context,
-                          builder:
-                              (_) => AlertDialog(
-                                title: const Text('Confirm Delete'),
-                                content: const Text(
-                                  'Are you sure you want to delete this income?',
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed:
-                                        () => Navigator.of(context).pop(),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await IncomeRepository().deleteIncome(
-                                        income.id,
-                                      );
-                                      Navigator.of(context).pop();
-                                      setState(_loadIncomes);
-                                    },
-                                    child: const Text(
-                                      'Delete',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                ],
+                SlidableAction(
+                  onPressed: (context) {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (_) => AlertDialog(
+                            title:  Text(translate('Confirm Delete')),
+                            content:  Text(
+                             translate( 'Are you sure you want to delete this income?'),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed:
+                                    () => Navigator.of(context).pop(),
+                                child:  Text(translate('Cancel')),
                               ),
-                        );
-                      },
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete,
-                      label: 'Delete',
-                    ),
-                  ],
+                              TextButton(
+                                onPressed: () async {
+                                  await IncomeRepository().deleteIncome(
+                                    income.id,
+                                  );
+                                  Navigator.of(context).pop();
+                                  setState(_loadIncomes);
+                                },
+                                child:  Text(
+                                  translate('Delete'),
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                    );
+                  },
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                  label: translate('Delete'),
                 ),
               ],
             ),
@@ -278,21 +275,24 @@ class _IncomeViewState extends State<IncomeView> {
               children: [
                 SlidableAction(
                   onPressed: (context) {
-                    Navigator.push(
+
+
+
+
+                    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
                       context,
-                      MaterialPageRoute(
-                        builder:
-                            (_) => EditIncome(
-                              datamanager: widget.datamanager,
-                              incomeId: income.id,
-                            ),
-                      ),
-                    ).then((_) => setState(_loadIncomes));
+                      screen: EditIncome(datamanager: widget.datamanager, incomeId: income.id,),
+                      withNavBar: false,
+                      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                      settings: const RouteSettings(),
+                    ).then((_) => _loadIncomes());
+
+
                   },
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
                   icon: Icons.edit,
-                  label: 'Edit',
+                  label: translate('Edit'),
                 ),
               ],
             ),
@@ -341,7 +341,7 @@ class _IncomeViewState extends State<IncomeView> {
                         ),
                       ),
                       Text(
-                        "\$ ${income.amount.toStringAsFixed(2)} ETB",
+                        "\$ ${income.amount.toStringAsFixed(2)} ${translate("ETB")}",
                         style: GoogleFonts.lato(
                           fontSize: 13,
                           fontWeight: FontWeight.w400,
