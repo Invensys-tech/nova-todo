@@ -80,8 +80,8 @@ void main() async {
   if (languageCode != null) {
     await delegate.changeLocale(Locale(languageCode));
   }
-  runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
-  //runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
+  // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+  runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
 }
 
 Future<void> requestNotificationPermission() async {
