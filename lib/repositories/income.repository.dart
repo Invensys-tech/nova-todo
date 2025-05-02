@@ -12,70 +12,35 @@ class IncomeRepository {
     return '${parts[2]}-${parts[1]}-${parts[0]}'; // Convert to YYYY-MM-DD
   }
 
-  // Future<List<Income>> getIncome(DateTime? dateTime) async {
-  //   final HiveService _hiveService = HiveService();
-  //
-  //   await _hiveService.initHive(boxName: 'dateType');
-  //   final stored = await _hiveService.getData('dateType');
-  //   print('Stored date type: $stored');
-  //   final isEthiopian = stored == 'Ethiopian';
-  //
-  //   try {
-  //     final List<dynamic> rawData;
-  //     print('Original dateTime: $dateTime');
-  //     print(isEthiopian);
-  //
-  //     DateTime? queryDate = dateTime;
-  //
-  //     if (isEthiopian && dateTime != null) {
-  //       // Convert Ethiopian to Gregorian
-  //       final etDate = ETDateTime(dateTime.year, dateTime.month, dateTime.day);
-  //       final gregorian = etDate.convertToGregorian();
-  //       queryDate = DateTime(gregorian.year, gregorian.month, gregorian.day);
-  //       print('Converted to Gregorian: $queryDate');
-  //     }
-  //
-  //     if (queryDate != null) {
-  //       rawData = await supabaseClient
-  //           .from(Entities.INCOME.dbName)
-  //           .select("*")
-  //           .eq('user_id', userId)
-  //           .eq('date', getDateOnly(queryDate));
-  //     } else {
-  //       rawData = await supabaseClient.from(Entities.INCOME.dbName).select("*");
-  //     }
-  //
-  //     print("Fetched Income Data: $rawData");
-  //
-  //     final List<Income> incomeList =
-  //         rawData
-  //             .map((income) => Income.fromJson(income as Map<String, dynamic>))
-  //             .toList();
-  //
-  //     return incomeList;
-  //   } catch (e, stackTrace) {
-  //     print('Error in Fetching Income: $e');
-  //     print('StackTrace: $stackTrace');
-  //     rethrow;
-  //   }
-  // }
-
   Future<List<Income>> getIncome(DateTime? dateTime) async {
     final HiveService _hiveService = HiveService();
 
-    await _hiveService.initHive(boxName: 'dateTime');
+    // await _hiveService.initHive(boxName: 'dateType');
+    // final stored = await _hiveService.getData('dateType');
+    // print('Stored date type: $stored');
+    // final isEthiopian = stored == 'Ethiopian';
 
-    final stored = await _hiveService.getData('dateType');
     try {
       final List<dynamic> rawData;
-      print('oooooooooooooooooooooooooooo');
-      print(dateTime);
+      print('Original dateTime: $dateTime');
+      // print(isEthiopian);
 
-      if (dateTime != null) {
+      DateTime? queryDate = dateTime;
+
+      // if (dateTime != null) {
+      //   // Convert Ethiopian to Gregorian
+      //   final etDate = ETDateTime(dateTime.year, dateTime.month, dateTime.day);
+      //   final gregorian = etDate.convertToGregorian();
+      //   queryDate = DateTime(gregorian.year, gregorian.month, gregorian.day);
+      //   print('Converted to Gregorian: $queryDate');
+      // }
+
+      if (queryDate != null) {
         rawData = await supabaseClient
             .from(Entities.INCOME.dbName)
             .select("*")
-            .eq('date', getDateOnly(dateTime));
+            .eq('user_id', userId)
+            .eq('date', getDateOnly(queryDate));
       } else {
         rawData = await supabaseClient.from(Entities.INCOME.dbName).select("*");
       }
@@ -89,11 +54,46 @@ class IncomeRepository {
 
       return incomeList;
     } catch (e, stackTrace) {
-      print('Error in Fetching Income my Income He: $e');
+      print('Error in Fetching Income: $e');
       print('StackTrace: $stackTrace');
       rethrow;
     }
   }
+
+  // Future<List<Income>> getIncome(DateTime? dateTime) async {
+  //   final HiveService _hiveService = HiveService();
+
+  //   await _hiveService.initHive(boxName: 'dateTime');
+
+  //   final stored = await _hiveService.getData('dateType');
+  //   try {
+  //     final List<dynamic> rawData;
+  //     print('oooooooooooooooooooooooooooo');
+  //     print(dateTime);
+
+  //     if (dateTime != null) {
+  //       rawData = await supabaseClient
+  //           .from(Entities.INCOME.dbName)
+  //           .select("*")
+  //           .eq('date', getDateOnly(dateTime));
+  //     } else {
+  //       rawData = await supabaseClient.from(Entities.INCOME.dbName).select("*");
+  //     }
+
+  //     print("Fetched Income Data: $rawData");
+
+  //     final List<Income> incomeList =
+  //         rawData
+  //             .map((income) => Income.fromJson(income as Map<String, dynamic>))
+  //             .toList();
+
+  //     return incomeList;
+  //   } catch (e, stackTrace) {
+  //     print('Error in Fetching Income my Income He: $e');
+  //     print('StackTrace: $stackTrace');
+  //     rethrow;
+  //   }
+  // }
 
   Future<Income> createIncome(Map<String, dynamic> income) async {
     try {
