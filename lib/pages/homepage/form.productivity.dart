@@ -55,7 +55,7 @@ class _ProductivityFormState extends State<ProductivityForm> {
       'time': (time.controller.text),
       'description': description.controller.text,
       'user_id': userId,
-      'streak_count': 1,
+      'streak_count': 0,
     });
 
     print(" Step 2: Productivity created: ${productivity.id}");
@@ -186,10 +186,20 @@ class _ProductivityFormState extends State<ProductivityForm> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
-                        child: const Text(
-                          "Save and Exit",
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child:
+                            isLoading
+                                ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                                : const Text(
+                                  "Save and Exit",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                       ),
                     ),
                     const SizedBox(width: 10),

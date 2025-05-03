@@ -34,15 +34,15 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
       ),
       child: Row(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.05,
-            width: MediaQuery.of(context).size.height * 0.045,
-            decoration: BoxDecoration(
-              color: Color(0xff057939),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(Icons.local_pizza, color: Colors.deepOrange, size: 24),
-          ),
+          // Container(
+          //   height: MediaQuery.of(context).size.height * 0.05,
+          //   width: MediaQuery.of(context).size.height * 0.045,
+          //   decoration: BoxDecoration(
+          //     color: Color(0xff057939),
+          //     shape: BoxShape.circle,
+          //   ),
+          //   child: Icon(Icons.local_pizza, color: Colors.deepOrange, size: 24),
+          // ),
           SizedBox(width: MediaQuery.of(context).size.width * 0.035),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,33 +50,21 @@ class _ExpensesWidgetState extends State<ExpensesWidget> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               Text(
                 "${widget.category}",
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w300,
-                ),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
               ),
               Text(
                 "${widget.expenseCount} Expenses",
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w200,
-                ),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w200),
               ),
             ],
           ),
           Spacer(),
           Text(
             '\$ ${widget.amount}',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w200,
-            ),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w200),
           ),
           SizedBox(width: MediaQuery.of(context).size.width * .015),
-          Icon(
-            Icons.chevron_right,
-            size: 25,
-          ),
+          Icon(Icons.chevron_right, size: 25),
         ],
       ),
     );

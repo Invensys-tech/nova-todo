@@ -452,57 +452,57 @@ class _AddLoanState extends State<AddLoan> {
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * .0025),
-                  // Only show autocomplete once our _loanList is loaded:
-                  _loanList.isEmpty
-                      ? const Center(child: CircularProgressIndicator())
-                      : AutoCompleteText(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select a Category';
-                          }
-                          return null;
-                        },
-                        suggestions:
-                            _loanList
-                                .map((loan) => loan.loanerName)
-                                .toSet()
-                                .toList(),
-                        controller: _loanerName,
-                        hintText: "Loaner Name",
-                        icon: Icons.person,
-                        suggestionBuilder: (String text) {
-                          return ListTile(
-                            title: Text(
-                              text,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          );
-                        },
 
-                        onSelect: (selectedName) {
-                          // find that Loan and auto‐fill its phone #
-                          final loan = _loanList.firstWhere(
-                            (l) => l.loanerName == selectedName,
-                            orElse:
-                                () => Loan(
-                                  id: 0,
-                                  loanerName: selectedName,
-                                  phoneNumber: '',
-                                  amount: 0,
-                                  date: DateTime.now(),
-                                  type: '',
-                                  bank: '',
-                                  userId: 0,
-                                ),
-                          );
-                          print(loan);
-                          _phoneNumber.text = loan.phoneNumber ?? '';
-                          setState(() {}); // refresh the UI
-                        },
-                      ),
+                  // Only show autocomplete once our _loanList is loaded:
+                  AutoCompleteText(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a Category';
+                      }
+                      return null;
+                    },
+                    suggestions:
+                        _loanList
+                            .map((loan) => loan.loanerName)
+                            .toSet()
+                            .toList() ??
+                        [],
+                    controller: _loanerName,
+                    hintText: "Loaner Name",
+                    icon: Icons.person,
+                    suggestionBuilder: (String text) {
+                      return ListTile(
+                        title: Text(
+                          text,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      );
+                    },
+
+                    onSelect: (selectedName) {
+                      // find that Loan and auto‐fill its phone #
+                      final loan = _loanList.firstWhere(
+                        (l) => l.loanerName == selectedName,
+                        orElse:
+                            () => Loan(
+                              id: 0,
+                              loanerName: selectedName,
+                              phoneNumber: '',
+                              amount: 0,
+                              date: DateTime.now(),
+                              type: '',
+                              bank: '',
+                              userId: 0,
+                            ),
+                      );
+                      print(loan);
+                      _phoneNumber.text = loan.phoneNumber ?? '';
+                      setState(() {}); // refresh the UI
+                    },
+                  ),
                   SizedBox(height: MediaQuery.of(context).size.height * .02),
 
                   // — Phone number field (now prefilled if matched) —
