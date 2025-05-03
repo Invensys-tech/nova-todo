@@ -442,6 +442,7 @@ import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/expense-payment.selector.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -661,16 +662,14 @@ class _EditIncomeState extends State<EditIncome> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
-        backgroundColor: const Color(0xff2F2F2F),
         appBar: AppBar(
-          backgroundColor: const Color(0xff2F2F2F),
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, ),
           ),
-          title: const Text(
-            "Edit Income",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          title:  Text(
+            translate("Edit Income"),
+            style: TextStyle( fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -688,8 +687,8 @@ class _EditIncomeState extends State<EditIncome> {
             color: Color(0xff006045),
           ),
         ),
-        title: const Text(
-          "Edit Income",
+        title:  Text(
+         translate( "Edit Income"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -711,8 +710,8 @@ class _EditIncomeState extends State<EditIncome> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Income Name",
+                   Text(
+                    translate("Income Name"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -728,8 +727,8 @@ class _EditIncomeState extends State<EditIncome> {
                   ),
 
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  const Text(
-                    "Amount",
+                   Text(
+                    translate("Amount"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -737,7 +736,7 @@ class _EditIncomeState extends State<EditIncome> {
                     hinttext: amount.hint,
                     controller: amount.controller,
                     whatIsInput: amount.type,
-                    prefixText: 'ETB',
+                    prefixText: translate('ETB'),
                     func: (v) {
                       if (v == null || v.isEmpty) return 'Amount is required';
                       final x = double.tryParse(v);
@@ -754,8 +753,8 @@ class _EditIncomeState extends State<EditIncome> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Category",
+                             Text(
+                              translate("Category"),
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
@@ -803,8 +802,8 @@ class _EditIncomeState extends State<EditIncome> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Date",
+                             Text(
+                              translate("Date"),
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
@@ -852,8 +851,8 @@ class _EditIncomeState extends State<EditIncome> {
                         ),
                   ),
 
-                  const Text(
-                    "Description",
+                   Text(
+                   translate( "Description"),
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -880,7 +879,7 @@ class _EditIncomeState extends State<EditIncome> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text("Cancel"),
+                          child:  Text(translate("Cancel")),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -900,9 +899,9 @@ class _EditIncomeState extends State<EditIncome> {
                                         ScaffoldMessenger.of(
                                           context,
                                         ).showSnackBar(
-                                          const SnackBar(
+                                           SnackBar(
                                             content: Text(
-                                              "Income added successfully!",
+                                              translate("Income added successfully!"),
                                             ),
                                           ),
                                         );
@@ -933,8 +932,8 @@ class _EditIncomeState extends State<EditIncome> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text(
-                            "Update Income",
+                          child:  Text(
+                           translate( "Update Income"),
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

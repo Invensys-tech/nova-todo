@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 
@@ -55,7 +56,7 @@ class _SingleIcomeFullViewPageState extends State<SingleIcomeFullViewPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Income Details ",
+                      translate("Income Details"),
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -79,7 +80,7 @@ class _SingleIcomeFullViewPageState extends State<SingleIcomeFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Income Name",
+                             translate( "Income Name"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -99,7 +100,7 @@ class _SingleIcomeFullViewPageState extends State<SingleIcomeFullViewPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Amount",
+                            translate("Amount"),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -109,7 +110,7 @@ class _SingleIcomeFullViewPageState extends State<SingleIcomeFullViewPage> {
                             height: MediaQuery.of(context).size.height * .00,
                           ),
                           Text(
-                            "ETB ${widget.amount}",
+                            "${translate("ETB")} ${widget.amount}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -131,7 +132,7 @@ class _SingleIcomeFullViewPageState extends State<SingleIcomeFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Paid To",
+                              translate("Paid To"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -151,7 +152,7 @@ class _SingleIcomeFullViewPageState extends State<SingleIcomeFullViewPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Account Number",
+                            translate("Account Number"),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -184,7 +185,7 @@ class _SingleIcomeFullViewPageState extends State<SingleIcomeFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Date",
+                             translate( "Date"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -201,12 +202,12 @@ class _SingleIcomeFullViewPageState extends State<SingleIcomeFullViewPage> {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width * .55,
+                        width: MediaQuery.of(context).size.width * .37,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Catagory",
+                             translate( "Catagory"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -257,7 +258,7 @@ class _SingleIcomeFullViewPageState extends State<SingleIcomeFullViewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Addtional Note",
+                              translate("Addtional Note"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,

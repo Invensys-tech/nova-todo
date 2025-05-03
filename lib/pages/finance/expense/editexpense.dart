@@ -462,6 +462,7 @@ import 'package:flutter_application_1/ui/inputs/expensetype.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/testdate.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
@@ -600,16 +601,14 @@ class _EditExpenseState extends State<EditExpense> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
-        backgroundColor: const Color(0xff2F2F2F),
         appBar: AppBar(
-          backgroundColor: const Color(0xff2F2F2F),
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, ),
           ),
-          title: const Text(
-            "Edit Expense",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          title:  Text(
+            translate("Edit Expense"),
+            style: TextStyle(fontWeight: FontWeight.bold, ),
           ),
           centerTitle: true,
         ),
@@ -627,8 +626,8 @@ class _EditExpenseState extends State<EditExpense> {
             color: const Color(0xff006045),
           ),
         ),
-        title: const Text(
-          "Edit Expense",
+        title:  Text(
+         translate( "Edit Expense"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -658,8 +657,8 @@ class _EditExpenseState extends State<EditExpense> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                   // Amount
-                  const Text(
-                    "Amount",
+                   Text(
+                    translate("Amount"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -667,7 +666,7 @@ class _EditExpenseState extends State<EditExpense> {
                     hinttext: 'eg: 400',
                     whatIsInput: '0',
                     controller: _amountController,
-                    prefixText: 'ETB',
+                    prefixText: translate('ETB'),
                     func: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Amount is required';
@@ -682,8 +681,8 @@ class _EditExpenseState extends State<EditExpense> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                   // Expense Name
-                  const Text(
-                    "Expense Name",
+                   Text(
+                    translate("Expense Name"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
@@ -709,8 +708,8 @@ class _EditExpenseState extends State<EditExpense> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Category",
+                             Text(
+                              translate("Category"),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w300,
@@ -732,7 +731,7 @@ class _EditExpenseState extends State<EditExpense> {
                                           .toSet()
                                           .toList(),
                                   controller: _expenseCategoryController,
-                                  hintText: "Search for a Category...",
+                                  hintText: translate("Search for a Category..."),
                                   icon: Icons.search,
                                   suggestionBuilder:
                                       (text) => ListTile(
@@ -763,8 +762,8 @@ class _EditExpenseState extends State<EditExpense> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Date",
+                             Text(
+                              translate("Date"),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w300,
@@ -812,13 +811,13 @@ class _EditExpenseState extends State<EditExpense> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                   // Description
-                  const Text(
-                    "Description",
+                   Text(
+                    translate("Description"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.0025),
                   MultiLineTextField(
-                    hintText: 'description',
+                    hintText: translate('description'),
                     controller: _descriptionController,
                     icon: Icons.description,
                   ),
@@ -828,7 +827,8 @@ class _EditExpenseState extends State<EditExpense> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*.3,
                         child: ElevatedButton(
                           onPressed: () {
                             // Reset to original and go back
@@ -844,152 +844,155 @@ class _EditExpenseState extends State<EditExpense> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child: const Text("Cancel"),
+                          child:  Text(translate("Cancel")),
                         ),
                       ),
                       const SizedBox(width: 10),
 
-                      ElevatedButton(
-                        onPressed:
-                            isLoading
-                                ? null
-                                : () async {
-                                  // 1️⃣ Validate form
-                                  if (!_formKey.currentState!.validate())
-                                    return;
+                      Container(
+                        width: MediaQuery.of(context).size.width*.5,
+                        child: ElevatedButton(
+                          onPressed:
+                              isLoading
+                                  ? null
+                                  : () async {
+                                    // 1️⃣ Validate form
+                                    if (!_formKey.currentState!.validate())
+                                      return;
 
-                                  setState(() => isLoading = true);
+                                    setState(() => isLoading = true);
 
-                                  final bankId = _paymentController.text;
-                                  final expenseAmt =
-                                      double.tryParse(_amountController.text) ??
-                                      0.0;
+                                    final bankId = _paymentController.text;
+                                    final expenseAmt =
+                                        double.tryParse(_amountController.text) ??
+                                        0.0;
 
-                                  try {
-                                    // 2️⃣ Fetch current bank balance
-                                    final bankRes =
-                                        await Supabase.instance.client
-                                            .from('bank')
-                                            .select('balance')
-                                            .eq('id', bankId)
-                                            .single();
-
-                                    final currentBalance =
-                                        (bankRes['balance'] as num).toDouble();
-
-                                    if (_paidByController.text != "Partner") {
-                                      if (currentBalance < expenseAmt) {
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                              'Insufficient balance in selected bank account.',
-                                            ),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                        setState(() => isLoading = false);
-                                        return;
-                                      }
-
-                                      final change = expenseAmt - _firstAmount;
-
-                                      final newBalance =
-                                          currentBalance - change;
-                                      await Supabase.instance.client
-                                          .from('bank')
-                                          .update({'balance': newBalance})
-                                          .eq('id', bankId);
-                                    }
-
-                                    await Supabase.instance.client
-                                        .from('expense')
-                                        .update({
-                                          'amount': expenseAmt,
-                                          'expenseName':
-                                              _expenseNameController.text,
-                                          'category':
-                                              _expenseCategoryController.text,
-                                          'type': _expenseTypeController.text,
-                                          'bankAccount':
-                                              _paidByController.text ==
-                                                      "Partner"
-                                                  ? null
-                                                  : bankId,
-                                          'paidBy': _paidByController.text,
-                                          'description':
-                                              _descriptionController.text,
-                                          'date': formatDate(
-                                            _dateController.text,
-                                          ),
-                                        })
-                                        .eq('id', widget.expenseId);
-
-                                    if (_paidByController.text == "Partner") {
-                                      final specific = _paymentController.text;
-                                      final loanLookup =
+                                    try {
+                                      // 2️⃣ Fetch current bank balance
+                                      final bankRes =
                                           await Supabase.instance.client
-                                              .from('loan')
-                                              .select('phonenumber')
-                                              .eq('loanerName', specific)
+                                              .from('bank')
+                                              .select('balance')
+                                              .eq('id', bankId)
                                               .single();
 
+                                      final currentBalance =
+                                          (bankRes['balance'] as num).toDouble();
+
+                                      if (_paidByController.text != "Partner") {
+                                        if (currentBalance < expenseAmt) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                'Insufficient balance in selected bank account.',
+                                              ),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                          setState(() => isLoading = false);
+                                          return;
+                                        }
+
+                                        final change = expenseAmt - _firstAmount;
+
+                                        final newBalance =
+                                            currentBalance - change;
+                                        await Supabase.instance.client
+                                            .from('bank')
+                                            .update({'balance': newBalance})
+                                            .eq('id', bankId);
+                                      }
+
                                       await Supabase.instance.client
-                                          .from('loan')
-                                          .insert({
+                                          .from('expense')
+                                          .update({
                                             'amount': expenseAmt,
-                                            'type': "Payable",
+                                            'expenseName':
+                                                _expenseNameController.text,
+                                            'category':
+                                                _expenseCategoryController.text,
+                                            'type': _expenseTypeController.text,
+                                            'bankAccount':
+                                                _paidByController.text ==
+                                                        "Partner"
+                                                    ? null
+                                                    : bankId,
+                                            'paidBy': _paidByController.text,
+                                            'description':
+                                                _descriptionController.text,
                                             'date': formatDate(
                                               _dateController.text,
                                             ),
-                                            'bank': "Expense",
-                                            'loanerName': specific,
-                                            'phoneNumber':
-                                                loanLookup['phonenumber'],
-                                            'userId': 1,
-                                          });
-                                    }
+                                          })
+                                          .eq('id', widget.expenseId);
 
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          "Expense updated successfully!",
+                                      if (_paidByController.text == "Partner") {
+                                        final specific = _paymentController.text;
+                                        final loanLookup =
+                                            await Supabase.instance.client
+                                                .from('loan')
+                                                .select('phonenumber')
+                                                .eq('loanerName', specific)
+                                                .single();
+
+                                        await Supabase.instance.client
+                                            .from('loan')
+                                            .insert({
+                                              'amount': expenseAmt,
+                                              'type': "Payable",
+                                              'date': formatDate(
+                                                _dateController.text,
+                                              ),
+                                              'bank': "Expense",
+                                              'loanerName': specific,
+                                              'phoneNumber':
+                                                  loanLookup['phonenumber'],
+                                              'userId': 1,
+                                            });
+                                      }
+
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "Expense updated successfully!",
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                    Navigator.pop(context);
-                                  } catch (e) {
-                                    // 7️⃣ Error handling
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text("Error: $e")),
-                                    );
-                                  } finally {
-                                    setState(() => isLoading = false);
-                                  }
-                                },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              isLoading ? Colors.grey : const Color(0xff009966),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                                      );
+                                      Navigator.pop(context);
+                                    } catch (e) {
+                                      // 7️⃣ Error handling
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text("Error: $e")),
+                                      );
+                                    } finally {
+                                      setState(() => isLoading = false);
+                                    }
+                                  },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                isLoading ? Colors.grey : const Color(0xff009966),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                           ),
-                        ),
-                        child:
-                            isLoading
-                                ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
+                          child:
+                              isLoading
+                                  ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                  :  Text(
+                                    translate("Update Expense"),
+                                    style: TextStyle(color: Colors.white),
                                   ),
-                                )
-                                : const Text(
-                                  "Update Expense",
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                        ),
                       ),
                       // Expanded(
                       //   flex: 3,

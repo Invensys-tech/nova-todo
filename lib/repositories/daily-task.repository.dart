@@ -55,12 +55,14 @@ class DailyTaskRepository {
           .select('*, daily_sub_tasks(*)')
           .order('created_at', ascending: false);
 
-      NotificationService().scheduleNotification(
-        id: data[0]['id'],
-        title: 'Daily Task Reminder',
-        body: data[0]['name'],
-        time: DateTime.parse(dailyTask.reminderTime),
-      );
+      if (dailyTask.reminderTime != null) {
+        NotificationService().scheduleNotification(
+          id: data[0]['id'],
+          title: 'Daily Task Reminder',
+          body: data[0]['name'],
+          time: DateTime.parse(dailyTask.reminderTime!),
+        );
+      }
 
       return DailyTask.fromJson(data[0]);
     } catch (e) {
@@ -129,6 +131,10 @@ class DailyTaskRepository {
           .eq('date', date.toIso8601String())
           .eq('user_id', userId);
 
+      // for (final a in data) {
+      //   print(a['date']);
+      // }
+
       return data.map((dailyTask) {
         return DailyTask.fromDBJson(dailyTask);
       }).toList();
@@ -138,13 +144,13 @@ class DailyTaskRepository {
     }
   }
 
-  Future<double> fetchCompletionPercentage(String date) async {
+  Future<double> fetchCompletionPercentage(DateTime date) async {
     try {
       final userId = (await authService.findSession())['id'];
       final data = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
           .select('completion_percentage')
-          .eq('date', date)
+          .eq('date', date.toIso8601String())
           .eq('user_id', userId);
 
       print('data for completion percentage');
@@ -255,17 +261,13 @@ class DailyTaskRepository {
   }
 
   Future<bool> updateDailyTask(
-    Map<String, dynamic> dailyTaskData,
+    DailyTask dailyTask,
     int id,
   ) async {
     try {
       final response = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
-          .update({
-            'name': dailyTaskData['name'],
-            'type': dailyTaskData['type'],
-            'description': dailyTaskData['description'],
-          })
+          .update(dailyTask.toJson())
           .eq('id', id)
           .count(CountOption.exact);
 

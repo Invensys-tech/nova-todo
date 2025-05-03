@@ -5,6 +5,7 @@ import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/pages/finance/common/Expenses.dart';
 import 'package:flutter_application_1/pages/goal/common/header.expansion-panel.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_application_1/repositories/expense.repository.dart';
@@ -494,7 +495,7 @@ class ExpenseList extends StatelessWidget {
                 ),
               ),
               Text(
-                "\$ ${amountofexpenses}ETB",
+                "\$ ${amountofexpenses}${translate("ETB")}",
                 style: GoogleFonts.lato(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,

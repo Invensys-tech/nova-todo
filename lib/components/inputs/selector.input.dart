@@ -23,6 +23,14 @@ class MySelector extends StatefulWidget {
 }
 
 class _MySelectorState extends State<MySelector> {
+  String getSelectedLabel() {
+    final match = widget.myDropdownItems.firstWhere(
+          (item) => item['value'] == widget.currentValue,
+      orElse: () => {'label': 'Select...'},
+    );
+    return match['label'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,7 +53,7 @@ class _MySelectorState extends State<MySelector> {
                       border: Border.all(width: 1, color: Colors.grey.withOpacity(.3))
                     ),
                     child: DropdownMenu(
-                      hintText: "Before 10 Min",
+                      hintText: getSelectedLabel() == "10" ? "Before 10 min" : "nonebro",
                       inputDecorationTheme: const InputDecorationTheme(
                         border: InputBorder.none, //
                         enabledBorder: InputBorder.none, //

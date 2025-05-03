@@ -35,9 +35,6 @@ class IncomeRepository {
       //   print('Converted to Gregorian: $queryDate');
       // }
 
-      print("Baddies Baddies Baddies");
-      print(userId);
-
       if (queryDate != null) {
         rawData = await supabaseClient
             .from(Entities.INCOME.dbName)

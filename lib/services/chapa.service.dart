@@ -64,15 +64,17 @@ class ChapaService {
 
   makePayment(BuildContext context) async {
     AuthService authService = AuthService();
-    final String userId = (await authService.findSession())['id'].toString();
+    final user = await authService.findSession();
+    final String userId = user['id'].toString();
     String txRef = generateTxRef(userId);
 
-    String name = (await authService.findSession())['name'];
+    String name = user['name'];
 
     List<String> parts = name.trim().split(' ');
 
     String firstName = '';
     String lastName = '';
+    String phoneNumber = user['phoneNumber'];
 
     if (parts.length > 1) {
       firstName = parts[0];
@@ -86,9 +88,9 @@ class ChapaService {
         context: context,
         publicKey: 'CHAPUBK_TEST-tkMFFxPvqa4fCBquDpttftKqSYCSr9yV',
         currency: 'ETB',
-        amount: '200',
+        amount: '1000',
         email: 'fetanchapa.co',
-        phone: '0909090909',
+        phone: phoneNumber,
         firstName: firstName,
         lastName: lastName,
         txRef: txRef,

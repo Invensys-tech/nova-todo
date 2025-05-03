@@ -126,7 +126,7 @@ class _DashboardState extends State<Dashboard> {
                       FaIcon(FontAwesomeIcons.rocket, size: 36),
                       SizedBox(width: MediaQuery.of(context).size.width * .05),
                       Container(
-                        width: MediaQuery.of(context).size.width * .375,
+                        width: MediaQuery.of(context).size.width * .39,
                         child: Row(
                           children: [
                             Text(
@@ -195,75 +195,85 @@ class _DashboardState extends State<Dashboard> {
                   Container(
                     child: Row(
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            _scaffoldKey.currentState?.openDrawer();
-                          },
-                          child: Icon(
-                            Icons.menu_outlined,
-                            size: 28,
-                            color: Theme.of(context).primaryColorLight,
-                          ),
-                        ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * .015,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-                              context,
-                              screen: DailyReport(),
-                              withNavBar: false,
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino,
-                              settings: const RouteSettings(),
-                            );
-                          },
-                          child: Text(
-                            DateFormat('MMM d, y').format(DateTime.now()),
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          width: MediaQuery.of(context).size.width * .415,
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  _scaffoldKey.currentState?.openDrawer();
+                                },
+                                child: Icon(
+                                  Icons.menu_outlined,
+                                  size: 28,
+                                  color: Theme.of(context).primaryColorLight,
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * .015,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                                    context,
+                                    screen: DailyReport(),
+                                    withNavBar: false,
+                                    pageTransitionAnimation:
+                                    PageTransitionAnimation.cupertino,
+                                    settings: const RouteSettings(),
+                                  );
+                                },
+                                child: Text(
+                                  DateFormat('MMM d, y').format(DateTime.now()),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
 
+
+
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * .35,
-                        ),
-                        FutureBuilder(
-                          future: userInfo,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    translate("Good Morning"),
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w300,
+
+                          width: MediaQuery.of(context).size.width * .515,
+                          child: FutureBuilder(
+                            future: userInfo,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      translate("Good Morning"),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w300,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    snapshot.data?['name'] ?? '',
-                                    style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700,
+                                    Text(
+                                      snapshot.data?['name'] ?? '',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            } else {
-                              if (snapshot.hasError) {
-                                return Center(child: Text('oh snap...'));
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(),
+                                  ],
                                 );
+                              } else {
+                                if (snapshot.hasError) {
+                                  return Center(child: Text('oh snap...'));
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
                               }
-                            }
-                          },
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -774,6 +784,7 @@ class _DashboardState extends State<Dashboard> {
 
                   //Recent Expenses Section
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: MediaQuery.of(context).size.height * .008,
                     children: [
                       Row(

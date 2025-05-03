@@ -76,6 +76,9 @@ dependencies:
   get_time_ago: ^2.3.0
   liquid_pull_to_refresh: ^3.0.1
   connectivity_plus: ^5.0.2
+  screenshot: ^3.0.0
+  path_provider: ^2.1.5
+  share_plus: ^11.0.0
 
 flutter_icons:
   android: true
@@ -128,6 +131,7 @@ flutter:
     - assets/LottieAnimations/ZeroStreak.json
     - assets/LottieAnimations/UnderConstruction.json
     - assets/LottieAnimations/UnderConstruction2.json
+    - assets/LottieAnimations/HabitLoading.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
