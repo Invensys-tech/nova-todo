@@ -745,12 +745,12 @@ class _EditExpenseState extends State<EditExpense> {
                                           ),
                                         ),
                                       ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please select a Category';
-                                    }
-                                    return null;
-                                  },
+                                  // validator: (value) {
+                                  //   if (value == null || value.isEmpty) {
+                                  //     return 'Please select a Category';
+                                  //   }
+                                  //   return null;
+                                  // },
                                 ),
                           ],
                         ),

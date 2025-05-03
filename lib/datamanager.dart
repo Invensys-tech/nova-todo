@@ -198,7 +198,10 @@ class Datamanager {
   }
 
   Future<List<Expense>> fetchExpense() async {
-    final data = await Supabase.instance.client.from('expense').select('*');
+    final data = await Supabase.instance.client
+        .from('expense')
+        .select('*')
+        .eq('userid', userId);
     return (data as List<dynamic>)
         .map((e) => Expense.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -263,7 +266,7 @@ class Datamanager {
     final incomes = await supabase
         .from('incomes')
         .select('*')
-        .eq('specific_from', name);
+        .eq('specific_from', id);
 
     return {'bank': bank, 'expenses': expenses, 'incomes': incomes};
   }

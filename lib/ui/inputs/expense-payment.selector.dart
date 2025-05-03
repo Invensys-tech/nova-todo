@@ -217,7 +217,8 @@ class _PaidByAndSpecificFromInputContentState
                               .map(
                                 (bank) => {
                                   "value": bank.id,
-                                  "label": bank.accountHolder,
+                                  "label":
+                                      "${bank.accountHolder}-${bank.accountBank}-${bank.accountNumber}",
                                 },
                               )
                               .toList();

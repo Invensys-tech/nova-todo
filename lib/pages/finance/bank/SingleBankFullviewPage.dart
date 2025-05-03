@@ -39,13 +39,14 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
     super.initState();
     // fetch the bank view using the provided id and name from widget
     _bankView = widget.datamanager.fetchBankView(widget.id, widget.name);
+    print("Whod dis");
     print(_bankView);
   }
 
   // Unified widget to build a transaction row for both expenses and incomes.
   Widget _buildTransactionRow({
     Income? income,
-    dynamic? expense,
+    Expense? expense,
     required String transactionType, // "expense" or "income"
     required String title,
     required String date,
@@ -72,6 +73,7 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                       transactionType == "income"
                           ? (income?.amount ?? 0)
                           : (expense?.amount ?? 0),
+                  // date: DateTime.now(),
                   date: expense?.date ?? income?.date ?? DateTime.now(),
                   name: expense?.expenseName ?? income?.name ?? '',
                   notes: expense?.description ?? income?.description ?? '',
@@ -233,8 +235,14 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                       } else {
                         // Extract bank details and transactions
                         final bank = snapshot.data!['bank'] as Bank;
-                        final List<dynamic> expenseData =
-                            snapshot.data!['expenses'] as List<dynamic>;
+                        final List<Expense> expenseData =
+                            (snapshot.data!['expenses'] as List<dynamic>)
+                                .map(
+                                  (e) => Expense.fromJson(
+                                    e as Map<String, dynamic>,
+                                  ),
+                                )
+                                .toList();
                         final List<Income> incomeList =
                             (snapshot.data!['incomes'] as List<dynamic>)
                                 .map(
@@ -519,12 +527,15 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                                     // Adjust field names as needed; assuming expense JSON has keys:
                                     // 'bankAccount', 'date', 'amount'
                                     return _buildTransactionRow(
-                                      expense: expense,
+                                      expense: expense as Expense,
                                       transactionType: "expense",
                                       title:
-                                          "Expense: ${expense['bankAccount'] ?? 'Unknown'}",
-                                      date: expense['date'] ?? '',
-                                      amount: expense['amount'] ?? 0,
+                                          "${expense.expenseName ?? 'Unknown'}",
+                                      date:
+                                          "${expense.date.toLocal()}".split(
+                                            ' ',
+                                          )[0],
+                                      amount: expense.amount ?? 0,
                                     );
                                   }).toList(),
                                   // const SizedBox(height: 16),
