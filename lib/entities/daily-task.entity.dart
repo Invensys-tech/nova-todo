@@ -85,6 +85,7 @@ class DailyTask {
     };
   }
 
+
   factory DailyTask.fromUserInputJson(Map<String, dynamic> json) {
     TimeOfDay timeOfDay = timeOfDayFromString(json['taskTime']);
     TimeOfDay? reminderTime;

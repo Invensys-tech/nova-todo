@@ -54,7 +54,7 @@ class ExpenseRepository {
             .from('bank')
             .update({'balance': newBalance})
             .eq('id', bankId);
-      }
+      } else {}
 
       final data = await supabaseClient
           .from(Entities.EXPENSE.dbName)
@@ -66,9 +66,16 @@ class ExpenseRepository {
   }
 
   /// Returns a map with total amount of each expense type
-  Future<Map<String, dynamic>> getExpenseTypeTotals() async {
+  Future<Map<String, dynamic>> getExpenseTypeTotals(
+    DateTime? dateTime,
+    DateTime? endDate,
+  ) async {
     try {
-      final expenses = await Datamanager().fetchExpense();
+      final expenses = await Datamanager().getExpense(
+        dateTime: dateTime,
+        endDate: endDate,
+        analytics: true,
+      );
       print("======================");
       print(expenses);
       final Map<String, double> typeTotals = {
@@ -93,10 +100,17 @@ class ExpenseRepository {
     }
   }
 
-  Future<Map<String, Map<String, dynamic>>> getExpenseCategoryTotals() async {
+  Future<Map<String, Map<String, dynamic>>> getExpenseCategoryTotals(
+    DateTime? dateTime,
+    DateTime? endDate,
+  ) async {
     try {
       // Fetch all expenses using your existing fetchAll function.
-      final expenses = await Datamanager().fetchExpense();
+      final expenses = await Datamanager().getExpense(
+        dateTime: dateTime,
+        endDate: endDate,
+        analytics: true,
+      );
 
       // Prepare an empty map to accumulate counts and totals.
       final Map<String, Map<String, dynamic>> categoryTotals = {};

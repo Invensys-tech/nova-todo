@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TypeSelector extends StatefulWidget {
   final TextEditingController controller;
 
-  const TypeSelector({Key? key, required this.controller}) : super(key: key);
+  const TypeSelector({super.key, required this.controller});
 
   @override
   State<TypeSelector> createState() => _TypeSelectorState();
@@ -15,7 +15,9 @@ class _TypeSelectorState extends State<TypeSelector> {
   @override
   void initState() {
     super.initState();
-    selectedType = widget.controller.text;
+    selectedType =
+        widget.controller.text.isNotEmpty ? widget.controller.text : "Payable";
+    widget.controller.text = selectedType!;
   }
 
   @override
@@ -44,7 +46,8 @@ class _TypeSelectorState extends State<TypeSelector> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           border: Border.all(
-            color: isSelected ? activeColor : Theme.of(context).primaryColorLight,
+            color:
+                isSelected ? activeColor : Theme.of(context).primaryColorLight,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(5),
@@ -55,14 +58,20 @@ class _TypeSelectorState extends State<TypeSelector> {
               isSelected
                   ? Icons.radio_button_checked
                   : Icons.radio_button_unchecked,
-              color: isSelected ? activeColor :Theme.of(context).primaryColorLight,
+              color:
+                  isSelected
+                      ? activeColor
+                      : Theme.of(context).primaryColorLight,
               size: 18,
             ),
             const SizedBox(width: 6),
             Text(
               type,
               style: TextStyle(
-                color: isSelected ? activeColor : Theme.of(context).primaryColorLight,
+                color:
+                    isSelected
+                        ? activeColor
+                        : Theme.of(context).primaryColorLight,
                 fontSize: 13,
                 fontWeight: FontWeight.w400,
               ),

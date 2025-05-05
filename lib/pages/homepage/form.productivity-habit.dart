@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/entities/habit-list.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/entities/productivity-habit-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
 import 'package:flutter_application_1/pages/goal/common/header.expansion-panel.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
@@ -67,6 +68,7 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
   Set<String> titlesSet = {};
   Set<String> frequencySet = {};
   bool isLoading = true;
+  bool isAddLoading = false;
 
   @override
   void initState() {
@@ -175,7 +177,7 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
   }
 
   /// Logs all the field values and saves the data.
-  void _logFormValues() async {
+  Future<void> _logFormValues() async {
     print("Logging all form values:");
     print(widget.title?.controller.text);
     print(widget.frequency?.controller.text);
@@ -189,7 +191,8 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
             'frequency': widget.frequency?.controller.text,
             'time': widget.time?.controller.text,
             'description': widget.description?.controller.text,
-            'user_id': 1,
+            'user_id': userId,
+            'streak_count': 1,
           });
 
       print(productivity.id);
@@ -218,12 +221,12 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
           DateTime habitDate = DateTime.now();
 
           // Use the frequency from either the habit or the productivity (if provided).
-          await updateOrCreateStreak(
-            productivityHabitId: productivityHabit.id,
-            habitDate: habitDate,
-            frequency: widget.frequency?.controller.text ?? "daily",
-            habitEntryId: habitListRecord.id,
-          );
+          // await updateOrCreateStreak(
+          //   productivityHabitId: productivityHabit.id,
+          //   habitDate: habitDate,
+          //   frequency: widget.frequency?.controller.text ?? "daily",
+          //   habitEntryId: habitListRecord.id,
+          // );
         }
       }
     } else {
@@ -253,7 +256,6 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
     }
 
     // Pop until we reach the productivity-home route.
-    Navigator.popUntil(context, ModalRoute.withName('/productivity-home'));
   }
 
   @override
@@ -500,18 +502,49 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                           Expanded(
                             flex: 3,
                             child: ElevatedButton(
-                              onPressed: () async {
-                                try {
-                                  _logFormValues();
-                                } catch (e) {
-                                  print("Error saving habit: $e");
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text("Error: $e")),
-                                  );
-                                }
-                              },
+                              onPressed:
+                                  isAddLoading
+                                      ? null
+                                      : () async {
+                                        print("Before setState");
+                                        print(isAddLoading);
+                                        setState(() {
+                                          isAddLoading = true;
+                                        });
+                                        print("Before try catch");
+                                        print(isAddLoading);
+                                        try {
+                                          print("INside try catch");
+                                          print(isAddLoading);
+                                          await _logFormValues();
+                                          setState(() {
+                                            isAddLoading = false;
+                                          });
+                                          Navigator.popUntil(
+                                            context,
+                                            ModalRoute.withName(
+                                              '/productivity-home',
+                                            ),
+                                          );
+                                        } catch (e) {
+                                          setState(() {
+                                            isAddLoading = false;
+                                          });
+                                          print("Error saving habit: $e");
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text("Error: $e"),
+                                            ),
+                                          );
+                                        }
+                                      },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff009966),
+                                backgroundColor:
+                                    isAddLoading
+                                        ? Colors.grey
+                                        : Color(0xff009966),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 15,
                                 ),
@@ -519,10 +552,20 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
-                              child: const Text(
-                                "Save",
-                                style: TextStyle(color: Colors.white),
-                              ),
+                              child:
+                                  isAddLoading
+                                      ? const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                      : const Text(
+                                        "Save",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                             ),
                           ),
                         ],

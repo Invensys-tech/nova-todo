@@ -54,13 +54,11 @@ class _LoanViewState extends State<LoanView> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back,),
+          icon: Icon(Icons.arrow_back),
         ),
         title: Text(
           translate("Back to Loans"),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ), // Bold title
+          style: TextStyle(fontWeight: FontWeight.bold), // Bold title
         ),
         centerTitle: false,
       ),
@@ -135,7 +133,7 @@ class _LoanViewState extends State<LoanView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                             translate( "Phone"),
+                              translate("Phone"),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -188,17 +186,11 @@ class _LoanViewState extends State<LoanView> {
                 children: [
                   Text(
                     translate("Transactions"),
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   ),
                   Text(
                     translate("See All"),
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
                   ),
                 ],
               ),

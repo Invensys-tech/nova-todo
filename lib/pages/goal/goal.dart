@@ -123,7 +123,7 @@ class _GoalPageState extends State<GoalPage>
                   }
 
                   final allGoals = snapshot.data!;
-                  print(jsonEncode(allGoals[0].toJson()));
+                  // print(jsonEncode(allGoals[0].toJson()));
 
                   // apply tab‑based filtering
                   final filtered = <Goal>[

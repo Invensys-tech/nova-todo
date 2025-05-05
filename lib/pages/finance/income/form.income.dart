@@ -109,7 +109,7 @@ class _IncomeFormState extends State<IncomeForm> {
       'paid_from': paid_from.controller.text,
       "specific_from": specific_from.controller.text,
       "amount": amount.controller.text,
-      'user_id': 1,
+      'user_id': userId,
       'description': description.controller.text,
     });
 
