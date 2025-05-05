@@ -113,29 +113,69 @@ class _TodoViewPageState extends State<TodoViewPage> {
           translate("View Single Daily task"),
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              // Handle menu selection
+              if (value == 'Edit') {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => AddTodoPage(
+                        refetchData: () {},
+                        dailyTask: widget.dailyTask,
+                        isEditing: true,
+                      ),
+                    )
+                );
+              } else if (value == 'Delete') {
+                _showAlertDialog(context);
+              }
+            },
+            icon: Icon(Icons.more_vert), // the 3-dot icon
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'Edit',
+                child: Text('Edit'),
+              ),
+              PopupMenuItem<String>(
+                value: 'Delete',
+                child: Text('Delete'),
+              ),
+            ],
+          ),
+        ],
         elevation: 2,
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025, vertical: MediaQuery.of(context).size.height*.012),
                 margin: EdgeInsets.symmetric(
                   vertical: MediaQuery.of(context).size.height * .01,
                 ),
                 width: MediaQuery.of(context).size.width * .95,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(7)),
+                  color: Theme.of(context).disabledColor
+                ),
                 // height: MediaQuery.of(context).size.height * .11,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       spacing: MediaQuery.of(context).size.width * .005,
                       children: [
+                        Icon(Icons.circle,size: 25, color: widget.dailyTask?.type== "High"? Colors.green: Colors.red,),
                         Text(
                           widget.dailyTask?.name ?? '',
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.white,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -146,8 +186,8 @@ class _TodoViewPageState extends State<TodoViewPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            flex: 1,
+                          Container(
+                            width: MediaQuery.of(context).size.width*.3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -156,7 +196,6 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w300,
-                                    color: Colors.white.withOpacity(.75),
                                   ),
                                 ),
                                 SizedBox(
@@ -168,16 +207,43 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                   // "${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.taskTime))} - ${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.endTime))}",
                                   "${widget.dailyTask!.taskTime} - ${widget.dailyTask!.endTime}",
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w400,
-                                    color: Colors.white,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Expanded(
-                            flex: 1,
+                          Container(
+                            width: MediaQuery.of(context).size.width*.26,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  translate("Remind Me "),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height:
+                                  MediaQuery.of(context).size.height * .000,
+                                ),
+                                Text(
+                                  // "${(widget.dailyTask?.taskTime) ?? ''} - ${widget.dailyTask?.endTime ?? ''}",
+                                  // "${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.taskTime))} - ${getTimeFromDateTime(DateTime.parse(widget.dailyTask!.endTime))}",
+                                  "Before 10 Min",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width*.26,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               // children: [
@@ -191,7 +257,6 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w300,
-                                    color: Colors.white.withOpacity(.75),
                                   ),
                                 ),
                                 SizedBox(
@@ -201,9 +266,8 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                 Text(
                                   widget.dailyTask?.date ?? '',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w400,
-                                    color: Colors.white,
                                   ),
                                 ),
                               ],
@@ -212,194 +276,58 @@ class _TodoViewPageState extends State<TodoViewPage> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 10,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    translate('Priority'),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(widget.dailyTask?.type ?? ''),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    translate('Description'),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    widget.dailyTask?.description ?? '',
-                                    softWrap: true,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    //   child: Row(
+                    //     children: [
+                    //       Column(
+                    //         crossAxisAlignment: CrossAxisAlignment.start,
+                    //         spacing: 10,
+                    //         children: [
+                    //           // Column(
+                    //           //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //           //   children: [
+                    //           //     Text(
+                    //           //       translate('Priority'),
+                    //           //       style: TextStyle(
+                    //           //         fontSize: 16,
+                    //           //         fontWeight: FontWeight.w600,
+                    //           //       ),
+                    //           //     ),
+                    //           //     Text(widget.dailyTask?.type ?? ''),
+                    //           //   ],
+                    //           // ),
+                    //
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                spacing: MediaQuery.of(context).size.height * 0.02,
+              SizedBox(height: MediaQuery.of(context).size.height*.015),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 2,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF27272A),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(color: Color(0xFF27272A), width: 2),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => AddTodoPage(
-                                  refetchData: () {},
-                                  dailyTask: widget.dailyTask,
-                                  isEditing: true,
-                                ),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        translate("Edit"),
-                        style: TextStyle(color: Colors.white),
-                      ),
+                  Text(
+                    translate('Description'),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Expanded(flex: 1, child: SizedBox()),
-                  Expanded(
-                    flex: 2,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF27272A),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(color: Color(0xFFEC003F), width: 2),
-                        ),
-                      ),
-                      onPressed: () {
-                        _showAlertDialog(context);
-                      },
-                      child: Text(
-                        translate("Delete"),
-                        style: TextStyle(color: Color(0xFFEC003F)),
-                      ),
-                    ),
+                  Text(
+                    widget.dailyTask?.description ?? '',
+                    softWrap: true,
                   ),
                 ],
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * .015),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * .95,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: MediaQuery.of(context).size.height * .005,
-                  children: [
-                    Text(
-                      translate("Sub Tasks"),
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white,
-                      ),
-                    ),
-                    ...(widget.dailyTask?.subTasks.map((subTask) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            spacing: 12,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: GestureDetector(
-                                  onTap:
-                                      () => handleUpdateSubTask(
-                                        subTask,
-                                        !subTask['is_done'],
-                                      ),
-                                  child:
-                                      subTask['is_done']
-                                          ? Stack(
-                                            children: [
-                                              Icon(
-                                                Icons.check_box,
-                                                size: 32,
-                                                color: Color(0xFF004F3B),
-                                              ),
-                                              Padding(
-                                                padding: EdgeInsets.all(3.2),
-                                                child: Icon(
-                                                  Icons.check,
-                                                  size: 24,
-                                                  color: Color(0xFFF4F4F5),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                          : Icon(
-                                            Icons.square_outlined,
-                                            size: 32,
-                                            color: Color(0xFF3F3F47),
-                                          ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 11,
-                                child: Text.rich(
-                                  TextSpan(
-                                    text: subTask['text'],
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w300,
-                                      color:
-                                          subTask['is_done']
-                                              ? Color(0xFF004F3B)
-                                              : Color(0xFFE4E4E7),
-                                      decoration:
-                                          subTask['is_done']
-                                              ? TextDecoration.lineThrough
-                                              : TextDecoration.none,
-                                      decorationColor: Color(0xFF004F3B),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        }).toList() ??
-                        []),
-                  ],
-                ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * .025),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                 decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Color(0xFF27272A)),
+                  border: Border.all(width: 1, color: Colors.black.withOpacity(.3)),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 width: MediaQuery.of(context).size.width * .95,
@@ -408,42 +336,117 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: MediaQuery.of(context).size.height * .005,
                   children: [
-                    Text(
-                      translate("New Sub Task"),
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white,
+
+
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * .95,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: MediaQuery.of(context).size.height * .005,
+                        children: [
+                          Text(
+                            translate("Sub Tasks"),
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          ...(widget.dailyTask?.subTasks.map((subTask) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              spacing: 12,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    onTap:
+                                        () => handleUpdateSubTask(
+                                      subTask,
+                                      !subTask['is_done'],
+                                    ),
+                                    child:
+                                    subTask['is_done']
+                                        ? Stack(
+                                      children: [
+                                        Icon(
+                                          Icons.check_box,
+                                          size: 32,
+                                          color: Color(0xFF004F3B),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(3.2),
+                                          child: Icon(
+                                            Icons.check,
+                                            size: 24,
+                                            color: Color(0xFFF4F4F5),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                        : Icon(
+                                      Icons.square_outlined,
+                                      size: 32,
+                                      color: Color(0xFF3F3F47),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 11,
+                                  child: Text.rich(
+                                    TextSpan(
+                                      text: subTask['text'],
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w300,
+
+                                        decoration:
+                                        subTask['is_done']
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none,
+                                        decorationColor: Color(0xFF004F3B),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList() ??
+                              []),
+                        ],
                       ),
                     ),
-                    TextField(
-                      controller: subTaskTextController,
-                      style: TextStyle(color: Colors.white),
-                      cursorColor: Colors.white,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Color(0xFF27272A),
-                            width: 1,
+
+                    SizedBox(height: MediaQuery.of(context).size.height * .015),
+                    Container(
+                      height: MediaQuery.of(context).size.height * .05,
+                      child: TextField(
+                        controller: subTaskTextController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: Color(0xFF27272A),
+                              width: 1,
+                            ),
                           ),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 20,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Color(0xFF27272A),
-                            width: 1,
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 20,
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Color(0xFF27272A),
-                            width: 1,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7),
+                            borderSide: BorderSide(
+                              color: Color(0xFF27272A),
+                              width: 1,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7),
+                            borderSide: BorderSide(
+                              color: Color(0xFF27272A),
+                              width: 1,
+                            ),
                           ),
                         ),
                       ),
@@ -460,11 +463,11 @@ class _TodoViewPageState extends State<TodoViewPage> {
                               borderRadius: BorderRadius.circular(10),
                               side: BorderSide(
                                 color: Color(0xFF009966),
-                                width: 2,
+                                width: 1,
                               ),
                             ),
                             padding: EdgeInsets.symmetric(vertical: 15),
-                            backgroundColor: Color(0xFF009966).withAlpha(33),
+                            backgroundColor: Color(0xFF009966).withOpacity(.4),
                           ),
                           child:
                               isSaving
@@ -472,12 +475,12 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                     width: 16,
                                     height: 16,
                                     child: CircularProgressIndicator(
-                                      color: Colors.grey.shade300,
+                                      color: Colors.grey.withOpacity(.4),
                                     ),
                                   )
                                   : Text(
-                                    translate('Add'),
-                                    style: TextStyle(color: Color(0xFF009966)),
+                                    translate('Add SubTasks'),
+                                    style: TextStyle(color: Theme.of(context).primaryColorDark),
                                   ),
                         ),
                       ),
@@ -485,6 +488,61 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   ],
                 ),
               ),
+
+
+              SizedBox(height: MediaQuery.of(context).size.height * .035),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   spacing: MediaQuery.of(context).size.height * 0.02,
+              //   children: [
+              //     Expanded(
+              //       flex: 2,
+              //       child: ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(8),
+              //             side: BorderSide(color: Color(0xFF27272A), width: 1),
+              //           ),
+              //         ),
+              //         onPressed: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //               builder:
+              //                   (context) => AddTodoPage(
+              //                 refetchData: () {},
+              //                 dailyTask: widget.dailyTask,
+              //                 isEditing: true,
+              //               ),
+              //             ),
+              //           );
+              //         },
+              //         child: Text(
+              //           translate("Edit"),
+              //         ),
+              //       ),
+              //     ),
+              //     Expanded(flex: 1, child: SizedBox()),
+              //     Expanded(
+              //       flex: 2,
+              //       child: ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(8),
+              //             side: BorderSide(color: Color(0xFFEC003F), width: 1),
+              //           ),
+              //         ),
+              //         onPressed: () {
+              //           _showAlertDialog(context);
+              //         },
+              //         child: Text(
+              //           translate("Delete"),
+              //           style: TextStyle(color: Color(0xFFEC003F)),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),

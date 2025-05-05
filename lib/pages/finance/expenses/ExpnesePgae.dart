@@ -568,7 +568,10 @@ class _ExpensespageState extends State<Expensespage> {
                                               as int?,
                                           e.paidBy == "Bank" ? e.amount : null,
                                         );
-                                        _loadExpenses();
+                                        setState(() {
+
+                                        });
+                                       // _loadExpenses();
                                       },
                                       backgroundColor: Colors.red,
                                       foregroundColor: Colors.white,

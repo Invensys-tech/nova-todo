@@ -295,6 +295,7 @@ class _AutoCompleteTextState extends State<AutoCompleteText> {
                       )
                       // 2) The real advanced search
                       : AdvancedSearch(
+
                         searchItems: widget.suggestions,
                         maxElementsToDisplay: 10,
                         borderColor: Colors.transparent,
