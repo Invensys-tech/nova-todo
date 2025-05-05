@@ -241,7 +241,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
         Column(
           children: [
             FutureBuilder<Map<String, Map<String, dynamic>>>(
-              future: ExpenseRepository().getExpenseCategoryTotals(),
+              future: ExpenseRepository().getExpenseCategoryTotals(null, null),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

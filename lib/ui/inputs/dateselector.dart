@@ -98,19 +98,15 @@ class _DateSelectorState extends State<DateSelector> {
           DateTime initDate =
               widget.controller.text.isNotEmpty
                   ? widget.dateFormat.parse(widget.controller.text)
-                  : DateTime.now();
+                  : (widget.initialDate ?? DateTime.now());
 
-          // DateTime initDate = initialDate ?? DateTime.now();
           DateTime? pickedDate = await showDatePicker(
             locale:
                 _dateType == 'Ethiopian'
                     ? const Locale('am')
                     : const Locale('en'),
             context: context,
-            initialDate:
-            _dateType == 'Ethiopian'
-                ? DateTime.now().convertToEthiopian()
-                : initDate,
+            initialDate: initDate,
             firstDate: widget.firstDate,
             lastDate: widget.lastDate,
             builder: (context, child) {
@@ -129,11 +125,55 @@ class _DateSelectorState extends State<DateSelector> {
               );
             },
           );
+
           if (pickedDate != null) {
-            widget.controller.text = widget.dateFormat.format(pickedDate);
+            setState(() {
+              widget.controller.text = widget.dateFormat.format(pickedDate);
+            });
           }
         },
       ),
     );
   }
 }
+
+
+// onTap: () async {
+        //   DateTime initDate =
+        //       widget.controller.text.isNotEmpty
+        //           ? widget.dateFormat.parse(widget.controller.text)
+        //           : DateTime.now();
+
+        //   // DateTime initDate = initialDate ?? DateTime.now();
+        //   DateTime? pickedDate = await showDatePicker(
+        //     locale:
+        //         _dateType == 'Ethiopian'
+        //             ? const Locale('am')
+        //             : const Locale('en'),
+        //     context: context,
+        //     initialDate:
+        //     _dateType == 'Ethiopian'
+        //         ? DateTime.now().convertToEthiopian()
+        //         : initDate,
+        //     firstDate: widget.firstDate,
+        //     lastDate: widget.lastDate,
+        //     builder: (context, child) {
+        //       return Theme(
+        //         data: Theme.of(context).copyWith(
+        //           colorScheme: ColorScheme.dark(
+        //             primary: Colors.green, // header background color
+        //             onPrimary: Colors.white, // header text color
+        //             surface:
+        //                 Theme.of(context).primaryColorLight, // background color
+        //             onSurface: Colors.white70, // body text color
+        //           ),
+        //           dialogBackgroundColor: Colors.black,
+        //         ),
+        //         child: child ?? const SizedBox(),
+        //       );
+        //     },
+        //   );
+        //   if (pickedDate != null) {
+        //     widget.controller.text = widget.dateFormat.format(pickedDate);
+        //   }
+        // },

@@ -52,10 +52,6 @@ class _BankWidgetState extends State<BankWidget> {
                 ),
           ),
         );
-
-
-
-
       },
       child: Container(
         margin: EdgeInsets.symmetric(

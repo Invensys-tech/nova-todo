@@ -192,15 +192,15 @@ class _PaidByAndSpecificFromInputContentState
                   } else if (snapshot.hasData) {
                     if (selectedPaidBy == "Partner") {
                       partnerMapping.clear();
+
                       for (var loan in snapshot.data as List) {
-                        final key =
-                            '${loan.loanerName}-${loan.bank}-${loan.phoneNumber}';
-                        partnerMapping[key] = loan.loanerName;
+                        if (loan.bank != "Expense") {
+                          final key =
+                              '${loan.loanerName}-${loan.bank}-${loan.phoneNumber}';
+                          partnerMapping[key] = loan.loanerName;
+                        }
                       }
                       print(partnerMapping);
-                      // for (var loan in snapshot.data as List) {
-                      //   partnerMapping[loan.loanerName] = loan.id;
-                      // }
 
                       dynamicItems =
                           partnerMapping.entries
@@ -211,9 +211,37 @@ class _PaidByAndSpecificFromInputContentState
                                 },
                               )
                               .toList();
+                      // for (var loan in snapshot.data as List) {
+                      //   final key =
+                      //       '${loan.loanerName}-${loan.bank}-${loan.phoneNumber}';
+                      //   partnerMapping[key] = loan.loanerName;
+                      // }
+                      // print(partnerMapping);
+
+                      // dynamicItems =
+                      //     partnerMapping.entries
+                      //         .map(
+                      //           (partner) => {
+                      //             "value": partner.value,
+                      //             "label": partner.key,
+                      //           },
+                      //         )
+                      //         .toList();
                     } else if (selectedPaidBy == "Bank") {
+                      // dynamicItems =
+                      //     (snapshot.data as List)
+                      //         .map(
+                      //           (bank) => {
+                      //             "value": bank.id,
+                      //             "label":
+                      //                 "${bank.accountHolder}-${bank.accountBank}-${bank.accountNumber}",
+                      //           },
+                      //         )
+                      //         .toList();
+
                       dynamicItems =
                           (snapshot.data as List)
+                              .where((bank) => bank.accountBank != "Expense")
                               .map(
                                 (bank) => {
                                   "value": bank.id,
