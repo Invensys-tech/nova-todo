@@ -24,9 +24,17 @@ class TodoItem extends StatefulWidget {
 }
 
 class _TodoItemState extends State<TodoItem> {
+  bool isLoading = false;
+
   @override
   initState() {
     super.initState();
+  }
+
+  changeIsLoading(bool newIsLoading) {
+    setState(() {
+      isLoading = newIsLoading;
+    });
   }
 
   String getCompletionText() {
@@ -41,10 +49,14 @@ class _TodoItemState extends State<TodoItem> {
   }
 
   Future<bool> updateDailyTaskPercentage(int completionPercentage) async {
+    changeIsLoading(true);
+
     if (completionPercentage > 100 || completionPercentage < 0) {
+      changeIsLoading(true);
       return false;
     }
     if (widget.dailyTask.id == null) {
+      changeIsLoading(true);
       return false;
     }
     bool updated = await DailyTaskRepository()
@@ -56,6 +68,8 @@ class _TodoItemState extends State<TodoItem> {
     if (updated) {
       widget.setParentState();
     }
+
+    changeIsLoading(false);
     return updated;
   }
 
@@ -146,7 +160,9 @@ class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height*.015),
+      margin: EdgeInsets.only(
+        bottom: MediaQuery.of(context).size.height * .015,
+      ),
       child: Slidable(
         startActionPane: ActionPane(
           motion: const ScrollMotion(),
@@ -160,12 +176,17 @@ class _TodoItemState extends State<TodoItem> {
               label: 'Custom',
             ),
             SlidableAction(
-              onPressed: (context) => updateDailyTaskPercentage(100),
+              onPressed:
+                  (context) =>
+                      isLoading ? () {} : updateDailyTaskPercentage(100),
               backgroundColor: Color(0xFF1D9402),
               foregroundColor: Colors.white,
               icon: Icons.sentiment_satisfied,
               label: 'Done',
-              borderRadius: BorderRadius.only(topRight: Radius.circular(7), bottomRight: Radius.circular(7)),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(7),
+                bottomRight: Radius.circular(7),
+              ),
             ),
           ],
         ),
@@ -184,25 +205,37 @@ class _TodoItemState extends State<TodoItem> {
               child: Container(
                 decoration: BoxDecoration(
                   color:
-                  widget.dailyTask.completionPercentage != null
-                      ? Colors.grey.shade300
-                      : Color(0xFFEC003F),
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(7), topLeft: Radius.circular(7)),
+                      widget.dailyTask.completionPercentage != null
+                          ? Colors.grey.shade300
+                          : Color(0xFFEC003F),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(7),
+                    topLeft: Radius.circular(7),
+                  ),
                 ),
                 child: Center(
                   child: ElevatedButton(
                     onPressed:
-                        () =>
-                            widget.dailyTask.completionPercentage != null
-                                ? updateDailyTaskPercentage(0)
-                                : null,
+                        (isLoading ||
+                                widget.dailyTask.completionPercentage == 0)
+                            ? () {}
+                            : () => updateDailyTaskPercentage(0),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF555B59),
                     ),
-                    child: Text(
-                      '😔 I didn\'t',
-                      style: TextStyle(color: Color(0xFFF4F4F5)),
-                    ),
+                    child:
+                        isLoading
+                            ? SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                color: Colors.grey.shade300,
+                              ),
+                            )
+                            : Text(
+                              '😔 I didn\'t',
+                              style: TextStyle(color: Color(0xFFF4F4F5)),
+                            ),
                   ),
                 ),
               ),
