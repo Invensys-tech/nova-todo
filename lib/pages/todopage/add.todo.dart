@@ -155,6 +155,10 @@ class _AddTodoPageState extends State<AddTodoPage> {
       try {
         isSaving = true;
 
+        if (name.controller.text == '') {
+          return;
+        }
+
         bool parsedCorrectly = parseStartEndTime();
         if (!parsedCorrectly) {
           return;
@@ -263,7 +267,12 @@ class _AddTodoPageState extends State<AddTodoPage> {
       endTimeInput.value.controller.text = endTime.split(':')[1];
 
       description.controller.text = widget.dailyTask!.description;
+      notifyMe.controller.text = widget.dailyTask!.reminderTime ?? 'none';
+      print('reminder time');
+      print(widget.dailyTask!.reminderTime);
     }
+
+    notifyMe.controller.text = 'none';
   }
 
   @override

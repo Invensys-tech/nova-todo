@@ -18,11 +18,31 @@ class HabitView extends StatefulWidget {
 
 class _HabitViewState extends State<HabitView> {
   late Future<List<HabitHistory>> habitHistories;
+  bool isEndingStreak = false;
 
   @override
   void initState() {
     super.initState();
     habitHistories = HabitsRepository().getStreakHistories(widget.habit.id!);
+  }
+
+  endStreak() async {
+    if (isEndingStreak) {
+      return;
+    }
+
+    setState(() {
+      isEndingStreak = true;
+    });
+
+    final result = await HabitsRepository().breakStreak(
+      widget.habit,
+      widget.habit.id!,
+    );
+
+    setState(() {
+      isEndingStreak = false;
+    });
   }
 
   Widget _buildCircle(double radius, Color color) {
@@ -146,7 +166,7 @@ class _HabitViewState extends State<HabitView> {
                   child: Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Column(
-                      // spacing: MediaQuery.of(context).size.height * 0.03,
+                      spacing: MediaQuery.of(context).size.height * 0.03,
                       children: [
                         Stack(
                           children: [
@@ -197,7 +217,7 @@ class _HabitViewState extends State<HabitView> {
                                         Row(
                                           children: [
                                             Text(
-                                              '${widget.habit.goingOnFor.toString()} Days',
+                                              '${widget.habit.type} Days',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 32.0,
@@ -328,7 +348,32 @@ class _HabitViewState extends State<HabitView> {
                     ),
                   ),
                 ),
+
                 SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        endStreak();
+                      },
+                      child:
+                          isEndingStreak
+                              ? SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(
+                                  color: Colors.grey.shade300,
+                                ),
+                              )
+                              : Text('End Streak'),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+
                 Container(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Row(

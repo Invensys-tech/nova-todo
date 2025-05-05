@@ -6,6 +6,7 @@ import 'package:flutter_application_1/components/customized/billboard.dart';
 import 'package:flutter_application_1/pages/homepage/daily-report.dart';
 import 'package:flutter_application_1/pages/homepage/dashboard-components/dashboard.expense.item.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
+import 'package:flutter_application_1/repositories/daily-task.repository.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/analytics.service.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
@@ -188,6 +189,14 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 )
                 : Container(),
+            ElevatedButton(
+              onPressed: () {
+                DailyTaskRepository().fetchAll(
+                  DateTime.now().subtract(Duration(days: 1)),
+                );
+              },
+              child: Text('Get Todos'),
+            ),
             Padding(
               padding: EdgeInsets.all(10),
               child: Column(
@@ -219,7 +228,7 @@ class _DashboardState extends State<Dashboard> {
                                     screen: DailyReport(),
                                     withNavBar: false,
                                     pageTransitionAnimation:
-                                    PageTransitionAnimation.cupertino,
+                                        PageTransitionAnimation.cupertino,
                                     settings: const RouteSettings(),
                                   );
                                 },
@@ -235,10 +244,7 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
 
-
-
                         SizedBox(
-
                           width: MediaQuery.of(context).size.width * .515,
                           child: FutureBuilder(
                             future: userInfo,
