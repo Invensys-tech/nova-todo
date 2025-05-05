@@ -89,6 +89,26 @@ class UserRepository {
     }
   }
 
+  Future<Map<String, dynamic>> fetchUserById(int id) async {
+    try {
+      final data =
+          await supabaseClient
+              .from(Entities.USER.dbName)
+              .select()
+              .eq('id', id)
+              // .limit(1)
+              .maybeSingle();
+
+      // print('fetch user');
+      // print(jsonEncode(data));
+
+      return data!;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
   Future<List<dynamic>> fetchUsers() async {
     try {
       final data = await supabaseClient.from(Entities.USER.dbName).select();
@@ -117,9 +137,7 @@ class UserRepository {
       final createdAt = userData['created_at'];
 
       final createdAtDateTime = DateTime.parse(createdAt);
-      final subscriptionEndDateTime = createdAtDateTime.add(
-        Duration(days: 90),
-      );
+      final subscriptionEndDateTime = createdAtDateTime.add(Duration(days: 90));
 
       final response = await supabaseClient
           .from(Entities.USER.dbName)

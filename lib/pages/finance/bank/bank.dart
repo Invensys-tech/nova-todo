@@ -7,8 +7,10 @@ import 'package:flutter_application_1/pages/finance/bank/addbank.dart';
 import 'package:flutter_application_1/pages/finance/bank/editbank.dart';
 import 'package:flutter_application_1/pages/finance/common/balance.dart';
 import 'package:flutter_application_1/pages/finance/common/bank.dart';
+import 'package:flutter_application_1/repositories/bank-repository.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -95,143 +97,237 @@ class _BankPageState extends State<BankPage> {
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.03,
         ),
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: FutureBuilder<List<Bank>>(
-            future: _banksFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
+        child: LiquidPullToRefresh(
+          onRefresh: () async {
+            _refreshBanks();
+          },
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: FutureBuilder<List<Bank>>(
+              future: _banksFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-              if (snapshot.hasError) {
-                return Text("There was an error: ${snapshot.error}");
-              }
+                if (snapshot.hasError) {
+                  return Text("There was an error: ${snapshot.error}");
+                }
 
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Text("No bank data found.");
-              }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text("No bank data found.");
+                }
 
-              List<Bank> banks = snapshot.data!;
-              double totalBalance = banks.fold(
-                0.0,
-                (sum, bank) => sum + bank.balance,
-              );
+                List<Bank> banks = snapshot.data!;
+                double totalBalance = banks.fold(
+                  0.0,
+                  (sum, bank) => sum + bank.balance,
+                );
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
 
-                  BankBalance(
-                    total: totalBalance,
-                    expense: _totalBankExpense,
-                    income: _totalBankIncome,
-                  ),
-                  const SizedBox(height: 10),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: banks.length,
-                    itemBuilder: (context, index) {
-                      final bank = banks[index];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Slidable(
-                            key: ValueKey(bank.id),
-                            endActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (context) {
-                                    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-                                      context,
-                                      screen: EditBank(
-                                        bankId: bank.id,
-                                        datamanager: widget.datamanager,
-                                      ),
+                    BankBalance(
+                      total: totalBalance,
+                      expense: _totalBankExpense,
+                      income: _totalBankIncome,
+                    ),
+                    const SizedBox(height: 10),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: banks.length,
+                      itemBuilder: (context, index) {
+                        final bank = banks[index];
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Slidable(
+                              key: ValueKey(bank.id),
+                              endActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (context) {
+                                      PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                                        context,
+                                        screen: EditBank(
+                                          bankId: bank.id,
+                                          datamanager: widget.datamanager,
+                                        ),
 
-                                      withNavBar: false,
-                                      pageTransitionAnimation:
-                                          PageTransitionAnimation.cupertino,
-                                      settings: const RouteSettings(),
-                                    );
-                                  },
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.edit,
-                                  label: translate('Edit'),
-                                ),
-                              ],
-                            ),
-                            startActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (context) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(
-                                            translate('Confirm Delete'),
-                                          ),
-                                          content: Text(
-                                            translate(
-                                              'Are you sure you want to delete this bank?',
+                                        withNavBar: false,
+                                        pageTransitionAnimation:
+                                            PageTransitionAnimation.cupertino,
+                                        settings: const RouteSettings(),
+                                      );
+                                    },
+                                    backgroundColor: Colors.blue,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.edit,
+                                    label: translate('Edit'),
+                                  ),
+                                ],
+                              ),
+                              startActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (context) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                              translate('Confirm Delete'),
                                             ),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text(translate('Cancel')),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                print('Deleted ${bank.id}');
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text(
-                                                translate('Delete'),
-                                                style: TextStyle(
-                                                  color: Colors.red,
-                                                ),
+                                            content: Text(
+                                              translate(
+                                                'Are you sure you want to delete this bank?',
                                               ),
                                             ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  backgroundColor: Colors.red,
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                  label: translate('Delete'),
-                                ),
-                              ],
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text(
+                                                  translate('Cancel'),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  // Navigator.of(dialogCtx).pop();
+
+                                                  final messenger =
+                                                      ScaffoldMessenger.of(
+                                                        context,
+                                                      );
+                                                  final supabase =
+                                                      Supabase.instance.client;
+                                                  final bankId = bank.id;
+
+                                                  final expenses =
+                                                      await supabase
+                                                          .from('expense')
+                                                          .select('id')
+                                                          .eq(
+                                                            'bankAccount',
+                                                            bankId,
+                                                          )
+                                                          .limit(1);
+
+                                                  final incomes = await supabase
+                                                      .from('incomes')
+                                                      .select('id')
+                                                      .eq(
+                                                        'specific_from',
+                                                        bankId,
+                                                      )
+                                                      .limit(1);
+
+                                                  final loans = await supabase
+                                                      .from('loan')
+                                                      .select('id')
+                                                      .eq(
+                                                        'bank',
+                                                        bank.accountBank,
+                                                      )
+                                                      .limit(1);
+
+                                                  if ((expenses as List)
+                                                          .isNotEmpty ||
+                                                      (incomes as List)
+                                                          .isNotEmpty ||
+                                                      (loans as List)
+                                                          .isNotEmpty) {
+                                                    messenger.showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(
+                                                          translate(
+                                                            'Cannot delete bank: it has associated expenses or incomes.',
+                                                          ),
+                                                        ),
+                                                        backgroundColor:
+                                                            Colors.redAccent,
+                                                      ),
+                                                    );
+                                                    return;
+                                                  }
+
+                                                  try {
+                                                    await BankRepository()
+                                                        .deleteBank(bankId);
+                                                    messenger.showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(
+                                                          translate(
+                                                            'Bank successfully deleted.',
+                                                          ),
+                                                        ),
+                                                        backgroundColor:
+                                                            Colors.green,
+                                                      ),
+                                                    );
+                                                    setState(() {});
+                                                    Navigator.of(context).pop();
+                                                  } catch (e) {
+                                                    messenger.showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(
+                                                          translate(
+                                                                'Error deleting bank: ',
+                                                              ) +
+                                                              e.toString(),
+                                                        ),
+                                                        backgroundColor:
+                                                            Colors.redAccent,
+                                                      ),
+                                                    );
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                },
+                                                child: Text(
+                                                  translate('Delete'),
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: translate('Delete'),
+                                  ),
+                                ],
+                              ),
+                              child: BankWidget(
+                                id: bank.id,
+                                accountname: bank.accountHolder,
+                                accoutnumber: bank.accountNumber,
+                                balance: bank.balance,
+                                datamanager: widget.datamanager,
+                                bankName: bank.accountBank,
+                                accountBank: bank.accountBank,
+                                branch: bank.branch,
+                                balace: bank.balance,
+                              ),
                             ),
-                            child: BankWidget(
-                              id: bank.id,
-                              accountname: bank.accountHolder,
-                              accoutnumber: bank.accountNumber,
-                              balance: bank.balance,
-                              datamanager: widget.datamanager,
-                              bankName: bank.accountBank,
-                              accountBank: bank.accountBank,
-                              branch: bank.branch,
-                              balace: bank.balance,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ],
-              );
-            },
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

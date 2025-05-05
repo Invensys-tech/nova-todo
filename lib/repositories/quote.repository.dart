@@ -32,7 +32,8 @@ class QuoteRepository {
     try {
       int userId = (await AuthService().findSession())['id'];
 
-      final ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+      final ConnectivityResult connectivityResult =
+          await (Connectivity().checkConnectivity());
 
       print('user id');
       print(userId);
@@ -41,7 +42,7 @@ class QuoteRepository {
       if (![
         ConnectivityResult.wifi,
         ConnectivityResult.mobile,
-        ConnectivityResult.ethernet
+        ConnectivityResult.ethernet,
       ].contains(connectivityResult)) {
         // print('no connection');
         final oldQuotes = await QuoteService.getOfflineQuotes();

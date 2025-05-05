@@ -123,15 +123,18 @@
 
 import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/entities/income-entity.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Datamanager {
+  final hiveService = HiveService();
   Future<List<Expense>> fetchExpenseWithDateFilter(DateTime dateTime) async {
     final data = await Supabase.instance.client
         .from('expense')
@@ -177,6 +180,9 @@ class Datamanager {
     try {
       print("My date time in the data manager");
       print(dateTime);
+      final ConnectivityResult connectivityResult =
+          await (Connectivity().checkConnectivity());
+
       if (dateTime != null) {
         if (analytics == true) {
           return await fetchExpensesBetweenDates(
@@ -184,9 +190,32 @@ class Datamanager {
             endDate: endDate ?? DateTime.now(),
           );
         }
+        if (![
+          ConnectivityResult.wifi,
+          ConnectivityResult.mobile,
+          ConnectivityResult.ethernet,
+        ].contains(connectivityResult)) {
+          // print('no connection');
+          final oldExpenses = await getOfflineExpense();
+          return oldExpenses
+                  ?.where((e) => e.date == getDateOnly(dateTime))
+                  .toList() ??
+              [];
+        }
         return await fetchExpenseWithDateFilter(dateTime);
       } else {
-        return await fetchExpense();
+        if (![
+          ConnectivityResult.wifi,
+          ConnectivityResult.mobile,
+          ConnectivityResult.ethernet,
+        ].contains(connectivityResult)) {
+          // print('no connection');
+          final oldExpenses = await getOfflineExpense();
+          return oldExpenses ?? [];
+        } else {
+          return await fetchExpense();
+        }
+        // print('connection');
       }
     } catch (e) {
       print('error type');
@@ -195,6 +224,27 @@ class Datamanager {
       print(e);
       rethrow;
     }
+  }
+
+  Future<List<Expense>>? getOfflineExpense() async {
+    await hiveService.initHive(boxName: 'expense');
+    final List<dynamic>? expenses = await hiveService.getData('all');
+    return expenses?.map((expense) => Expense.fromJson(expense)).toList() ?? [];
+  }
+
+  Future<List<Income>> getOfflineIncome() async {
+    await hiveService.initHive(boxName: 'income');
+    final List<dynamic>? incomes = await hiveService.getData('all');
+    return incomes?.map((income) => Income.fromJson(income)).toList() ?? [];
+  }
+
+  createOfflineExpense(Expense expense) async {
+    await hiveService.initHive(boxName: 'expense');
+    final List<Map<String, dynamic>> expenses = await hiveService.getData(
+      'all',
+    );
+
+    await hiveService.upsertData('all', expenses);
   }
 
   Future<List<Expense>> fetchExpense() async {
@@ -260,13 +310,17 @@ class Datamanager {
     final expenses = await supabase
         .from('expense')
         .select('*')
-        .eq('bankAccount', id);
+        .eq('bankAccount', id)
+        .order('date', ascending: true);
+    ;
 
     // 3. Fetch incomes where specific_from == name
     final incomes = await supabase
         .from('incomes')
         .select('*')
-        .eq('specific_from', id);
+        .eq('specific_from', id)
+        .order('date', ascending: true);
+    ;
 
     return {'bank': bank, 'expenses': expenses, 'incomes': incomes};
   }
