@@ -9,6 +9,9 @@ class SingleTransactionDetails extends StatefulWidget {
   final String whatType;
   final String name;
   final String notes;
+  final num beforeAmount;
+  final num afterAmount;
+
   const SingleTransactionDetails({
     super.key,
     required this.amount,
@@ -17,6 +20,8 @@ class SingleTransactionDetails extends StatefulWidget {
     required this.notes,
     required this.type,
     required this.whatType,
+    required this.beforeAmount,
+    required this.afterAmount,
   });
 
   @override
@@ -136,7 +141,7 @@ class _SingleTransactionDetailsState extends State<SingleTransactionDetails> {
                               ),
                             ),
                             Text(
-                              "15,0000",
+                              widget.beforeAmount.toString(),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -159,7 +164,7 @@ class _SingleTransactionDetailsState extends State<SingleTransactionDetails> {
                             height: MediaQuery.of(context).size.height * .00,
                           ),
                           Text(
-                            "19000",
+                            widget.afterAmount.toString(),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -292,3 +297,117 @@ class _SingleTransactionDetailsState extends State<SingleTransactionDetails> {
     );
   }
 }
+
+// SingleTransactionDetail.dart
+// import 'package:flutter/material.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:get_time_ago/get_time_ago.dart';
+
+// class SingleTransactionDetails extends StatelessWidget {
+//   final String type;
+//   final num amount;
+//   final DateTime date;
+//   final String whatType;
+//   final String name;
+//   final String notes;
+//   final num beforeAmount;
+//   final num afterAmount;
+
+//   const SingleTransactionDetails({
+//     super.key,
+//     required this.type,
+//     required this.amount,
+//     required this.date,
+//     required this.name,
+//     required this.notes,
+//     required this.whatType,
+//     required this.beforeAmount,
+//     required this.afterAmount,
+//   });
+
+//   Widget _row(String label, String value) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(vertical: 6),
+//       child: Row(
+//         children: [
+//           Expanded(
+//             child: Text(
+//               label,
+//               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+//             ),
+//           ),
+//           Expanded(
+//             child: Text(
+//               value,
+//               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Theme.of(context).primaryColorDark.withOpacity(.6),
+//       body: Column(
+//         children: [
+//           // tap to dismiss
+//           GestureDetector(
+//             onTap: () => Navigator.pop(context),
+//             child: Container(height: MediaQuery.of(context).size.height * .41),
+//           ),
+//           // detail pane
+//           Container(
+//             height: MediaQuery.of(context).size.height * .59,
+//             color: Theme.of(context).scaffoldBackgroundColor,
+//             padding: EdgeInsets.symmetric(
+//               horizontal: MediaQuery.of(context).size.width * .035,
+//               vertical: MediaQuery.of(context).size.height * .015,
+//             ),
+//             child: Column(
+//               children: [
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                   children: [
+//                     Text(
+//                       "Single Transaction Details",
+//                       style: TextStyle(
+//                         fontSize: 15,
+//                         fontWeight: FontWeight.w600,
+//                       ),
+//                     ),
+//                     GestureDetector(
+//                       onTap: () => Navigator.pop(context),
+//                       child: FaIcon(FontAwesomeIcons.x, size: 15),
+//                     ),
+//                   ],
+//                 ),
+//                 SizedBox(height: MediaQuery.of(context).size.height * .035),
+//                 _row("Type Of Transaction", whatType),
+//                 Divider(),
+//                 _row("Amount", "ETB ${amount.toStringAsFixed(2)}"),
+//                 Divider(),
+//                 _row("Before Amount", "ETB ${beforeAmount.toStringAsFixed(2)}"),
+//                 Divider(),
+//                 _row("After Amount", "ETB ${afterAmount.toStringAsFixed(2)}"),
+//                 Divider(),
+//                 _row(
+//                   "Date",
+//                   "${date.toLocal().toString().split(' ')[0]} (${GetTimeAgo.parse(date)})",
+//                 ),
+//                 Divider(),
+//                 _row("Category", type),
+//                 Divider(),
+//                 _row("Name Of Type", name),
+//                 Divider(),
+//                 _row("Additional Note", notes),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

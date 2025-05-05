@@ -403,6 +403,10 @@ class _AddExpenseState extends State<AddExpense> {
                                     setState(() => isLoading = true);
 
                                     final paidBy = _paidByController.text;
+
+                                    print("+++++++++++++++++++++++++++++++++");
+
+                                    print(_paymentController.text);
                                     final paymentValue =
                                         _paymentController.text;
                                     final expenseAmt =
@@ -545,7 +549,7 @@ class _AddExpenseState extends State<AddExpense> {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                  :  Text(
+                                  : Text(
                                     translate("Add Expense"),
                                     style: TextStyle(color: Colors.white),
                                   ),
