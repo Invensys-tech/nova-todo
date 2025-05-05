@@ -55,7 +55,7 @@ class _ExpenseTypeSelectorState extends State<ExpenseTypeSelector> {
 
                 return Expanded(
                   child: Container(
-                    height: MediaQuery.of(context).size.height*.05,
+                    height: MediaQuery.of(context).size.height*.045,
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 0,

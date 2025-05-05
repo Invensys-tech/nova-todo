@@ -114,7 +114,37 @@ class _TodoViewPageState extends State<TodoViewPage> {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         actions: [
-          Icon(Icons.more_vert)
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              // Handle menu selection
+              if (value == 'Edit') {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => AddTodoPage(
+                        refetchData: () {},
+                        dailyTask: widget.dailyTask,
+                        isEditing: true,
+                      ),
+                    )
+                );
+              } else if (value == 'Delete') {
+                _showAlertDialog(context);
+              }
+            },
+            icon: Icon(Icons.more_vert), // the 3-dot icon
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'Edit',
+                child: Text('Edit'),
+              ),
+              PopupMenuItem<String>(
+                value: 'Delete',
+                child: Text('Delete'),
+              ),
+            ],
+          ),
         ],
         elevation: 2,
       ),
@@ -461,58 +491,58 @@ class _TodoViewPageState extends State<TodoViewPage> {
 
 
               SizedBox(height: MediaQuery.of(context).size.height * .035),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                spacing: MediaQuery.of(context).size.height * 0.02,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(color: Color(0xFF27272A), width: 1),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => AddTodoPage(
-                              refetchData: () {},
-                              dailyTask: widget.dailyTask,
-                              isEditing: true,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        translate("Edit"),
-                      ),
-                    ),
-                  ),
-                  Expanded(flex: 1, child: SizedBox()),
-                  Expanded(
-                    flex: 2,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(color: Color(0xFFEC003F), width: 1),
-                        ),
-                      ),
-                      onPressed: () {
-                        _showAlertDialog(context);
-                      },
-                      child: Text(
-                        translate("Delete"),
-                        style: TextStyle(color: Color(0xFFEC003F)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   spacing: MediaQuery.of(context).size.height * 0.02,
+              //   children: [
+              //     Expanded(
+              //       flex: 2,
+              //       child: ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(8),
+              //             side: BorderSide(color: Color(0xFF27272A), width: 1),
+              //           ),
+              //         ),
+              //         onPressed: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //               builder:
+              //                   (context) => AddTodoPage(
+              //                 refetchData: () {},
+              //                 dailyTask: widget.dailyTask,
+              //                 isEditing: true,
+              //               ),
+              //             ),
+              //           );
+              //         },
+              //         child: Text(
+              //           translate("Edit"),
+              //         ),
+              //       ),
+              //     ),
+              //     Expanded(flex: 1, child: SizedBox()),
+              //     Expanded(
+              //       flex: 2,
+              //       child: ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(8),
+              //             side: BorderSide(color: Color(0xFFEC003F), width: 1),
+              //           ),
+              //         ),
+              //         onPressed: () {
+              //           _showAlertDialog(context);
+              //         },
+              //         child: Text(
+              //           translate("Delete"),
+              //           style: TextStyle(color: Color(0xFFEC003F)),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
