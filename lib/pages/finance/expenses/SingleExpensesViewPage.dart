@@ -59,7 +59,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                     translate( "Expenses Details"),
+                      translate("Expenses Details"),
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -221,7 +221,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                             children: [
                               Icon(Icons.circle, color: Colors.red),
                               Text(
-                                widget.category,
+                                widget.type,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
