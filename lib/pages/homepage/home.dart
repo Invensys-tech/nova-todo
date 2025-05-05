@@ -9,6 +9,7 @@ import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/entities/productivity-entity.dart';
 import 'package:flutter_application_1/entities/quote.entity.dart';
 import 'package:flutter_application_1/pages/auth/login.dart';
+import 'package:flutter_application_1/pages/auth/otp.dart';
 import 'package:flutter_application_1/pages/habit/components/habit.view.dart';
 import 'package:flutter_application_1/pages/goal/form.goal.dart';
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
@@ -52,6 +53,7 @@ class _HomePageState extends State<HomePage> {
       // ),
       drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
       body: Dashboard(),
+      // body: OTPPage(phoneNumber: '+251987654321'),
       // body: Column(
       //   children: [
       //     ElevatedButton(

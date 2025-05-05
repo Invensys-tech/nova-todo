@@ -184,30 +184,30 @@ class _PricingScreenState extends State<PricingScreen> {
               ),
             ),
             const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF00D084),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                ),
-                onPressed: () {
-                  verifyPayment();
-                  // Action on Continue
-                },
-                child: const Text(
-                  'Verify',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ),
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: ElevatedButton(
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: Color(0xFF00D084),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(8),
+            //       ),
+            //       padding: const EdgeInsets.symmetric(vertical: 14),
+            //     ),
+            //     onPressed: () {
+            //       verifyPayment();
+            //       // Action on Continue
+            //     },
+            //     child: const Text(
+            //       'Verify',
+            //       style: TextStyle(
+            //         color: Colors.white,
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 20,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 16),
             Center(
               child: Column(

@@ -30,14 +30,13 @@ class _TodoViewPageState extends State<TodoViewPage> {
   }
 
   handleUpdateSubTask(subTask, isDone) {
-    // DailyTaskRepository().updateSubTask(subTask['id'], isDone).then((value) {
-    //   if (value) {
-    setState(() {
-      print(isDone);
-      subTask['is_done'] = isDone;
+    DailyTaskRepository().updateSubTask(subTask['id'], isDone).then((value) {
+      if (value) {
+        setState(() {
+          subTask['is_done'] = isDone;
+        });
+      }
     });
-    //   }
-    // });
   }
 
   final subTaskTextController = TextEditingController();
@@ -47,7 +46,10 @@ class _TodoViewPageState extends State<TodoViewPage> {
       isSaving = true;
     });
 
-    final response = await widget.addSubTask({'text': subTaskTextController.text, 'is_done': false});
+    final response = await widget.addSubTask({
+      'text': subTaskTextController.text,
+      'is_done': false,
+    });
 
     if (response) {
       setState(() {
@@ -119,31 +121,26 @@ class _TodoViewPageState extends State<TodoViewPage> {
               // Handle menu selection
               if (value == 'Edit') {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:
-                          (context) => AddTodoPage(
-                        refetchData: () {},
-                        dailyTask: widget.dailyTask,
-                        isEditing: true,
-                      ),
-                    )
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => AddTodoPage(
+                          refetchData: () {},
+                          dailyTask: widget.dailyTask,
+                          isEditing: true,
+                        ),
+                  ),
                 );
               } else if (value == 'Delete') {
                 _showAlertDialog(context);
               }
             },
             icon: Icon(Icons.more_vert), // the 3-dot icon
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'Edit',
-                child: Text('Edit'),
-              ),
-              PopupMenuItem<String>(
-                value: 'Delete',
-                child: Text('Delete'),
-              ),
-            ],
+            itemBuilder:
+                (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(value: 'Edit', child: Text('Edit')),
+                  PopupMenuItem<String>(value: 'Delete', child: Text('Delete')),
+                ],
           ),
         ],
         elevation: 2,
@@ -155,14 +152,17 @@ class _TodoViewPageState extends State<TodoViewPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.025, vertical: MediaQuery.of(context).size.height*.012),
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * .025,
+                  vertical: MediaQuery.of(context).size.height * .012,
+                ),
                 margin: EdgeInsets.symmetric(
                   vertical: MediaQuery.of(context).size.height * .01,
                 ),
                 width: MediaQuery.of(context).size.width * .95,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(7)),
-                  color: Theme.of(context).disabledColor
+                  color: Theme.of(context).disabledColor,
                 ),
                 // height: MediaQuery.of(context).size.height * .11,
                 child: Column(
@@ -171,7 +171,14 @@ class _TodoViewPageState extends State<TodoViewPage> {
                     Row(
                       spacing: MediaQuery.of(context).size.width * .005,
                       children: [
-                        Icon(Icons.circle,size: 25, color: widget.dailyTask?.type== "High"? Colors.green: Colors.red,),
+                        Icon(
+                          Icons.circle,
+                          size: 25,
+                          color:
+                              widget.dailyTask?.type == "High"
+                                  ? Colors.green
+                                  : Colors.red,
+                        ),
                         Text(
                           widget.dailyTask?.name ?? '',
                           style: TextStyle(
@@ -187,7 +194,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: MediaQuery.of(context).size.width*.3,
+                            width: MediaQuery.of(context).size.width * .3,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -215,7 +222,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                             ),
                           ),
                           Container(
-                            width: MediaQuery.of(context).size.width*.26,
+                            width: MediaQuery.of(context).size.width * .26,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -228,7 +235,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                 ),
                                 SizedBox(
                                   height:
-                                  MediaQuery.of(context).size.height * .000,
+                                      MediaQuery.of(context).size.height * .000,
                                 ),
                                 Text(
                                   // "${(widget.dailyTask?.taskTime) ?? ''} - ${widget.dailyTask?.endTime ?? ''}",
@@ -243,7 +250,7 @@ class _TodoViewPageState extends State<TodoViewPage> {
                             ),
                           ),
                           Container(
-                            width: MediaQuery.of(context).size.width*.26,
+                            width: MediaQuery.of(context).size.width * .26,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               // children: [
@@ -306,28 +313,25 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   ],
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height*.015),
+              SizedBox(height: MediaQuery.of(context).size.height * .015),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     translate('Description'),
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
-                  Text(
-                    widget.dailyTask?.description ?? '',
-                    softWrap: true,
-                  ),
+                  Text(widget.dailyTask?.description ?? '', softWrap: true),
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * .025),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                 decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.black.withOpacity(.3)),
+                  border: Border.all(
+                    width: 1,
+                    color: Colors.black.withOpacity(.3),
+                  ),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 width: MediaQuery.of(context).size.width * .95,
@@ -336,8 +340,6 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: MediaQuery.of(context).size.height * .005,
                   children: [
-
-
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .95,
                       child: Column(
@@ -352,66 +354,70 @@ class _TodoViewPageState extends State<TodoViewPage> {
                             ),
                           ),
                           ...(widget.dailyTask?.subTasks.map((subTask) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              spacing: 12,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap:
-                                        () => handleUpdateSubTask(
-                                      subTask,
-                                      !subTask['is_done'],
-                                    ),
-                                    child:
-                                    subTask['is_done']
-                                        ? Stack(
-                                      children: [
-                                        Icon(
-                                          Icons.check_box,
-                                          size: 32,
-                                          color: Color(0xFF004F3B),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(3.2),
-                                          child: Icon(
-                                            Icons.check,
-                                            size: 24,
-                                            color: Color(0xFFF4F4F5),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                        : Icon(
-                                      Icons.square_outlined,
-                                      size: 32,
-                                      color: Color(0xFF3F3F47),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 11,
-                                  child: Text.rich(
-                                    TextSpan(
-                                      text: subTask['text'],
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w300,
-
-                                        decoration:
-                                        subTask['is_done']
-                                            ? TextDecoration.lineThrough
-                                            : TextDecoration.none,
-                                        decorationColor: Color(0xFF004F3B),
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  spacing: 12,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: GestureDetector(
+                                        onTap:
+                                            () => handleUpdateSubTask(
+                                              subTask,
+                                              !subTask['is_done'],
+                                            ),
+                                        child:
+                                            subTask['is_done']
+                                                ? Stack(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.check_box,
+                                                      size: 32,
+                                                      color: Color(0xFF004F3B),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.all(
+                                                        3.2,
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.check,
+                                                        size: 24,
+                                                        color: Color(
+                                                          0xFFF4F4F5,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                                : Icon(
+                                                  Icons.square_outlined,
+                                                  size: 32,
+                                                  color: Color(0xFF3F3F47),
+                                                ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }).toList() ??
+                                    Expanded(
+                                      flex: 11,
+                                      child: Text.rich(
+                                        TextSpan(
+                                          text: subTask['text'],
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w300,
+
+                                            decoration:
+                                                subTask['is_done']
+                                                    ? TextDecoration.lineThrough
+                                                    : TextDecoration.none,
+                                            decorationColor: Color(0xFF004F3B),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }).toList() ??
                               []),
                         ],
                       ),
@@ -480,7 +486,9 @@ class _TodoViewPageState extends State<TodoViewPage> {
                                   )
                                   : Text(
                                     translate('Add SubTasks'),
-                                    style: TextStyle(color: Theme.of(context).primaryColorDark),
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColorDark,
+                                    ),
                                   ),
                         ),
                       ),
@@ -488,7 +496,6 @@ class _TodoViewPageState extends State<TodoViewPage> {
                   ],
                 ),
               ),
-
 
               SizedBox(height: MediaQuery.of(context).size.height * .035),
               // Row(

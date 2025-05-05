@@ -5,11 +5,13 @@ class MyOTPInput extends StatefulWidget {
   final int length;
   final String type;
   final void Function(String) onChange;
+  final void Function()? onFinish;
   const MyOTPInput({
     super.key,
     required this.length,
     required this.onChange,
     this.type = 'int',
+    this.onFinish,
   });
 
   @override
@@ -37,6 +39,10 @@ class _MyOTPInputState extends State<MyOTPInput> {
                     chars[index] = value;
                     inputValue = chars.join();
                     widget.onChange(inputValue);
+
+                    if ((index + 1) == widget.length && widget.onFinish != null) {
+                      widget.onFinish!();
+                    }
                   }
 
                   if (value.length == 1) {

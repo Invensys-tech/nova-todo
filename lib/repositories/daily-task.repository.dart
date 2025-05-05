@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:ethiopian_datetime/ethiopian_datetime.dart';
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -67,7 +70,8 @@ class DailyTaskRepository {
           .select('*, daily_sub_tasks(*)')
           .order('created_at', ascending: false);
 
-      if (dailyTask.reminderTime != null && dailyTask.reminderTime != dailyTask.taskTime) {
+      if (dailyTask.reminderTime != null &&
+          dailyTask.reminderTime != dailyTask.taskTime) {
         NotificationService().scheduleNotification(
           id: data[0]['id'],
           title: 'Daily Task Reminder',
@@ -163,14 +167,31 @@ class DailyTaskRepository {
   // }
 
   Future<List<DailyTask>> fetchAll(DateTime date) async {
-    // Future<dynamic> fetchAll(DateTime? date) async {
+    HiveService hiveService = HiveService();
+    await hiveService.initHive(boxName: 'dateTime');
+    final stored = await hiveService.getData('dateTime');
+
+    final ethiopianDate =
+        ETDateTime(date.year, date.month, date.day).convertToEthiopian();
+
+    print(getStartOfDay(ethiopianDate));
+
+    String dateType = stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
+    print("Date Type");
+    print(dateType);
+
     try {
       final userId = (await authService.findSession())['id'];
 
       final data = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
           .select('*, daily_sub_tasks(*)')
-          .eq('date', date.toIso8601String())
+          .eq(
+            'date',
+            dateType == 'Gregorian'
+                ? date.toIso8601String()
+                : getStartOfDay(ethiopianDate).toIso8601String(),
+          )
           .eq('user_id', userId);
 
       // for (final a in data) {

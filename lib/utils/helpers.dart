@@ -195,7 +195,7 @@ String getHourFromTimeOfDay(TimeOfDay timeofday) {
 }
 
 String getMinuteFromTimeOfDay(TimeOfDay timeofday) {
-  final hour = timeofday.hour;
+  final hour = timeofday.minute;
 
   return hour < 10 ? '0$hour' : hour.toString();
 }

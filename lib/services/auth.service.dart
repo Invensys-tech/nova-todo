@@ -42,7 +42,6 @@ class AuthService {
 
   Future<loginRoutes> signin(String phoneNumber) async {
     try {
-      // Todo: hash password
       String otp = generateRandomString(5);
       print(otp);
 
@@ -129,7 +128,7 @@ class AuthService {
         phoneNumber,
         name,
         gender,
-        DateTime.now().add(const Duration(minutes: 1)).toIso8601String(),
+        DateTime.now().add(const Duration(days: 3)).toIso8601String(),
       );
 
       UserEntity user = UserEntity.fromJson(data);
