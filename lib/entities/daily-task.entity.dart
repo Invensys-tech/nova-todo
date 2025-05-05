@@ -57,7 +57,10 @@ class DailyTask {
       taskTime: json['task_time'] as String,
       endTime: json['end_time'] as String,
       date: json['date'] as String,
-      reminderTime: json['reminder_time'] as String,
+      reminderTime:
+          json['reminder_time'] == null
+              ? null
+              : json['reminder_time'] as String,
       description: json['description'] ?? '',
       subTasks:
           json['daily_sub_tasks'] == Null || json['daily_sub_tasks'] == null
@@ -134,10 +137,14 @@ class DailyTask {
     return DailyTask.fromJson({
       ...json,
       'date': json['date'].toString().split('T')[0],
-      'reminder_time': getTimeDifferenceFromTimeString(
-        json['reminder_time'],
-        DateTime.now().toIso8601String(),
-      ),
+      'reminder_time':
+          (json['reminder_time'] == null ||
+                  json['task_time'] == json['reminder_time'])
+              ? null
+              : getTimeDifferenceFromTimeString(
+                json['reminder_time'],
+                json['task_time'],
+              ),
       'task_time': getTimeFromDateTimeString(json['task_time']),
       'end_time': getTimeFromDateTimeString(json['end_time']),
     });

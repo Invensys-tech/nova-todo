@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/components/inputs/dropdown.selector.dart';
 import 'package:flutter_application_1/components/inputs/fixed-length-input.dart';
 import 'package:flutter_application_1/components/inputs/radio.input.dart';
 import 'package:flutter_application_1/components/inputs/selector.input.dart';
@@ -83,7 +84,6 @@ class _TodoFormState extends State<TodoForm> {
       ).format(DateTime.now());
       widget.notifyMe.controller.text = 'none';
     } else {
-
       // print(widget.startTimeInput.key.controller.text);
       // print(widget.startTimeInput.value.controller.text);
       // print(widget.endTimeInput.key.controller.text);
@@ -122,13 +122,13 @@ class _TodoFormState extends State<TodoForm> {
 
   setNotifyMe(dynamic value) {
     notifyMeText =
-        TodoForm.notifyMeOptions.firstWhere(
-          (option) {
-            return option['value'] == value;
-          },
-        )['label'] ??
+        TodoForm.notifyMeOptions.firstWhere((option) {
+          return option['value'] == value;
+        })['label'] ??
         value;
-    widget.notifyMe.controller.text = value;
+    setState(() {
+      widget.notifyMe.controller.text = value;
+    });
   }
 
   // setTimePeriod(value) {
@@ -484,12 +484,36 @@ class _TodoFormState extends State<TodoForm> {
           ),
           SizedBox(height: MediaQuery.of(context).size.width * 0.04),
           Container(
-            child: MySelector(
-              label: translate('Notify Me'),
-              myDropdownItems: TodoForm.notifyMeOptions,
-              onSelect: setNotifyMe,
-              currentValue: "ghjkl",
-              controller: widget.notifyMe.controller,
+            // child: MySelector(
+            //   label: translate('Notify Me'),
+            //   myDropdownItems: TodoForm.notifyMeOptions,
+            //   onSelect: setNotifyMe,
+            //   currentValue: "ghjkl",
+            //   controller: widget.notifyMe.controller,
+            // ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "Reminder",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                ),
+                DropdownButton(
+                  menuWidth: MediaQuery.of(context).size.width * .8,
+                  items:
+                      TodoForm.notifyMeOptions
+                          .map(
+                            (menuItem) => DropdownMenuItem(
+                              value: menuItem['value'],
+                              child: Text(menuItem['label']),
+                            ),
+                          )
+                          .toList(),
+                  onChanged: setNotifyMe,
+                  value: widget.notifyMe.controller.text,
+                ),
+              ],
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.width * 0.04),

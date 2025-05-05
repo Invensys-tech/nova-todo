@@ -689,6 +689,7 @@ class _TodoPageState extends State<TodoPage> {
           } else {
             if (snapshot.hasError) {
               print(snapshot.error);
+              print(snapshot.stackTrace);
               return Text('Error: ${snapshot.error}');
             } else {
               return const Center(child: CircularProgressIndicator());

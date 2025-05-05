@@ -12,9 +12,21 @@ class DailyTaskRepository {
   Future<DailyTask> addDailyTask(DailyTask dailyTask) async {
     try {
       final userId = (await authService.findSession())['id'];
+
+      print('in the repo');
+      print(dailyTask.toJson());
+      // return dailyTask;
+
       final response = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)
-          .insert({...dailyTask.toJson(), 'user_id': userId})
+          .insert({
+            ...dailyTask.toJson(),
+            // 'reminder_time':
+            //     dailyTask.taskTime == dailyTask.reminderTime
+            //         ?
+            //         : dailyTask.reminderTime,
+            'user_id': userId,
+          })
           .count(CountOption.exact);
 
       if (response.count == 0) {
@@ -55,7 +67,7 @@ class DailyTaskRepository {
           .select('*, daily_sub_tasks(*)')
           .order('created_at', ascending: false);
 
-      if (dailyTask.reminderTime != null) {
+      if (dailyTask.reminderTime != null && dailyTask.reminderTime != dailyTask.taskTime) {
         NotificationService().scheduleNotification(
           id: data[0]['id'],
           title: 'Daily Task Reminder',
@@ -119,6 +131,36 @@ class DailyTaskRepository {
       rethrow;
     }
   }
+
+  // Future<List<DailyTask>> fetchAll(DateTime date) async {
+  //   // Future<dynamic> fetchAll(DateTime? date) async {
+  //   try {
+  //     final userId = (await authService.findSession())['id'];
+  //
+  //     final data = await supabaseClient
+  //         .from(Entities.DAILY_TASK.dbName)
+  //         .select('*, daily_sub_tasks(*)')
+  //         .eq('date', date.toIso8601String())
+  //         .eq('user_id', userId);
+  //
+  //     print(data);
+  //
+  //     // for (final a in data) {
+  //     //   print(a['date']);
+  //     // }
+  //
+  //     final dailyTasks = data.map((dailyTask) {
+  //       print("in this one");
+  //       print(dailyTask);
+  //       return DailyTask.fromDBJson(dailyTask);
+  //     }).toList();
+  //
+  //     return dailyTasks;
+  //   } catch (e) {
+  //     print(e);
+  //     rethrow;
+  //   }
+  // }
 
   Future<List<DailyTask>> fetchAll(DateTime date) async {
     // Future<dynamic> fetchAll(DateTime? date) async {
@@ -260,10 +302,7 @@ class DailyTaskRepository {
     }
   }
 
-  Future<bool> updateDailyTask(
-    DailyTask dailyTask,
-    int id,
-  ) async {
+  Future<bool> updateDailyTask(DailyTask dailyTask, int id) async {
     try {
       final response = await supabaseClient
           .from(Entities.DAILY_TASK.dbName)

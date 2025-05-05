@@ -353,7 +353,6 @@ class HabitsRepository {
     try {
       final habit = existingHabit.copy();
 
-
       if (habit.streak == 0) {
         print('Habit streak is already 0');
         // return false;
@@ -448,6 +447,11 @@ class HabitsRepository {
             (habitRepetition) => (oldHabit['repetitions'] as List<String>)
                 .contains(habitRepetition),
           )) {
+        final existingHabitHistoryUpdate = await supabaseClient
+            .from(Entities.HABITHISTORY.dbName)
+            .update({'is_active': false})
+            .eq('habit_id', id);
+
         final habitHistoryResponse = await supabaseClient
             .from(Entities.HABITHISTORY.dbName)
             .insert({
@@ -457,7 +461,7 @@ class HabitsRepository {
               'started_at': getDateOnly(DateTime.now()),
               'dates': [],
               'type': habit.type,
-              'is_active': false,
+              'is_active': true,
             })
             .count(CountOption.exact);
       }
@@ -465,6 +469,59 @@ class HabitsRepository {
       if (response.count == 0) {
         throw Exception('Habit not updated!');
       }
+
+      return true;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<bool> breakStreak(Habit habit, int id) async {
+    try {
+      final oldHabit =
+          await supabaseClient
+              .from(Entities.HABITS.dbName)
+              .select('frequency, repetitions, type, streak_dates')
+              .eq('id', id)
+              .maybeSingle();
+
+      if (oldHabit == null) {
+        throw Exception('Habit not found');
+      }
+
+      if (oldHabit['streak_dates'].isEmpty) {
+        print("empty habit");
+        return false;
+      }
+
+      final response = await supabaseClient
+          .from(Entities.HABITS.dbName)
+          .update({'streak_dates': [], 'streak': 0, 'mini_streak': 0})
+          .eq('id', id)
+          .count(CountOption.exact);
+
+      if (response.count == 0) {
+        throw Exception('Habit not discontinued!');
+      }
+
+      final existingHabitHistoryUpdate = await supabaseClient
+          .from(Entities.HABITHISTORY.dbName)
+          .update({'is_active': false})
+          .eq('habit_id', id);
+
+      final habitHistoryResponse = await supabaseClient
+          .from(Entities.HABITHISTORY.dbName)
+          .insert({
+            'habit_id': id,
+            'frequency': habit.frequency,
+            'repetitions': habit.repetitions ?? [],
+            'started_at': getDateOnly(DateTime.now()),
+            'dates': [],
+            'type': habit.type,
+            'is_active': true,
+          })
+          .count(CountOption.exact);
 
       return true;
     } catch (e) {
@@ -503,7 +560,7 @@ class HabitsRepository {
           .eq('habit_id', habitId)
           .neq('is_active', true);
 
-      // print(response);
+      print(response);
 
       List<HabitHistory> habitHistories =
           response
