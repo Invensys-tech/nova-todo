@@ -26,6 +26,11 @@ class MainScreenPage extends StatefulWidget {
 class _MainScreenPageState extends State<MainScreenPage> {
   var dataManager = Datamanager();
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   PersistentTabController _persistentTabController = PersistentTabController(
     initialIndex: 0,
   );

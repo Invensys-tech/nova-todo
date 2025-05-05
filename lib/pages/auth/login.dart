@@ -18,9 +18,17 @@ class LogInPage extends StatefulWidget {
 
 class _LogInPageState extends State<LogInPage> {
   final TextEditingController _phoneNumberController = TextEditingController();
+
   // final TextEditingController _passwordController = TextEditingController();
 
   bool _signinError = false;
+  bool isLoading = false;
+
+  changeLoadingState(bool loadingState) {
+    setState(() {
+      isLoading = loadingState;
+    });
+  }
 
   navigateToHome() {
     Navigator.push(
@@ -39,7 +47,11 @@ class _LogInPageState extends State<LogInPage> {
   }
 
   signin() {
+    if (isLoading) {
+      return;
+    }
     String phoneNumber = _phoneNumberController.text;
+    changeLoadingState(true);
     AuthService()
         .signin(_phoneNumberController.text)
         .then((value) {
@@ -47,6 +59,7 @@ class _LogInPageState extends State<LogInPage> {
           setState(() {
             _signinError = false;
           });
+          changeLoadingState(false);
           // Todo: store the user data
           // navigateToHome();
         })
@@ -55,38 +68,57 @@ class _LogInPageState extends State<LogInPage> {
           setState(() {
             _signinError = true;
           });
+          changeLoadingState(false);
         });
   }
+
   PhoneNumber number = PhoneNumber(isoCode: 'ET');
+
   @override
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
         body: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .05),
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * .05,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               spacing: MediaQuery.of(context).size.height * 0.08,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .05),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * .05,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     spacing: MediaQuery.of(context).size.height * .005,
                     children: [
-                      Text('Enter Your Phone Number', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
+                      Text(
+                        'Enter Your Phone Number',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         spacing: MediaQuery.of(context).size.height * .002,
                         children: [
                           Text(
-                              'Please confirm your country code and enter',
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                            'Please confirm your country code and enter',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                           Text(
-                              'your phone number',
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                            'your phone number',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ],
                       ),
@@ -103,26 +135,30 @@ class _LogInPageState extends State<LogInPage> {
                     // ),
                     Text(
                       'Phone Number',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                     InternationalPhoneNumberInput(
-
-                        selectorConfig: SelectorConfig(
-                          selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                          showFlags: true,
-                          useEmoji: false,
-                          // backgroundColor,
-                          // this.countryComparator,
-                          setSelectorButtonAsPrefixIcon: false,
-                          useBottomSheetSafeArea: false,
-                        ),
+                      selectorConfig: SelectorConfig(
+                        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                        showFlags: true,
+                        useEmoji: false,
+                        // backgroundColor,
+                        // this.countryComparator,
+                        setSelectorButtonAsPrefixIcon: false,
+                        useBottomSheetSafeArea: false,
+                      ),
                       // initialValue: PhoneNumber(
                       //   phoneNumber: '+251912345678',
                       //   dialCode: '+251',
                       //   isoCode: '+251',
                       // ),
                       initialValue: number,
-                      inputBorder: OutlineInputBorder(borderSide: BorderSide(color: Color(0xFF27272A))),
+                      inputBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF27272A)),
+                      ),
                       onInputChanged: (number) {
                         // print(phoneNumber.phoneNumber);
                         // print(phoneNumber.toString());
@@ -157,19 +193,35 @@ class _LogInPageState extends State<LogInPage> {
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(color: Color(0xFF009966), width: 2),
+                            side: BorderSide(
+                              color: Color(0xFF009966),
+                              width: 2,
+                            ),
                           ),
                           padding: EdgeInsets.symmetric(vertical: 15),
                           backgroundColor: Color(0xFF009966),
                         ),
-                        child: Text(
-                          'Continue',
-                          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                        ),
+                        child:
+                            isLoading
+                                ? SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.grey.shade300,
+                                  ),
+                                )
+                                : Text(
+                                  'Continue',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                  ),
+                                ),
                       ),
                     ),
                   ],
-                )
+                ),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
                 //   spacing: MediaQuery.of(context).size.width * 0.05,

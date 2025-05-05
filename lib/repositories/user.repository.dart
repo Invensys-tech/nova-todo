@@ -116,9 +116,11 @@ class UserRepository {
 
       final createdAt = userData['created_at'];
 
-      final createdAtDateTime = DateTime.parse(createdAt);
+      // final createdAtDateTime = DateTime.parse(createdAt);
+      final createdAtDateTime = DateTime.now();
+
       final subscriptionEndDateTime = createdAtDateTime.add(
-        Duration(days: 90),
+        Duration(days: 366),
       );
 
       final response = await supabaseClient
