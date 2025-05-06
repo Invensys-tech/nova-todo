@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/entities/user.entity.dart';
+import 'package:flutter_application_1/providers/user.provider.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/message.service.dart';
@@ -54,8 +55,8 @@ class AuthService {
 
       await sendMessage(
         token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiczA1T2VJTGhMcmlmT2hsakx1eldEUW1ib21HQkFVQU8iLCJleHAiOjE5MDIwNTI5MzksImlhdCI6MTc0NDI4NjUzOSwianRpIjoiZTk3YTQ2NDYtMDM3Ni00Y2FhLWJmOGItNzdiNDA5MjEyNWVkIn0.yEaCgtxpQPzMoA9m5MpjFEx6c7ROWX3NiKj_wyMGZeg',
-        recipient: '0911451079',
+            'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiOGFmUEx2TFBZOVQ1N3E1OXFpaUFYS2xtdjAxamZ3RGciLCJleHAiOjE5MDQzMDE3NzYsImlhdCI6MTc0NjUzNTM3NiwianRpIjoiMTk5ODlmMGEtNDk2Yi00NTcwLTkyZTUtNjJmMGQ3ZWI2ODk1In0.O3SPD2rzOoQMl-w8das74YxMvGJQOrHc7rf627b6aK8',
+        recipient: phoneNumber,
         message: 'Hello from Flutter ${otp}!',
       );
 
@@ -191,6 +192,7 @@ class AuthService {
     HiveService hiveService = HiveService();
     await hiveService.initHive(boxName: 'session');
     await hiveService.upsertData('user', user.toJson());
+    updateUser(user.toJson());
   }
 
   Future<void> deleteSession() async {

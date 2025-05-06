@@ -4,10 +4,13 @@ import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/customized/billboard.dart';
 import 'package:flutter_application_1/components/inputs/pinput.input.dart';
+import 'package:flutter_application_1/entities/notifications.entity.dart';
 import 'package:flutter_application_1/pages/homepage/daily-report.dart';
 import 'package:flutter_application_1/pages/homepage/dashboard-components/dashboard.expense.item.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
+import 'package:flutter_application_1/providers/user.provider.dart';
 import 'package:flutter_application_1/repositories/daily-task.repository.dart';
+import 'package:flutter_application_1/repositories/notification.repository.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/analytics.service.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
@@ -297,6 +300,41 @@ class _DashboardState extends State<Dashboard> {
                   // ),
 
                   // SizedBox(height: MediaQuery.of(context).size.height*.03),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      print('creating notifications...');
+                      // NotificationService()
+                      //     .sendQuoteNotification();
+                      [
+                        NotificationEntity.fromDBJson({
+                          'content': 'This is my first notification',
+                          'type': 'APP',
+                        }),
+                        NotificationEntity.fromDBJson({
+                          'content': 'This is my first notification',
+                          'type': 'APP',
+                        }),
+                        NotificationEntity.fromDBJson({
+                          'content': 'This is my first notification',
+                          'type': 'APP',
+                        }),
+                        NotificationEntity.fromDBJson({
+                          'content': 'This is my first notification',
+                          'type': 'APP',
+                        }),
+                      ].map((notification) {
+                        print(notification.toJson());
+                        NotificationRepository.createNotification(notification);
+                        return 1;
+                      });
+                      // DailyTaskRepository().fetchAll(DateTime.now());
+                    },
+                    child: Text('Create Notifications'),
+                  ),
+
+                  SizedBox(height: MediaQuery.of(context).size.height*.03),
+
                   Container(
                     height: MediaQuery.of(context).size.height * .2,
                     width: MediaQuery.of(context).size.width * .95,
