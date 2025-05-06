@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ethiopian_datetime/ethiopian_datetime.dart';
 import 'package:flutter_application_1/entities/daily-task.entity.dart';
+import 'package:flutter_application_1/providers/preferences.provider.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
@@ -167,18 +168,17 @@ class DailyTaskRepository {
   // }
 
   Future<List<DailyTask>> fetchAll(DateTime date) async {
-    HiveService hiveService = HiveService();
-    await hiveService.initHive(boxName: 'dateTime');
-    final stored = await hiveService.getData('dateTime');
+    final inputDate = ETDateTime(date.year, date.month, date.day);
 
-    final ethiopianDate =
-        ETDateTime(date.year, date.month, date.day).convertToEthiopian();
+    final filterDate = getStartOfDay(
+      getCalendarSystem() == 'Ethiopian' ? inputDate.convertToGregorian() : inputDate,
+    );
 
-    print(getStartOfDay(ethiopianDate));
+    // print(inputDate);
+    // print(filterDate);
 
-    String dateType = stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
-    print("Date Type");
-    print(dateType);
+    // print(getCalendarSystem());
+    // print(filterDate);
 
     try {
       final userId = (await authService.findSession())['id'];
@@ -188,9 +188,10 @@ class DailyTaskRepository {
           .select('*, daily_sub_tasks(*)')
           .eq(
             'date',
-            dateType == 'Gregorian'
-                ? date.toIso8601String()
-                : getStartOfDay(ethiopianDate).toIso8601String(),
+            filterDate.toIso8601String(),
+            // dateType == 'Gregorian'
+            //     ? date.toIso8601String()
+            //     : getStartOfDay(filterDate).toIso8601String(),
           )
           .eq('user_id', userId);
 

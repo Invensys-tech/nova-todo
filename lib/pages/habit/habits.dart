@@ -5,6 +5,7 @@ import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/habit/components/habit-daily-list.dart';
 import 'package:flutter_application_1/pages/habit/components/habits-list.dart';
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
+import 'package:flutter_application_1/providers/preferences.provider.dart';
 import 'package:flutter_application_1/providers/user.provider.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
@@ -29,6 +30,8 @@ class _HabitsPageState extends State<HabitsPage> {
   @override
   void initState() {
     super.initState();
+    // print('Calendar System');
+    // print(getCalendarSystem());
     habits = HabitsRepository().fetchHabits();
   }
 

@@ -297,6 +297,20 @@ class _DashboardState extends State<Dashboard> {
                   // ),
 
                   // SizedBox(height: MediaQuery.of(context).size.height*.03),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      print('fetching todos...');
+                      // NotificationService()
+                      //     .sendQuoteNotification();
+
+                      DailyTaskRepository().fetchAll(DateTime.now());
+                    },
+                    child: Text('Fetch Todos'),
+                  ),
+
+                  SizedBox(height: MediaQuery.of(context).size.height*.03),
+
                   Container(
                     height: MediaQuery.of(context).size.height * .2,
                     width: MediaQuery.of(context).size.width * .95,

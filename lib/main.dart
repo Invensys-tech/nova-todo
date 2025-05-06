@@ -7,6 +7,7 @@ import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/pages/auth/payment.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
+import 'package:flutter_application_1/providers/preferences.provider.dart';
 import 'package:flutter_application_1/providers/user.provider.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
@@ -45,6 +46,7 @@ void main() async {
   HiveService hiveService2 = HiveService();
   await hiveService2.initHive(boxName: "dateTime");
   await hiveService2.upsertData("dateTime", "Gregorian");
+  updatePreference({'calendar-system': 'Gregorian'});
 
   HiveService hiveService3 = HiveService();
   await hiveService3.initHive(boxName: "dateTime");
