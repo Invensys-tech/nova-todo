@@ -12,6 +12,7 @@ import 'package:flutter_application_1/repositories/income.repository.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class IncomeView extends StatefulWidget {
@@ -126,109 +127,119 @@ class _IncomeViewState extends State<IncomeView> {
         },
         child: const Icon(Icons.add),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * .015),
-            CalendarTimeline(
-              initialDate: _selectedDate,
-              firstDate: DateTime(2000, 1, 1),
-              lastDate: DateTime(2027, 11, 20),
-              onDateSelected: _onDateSelected,
-              leftMargin: 20,
-              showYears: false,
-              monthColor: Colors.blueGrey,
-              dayColor: Colors.teal[200],
-              activeDayColor: Colors.white,
-              activeBackgroundDayColor: Theme.of(context).disabledColor,
-              shrink: true,
+      body: LiquidPullToRefresh(
+        onRefresh: () async {
+          _loadIncomes();
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height * .015),
+              CalendarTimeline(
+                initialDate: _selectedDate,
+                firstDate: DateTime(2000, 1, 1),
+                lastDate: DateTime(2027, 11, 20),
+                onDateSelected: _onDateSelected,
+                leftMargin: 20,
+                showYears: false,
+                monthColor: Colors.blueGrey,
+                dayColor: Colors.teal[200],
+                activeDayColor: Colors.white,
+                activeBackgroundDayColor: Theme.of(context).disabledColor,
+                shrink: true,
 
-              locale: 'en_ISO',
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * .025),
+                locale: 'en_ISO',
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * .025),
 
-            FutureBuilder<List<Income>>(
-              future: _incomeList,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
+              FutureBuilder<List<Income>>(
+                future: _incomeList,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
 
-                final incomes = snapshot.data!;
-                // **calculate the total here**
-                final num total = incomes.fold<num>(
-                  0,
-                  (sum, inc) => sum + inc.amount,
-                );
+                  final incomes = snapshot.data!;
+                  // **calculate the total here**
+                  final num total = incomes.fold<num>(
+                    0,
+                    (sum, inc) => sum + inc.amount,
+                  );
 
-                return Column(
-                  children: [
-                    // ——— Top summary card with dynamic total ———
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * .02,
-                      ),
-                      child: Container(
+                  return Column(
+                    children: [
+                      // ——— Top summary card with dynamic total ———
+                      Padding(
                         padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * .0075,
+                          left: MediaQuery.of(context).size.width * .02,
                         ),
-                        height: MediaQuery.of(context).size.height * .075,
-                        width: MediaQuery.of(context).size.width * .9,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColorDark,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * .015,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * .22,
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * .0075,
+                          ),
+                          height: MediaQuery.of(context).size.height * .075,
+                          width: MediaQuery.of(context).size.width * .9,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorDark,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * .015,
                               ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.trending_up_outlined,
-                                    color: Color(0xff0d805e),
-                                    size: 25,
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width *
-                                        .035,
-                                  ),
-                                  Text(
-                                    "\$ ${total.toStringAsFixed(2)} ETB",
-                                    style: GoogleFonts.lato(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 20,
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: MediaQuery.of(context).size.width * .22,
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.trending_up_outlined,
+                                      color: Color(0xff0d805e),
+                                      size: 25,
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          .035,
+                                    ),
+                                    Text(
+                                      "\$ ${total.toStringAsFixed(2)} ETB",
+                                      style: GoogleFonts.lato(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
 
-                    SizedBox(height: MediaQuery.of(context).size.height * .025),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * .025,
+                      ),
 
-                    // ——— List of incomes ———
-                    Column(
-                      children:
-                          incomes.map((inc) => _buildIncomeItem(inc)).toList(),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ],
+                      // ——— List of incomes ———
+                      Column(
+                        children:
+                            incomes
+                                .map((inc) => _buildIncomeItem(inc))
+                                .toList(),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -273,8 +284,7 @@ class _IncomeViewState extends State<IncomeView> {
                             ),
                             actions: [
                               TextButton(
-                                onPressed:
-                                    () => Navigator.of(context).pop(),
+                                onPressed: () => Navigator.of(context).pop(),
                                 child: const Text('Cancel'),
                               ),
                               TextButton(
