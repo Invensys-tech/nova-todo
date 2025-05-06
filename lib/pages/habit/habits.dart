@@ -5,6 +5,7 @@ import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/habit/components/habit-daily-list.dart';
 import 'package:flutter_application_1/pages/habit/components/habits-list.dart';
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
+import 'package:flutter_application_1/providers/user.provider.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_translate/flutter_translate.dart';

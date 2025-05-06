@@ -7,11 +7,13 @@ import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
 import 'package:flutter_application_1/pages/auth/payment.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
+import 'package:flutter_application_1/providers/user.provider.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/sms.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/localization/localization_delegate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
@@ -36,6 +38,7 @@ int userId = 0;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   requestNotificationPermission();
+  NotificationService().initNotifications(navigatorKey);
   await Hive.initFlutter();
   HiveService hiveService = HiveService();
   await hiveService.initHive(boxName: 'session');
@@ -47,8 +50,11 @@ void main() async {
   await hiveService3.initHive(boxName: "dateTime");
 
   dynamic data = await hiveService.getData('user');
-  print('----------------- user store in hive -----------------');
-  print(jsonEncode(data));
+  // print('printing user data');
+  // print(data);
+  updateUser(data);
+  // print('----------------- user store in hive -----------------');
+  // print(jsonEncode(data));
   await Supabase.initialize(
     url: "https://iazgcqadmrjhszpeqxpj.supabase.co",
     anonKey:
@@ -81,8 +87,9 @@ void main() async {
   if (languageCode != null) {
     await delegate.changeLocale(Locale(languageCode));
   }
+
   // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
-  runApp(LocalizedApp(delegate, MyApp(initPage: initPage)));
+  runApp(LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: initPage))));
 }
 
 Future<void> requestNotificationPermission() async {
@@ -151,10 +158,10 @@ class _MyAppState extends State<MyApp> {
     loadTheme();
     _checkAndListenSms();
     loabThemeApp();
-    GeId();
+    getId();
   }
 
-  GeId() async {
+  getId() async {
     int id = (await AuthService().findSession())['id'];
     setState(() {
       userId = id;
