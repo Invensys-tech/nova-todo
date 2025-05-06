@@ -7,6 +7,7 @@ import 'package:flutter_application_1/drawer/productivity/productivity.home.dart
 import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/goal/goal.dart';
 import 'package:flutter_application_1/pages/habit/habits.dart';
+import 'package:flutter_application_1/pages/notifications/notifications.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
 import 'package:flutter_application_1/pages/quotes/quotes.dart';
 import 'package:flutter_application_1/services/analytics.service.dart';
@@ -61,6 +62,16 @@ class _DrawerpageState extends State<Drawerpage> {
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
       screen: QuotesPage(),
+      withNavBar: false,
+      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      settings: const RouteSettings(),
+    );
+  }
+
+  routeToNotifications() {
+    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+      context,
+      screen: NotificationsPage(),
       withNavBar: false,
       pageTransitionAnimation: PageTransitionAnimation.cupertino,
       settings: const RouteSettings(),
@@ -211,15 +222,22 @@ class _DrawerpageState extends State<Drawerpage> {
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .025),
-          Row(
-            children: [
-              FaIcon(FontAwesomeIcons.bell, color: Color(0xff00D492), size: 19),
-              SizedBox(width: MediaQuery.of(context).size.width * .035),
-              Text(
-                translate("Notification"),
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-              ),
-            ],
+          GestureDetector(
+            onTap: routeToNotifications,
+            child: Row(
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.tags,
+                  color: Color(0xff00D492),
+                  size: 19,
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * .035),
+                Text(
+                  translate("Notifications"),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                ),
+              ],
+            ),
           ),
           SizedBox(height: MediaQuery.of(context).size.height * .025),
           GestureDetector(

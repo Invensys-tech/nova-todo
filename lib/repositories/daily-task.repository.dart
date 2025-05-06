@@ -174,11 +174,10 @@ class DailyTaskRepository {
       getCalendarSystem() == 'Ethiopian' ? inputDate.convertToGregorian() : inputDate,
     );
 
+    // print(date);
     // print(inputDate);
     // print(filterDate);
-
     // print(getCalendarSystem());
-    // print(filterDate);
 
     try {
       final userId = (await authService.findSession())['id'];
