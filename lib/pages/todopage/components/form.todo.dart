@@ -19,7 +19,6 @@ import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/components/inputs/scroll.selector.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
-import 'package:time_interval_picker/time_interval_picker.dart';
 
 class TodoForm extends StatefulWidget {
   final FormInput name;

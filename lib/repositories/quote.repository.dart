@@ -32,7 +32,7 @@ class QuoteRepository {
     try {
       int userId = (await AuthService().findSession())['id'];
 
-      final ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
+      final ConnectivityResult connectivityResult = (await (Connectivity().checkConnectivity())) as ConnectivityResult;
 
       print('user id');
       print(userId);

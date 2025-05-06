@@ -1,10 +1,14 @@
 import 'package:chapasdk/chapasdk.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/drawer/Profile/Profile.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import '../MainScreen Page.dart';
+import '../repositories/user.repository.dart';
 
 class ChapaService {
   generateTxRef(String userId) {
@@ -100,6 +104,21 @@ class ChapaService {
         namedRouteFallBack: '/',
         showPaymentMethodsOnGridView: true,
         availablePaymentMethods: ['mpesa', 'cbebirr', 'telebirr', 'ebirr'],
+        onPaymentFinished: (message, reference, amount) async{
+
+          print("Payment is sufesulllllllllly dont");
+          bool isPaid = await verifyPayment();
+          if (isPaid) {
+            dynamic session = await AuthService().findSession();
+            await UserRepository().addSubscription(null, session['phoneNumber']);
+            print('before routing');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MainScreenPage()),
+            );
+            print('after routing');
+          }
+            },
       );
 
       storeTxRef(txRef);
