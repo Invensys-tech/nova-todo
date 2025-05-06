@@ -206,8 +206,8 @@ class _HabitViewState extends State<HabitView> {
                                           CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Text(
-                                          'Going On For',
+                                        Text(
+                                          '${widget.habit.frequencyPhrase}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 16.0,
@@ -217,7 +217,7 @@ class _HabitViewState extends State<HabitView> {
                                         Row(
                                           children: [
                                             Text(
-                                              '${widget.habit.type} Days',
+                                              '${widget.habit.frequencyPhrase}',
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 32.0,

@@ -180,8 +180,11 @@ class Datamanager {
     try {
       print("My date time in the data manager");
       print(dateTime);
-      final ConnectivityResult connectivityResult =
-          await (Connectivity().checkConnectivity());
+      final List<ConnectivityResult> connectivityResult =
+      await Connectivity().checkConnectivity();
+
+
+      final isConnected = connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi) | connectivityResult.contains(ConnectivityResult.ethernet);
 
       if (dateTime != null) {
         if (analytics == true) {
@@ -190,11 +193,7 @@ class Datamanager {
             endDate: endDate ?? DateTime.now(),
           );
         }
-        if (![
-          ConnectivityResult.wifi,
-          ConnectivityResult.mobile,
-          ConnectivityResult.ethernet,
-        ].contains(connectivityResult)) {
+        if (!isConnected) {
           // print('no connection');
           final oldExpenses = await getOfflineExpense();
           return oldExpenses
