@@ -10,6 +10,7 @@ import 'package:flutter_application_1/services/streak.service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:lottie/lottie.dart';
 
 class ProductivityHome extends StatefulWidget {
@@ -268,13 +269,16 @@ class _HomePageState extends State<ProductivityHome> {
         ),
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
       ),
-      body: ListView.builder(
-        itemCount: productivityList.length,
-        itemBuilder: (context, index) {
-          return productivityCard(
-            productivityList[index],
-          ); // Static streak count for now
+      body: LiquidPullToRefresh(
+        onRefresh: () async {
+          await fetchProductivity();
         },
+        child: ListView.builder(
+          itemCount: productivityList.length,
+          itemBuilder: (context, index) {
+            return productivityCard(productivityList[index]);
+          },
+        ),
       ),
     );
   }
