@@ -479,6 +479,7 @@ class _TodoFormState extends State<TodoForm> {
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2100),
                 initialDate: DateTime.now(),
+                dateFormat: DateFormat('yyyy-MM-dd'),
               ),
             ),
           ),

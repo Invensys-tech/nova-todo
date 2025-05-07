@@ -29,14 +29,8 @@ class _TodoPageState extends State<TodoPage> {
   late Future<Map<String, dynamic>> dailyJournal;
   late Future<double> completionPercentage;
 
-  //bekur's
   DateTime now = getStartOfDay(DateTime.now());
-
-  //Estif's
-
   DateTime date = DateTime.now();
-  late DateTime _selectedDate = DateTime.now();
-  late DateTime _queryDate;
 
   @override
   void initState() {
@@ -56,7 +50,7 @@ class _TodoPageState extends State<TodoPage> {
     setState(() {
       todos = DailyTaskRepository().fetchAll(now);
       dailyJournal = DailyJournalRepository().fetchByDate(
-        getDateOnly(DateTime.now()),
+        getDateOnly(now),
       );
       completionPercentage = DailyTaskRepository().fetchCompletionPercentage(
         now,

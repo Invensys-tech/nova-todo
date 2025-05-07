@@ -8,11 +8,18 @@ class NotificationRepository {
     bool includeRead = false,
   }) async {
     try {
-      final data = await supabaseClient
+      final query = supabaseClient
           .from(Entities.NOTIFICATIONS.dbName)
           .select()
-          .eq('type', type)
-          .eq('is_read', includeRead);
+          .eq('type', type);
+
+      if (!includeRead) {
+        query.eq('is_read', false);
+      }
+
+      final data = await query
+          .order('is_read', ascending: false)
+          .order('created_at', ascending: false);
 
       final notifications =
           data.map((notification) {
@@ -33,7 +40,7 @@ class NotificationRepository {
       final data = await supabaseClient
           .from(Entities.NOTIFICATIONS.dbName)
           // .insert(notification.toJson())
-          .insert(notification.toDBJson())
+          .insert(notification.toCreateDBJson())
           .count(CountOption.exact);
 
       if (data.count == 0) {
@@ -52,6 +59,7 @@ class NotificationRepository {
       final data = await supabaseClient
           .from(Entities.NOTIFICATIONS.dbName)
           .update({'is_read': true})
+          .eq('id', id)
           .count(CountOption.exact);
 
       if (data.count == 0) {

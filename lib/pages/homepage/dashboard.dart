@@ -301,38 +301,50 @@ class _DashboardState extends State<Dashboard> {
 
                   // SizedBox(height: MediaQuery.of(context).size.height*.03),
 
-                  ElevatedButton(
-                    onPressed: () {
-                      print('creating notifications...');
-                      // NotificationService()
-                      //     .sendQuoteNotification();
-                      [
-                        NotificationEntity.fromDBJson({
-                          'content': 'This is my first notification',
-                          'type': 'APP',
-                        }),
-                        NotificationEntity.fromDBJson({
-                          'content': 'This is my first notification',
-                          'type': 'APP',
-                        }),
-                        NotificationEntity.fromDBJson({
-                          'content': 'This is my first notification',
-                          'type': 'APP',
-                        }),
-                        NotificationEntity.fromDBJson({
-                          'content': 'This is my first notification',
-                          'type': 'APP',
-                        }),
-                      ].map((notification) {
-                        print(notification.toJson());
-                        NotificationRepository.createNotification(notification);
-                        return 1;
-                      });
-                      // DailyTaskRepository().fetchAll(DateTime.now());
-                    },
-                    child: Text('Create Notifications'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     print('creating notifications...');
+                  //     // NotificationService()
+                  //     //     .sendQuoteNotification();
+                  //
+                  //
+                  //     final notifications = [
+                  //       NotificationEntity.fromDBJson({
+                  //         'content': 'This is my sixth notification',
+                  //         'type': 'APP',
+                  //       }),
+                  //       NotificationEntity.fromDBJson({
+                  //         'content': 'This is my seventh notification',
+                  //         'type': 'APP',
+                  //       }),
+                  //       NotificationEntity.fromDBJson({
+                  //         'content': 'This is my eighth notification',
+                  //         'type': 'APP',
+                  //       }),
+                  //       NotificationEntity.fromDBJson({
+                  //         'content': 'This is my ninth notification',
+                  //         'type': 'APP',
+                  //         'gender': ''
+                  //       }),
+                  //     ];
+                  //
+                  //     int index = 0;
+                  //     for (final notification in notifications) {
+                  //       print(notification.toJson());
+                  //       NotificationRepository.createNotification(notification);
+                  //       print('created notification ${index++}');
+                  //     }
+                  //     // DailyTaskRepository().fetchAll(DateTime.now());
+                  //   },
+                  //   child: Text('Create Notifications'),
+                  // ),
+                  //
+                  // SizedBox(height: MediaQuery.of(context).size.height*.03),
 
+                  ElevatedButton(onPressed: () {
+                    print(getUser());
+                    print(getUserId());
+                  }, child: Text('get user')),
                   SizedBox(height: MediaQuery.of(context).size.height*.03),
 
                   Container(

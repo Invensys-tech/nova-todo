@@ -55,10 +55,21 @@ class AuthService {
 
       await sendMessage(
         token:
-            'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiOGFmUEx2TFBZOVQ1N3E1OXFpaUFYS2xtdjAxamZ3RGciLCJleHAiOjE5MDQzMDE3NzYsImlhdCI6MTc0NjUzNTM3NiwianRpIjoiMTk5ODlmMGEtNDk2Yi00NTcwLTkyZTUtNjJmMGQ3ZWI2ODk1In0.O3SPD2rzOoQMl-w8das74YxMvGJQOrHc7rf627b6aK8',
-        recipient: phoneNumber,
-        message: 'Hello from Flutter ${otp}!',
+        'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiOGFmUEx2TFBZOVQ1N3E1OXFpaUFYS2xtdjAxamZ3RGciLCJleHAiOjE5MDQzMDE3NzYsImlhdCI6MTc0NjUzNTM3NiwianRpIjoiMTk5ODlmMGEtNDk2Yi00NTcwLTkyZTUtNjJmMGQ3ZWI2ODk1In0.O3SPD2rzOoQMl-w8das74YxMvGJQOrHc7rf627b6aK8',
+
+        recipient: '0${phoneNumber.substring(4)}',
+        message: 'የቪታ ቦርድ ቁጥርዎ ${otp} ነው!',
       );
+
+      // await sendMessage(
+      //   token:
+      //       'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiOGFmUEx2TFBZOVQ1N3E1OXFpaUFYS2xtdjAxamZ3RGciLCJleHAiOjE5MDQzMDE3NzYsImlhdCI6MTc0NjUzNTM3NiwianRpIjoiMTk5ODlmMGEtNDk2Yi00NTcwLTkyZTUtNjJmMGQ3ZWI2ODk1In0.O3SPD2rzOoQMl-w8das74YxMvGJQOrHc7rf627b6aK8',
+      //   recipient: ,
+      //   message: 'Hello from Flutter ${otp}!',
+      // );
+
+      print('text phone number');
+      print('0${phoneNumber.substring(4)}');
 
       if (userData == null) {
         UserRepository().createUser(phoneNumber, otp);
@@ -190,9 +201,12 @@ class AuthService {
 
   Future<void> storeSession(UserEntity user) async {
     HiveService hiveService = HiveService();
+    print('stored user session');
     await hiveService.initHive(boxName: 'session');
     await hiveService.upsertData('user', user.toJson());
+    print('storing session');
     updateUser(user.toJson());
+    print('stored session');
   }
 
   Future<void> deleteSession() async {

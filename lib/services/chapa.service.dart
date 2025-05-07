@@ -1,5 +1,6 @@
 import 'package:chapasdk/chapasdk.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
@@ -136,6 +137,8 @@ class ChapaService {
           'Subscription payment successful!',
           // payload: 'subscription-success||${txRef}',
         );
+
+        await UserRepository().addSubscription(null, '+251911451079');
       } else {
         NotificationService().showNotification(
           -3,
