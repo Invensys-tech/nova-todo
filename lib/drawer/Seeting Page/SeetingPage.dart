@@ -1,6 +1,7 @@
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/auth/login.dart';
+import 'package:flutter_application_1/providers/preferences.provider.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -293,6 +294,7 @@ class _SeetingpageState extends State<Seetingpage> {
                       onChanged: (value) {
                         if (value != null) {
                           _saveDateType(value);
+                          updatePreference({'calendar-system': value});
                           setState(() {
                             eth = value == "Ethiopian";
                           });
