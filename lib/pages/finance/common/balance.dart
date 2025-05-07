@@ -20,7 +20,6 @@ class _BankBalanceState extends State<BankBalance> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * .2675,
       width: MediaQuery.of(context).size.width * .95,
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * .025,
@@ -35,7 +34,6 @@ class _BankBalanceState extends State<BankBalance> {
         children: [
           Container(
             width: MediaQuery.of(context).size.width * .9,
-            height: MediaQuery.of(context).size.height * .12,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Theme.of(context).disabledColor,
@@ -126,7 +124,6 @@ class _BankBalanceState extends State<BankBalance> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * .09,
                   width: MediaQuery.of(context).size.width * .35,
                   padding: EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.width * .02,
@@ -173,7 +170,6 @@ class _BankBalanceState extends State<BankBalance> {
                   ),
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height * .09,
                   width: MediaQuery.of(context).size.width * .35,
                   padding: EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.width * .02,

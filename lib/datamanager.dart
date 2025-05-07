@@ -180,12 +180,9 @@ class Datamanager {
     try {
       print("My date time in the data manager");
       print(dateTime);
+      final List<ConnectivityResult> connectivityResult =
+      await Connectivity().checkConnectivity();
 
-      final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
-
-      print('user id');
-      print(userId);
-      print(connectivityResult);
 
       final isConnected = connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi) | connectivityResult.contains(ConnectivityResult.ethernet);
 
