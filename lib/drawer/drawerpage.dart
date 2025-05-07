@@ -84,7 +84,6 @@ class _DrawerpageState extends State<Drawerpage> {
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * .055,
       ),
-      height: MediaQuery.of(context).size.height * .8,
       width: MediaQuery.of(context).size.width * .65,
       margin: EdgeInsets.symmetric(
         vertical: MediaQuery.of(context).size.width * .175,
@@ -100,9 +99,10 @@ class _DrawerpageState extends State<Drawerpage> {
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * .03),
           Container(
-            width: MediaQuery.of(context).size.width * .5,
+            width: MediaQuery.of(context).size.width * .65,
             height: MediaQuery.of(context).size.height * .05,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
                   "assets/Images/VitaNew.png",

@@ -353,7 +353,6 @@ class _DashboardState extends State<Dashboard> {
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width * .9,
-                          height: MediaQuery.of(context).size.height * .12,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: Theme.of(context).disabledColor,
@@ -405,7 +404,7 @@ class _DashboardState extends State<Dashboard> {
                                               Text(
                                                 "\$ ${snapshot.data!.total}",
                                                 style: TextStyle(
-                                                  fontSize: 27,
+                                                  fontSize: 25,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),

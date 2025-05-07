@@ -54,7 +54,10 @@ void main() async {
   dynamic data = await hiveService.getData('user');
   // print('printing user data');
   // print(data);
-  updateUser(data);
+  if(data !=null)
+    {
+      updateUser(data);
+    }
   // print('----------------- user store in hive -----------------');
   // print(jsonEncode(data));
   await Supabase.initialize(
