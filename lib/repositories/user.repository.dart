@@ -137,7 +137,9 @@ class UserRepository {
       final createdAt = userData['created_at'];
 
       final createdAtDateTime = DateTime.parse(createdAt);
-      final subscriptionEndDateTime = createdAtDateTime.add(Duration(days: 90));
+      final subscriptionEndDateTime = createdAtDateTime.add(Duration(days: 366));
+
+      print(subscriptionEndDateTime);
 
       final response = await supabaseClient
           .from(Entities.USER.dbName)

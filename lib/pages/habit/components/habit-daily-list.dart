@@ -10,8 +10,19 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class HabitsDailyList extends StatefulWidget {
   final String? date;
-  final Future<List<Habit>>? habits;
-  HabitsDailyList({super.key, this.date, this.habits});
+  final Future<List<Habit>> habits;
+  final void Function() refetchHabits;
+  final DateTime selectedDate;
+  final void Function(DateTime) onDateSelected;
+
+  HabitsDailyList({
+    super.key,
+    this.date,
+    required this.habits,
+    required this.refetchHabits,
+    required this.selectedDate,
+    required this.onDateSelected,
+  });
 
   @override
   State<HabitsDailyList> createState() => _HabitsDailyListState();
@@ -95,7 +106,8 @@ class _HabitsDailyListState extends State<HabitsDailyList> {
     return Container(
       child: LiquidPullToRefresh(
         onRefresh: () async {
-          habits = HabitsRepository().fetchHabitsByDate(date);
+          // habits = HabitsRepository().fetchHabitsByDate(date);
+          widget.refetchHabits();
         },
         child: SingleChildScrollView(
           child: Padding(
@@ -106,11 +118,11 @@ class _HabitsDailyListState extends State<HabitsDailyList> {
                   // initialDate: ETDateTime.now(),
                   key: ValueKey(date),
                   // initialDate: DateTime.now(),
-                  initialDate: _selectedDate,
+                  initialDate: widget.selectedDate,
                   // firstDate: noww,
                   firstDate: DateTime(2000, 1, 1),
                   lastDate: DateTime(2030, 12, 31),
-                  onDateSelected: _onDateSelected,
+                  onDateSelected: widget.onDateSelected,
                   // (date) {
                   //   setDate(date);
                   //   // print(ETDateFormat("dd-MMMM-yyyy HH:mm:ss").format(noww));
@@ -127,7 +139,7 @@ class _HabitsDailyListState extends State<HabitsDailyList> {
 
                 SizedBox(height: MediaQuery.of(context).size.height * .02),
                 FutureBuilder(
-                  future: habits,
+                  future: widget.habits,
                   builder: (context, snapshot) {
                     if (habits == null) {
                       return const Center(child: CircularProgressIndicator());
@@ -142,6 +154,7 @@ class _HabitsDailyListState extends State<HabitsDailyList> {
                       return const Text('No habits found for this date.');
                     }
                     return Column(
+                      spacing: MediaQuery.of(context).size.height * .015,
                       children:
                           snapshot.data!
                               .map((habit) => HabitItem(habit: habit))

@@ -16,6 +16,7 @@ class DailyTask {
   String date;
   String description;
   String? reminderTime;
+  String? notifyMeText;
 
   // List<DailySubTask> subTasks;
   List<dynamic> subTasks;
@@ -35,6 +36,7 @@ class DailyTask {
     required this.subTasks,
     required this.description,
     this.completionPercentage,
+    this.notifyMeText,
   }) {
     try {
       duration = DateTime.tryParse(
@@ -67,6 +69,7 @@ class DailyTask {
               ? []
               : json['daily_sub_tasks'],
       completionPercentage: json['completion_percentage'],
+      notifyMeText: json['notify_me'],
       // : (json['daily_sub_tasks'])
       //     .map((e) => DailySubTask.fromJson(e))
       //     .toList(),

@@ -1,5 +1,6 @@
 import 'package:chapasdk/chapasdk.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/notification.service.dart';
@@ -100,6 +101,9 @@ class ChapaService {
         namedRouteFallBack: '/',
         showPaymentMethodsOnGridView: true,
         availablePaymentMethods: ['mpesa', 'cbebirr', 'telebirr', 'ebirr'],
+        onPaymentFinished: (message, reference, amount) {
+          verifyPayment(context);
+        },
       );
 
       storeTxRef(txRef);
@@ -111,7 +115,7 @@ class ChapaService {
     }
   }
 
-  Future<bool> verifyPayment() async {
+  Future<bool> verifyPayment(BuildContext context) async {
     HiveService hiveService = HiveService();
     await hiveService.initHive(boxName: 'payment-transaction');
     String txRef = await hiveService.getData('subscription-txRef');
@@ -136,6 +140,9 @@ class ChapaService {
           'Subscription payment successful!',
           // payload: 'subscription-success||${txRef}',
         );
+
+        await UserRepository().addSubscription(null, '+251911451079');
+        Navigator.pushReplacementNamed(context, '/');
       } else {
         NotificationService().showNotification(
           -3,
@@ -144,7 +151,6 @@ class ChapaService {
           // payload: 'subscription-success||${txRef}',
         );
       }
-
       return true;
       // print(await response.stream.bytesToString());
     } else {
