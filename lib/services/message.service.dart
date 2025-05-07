@@ -52,7 +52,8 @@ Future<void> sendMessage({
   // Build a map of query parameters and remove any that are empty or null.
   final Map<String, String> queryParameters = {
     'from': 'e80ad9d8-adf3-463f-80f4-7c4b39f7f164',
-    // 'sender': senderName,
+
+    'sender': 'Buna Labs',
     'to': recipient,
     'message': message,
     // if (callbackUrl != null && callbackUrl.isNotEmpty) 'callback': callbackUrl,

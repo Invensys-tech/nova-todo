@@ -11,6 +11,7 @@ import 'package:flutter_application_1/pages/goal/common/goalwidget.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 class GoalPage extends StatefulWidget {
   final Datamanager datamanager;
@@ -85,12 +86,23 @@ class _GoalPageState extends State<GoalPage>
         backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () async {
-          final newGoals = await Navigator.push<List<Goal>>(
-            context,
-            MaterialPageRoute(builder: (_) => AddGoal()),
-          );
+          final newGoals =
+              await PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                context,
+                screen: AddGoal(),
+                withNavBar: false,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                settings: const RouteSettings(),
+              );
+          // final newGoals = await Navigator.push<List<Goal>>(
+          //   context,
+          //   MaterialPageRoute(builder: (_) => AddGoal()),
+          // );
           if (newGoals != null) {
-            setState(() => _goalFuture = Future.value(newGoals));
+            setState(() {
+              _goalFuture = Future.value(newGoals);
+            });
+            // setState(() => _goalFuture = Future.value(newGoals));
           }
         },
         child: const Icon(Icons.add, size: 30),

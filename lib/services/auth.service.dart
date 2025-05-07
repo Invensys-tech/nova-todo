@@ -56,8 +56,9 @@ class AuthService {
       await sendMessage(
         token:
             'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiOGFmUEx2TFBZOVQ1N3E1OXFpaUFYS2xtdjAxamZ3RGciLCJleHAiOjE5MDQzMDE3NzYsImlhdCI6MTc0NjUzNTM3NiwianRpIjoiMTk5ODlmMGEtNDk2Yi00NTcwLTkyZTUtNjJmMGQ3ZWI2ODk1In0.O3SPD2rzOoQMl-w8das74YxMvGJQOrHc7rf627b6aK8',
-        recipient: phoneNumber,
-        message: 'Hello from Flutter ${otp}!',
+
+        recipient: '0911451079',
+        message: 'የቪታ ቦርድ ቁጥርዎ ${otp} ነው!',
       );
 
       if (userData == null) {
@@ -237,7 +238,9 @@ class AuthService {
     try {
       final session = await findSession();
       final phoneNumber = session['phoneNumber'];
-      final endDate = await UserRepository().getSubscriptionEndDate(phoneNumber);
+      final endDate = await UserRepository().getSubscriptionEndDate(
+        phoneNumber,
+      );
 
       return endDate.difference(DateTime.now());
     } catch (e) {
