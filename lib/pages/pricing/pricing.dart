@@ -20,7 +20,7 @@ class _PricingScreenState extends State<PricingScreen> {
   }
 
   verifyPayment() async {
-    bool isPaid = await chapaService.verifyPayment();
+    // bool isPaid = await chapaService.verifyPayment();
     if (isPaid) {
       dynamic session = await AuthService().findSession();
       await UserRepository().addSubscription(null, session['phoneNumber']);

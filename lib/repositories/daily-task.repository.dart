@@ -74,7 +74,7 @@ class DailyTaskRepository {
       if (dailyTask.reminderTime != null &&
           dailyTask.reminderTime != dailyTask.taskTime) {
         NotificationService().scheduleNotification(
-          id: data[0]['id'],
+          id: int.parse('${NotificationIdPrefixes.DailyTaskReminder}${data[0]['id']}'),
           title: 'Daily Task Reminder',
           body: data[0]['name'],
           time: DateTime.parse(dailyTask.reminderTime!),
@@ -171,7 +171,9 @@ class DailyTaskRepository {
     final inputDate = ETDateTime(date.year, date.month, date.day);
 
     final filterDate = getStartOfDay(
-      getCalendarSystem() == 'Ethiopian' ? inputDate.convertToGregorian() : inputDate,
+      getCalendarSystem() == 'Ethiopian'
+          ? inputDate.convertToGregorian()
+          : inputDate,
     );
 
     // print(date);
@@ -194,12 +196,23 @@ class DailyTaskRepository {
           )
           .eq('user_id', userId);
 
+      print(data);
+
       // for (final a in data) {
       //   print(a['date']);
       // }
 
       return data.map((dailyTask) {
-        return DailyTask.fromDBJson(dailyTask);
+        Duration difference = DateTime.parse(
+          dailyTask['task_time'],
+        ).difference(DateTime.parse(dailyTask['reminder_time']));
+        return DailyTask.fromDBJson({
+          ...dailyTask,
+          'notify_me':
+              difference.inMinutes.toString() != '0'
+                  ? difference.inMinutes.toString()
+                  : 'none',
+        });
       }).toList();
     } catch (e) {
       print(e);
@@ -333,6 +346,16 @@ class DailyTaskRepository {
 
       if (response.count == 0) {
         throw Exception('Daily task not updated!');
+      }
+
+      if (dailyTask.reminderTime != null &&
+          dailyTask.reminderTime != dailyTask.taskTime) {
+        NotificationService().scheduleNotification(
+          id: int.parse('${NotificationIdPrefixes.DailyTaskReminder}${dailyTask.id!}'),
+          title: 'Daily Task Reminder',
+          body: dailyTask.name,
+          time: DateTime.parse(dailyTask.reminderTime!),
+        );
       }
 
       return true;

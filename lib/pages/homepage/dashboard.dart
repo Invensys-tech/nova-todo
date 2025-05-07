@@ -20,7 +20,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:time_interval_picker/time_interval_picker.dart';
 
 import '../../drawer/drawerpage.dart';
 
@@ -341,14 +340,14 @@ class _DashboardState extends State<Dashboard> {
                   //
                   // SizedBox(height: MediaQuery.of(context).size.height*.03),
 
-                  ElevatedButton(onPressed: () {
-                    print(getUser());
-                    print(getUserId());
-                  }, child: Text('get user')),
-                  SizedBox(height: MediaQuery.of(context).size.height*.03),
+                  // ElevatedButton(onPressed: () {
+                  //   print(getUser());
+                  //   print(getUserId());
+                  // }, child: Text('get user')),
+                  // SizedBox(height: MediaQuery.of(context).size.height*.03),
 
                   Container(
-                    height: MediaQuery.of(context).size.height * .2,
+                    // height: MediaQuery.of(context).size.height * .18,
                     width: MediaQuery.of(context).size.width * .95,
                     padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width * .025,
@@ -555,9 +554,9 @@ class _DashboardState extends State<Dashboard> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .015,
-                        ),
+                        // SizedBox(
+                        //   height: MediaQuery.of(context).size.height * .015,
+                        // ),
                       ],
                     ),
                   ),

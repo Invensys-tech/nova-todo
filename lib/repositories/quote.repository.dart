@@ -32,18 +32,24 @@ class QuoteRepository {
     try {
       int userId = (await AuthService().findSession())['id'];
 
-      final ConnectivityResult connectivityResult =
+      final List<ConnectivityResult> connectivityResult =
           await (Connectivity().checkConnectivity());
 
       print('user id');
       print(userId);
       print(connectivityResult);
 
-      if (![
-        ConnectivityResult.wifi,
-        ConnectivityResult.mobile,
-        ConnectivityResult.ethernet,
-      ].contains(connectivityResult)) {
+      final isConnected =
+          connectivityResult.contains(ConnectivityResult.mobile) ||
+          connectivityResult.contains(ConnectivityResult.wifi) |
+              connectivityResult.contains(ConnectivityResult.ethernet);
+
+      // if (![
+      //   ConnectivityResult.wifi,
+      //   ConnectivityResult.mobile,
+      //   ConnectivityResult.ethernet
+      // ].contains(connectivityResult))
+      if (!isConnected) {
         // print('no connection');
         final oldQuotes = await QuoteService.getOfflineQuotes();
         return oldQuotes ?? [];

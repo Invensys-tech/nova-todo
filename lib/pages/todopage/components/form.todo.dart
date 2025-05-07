@@ -1,3 +1,4 @@
+import 'package:chapasdk/domain/constants/extentions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/inputs/dropdown.selector.dart';
 import 'package:flutter_application_1/components/inputs/fixed-length-input.dart';
@@ -16,10 +17,8 @@ import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/mutitext.dart';
 import 'package:flutter_application_1/ui/inputs/textfield.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
-import 'package:flutter_application_1/components/inputs/scroll.selector.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:intl/intl.dart';
-import 'package:time_interval_picker/time_interval_picker.dart';
 
 class TodoForm extends StatefulWidget {
   final FormInput name;
@@ -479,7 +478,11 @@ class _TodoFormState extends State<TodoForm> {
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2100),
                 initialDate: DateTime.now(),
-                dateFormat: DateFormat('yyyy-MM-dd'),
+                // initialDate: DateTime.now().format('yyyy-MM-dd'),
+                dateFormat:
+                    widget.isEditing
+                        ? DateFormat('yyyy-MM-dd')
+                        : null,
               ),
             ),
           ),

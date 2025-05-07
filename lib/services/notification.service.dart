@@ -216,3 +216,12 @@ class NotificationService {
     }
   }
 }
+
+enum NotificationIdPrefixes {
+  DailyTaskReminder(123),
+  DailyQuote(124);
+
+  final int prefix;
+
+  const NotificationIdPrefixes(this.prefix);
+}
