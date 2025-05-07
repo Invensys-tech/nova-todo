@@ -155,7 +155,9 @@ class _AccordionAxampleState extends State<AddGoal> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text("Goal added successfully!")));
-      Navigator.pop(context);
+
+      final updatedGoals = await Datamanager().getGoals();
+      Navigator.pop(context, updatedGoals);
     } catch (e) {
       print('llllllllllllllllllllllllllllll');
       print(e);

@@ -331,7 +331,7 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
                                             hinttext: item['title'].hint,
                                             controller:
                                                 item['title'].controller,
-                                            whatIsInput: '0',
+                                            whatIsInput: '1',
                                           ),
                                         )
                                         : Padding(
