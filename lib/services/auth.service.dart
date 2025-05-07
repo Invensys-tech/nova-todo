@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter_application_1/entities/user.entity.dart';
+import 'package:flutter_application_1/providers/user.provider.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/services/message.service.dart';
@@ -192,6 +193,7 @@ class AuthService {
     HiveService hiveService = HiveService();
     await hiveService.initHive(boxName: 'session');
     await hiveService.upsertData('user', user.toJson());
+    updateUser(user.toJson());
   }
 
   Future<void> deleteSession() async {
