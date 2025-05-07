@@ -391,6 +391,9 @@ class _PaidByAndSpecificFromInputContentState
 
   Future<void> _pickContact() async {
     final Contact? contact = await _contactPicker.selectContact();
+print("::::::::;;;;;;;;;;;;;");
+    print(contact?.fullName);
+    print(contact?.phoneNumbers.runtimeType);
     if (contact != null) {
       final name = contact.fullName ?? '';
       final phones = contact.phoneNumbers ?? [];

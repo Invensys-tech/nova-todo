@@ -36,18 +36,10 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark.withOpacity(.6),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.height * .41,
-              width: MediaQuery.of(context).size.width * 1,
-            ),
-          ),
           Container(
-            height: MediaQuery.of(context).size.height * .59,
+            alignment: Alignment.bottomCenter,
             color: Theme.of(context).scaffoldBackgroundColor,
             padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.width * .035,
