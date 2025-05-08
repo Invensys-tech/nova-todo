@@ -35,6 +35,7 @@ class TodoForm extends StatefulWidget {
   final FormInputPair endTimeInput;
   final void Function(dynamic) addSubTask;
   final bool isEditing;
+  final Map<String, bool> errors;
 
   const TodoForm({
     super.key,
@@ -50,6 +51,7 @@ class TodoForm extends StatefulWidget {
     required this.startTimeInput,
     required this.endTimeInput,
     required this.addSubTask,
+    required this.errors,
     this.isEditing = false,
   });
 
@@ -192,6 +194,8 @@ class _TodoFormState extends State<TodoForm> {
     }
   }
 
+  final errorTextStyle = TextStyle(color: Colors.red.shade400, fontSize: 10);
+
   //--------------
 
   @override
@@ -332,112 +336,140 @@ class _TodoFormState extends State<TodoForm> {
               //             ],
               //           )
               Container(
-                height: MediaQuery.of(context).size.height * .05,
+                // height: MediaQuery.of(context).size.height * .05,
                 child: Column(
                   children: [
                     Row(
                       children: [
                         // Start Time TextField
-                        Container(
-                          width: MediaQuery.of(context).size.width * .425,
-                          height: MediaQuery.of(context).size.height * .045,
-                          child: GestureDetector(
-                            onTap: () {
-                              _selectStartTime(context); // Select start time
-                            },
-                            child: AbsorbPointer(
-                              child: TextFormField(
-                                controller: startTimeController,
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                    vertical: 7,
-                                    horizontal: 10,
-                                  ),
-                                  hintText: translate('Start Time'),
-                                  filled: true,
-                                  fillColor:
-                                      Theme.of(context).scaffoldBackgroundColor,
-                                  suffixIcon: Icon(
-                                    Icons.access_time,
-                                    color: Colors.grey.withOpacity(.7),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                      width: 2,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.green.withOpacity(.3),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.grey.withOpacity(.3),
-                                      width: 1.0,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * .425,
+                              height: MediaQuery.of(context).size.height * .045,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _selectStartTime(
+                                    context,
+                                  ); // Select start time
+                                },
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                    controller: startTimeController,
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                        vertical: 7,
+                                        horizontal: 10,
+                                      ),
+                                      hintText: translate('Start Time'),
+                                      filled: true,
+                                      fillColor:
+                                          Theme.of(
+                                            context,
+                                          ).scaffoldBackgroundColor,
+                                      suffixIcon: Icon(
+                                        Icons.access_time,
+                                        color: Colors.grey.withOpacity(.7),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: const BorderSide(
+                                          width: 2,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.green.withOpacity(.3),
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey.withOpacity(.3),
+                                          width: 1.0,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                            widget.errors['startTime']!
+                                ? Text(
+                                  'Start time is required',
+                                  style: errorTextStyle,
+                                )
+                                : Container(),
+                          ],
                         ),
                         SizedBox(width: 16),
 
                         // End Time TextField
-                        Container(
-                          width: MediaQuery.of(context).size.width * .425,
-                          height: MediaQuery.of(context).size.height * .045,
-                          child: GestureDetector(
-                            onTap: () {
-                              // If end time is not selected yet, use the start time as the initial time
-                              _selectEndTime(context);
-                            },
-                            child: AbsorbPointer(
-                              child: TextFormField(
-                                controller: endTimeController,
-                                readOnly: true,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                    vertical: 7,
-                                    horizontal: 10,
-                                  ),
-                                  hintText: translate('End Time'),
-                                  filled: true,
-                                  fillColor:
-                                      Theme.of(context).scaffoldBackgroundColor,
-                                  // Color for end time
-                                  suffixIcon: Icon(
-                                    Icons.access_time,
-                                    color: Colors.grey.withOpacity(.5),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                      width: 2,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.green.withOpacity(.3),
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.grey.withOpacity(.3),
-                                      width: 1.0,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * .425,
+                              height: MediaQuery.of(context).size.height * .045,
+                              child: GestureDetector(
+                                onTap: () {
+                                  // If end time is not selected yet, use the start time as the initial time
+                                  _selectEndTime(context);
+                                },
+                                child: AbsorbPointer(
+                                  child: TextFormField(
+                                    controller: endTimeController,
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                        vertical: 7,
+                                        horizontal: 10,
+                                      ),
+                                      hintText: translate('End Time'),
+                                      filled: true,
+                                      fillColor:
+                                          Theme.of(
+                                            context,
+                                          ).scaffoldBackgroundColor,
+                                      // Color for end time
+                                      suffixIcon: Icon(
+                                        Icons.access_time,
+                                        color: Colors.grey.withOpacity(.5),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: const BorderSide(
+                                          width: 2,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.green.withOpacity(.3),
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey.withOpacity(.3),
+                                          width: 1.0,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                            widget.errors['endTime']!
+                                ? Text(
+                                  'End time is required',
+                                  style: errorTextStyle,
+                                )
+                                : Container(),
+                          ],
                         ),
                       ],
                     ),
@@ -447,14 +479,22 @@ class _TodoFormState extends State<TodoForm> {
             ],
           ),
           SizedBox(height: MediaQuery.of(context).size.width * 0.04),
-          MyTextInput(
-            label: translate('Task Name'),
-            textFields: TextFields(
-              hinttext: widget.name.hint,
-              whatIsInput: widget.name.type,
-              controller: widget.name.controller,
-              // icon: Icons.fingerprint,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MyTextInput(
+                label: translate('Task Name'),
+                textFields: TextFields(
+                  hinttext: widget.name.hint,
+                  whatIsInput: widget.name.type,
+                  controller: widget.name.controller,
+                  // icon: Icons.fingerprint,
+                ),
+              ),
+              widget.errors['name']!
+                  ? Text('Name is required', style: errorTextStyle)
+                  : Container(),
+            ],
           ),
           SizedBox(height: MediaQuery.of(context).size.width * 0.015),
           MyRadioInput(
@@ -479,10 +519,7 @@ class _TodoFormState extends State<TodoForm> {
                 lastDate: DateTime(2100),
                 initialDate: DateTime.now(),
                 // initialDate: DateTime.now().format('yyyy-MM-dd'),
-                dateFormat:
-                    widget.isEditing
-                        ? DateFormat('yyyy-MM-dd')
-                        : null,
+                dateFormat: widget.isEditing ? DateFormat('yyyy-MM-dd') : null,
               ),
             ),
           ),

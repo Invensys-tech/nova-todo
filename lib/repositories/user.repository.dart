@@ -71,6 +71,8 @@ class UserRepository {
 
   Future<Map<String, dynamic>?> fetchUser(String phoneNumber) async {
     try {
+      print('fetch user');
+
       final data =
           await supabaseClient
               .from(Entities.USER.dbName)
@@ -80,7 +82,7 @@ class UserRepository {
               .maybeSingle();
 
       // print('fetch user');
-      // print(jsonEncode(data));
+      print(data);
 
       return data;
     } catch (e) {
@@ -139,6 +141,8 @@ class UserRepository {
       final createdAtDateTime = DateTime.parse(createdAt);
       final subscriptionEndDateTime = createdAtDateTime.add(Duration(days: 366));
 
+      print("adding subscription");
+      print(phoneNumber);
       print(subscriptionEndDateTime);
 
       final response = await supabaseClient

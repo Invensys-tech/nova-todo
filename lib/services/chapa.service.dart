@@ -1,5 +1,7 @@
 import 'package:chapasdk/chapasdk.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/MainScreen%20Page.dart';
+import 'package:flutter_application_1/providers/user.provider.dart';
 import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
@@ -18,6 +20,8 @@ class ChapaService {
     HiveService hiveService = HiveService();
     await hiveService.initHive(boxName: 'payment-transaction');
     await hiveService.upsertData('subscription-txRef', txRef);
+
+    updateTxRef(txRef);
   }
 
   // makePayment() async {
@@ -98,7 +102,7 @@ class ChapaService {
         title: 'Subscription Payment',
         desc: 'Payment for vita-board',
         nativeCheckout: true,
-        namedRouteFallBack: '/',
+        namedRouteFallBack: '',
         showPaymentMethodsOnGridView: true,
         availablePaymentMethods: ['mpesa', 'cbebirr', 'telebirr', 'ebirr'],
         onPaymentFinished: (message, reference, amount) {
@@ -141,8 +145,10 @@ class ChapaService {
           // payload: 'subscription-success||${txRef}',
         );
 
-        await UserRepository().addSubscription(null, '+251911451079');
-        Navigator.pushReplacementNamed(context, '/');
+        final user = getUser();
+
+        await UserRepository().addSubscription(null, user['phoneNumber']);
+        //Navigator.pushReplacementNamed(context, );
       } else {
         NotificationService().showNotification(
           -3,

@@ -227,6 +227,9 @@ class HabitsRepository {
     try {
       final habit = existingHabit.copy();
 
+      // print(habit);
+      // print('the habit');
+
       if (habit.id == null) {
         throw Exception('Habit with no id');
       }
@@ -243,6 +246,7 @@ class HabitsRepository {
       // }
 
       if (habit.type == 'Daily') {
+        // print('daily habit');
         // if (habit.streakDates.contains(getDateOnly(dateTime))) {
         //   print('Already extended streak for this date');
         //   return false;
@@ -304,15 +308,19 @@ class HabitsRepository {
           .eq('id', habit.id!)
           .count(CountOption.exact);
 
-      final habitHistory =
-          await supabaseClient
-              .from(Entities.HABITHISTORY.dbName)
-              .select('id, dates')
-              .eq('habit_id', habit.id!)
-              .order('created_at')
-              .maybeSingle();
+      // print('after updating');
 
-      if (habitHistory == null) {
+      final habitHistory = await supabaseClient
+          .from(Entities.HABITHISTORY.dbName)
+          .select('id, dates')
+          .eq('habit_id', habit.id!)
+          .order('created_at')
+          .limit(1);
+      // .maybeSingle();
+
+      // print('getting history');
+
+      if (habitHistory.isEmpty) {
         await supabaseClient.from(Entities.HABITHISTORY.dbName).insert({
           'habit_id': habit.id,
           'started_at': getDateOnly(dateTime),
@@ -323,9 +331,9 @@ class HabitsRepository {
         await supabaseClient
             .from(Entities.HABITHISTORY.dbName)
             .update({
-              'dates': [...habitHistory['dates'], getDateOnly(dateTime)],
+              'dates': [...habitHistory[0]['dates'], getDateOnly(dateTime)],
             })
-            .eq('id', habitHistory['id']);
+            .eq('id', habitHistory[0]['id']);
 
         final newHabitHistory =
             await supabaseClient
@@ -333,10 +341,14 @@ class HabitsRepository {
                 .select('id, dates')
                 .eq('habit_id', habit.id!)
                 .order('created_at')
-                .maybeSingle();
+                .limit(1);
+
+        // print(newHabitHistory);
       }
 
-      print(existingHabit.streakDates);
+      // print('after history');
+
+      // print(existingHabit.streakDates);
 
       if (response.count == 0) {
         throw Exception('Error extending habit streak');
@@ -491,9 +503,11 @@ class HabitsRepository {
       }
 
       if (oldHabit['streak_dates'].isEmpty) {
-        print("empty habit");
+        // print("empty habit");
         return false;
       }
+
+      // print('updating current habit');
 
       final response = await supabaseClient
           .from(Entities.HABITS.dbName)
@@ -505,10 +519,15 @@ class HabitsRepository {
         throw Exception('Habit not discontinued!');
       }
 
+      // print('updating old histories');
+
       final existingHabitHistoryUpdate = await supabaseClient
           .from(Entities.HABITHISTORY.dbName)
           .update({'is_active': false})
-          .eq('habit_id', id);
+          .eq('habit_id', id)
+          .count(CountOption.exact);
+
+      // print('creating new history');
 
       final habitHistoryResponse = await supabaseClient
           .from(Entities.HABITHISTORY.dbName)
@@ -522,6 +541,9 @@ class HabitsRepository {
             'is_active': true,
           })
           .count(CountOption.exact);
+
+      // print('finished ending streak');
+      // print(habitHistoryResponse.count);
 
       return true;
     } catch (e) {

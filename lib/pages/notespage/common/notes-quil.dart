@@ -207,145 +207,191 @@ class _NoteQuilState extends State<NoteQuil> {
         ),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: MediaQuery.of(context).size.height * .005),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Title input
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Title",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * .005),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Title input
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Title",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .0025,
-                        ),
-                        TextFields(
-                          hinttext: title.hint,
-                          whatIsInput: title.type,
-                          controller: title.controller,
-                          func: _validateTitle,
-                        ),
-                      ],
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * .0025,
+                          ),
+                          TextFields(
+                            hinttext: title.hint,
+                            whatIsInput: title.type,
+                            controller: title.controller,
+                            func: _validateTitle,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-
-                  const SizedBox(width: 10),
-
-                  // **Dropdown in place of color selector**
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Color of Note:",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
+            
+                    const SizedBox(width: 10),
+            
+                    // **Dropdown in place of color selector**
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Color of Note:",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * .0025,
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * .045,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 4,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * .0025,
                           ),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade800,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.white24),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: _selectedName,
-                              iconEnabledColor: Colors.white,
-                              dropdownColor: Colors.grey.shade900,
-                              items:
-                                  _colorOptions.entries.map((entry) {
-                                    return DropdownMenuItem<String>(
-                                      value: entry.key,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 20,
-                                            height: 20,
-                                            margin: const EdgeInsets.only(
-                                              right: 8,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: _hexToColor(entry.value),
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: Colors.white24,
+                          Container(
+                            height: MediaQuery.of(context).size.height * .045,
+                            padding:  EdgeInsets.symmetric(
+                              horizontal: MediaQuery.of(context).size.width*.03,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade800,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.white24),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                value: _selectedName,
+                                iconEnabledColor: Colors.white,
+                                dropdownColor: Colors.grey.shade900,
+                                items:
+                                    _colorOptions.entries.map((entry) {
+                                      return DropdownMenuItem<String>(
+                                        value: entry.key,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 20,
+                                              height: 20,
+                                              margin: const EdgeInsets.only(
+                                                right: 8,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: _hexToColor(entry.value),
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: Colors.white24,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Text(
-                                            entry.key,
-                                            style: const TextStyle(
-                                              color: Colors.white,
+                                            Text(
+                                              entry.key,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                              onChanged: (newName) {
-                                if (newName == null) return;
-                                setState(() {
-                                  _selectedName = newName;
-                                  _selectedHex = _colorOptions[newName]!;
-                                });
-                              },
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                onChanged: (newName) {
+                                  if (newName == null) return;
+                                  setState(() {
+                                    _selectedName = newName;
+                                    _selectedHex = _colorOptions[newName]!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+            
+                SizedBox(height: MediaQuery.of(context).size.height * .025),
+            
+                // Quill toolbar + editor
+                Localizations.override(
+                  context: context,
+                  locale: Locale('en', 'US'),
+                  delegates: [
+                    FlutterQuillLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.757,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 1,
+                          child: QuillSimpleToolbar(
+                            controller: _controller,
+            
+                            config: QuillSimpleToolbarConfig(
+                              toolbarIconAlignment: WrapAlignment.start,
+                              toolbarRunSpacing: 0,
+                              showUndo:
+                                  false, // Set this to false to remove the undo button
+                              showRedo: false,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[100],
+                                border: Border.all(color: Colors.blueAccent),
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 4,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+            
+                              showStrikeThrough: false,
+                              showInlineCode: false,
+                              showClearFormat: false,
+                              showCodeBlock: false,
+                              showSearchButton: false,
+                              showLink: false,
+                              showCenterAlignment: false,
+                              showQuote: false,
+                              showRightAlignment: false,
+                              showListCheck: false,
+                              showListBullets: false,
+                              showListNumbers: false,
+                              showSmallButton: false,
+                              showLeftAlignment: false,
+                              showJustifyAlignment: false,
+                              showAlignmentButtons: false,
+                              showLineHeightButton: false,
+                              showIndent: false,
+                              headerStyleType: HeaderStyleType.original,
+                              axis: Axis.horizontal,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: MediaQuery.of(context).size.height * .025),
-
-              // Quill toolbar + editor
-              Localizations.override(
-                context: context,
-                locale: Locale('en', 'US'),
-                delegates: [
-                  FlutterQuillLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.757,
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 1,
-                        child: QuillSimpleToolbar(
+                        Expanded(
+                          child: QuillEditor.basic(
+                            controller: _controller,
+                            config: QuillEditorConfig(scrollable: true),
+                          ),
+                        ),
+                        QuillSimpleToolbar(
                           controller: _controller,
-
                           config: QuillSimpleToolbarConfig(
-                            toolbarIconAlignment: WrapAlignment.start,
-                            toolbarRunSpacing: 0,
-                            showUndo:
-                                false, // Set this to false to remove the undo button
-                            showRedo: false,
                             decoration: BoxDecoration(
                               color: Colors.grey[100],
                               border: Border.all(color: Colors.blueAccent),
@@ -358,80 +404,36 @@ class _NoteQuilState extends State<NoteQuil> {
                                 ),
                               ],
                             ),
-
+            
+                            showUndo:
+                                false, // Set this to false to remove the undo button
+                            showRedo: false,
                             showStrikeThrough: false,
                             showInlineCode: false,
                             showClearFormat: false,
                             showCodeBlock: false,
                             showSearchButton: false,
                             showLink: false,
-                            showCenterAlignment: false,
-                            showQuote: false,
-                            showRightAlignment: false,
-                            showListCheck: false,
-                            showListBullets: false,
-                            showListNumbers: false,
-                            showSmallButton: false,
-                            showLeftAlignment: false,
-                            showJustifyAlignment: false,
-                            showAlignmentButtons: false,
-                            showLineHeightButton: false,
-                            showIndent: false,
+                            showBackgroundColorButton: false,
+                            showColorButton: false,
+                            showFontSize: false,
+                            showFontFamily: false,
+                            showBoldButton: false,
+                            showItalicButton: false,
+                            showUnderLineButton: false,
+                            showSubscript: false,
+                            showSuperscript: false,
+                            showHeaderStyle: false,
                             headerStyleType: HeaderStyleType.original,
                             axis: Axis.horizontal,
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: QuillEditor.basic(
-                          controller: _controller,
-                          config: QuillEditorConfig(scrollable: true),
-                        ),
-                      ),
-                      QuillSimpleToolbar(
-                        controller: _controller,
-                        config: QuillSimpleToolbarConfig(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[100],
-                            border: Border.all(color: Colors.blueAccent),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-
-                          showUndo:
-                              false, // Set this to false to remove the undo button
-                          showRedo: false,
-                          showStrikeThrough: false,
-                          showInlineCode: false,
-                          showClearFormat: false,
-                          showCodeBlock: false,
-                          showSearchButton: false,
-                          showLink: false,
-                          showBackgroundColorButton: false,
-                          showColorButton: false,
-                          showFontSize: false,
-                          showFontFamily: false,
-                          showBoldButton: false,
-                          showItalicButton: false,
-                          showUnderLineButton: false,
-                          showSubscript: false,
-                          showSuperscript: false,
-                          showHeaderStyle: false,
-                          headerStyleType: HeaderStyleType.original,
-                          axis: Axis.horizontal,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

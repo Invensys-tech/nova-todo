@@ -67,7 +67,19 @@ class _GeneralprogressState extends State<Generalprogress> {
           vertical: MediaQuery.of(context).size.height * .015,
         ),
         decoration: BoxDecoration(
-          color: const Color(0xff393838),
+          gradient:
+          Theme.of(context).brightness == Brightness.dark
+              ? LinearGradient(
+            colors: [Color(0xff18181B), Color(0xff27272A)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+              : LinearGradient(
+            colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          border: Border.all(width: 1, color: Colors.grey.withOpacity(.3)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
