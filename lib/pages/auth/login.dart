@@ -55,21 +55,21 @@ class _LogInPageState extends State<LogInPage> {
     AuthService()
         .signin(_phoneNumberController.text)
         .then((value) {
-          navigateToSignUp(value, phoneNumber);
-          setState(() {
-            _signinError = false;
-          });
-          changeLoadingState(false);
-          // Todo: store the user data
-          // navigateToHome();
-        })
+      navigateToSignUp(value, phoneNumber);
+      setState(() {
+        _signinError = false;
+      });
+      changeLoadingState(false);
+      // Todo: store the user data
+      // navigateToHome();
+    })
         .catchError((error) {
-          print('Invalid Credentials');
-          setState(() {
-            _signinError = true;
-          });
-          changeLoadingState(false);
-        });
+      print('Invalid Credentials');
+      setState(() {
+        _signinError = true;
+      });
+      changeLoadingState(false);
+    });
   }
 
   PhoneNumber number = PhoneNumber(isoCode: 'ET');
@@ -202,22 +202,22 @@ class _LogInPageState extends State<LogInPage> {
                           backgroundColor: Color(0xFF009966),
                         ),
                         child:
-                            isLoading
-                                ? SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.grey.shade300,
-                                  ),
-                                )
-                                : Text(
-                                  'Continue',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                        isLoading
+                            ? SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            color: Colors.grey.shade300,
+                          ),
+                        )
+                            : Text(
+                          'Continue',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
                     ),
                   ],

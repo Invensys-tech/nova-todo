@@ -614,7 +614,7 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*.0015),
                   itemCount: filtered.length,
                   itemBuilder: (ctx, i) => _buildHabitTile(filtered[i]),
                 );
@@ -712,11 +712,12 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
   Widget _smallListBuilder(HabitList habit) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * .025,
+        horizontal: MediaQuery.of(context).size.width * .0,
         vertical: MediaQuery.of(context).size.height * .005,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -726,21 +727,29 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
                 color: Colors.white.withOpacity(.85),
               ),
               SizedBox(width: MediaQuery.of(context).size.width * .01),
-              Text(
-                habit.title,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+              Container(
+                width: MediaQuery.of(context).size.width*.4,
+                child: Text(
+                  habit.title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ],
           ),
-          Text(
-            habit.time,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.green,
+          SizedBox(width: MediaQuery.of(context).size.width*.025,),
+          Container(
+
+            width: MediaQuery.of(context).size.width*.315,
+            child: Text(
+              habit.time,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.green,
+              ),
             ),
           ),
         ],

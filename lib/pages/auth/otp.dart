@@ -54,10 +54,6 @@ class _OTPPageState extends State<OTPPage> {
   }
 
   navigateToHome() async {
-    // HiveService hiveService = HiveService();
-    // await hiveService.initHive(boxName: 'session');
-    // dynamic data = await hiveService.getData('user');
-
     bool isSubscriptionActive = DateTime.now().isBefore(
       (await UserRepository().getSubscriptionEndDate(widget.phoneNumber)),
     );

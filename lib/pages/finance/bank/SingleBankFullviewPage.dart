@@ -857,7 +857,6 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                     SizedBox(height: MediaQuery.of(context).size.height * .03),
 
                     Container(
-                      height: MediaQuery.of(context).size.height * .2675,
                       width: MediaQuery.of(context).size.width * .95,
                       padding: EdgeInsets.symmetric(
                         horizontal: MediaQuery.of(context).size.width * .025,
@@ -872,7 +871,6 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                         children: [
                           Container(
                             width: MediaQuery.of(context).size.width * .9,
-                            height: MediaQuery.of(context).size.height * .12,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: Theme.of(context).disabledColor,
@@ -980,8 +978,6 @@ class _SinglebankfullviewpageState extends State<Singlebankfullviewpage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * .09,
                                   width:
                                       MediaQuery.of(context).size.width * .82,
                                   padding: EdgeInsets.symmetric(
