@@ -57,7 +57,7 @@ class AuthService {
         token:
             'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiOGFmUEx2TFBZOVQ1N3E1OXFpaUFYS2xtdjAxamZ3RGciLCJleHAiOjE5MDQzMDE3NzYsImlhdCI6MTc0NjUzNTM3NiwianRpIjoiMTk5ODlmMGEtNDk2Yi00NTcwLTkyZTUtNjJmMGQ3ZWI2ODk1In0.O3SPD2rzOoQMl-w8das74YxMvGJQOrHc7rf627b6aK8',
 
-        recipient: "0$phoneNumber",
+        recipient: phoneNumber,
         message: 'የቪታ ቦርድ ቁጥርዎ ${otp} ነው!',
       );
 
@@ -68,9 +68,6 @@ class AuthService {
       //   message: 'Hello from Flutter ${otp}!',
       // );
 
-      print('text phone number');
-      print('0${phoneNumber.substring(4)}');
-
       if (userData == null) {
         UserRepository().createUser(phoneNumber, otp);
         return loginRoutes.SIGNUP;
@@ -78,6 +75,9 @@ class AuthService {
 
       await UserRepository().setOTP(phoneNumber, otp);
 
+      if (userData['name'] == null) {
+        return loginRoutes.SIGNUP;
+      }
       return loginRoutes.LOGIN;
     } catch (e) {
       print(e);

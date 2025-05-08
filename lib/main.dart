@@ -36,6 +36,7 @@ import 'drawer/Seeting Page/SeetingPage.dart';
 
 bool isDark = true;
 int userId = 0;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   requestNotificationPermission();
@@ -93,7 +94,9 @@ void main() async {
   }
 
   // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
-  runApp(LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: initPage))));
+  runApp(
+    LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: initPage))),
+  );
 }
 
 Future<void> requestNotificationPermission() async {
@@ -113,6 +116,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatefulWidget {
   final InitPage initPage;
+
   const MyApp({super.key, this.initPage = InitPage.AUTH});
 
   @override
@@ -213,6 +217,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   final Telephony telephony = Telephony.instance;
+
   // StreamSubscription<SmsMessage>? _onSmsReceived;
   String _permission = 'Not Requested';
 
@@ -288,13 +293,13 @@ class _MyAppState extends State<MyApp> {
             ],
             //locale: Locale('en', 'US'),
             routes: {
-              '/':
-                  (context) =>
-                      widget.initPage == InitPage.HOME
-                          ? const MainScreenPage()
-                          : widget.initPage == InitPage.PAYMENT
-                          ? PricingScreen()
-                          : const AuthGate(),
+              '/': (context) {
+                return widget.initPage == InitPage.HOME
+                    ? const MainScreenPage()
+                    : widget.initPage == InitPage.PAYMENT
+                    ? PricingScreen()
+                    : const AuthGate();
+              },
               // (context) => const MainScreenPage(),
               '/login': (context) => const AuthGate(),
               '/expense-form':

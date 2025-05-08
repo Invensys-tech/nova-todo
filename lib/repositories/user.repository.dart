@@ -139,6 +139,8 @@ class UserRepository {
       final createdAtDateTime = DateTime.parse(createdAt);
       final subscriptionEndDateTime = createdAtDateTime.add(Duration(days: 366));
 
+      print("adding subscription");
+      print(phoneNumber);
       print(subscriptionEndDateTime);
 
       final response = await supabaseClient

@@ -32,6 +32,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
     label: 'Task Name',
     hint: 'Enter Task Name',
     controller: TextEditingController(),
+    errorMessage: 'Name is required',
     type: '1',
   );
   FormInput time = FormInput(
@@ -100,6 +101,20 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
   bool isSaving = false;
 
+  final Map<String, bool> errors = {
+    'name': false,
+    'startTime': false,
+    'endTime': false,
+  };
+
+  setErrors({bool name = false, bool startTime = false, bool endTime = false}) {
+    setState(() {
+      errors['name'] = name;
+      errors['startTime'] = startTime;
+      errors['endTime'] = endTime;
+    });
+  }
+
   clearForm() {
     name.controller.clear();
     time.controller.clear();
@@ -122,25 +137,30 @@ class _AddTodoPageState extends State<AddTodoPage> {
   }
 
   bool parseStartEndTime() {
-    if (int.parse(startTimeInput.key.controller.text) > 23 ||
-        int.parse(endTimeInput.key.controller.text) > 23 ||
-        int.parse(startTimeInput.value.controller.text) > 60 ||
-        int.parse(endTimeInput.value.controller.text) > 60) {
-      if (int.parse(startTimeInput.key.controller.text) > 23) {
-        setValidationError(startTimeInput.key);
+    try {
+      if (int.parse(startTimeInput.key.controller.text) > 23 ||
+          int.parse(endTimeInput.key.controller.text) > 23 ||
+          int.parse(startTimeInput.value.controller.text) > 60 ||
+          int.parse(endTimeInput.value.controller.text) > 60) {
+        if (int.parse(startTimeInput.key.controller.text) > 23) {
+          setValidationError(startTimeInput.key);
+        }
+        if (int.parse(startTimeInput.value.controller.text) > 60) {
+          setValidationError(startTimeInput.value);
+        }
+        if (int.parse(endTimeInput.key.controller.text) > 23) {
+          setValidationError(endTimeInput.key);
+        }
+        if (int.parse(endTimeInput.value.controller.text) > 60) {
+          setValidationError(endTimeInput.value);
+        }
+        return false;
       }
-      if (int.parse(startTimeInput.value.controller.text) > 60) {
-        setValidationError(startTimeInput.value);
-      }
-      if (int.parse(endTimeInput.key.controller.text) > 23) {
-        setValidationError(endTimeInput.key);
-      }
-      if (int.parse(endTimeInput.value.controller.text) > 60) {
-        setValidationError(endTimeInput.value);
-      }
-      return false;
+    } catch (e) {
+      setState(() {
+        setErrors(startTime: true, endTime: true);
+      });
     }
-
     taskTimeController.text =
         '${startTimeInput.key.controller.text}:${startTimeInput.value.controller.text}';
     taskEndTimeController.text =
@@ -151,17 +171,25 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
   saveTodo() async {
     setState(() {
-      print('inside setState 1');
+      setErrors();
 
       try {
         isSaving = true;
 
         if (name.controller.text == '') {
+          setErrors(name: true);
+          isSaving = false;
           return;
         }
 
         bool parsedCorrectly = parseStartEndTime();
         if (!parsedCorrectly) {
+          setErrors(startTime: true, endTime: true);
+          isSaving = false;
+          return;
+        }
+
+        if (name.controller.text == '') {
           isSaving = false;
           return;
         }
@@ -314,6 +342,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 endTimeInput: endTimeInput,
                 addSubTask: addSubTask,
                 isEditing: widget.isEditing,
+                errors: errors,
               ),
               Padding(
                 padding: EdgeInsets.all(
