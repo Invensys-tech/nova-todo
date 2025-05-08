@@ -58,7 +58,6 @@ class _BankWidgetState extends State<BankWidget> {
           vertical: MediaQuery.of(context).size.height * 0.005,
         ),
         width: MediaQuery.of(context).size.width * 1,
-        height: MediaQuery.of(context).size.height * 0.073,
         padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * 0.02,
           vertical: MediaQuery.of(context).size.height * 0.003,

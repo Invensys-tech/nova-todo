@@ -59,11 +59,14 @@ void main() async {
   }
   // print('----------------- user store in hive -----------------');
   // print(jsonEncode(data));
-  await Supabase.initialize(
+  var x = await Supabase.initialize(
     url: "https://iazgcqadmrjhszpeqxpj.supabase.co",
     anonKey:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhemdjcWFkbXJqaHN6cGVxeHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzODMxNDksImV4cCI6MjA1Nzk1OTE0OX0.v70ChJdX7BiAjvW3DmeZ1ekZ9gKGQ5zNxgbaKfsCC9c",
   );
+
+  print("We Habe ${x.client}");
+  print("We Habe ${x}");
 
   InitPage initPage = InitPage.AUTH;
 
@@ -202,6 +205,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> loabThemeApp() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
+      print("j");
+      print(prefs);
       isDark = prefs.getBool('ThemeOfApp')!;
     });
   }

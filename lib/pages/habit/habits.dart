@@ -1,4 +1,5 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:ethiopian_datetime/ethiopian_datetime.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/entities/habit.entity.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_application_1/pages/habit/components/habits-list.dart';
 import 'package:flutter_application_1/pages/habit/form.habit.dart';
 import 'package:flutter_application_1/providers/preferences.provider.dart';
 import 'package:flutter_application_1/providers/user.provider.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/repositories/habits.repository.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -25,6 +27,18 @@ class HabitsPage extends StatefulWidget {
 class _HabitsPageState extends State<HabitsPage> {
   DateTime now = DateTime.now();
 
+  final HiveService _hiveService = HiveService();
+  String _dateType = 'Gregorian';
+
+  //bekur's
+  DateTime date = DateTime.now();
+
+  //Estif's
+
+  late DateTime _selectedDate = DateTime.now();
+  late DateTime _queryDate;
+  late Future<List<Habit>> dailyHabits = Future.value([]);
+
   late Future<List<Habit>> habits;
 
   @override
@@ -33,11 +47,53 @@ class _HabitsPageState extends State<HabitsPage> {
     // print('Calendar System');
     // print(getCalendarSystem());
     habits = HabitsRepository().fetchHabits();
+    _initAll();
+  }
+
+  Future<void> _initAll() async {
+    await _hiveService.initHive(boxName: 'dateTime');
+    final stored = await _hiveService.getData('dateTime');
+    print('Stored date type: $stored');
+    _dateType = stored == 'Ethiopian' ? 'Ethiopian' : 'Gregorian';
+    if (_dateType == 'Ethiopian') {
+      final et = date.convertToEthiopian();
+      print("{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}");
+      print(et.day);
+      _selectedDate = DateTime(et.year, et.month, et.day);
+
+      final g = ETDateTime(et.year, et.month, et.day).convertToGregorian();
+      _queryDate = DateTime(g.year, g.month, g.day);
+    } else {
+      _selectedDate = date;
+      _queryDate = DateTime(date.year, date.month, date.day);
+    }
+    setState(() {
+      dailyHabits = HabitsRepository().fetchHabitsByDate(date);
+    });
+  }
+
+  void _onDateSelected(DateTime tappedDate) {
+    // tappedDate is what the calendar shows
+    DateTime filterDate = tappedDate;
+    if (_dateType == 'Ethiopian') {
+      // convert tapped (Ethiopian) date back to Gregorian
+      final g =
+          ETDateTime(
+            tappedDate.year,
+            tappedDate.month,
+            tappedDate.day,
+          ).convertToGregorian();
+      filterDate = DateTime(g.year, g.month, g.day);
+    }
+
+    setState(() {
+      _selectedDate = tappedDate;
+      _queryDate = filterDate;
+    });
+    refetchData();
   }
 
   void newHabit() async {
-
-
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
       screen: HabitForm(date: getDateOnly(now), refetchData: refetchData),
@@ -49,15 +105,21 @@ class _HabitsPageState extends State<HabitsPage> {
 
   void refetchData() {
     habits = HabitsRepository().fetchHabits();
+    dailyHabits = HabitsRepository().fetchHabitsByDate(date);
   }
 
+  setDate(DateTime newDate) {
+    setState(() {
+      date = newDate;
+      refetchData();
+    });
+  }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       key: _scaffoldKey,
       drawer: Drawer(child: Drawerpage(), backgroundColor: Colors.transparent),
       floatingActionButton: FloatingActionButton(
@@ -71,61 +133,33 @@ class _HabitsPageState extends State<HabitsPage> {
         title: Row(
           children: [
             Text(translate("Habits")),
-            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            SizedBox(width: MediaQuery.of(context).size.width * .015),
             Container(
-              height: MediaQuery.of(context).size.height*.03,
-                width: MediaQuery.of(context).size.width*.06,
-                child: Image.asset('assets/Gif/Habit.gif'))
-
+              height: MediaQuery.of(context).size.height * .03,
+              width: MediaQuery.of(context).size.width * .06,
+              child: Image.asset('assets/Gif/Habit.gif'),
+            ),
           ],
         ),
-         centerTitle: false,
+        centerTitle: false,
         leading: Row(
           spacing: MediaQuery.of(context).size.width * 0.04,
           children: [
             IconButton(
-              onPressed: () {
-
-              },
-              icon:Icon(Icons.menu,size: 22, color: Color(0xff009966),)
+              onPressed: () {},
+              icon: Icon(Icons.menu, size: 22, color: Color(0xff009966)),
             ),
           ],
         ),
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
       ),
       body: Padding(
-        padding: EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.02),
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.height * 0.02,
+        ),
 
         child: Column(
           children: [
-            // DefaultTabController(
-            //   length: 2,
-            //   child: Scaffold(
-            //     appBar: AppBar(
-            //       automaticallyImplyLeading: false,
-            //       bottom: TabBar(
-            //         tabs: [Tab(text: "Daily"), Tab(text: "General")],
-            //         labelColor: Colors.green,
-            //         unselectedLabelColor: Colors.white,
-            //         indicator: BoxDecoration(
-            //           // color: Colors.green,
-            //           // borderRadius: BorderRadius.circular(10),
-            //           border: Border(
-            //             bottom: BorderSide(color: Colors.green, width: 2),
-            //           ),
-            //         ),
-            //         indicatorSize: TabBarIndicatorSize.tab,
-            //       ),
-            //     ),
-            //     body: TabBarView(
-            //       children: [
-            //         Container(child: HabitsDailyList()),
-            //         Container(child: HabitsList(date: null, habits: habits)),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-
             Expanded(
               child: ContainedTabBarView(
                 tabs: [
@@ -143,27 +177,37 @@ class _HabitsPageState extends State<HabitsPage> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.all(Radius.circular(8.0)),
-              
                     ),
                   ),
                   position: TabBarPosition.top,
                   alignment: TabBarAlignment.start,
                   indicatorColor: Color(0xff009966),
-                  labelStyle: TextStyle(fontSize: 16, color:Color(0xff009966)),
+                  labelStyle: TextStyle(fontSize: 16, color: Color(0xff009966)),
                   indicatorSize: TabBarIndicatorSize.tab,
                   unselectedLabelColor: Theme.of(context).primaryColorLight,
                   unselectedLabelStyle: TextStyle(fontSize: 13),
                 ),
                 views: [
-                  Container(child: HabitsDailyList()),
-                  Container(child: HabitsList(date: null, habits: habits)),
+                  Container(
+                    child: HabitsDailyList(
+                      habits: dailyHabits,
+                      refetchHabits: refetchData,
+                      onDateSelected: _onDateSelected,
+                      selectedDate: _selectedDate,
+                    ),
+                  ),
+                  Container(
+                    child: HabitsList(
+                      date: null,
+                      habits: habits,
+                      refetchHabits: refetchData,
+                    ),
+                  ),
                 ],
               ),
             ),
           ],
         ),
-
-
       ),
     );
   }

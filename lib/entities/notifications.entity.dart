@@ -26,7 +26,7 @@ class NotificationEntity {
       NotificationEntity(
         id: notificationData['id'],
         content: notificationData['content'],
-        isRead: notificationData['is_read'],
+        isRead: notificationData['is_read'] ?? false,
         type: notificationData['type'],
       );
 
@@ -40,6 +40,12 @@ class NotificationEntity {
 
   Map<String, dynamic> toDBJson() => {
     'id': id,
+    'content': content,
+    'is_read': isRead,
+    'type': type,
+  };
+
+  Map<String, dynamic> toCreateDBJson() => {
     'content': content,
     'is_read': isRead,
     'type': type,

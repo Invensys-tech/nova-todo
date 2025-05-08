@@ -1,5 +1,6 @@
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/entities/expense-entity.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -97,6 +98,20 @@ class ExpenseRepository {
       };
     } catch (e) {
       throw Exception('Failed to total expense amounts: $e');
+    }
+  }
+
+  Future<List<String>> getExpenseCategory() async {
+    try {
+      final data = await Supabase.instance.client
+          .from('expense')
+          .select('category')
+          .eq("userid", userId);
+      print("I senf");
+      print(data.map((e) => e['category'] as String).toSet().toList());
+      return data.map((e) => e['category'] as String).toSet().toList();
+    } catch (e) {
+      throw Exception('Failed to fetch expense: $e');
     }
   }
 

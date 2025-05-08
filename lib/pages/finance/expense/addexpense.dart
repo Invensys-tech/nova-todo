@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/repositories/expense.repository.dart';
+import 'package:flutter_application_1/repositories/partner.repository.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
@@ -38,7 +40,7 @@ class _AddExpenseState extends State<AddExpense> {
 
   String? _paidBySelection;
   int? _parentLoanId;
-  List<Expense> _expenseList = [];
+  List<String> _expenseList = [];
 
   final List<String> banks = [
     'Abay Bank',
@@ -93,27 +95,29 @@ class _AddExpenseState extends State<AddExpense> {
   @override
   void initState() {
     super.initState();
+    _loadExpenseList();
     _paidByController.text = "Bank";
     _updateFuture();
 
     _dateController.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
     _expenseTypeController.text = "Must";
+  }
 
-    Datamanager()
-        .getExpense()
-        .then((expense) {
-          setState(() {
-            _expenseList = expense;
-          });
-        })
-        .catchError((e) {
-          print("Error loading expenses: $e");
-        });
+  void _loadExpenseList() async {
+    _expenseList = await ExpenseRepository().getExpenseCategory();
   }
 
   void _updateFuture() {
     if (_paidByController.text == "Partner") {
-      _dataFuture = widget.datamanager.getLoan();
+      // PartnerRepository()
+      //     .fetchPartners()
+      //     .then(
+      //       (p) => setState(() {
+      //         _dataFuture = p as Future<List>?;
+      //       }),
+      //     )
+      //     .catchError((e) => print("Error loading partners: $e"));
+      _dataFuture = PartnerRepository().fetchPartners();
     } else if (_paidByController.text == "Bank") {
       _dataFuture = widget.datamanager.getBanks();
     } else {
@@ -245,17 +249,16 @@ class _AddExpenseState extends State<AddExpense> {
                                 return null;
                               },
 
-                              suggestions:
-                                  _expenseList
-                                          .map((exp) => exp.category)
-                                          .toSet()
-                                          .toList()
-                                          .isNotEmpty
-                                      ? _expenseList
-                                          .map((exp) => exp.category)
-                                          .toSet()
-                                          .toList()
-                                      : [],
+                              suggestions: _expenseList,
+                              //     .map((exp) => exp)
+                              //     .toSet()
+                              //     .toList()
+                              //     .isNotEmpty
+                              // ? _expenseList
+                              //     .map((exp) => exp)
+                              //     .toSet()
+                              //     .toList()
+                              // : [],
                               controller: _expenseCategoryController,
                               hintText: translate("Search for a Category..."),
                               icon: Icons.search,
@@ -450,6 +453,34 @@ class _AddExpenseState extends State<AddExpense> {
                                             .from('bank')
                                             .update({'balance': newBalance})
                                             .eq('id', paymentValue);
+
+                                        final expenseResponse = await Supabase
+                                            .instance
+                                            .client
+                                            .from('expense')
+                                            .insert({
+                                              'amount': expenseAmt,
+                                              'expenseName':
+                                                  _expenseNameController.text,
+                                              'category':
+                                                  _expenseCategoryController
+                                                      .text,
+                                              'type':
+                                                  _expenseTypeController.text,
+                                              'bankAccount':
+                                                  paidBy == 'Bank'
+                                                      ? int.tryParse(
+                                                        paymentValue,
+                                                      )
+                                                      : null,
+                                              'paidBy': paidBy,
+                                              'description':
+                                                  _descriptionController.text,
+                                              'date': formatDate(
+                                                _dateController.text,
+                                              ),
+                                              'userid': userId,
+                                            });
                                       }
 
                                       print("hhhhhhhhhhhhhh");
@@ -457,29 +488,6 @@ class _AddExpenseState extends State<AddExpense> {
                                       print(_expenseCategoryController.text);
 
                                       // 2) Insert the expense
-                                      final expenseResponse = await Supabase
-                                          .instance
-                                          .client
-                                          .from('expense')
-                                          .insert({
-                                            'amount': expenseAmt,
-                                            'expenseName':
-                                                _expenseNameController.text,
-                                            'category':
-                                                _expenseCategoryController.text,
-                                            'type': _expenseTypeController.text,
-                                            'bankAccount':
-                                                paidBy == 'Bank'
-                                                    ? int.tryParse(paymentValue)
-                                                    : null,
-                                            'paidBy': paidBy,
-                                            'description':
-                                                _descriptionController.text,
-                                            'date': formatDate(
-                                              _dateController.text,
-                                            ),
-                                            'userid': userId,
-                                          });
 
                                       ScaffoldMessenger.of(
                                         context,
@@ -491,21 +499,95 @@ class _AddExpenseState extends State<AddExpense> {
                                         ),
                                       );
 
-                                      // 3) If paying by Partner, create a loan record afterward
                                       if (paidBy == 'Partner') {
-                                        final loanerIdOrName = paymentValue;
-                                        // fetch partner’s phone (if needed)
-                                        final partners = await Supabase
-                                            .instance
-                                            .client
-                                            .from('loan')
-                                            .select('phoneNumber')
-                                            .eq('loanerName', loanerIdOrName);
-                                        final phone =
-                                            partners.isNotEmpty
-                                                ? partners[0]['phoneNumber']
+                                        String loanerIdOrName = paymentValue;
+                                        int? partnerId;
+
+                                        String? rawPhone;
+                                        String? rawName;
+                                        Map<String, dynamic>? existingPartner;
+
+                                        if (loanerIdOrName.endsWith(
+                                          '-addpartner',
+                                        )) {
+                                          final raw = loanerIdOrName.replaceAll(
+                                            '-addpartner',
+                                            '',
+                                          );
+
+                                          final parts = raw.split('–');
+                                          rawName = parts.first.trim();
+
+                                          rawPhone =
+                                              parts.length > 1
+                                                  ? parts[1]
+                                                      .replaceAll(
+                                                        RegExp(r'[\[\]]'),
+                                                        '',
+                                                      )
+                                                      .trim()
+                                                  : null;
+
+                                          if (rawPhone != null &&
+                                              rawPhone.isNotEmpty) {
+                                            existingPartner =
+                                                await Supabase.instance.client
+                                                    .from('partners')
+                                                    .select(
+                                                      'id, name, phone_number',
+                                                    )
+                                                    .eq(
+                                                      'phone_number',
+                                                      rawPhone,
+                                                    )
+                                                    .maybeSingle();
+                                          }
+
+                                          if (existingPartner != null) {
+                                            partnerId =
+                                                existingPartner['id'] as int;
+                                          } else {
+                                            // 3) Insert the new partner
+                                            final insertRes =
+                                                await Supabase.instance.client
+                                                    .from('partners')
+                                                    .insert({
+                                                      'name': rawName,
+                                                      'phone_number': rawPhone,
+                                                      'user_id': userId,
+                                                    })
+                                                    .select('id')
+                                                    .maybeSingle();
+                                            partnerId =
+                                                insertRes?['id'] as int?;
+                                          }
+                                        } else {
+                                          // 4) It was an existing partner, so paymentValue is the id
+                                          partnerId = int.tryParse(
+                                            paymentValue,
+                                          );
+                                        }
+
+                                        if (partnerId == null) {
+                                          throw Exception(
+                                            'Unable to determine partner_id for $paymentValue',
+                                          );
+                                        }
+
+                                        // Prepare for the loan insert
+                                        final loanerName =
+                                            (loanerIdOrName.endsWith(
+                                                      '-addpartner',
+                                                    ) &&
+                                                    rawName != null)
+                                                ? rawName
+                                                : loanerIdOrName;
+                                        final phoneNumForLoan =
+                                            rawPhone != null
+                                                ? int.tryParse(rawPhone)
                                                 : null;
 
+                                        // 5) Insert the loan row
                                         await Supabase.instance.client
                                             .from('loan')
                                             .insert({
@@ -515,11 +597,83 @@ class _AddExpenseState extends State<AddExpense> {
                                                 _dateController.text,
                                               ),
                                               'bank': 'Expense',
-                                              'loanerName': loanerIdOrName,
-                                              'phoneNumber': phone,
+                                              'loanerName': loanerName,
+                                              // if phoneNumForLoan is null, you may want to handle that case differently
+                                              'phoneNumber':
+                                                  phoneNumForLoan ?? 0,
                                               'userId': userId,
+                                              'partner_id': partnerId,
+                                            });
+
+                                        final expenseResponse = await Supabase
+                                            .instance
+                                            .client
+                                            .from('expense')
+                                            .insert({
+                                              'amount': expenseAmt,
+                                              'expenseName':
+                                                  _expenseNameController.text,
+                                              'category':
+                                                  _expenseCategoryController
+                                                      .text,
+                                              'type':
+                                                  _expenseTypeController.text,
+                                              'bankAccount':
+                                                  paidBy == 'Bank'
+                                                      ? int.tryParse(
+                                                        paymentValue,
+                                                      )
+                                                      : null,
+                                              'paidBy': paidBy,
+                                              'description':
+                                                  _descriptionController.text,
+                                              'date': formatDate(
+                                                _dateController.text,
+                                              ),
+                                              'userid': userId,
+                                              'partner_id': partnerId,
                                             });
                                       }
+
+                                      // if (paidBy == 'Partner') {
+                                      //   final loanerIdOrName = paymentValue;
+
+                                      //   final realPartners = await Supabase
+                                      //       .instance
+                                      //       .client
+                                      //       .from('partners')
+                                      //       .select()
+                                      //       .eq("id", paymentValue);
+
+                                      //   final partners = await Supabase
+                                      //       .instance
+                                      //       .client
+                                      //       .from('loan')
+                                      //       .select('phoneNumber')
+                                      //       .eq('loanerName', loanerIdOrName);
+                                      //   final phone =
+                                      //       partners.isNotEmpty
+                                      //           ? partners[0]['phoneNumber']
+                                      //           : null;
+
+                                      //   await Supabase.instance.client
+                                      //       .from('loan')
+                                      //       .insert({
+                                      //         'amount': expenseAmt,
+                                      //         'type': 'Payable',
+                                      //         'date': formatDate(
+                                      //           _dateController.text,
+                                      //         ),
+                                      //         'bank': 'Expense',
+                                      //         'loanerName':
+                                      //             realPartners[0]['name'],
+                                      //         'phoneNumber': int.tryParse(
+                                      //           realPartners[0]['phone_number'],
+                                      //         ),
+                                      //         'userId': userId,
+                                      //         'partner_id': paymentValue,
+                                      //       });
+                                      // }
 
                                       Navigator.pop(context);
                                     } catch (e) {

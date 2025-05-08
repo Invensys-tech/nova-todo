@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class UserRepository {
   Future<Map<String, dynamic>> createUser(
@@ -69,8 +70,21 @@ class UserRepository {
     }
   }
 
-  Future<Map<String, dynamic>?> fetchUser(String phoneNumber) async {
+  Future<void> _testConnection() async {
     try {
+      final response = await http.get(Uri.parse('https://google.com'));
+
+      print(response.body);
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>?> fetchUser(String phoneNumber) async {
+    print("Getting In");
+    try {
+      print("lllllllllllllllllllllllllllllllllllll");
+      await _testConnection();
       final data =
           await supabaseClient
               .from(Entities.USER.dbName)
@@ -79,11 +93,14 @@ class UserRepository {
               // .limit(1)
               .maybeSingle();
 
+      print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
       // print('fetch user');
       // print(jsonEncode(data));
 
       return data;
     } catch (e) {
+      print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
       print(e);
       rethrow;
     }
@@ -137,7 +154,11 @@ class UserRepository {
       final createdAt = userData['created_at'];
 
       final createdAtDateTime = DateTime.parse(createdAt);
-      final subscriptionEndDateTime = createdAtDateTime.add(Duration(days: 90));
+      final subscriptionEndDateTime = createdAtDateTime.add(
+        Duration(days: 366),
+      );
+
+      print(subscriptionEndDateTime);
 
       final response = await supabaseClient
           .from(Entities.USER.dbName)

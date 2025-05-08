@@ -8,32 +8,39 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 class HabitsList extends StatefulWidget {
   final String? date;
   final Future<List<Habit>> habits;
+  final void Function() refetchHabits;
 
-  const HabitsList({super.key, required this.date, required this.habits});
+  const HabitsList({
+    super.key,
+    required this.date,
+    required this.habits,
+    required this.refetchHabits,
+  });
 
   @override
   State<HabitsList> createState() => _HabitsListState();
 }
 
 class _HabitsListState extends State<HabitsList> {
-  late Future<List<Habit>> habits;
+  // late Future<List<Habit>> habits;
 
   @override
   void initState() {
     super.initState();
-    habits = HabitsRepository().fetchHabits();
+    // habits = HabitsRepository().fetchHabits();
   }
 
   @override
   Widget build(BuildContext context) {
     return LiquidPullToRefresh(
       onRefresh: () async {
-        habits = HabitsRepository().fetchHabits();
+        // habits = HabitsRepository().fetchHabits();
+        widget.refetchHabits();
       },
       child: Container(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
         child: FutureBuilder(
-          future: habits,
+          future: widget.habits,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               // return SingleChildScrollView(
