@@ -295,7 +295,6 @@ class _AutoCompleteTextState extends State<AutoCompleteText> {
                       )
                       // 2) The real advanced search
                       : AdvancedSearch(
-
                         searchItems: widget.suggestions,
                         maxElementsToDisplay: 10,
                         borderColor: Colors.transparent,
@@ -331,6 +330,8 @@ class _AutoCompleteTextState extends State<AutoCompleteText> {
                           field.didChange(val);
                         },
                         onEditingProgress: (val, _) {
+                          print("We are here ${val} ");
+
                           widget.controller.text = val;
                           field.didChange(val);
                         },

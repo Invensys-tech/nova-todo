@@ -7,6 +7,7 @@ import 'package:flutter_application_1/entities/income-entity.dart';
 import 'package:flutter_application_1/pages/finance/expense/addexpense.dart';
 import 'package:flutter_application_1/pages/goal/common/types.dart';
 import 'package:flutter_application_1/repositories/income.repository.dart';
+import 'package:flutter_application_1/repositories/partner.repository.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
@@ -88,30 +89,125 @@ class _IncomeFormState extends State<IncomeForm> {
     final bankId = specific_from.controller.text;
     final incomeAmt = double.tryParse(amount.controller.text) ?? 0.0;
 
-    final bankRes =
-        await Supabase.instance.client
-            .from('bank')
-            .select('balance')
-            .eq('id', bankId)
-            .single();
-    final currentBalance = (bankRes['balance'] as num).toDouble();
-    final newBalance = currentBalance + incomeAmt;
+    print(bankId);
+    print(incomeAmt);
 
-    final upd = await Supabase.instance.client
-        .from('bank')
-        .update({'balance': newBalance})
-        .eq('id', bankId);
+    final paidBy = paid_from.controller.text;
 
-    Income income = await IncomeRepository().createIncome({
-      "name": name.controller.text,
-      'category': category.controller.text,
-      'date': (date.controller.text),
-      'paid_from': paid_from.controller.text,
-      "specific_from": specific_from.controller.text,
-      "amount": amount.controller.text,
-      'user_id': userId,
-      'description': description.controller.text,
-    });
+    if (paidBy == "Bank") {
+      final bankRes =
+          await Supabase.instance.client
+              .from('bank')
+              .select('balance')
+              .eq('id', bankId)
+              .single();
+      final currentBalance = (bankRes['balance'] as num).toDouble();
+      final newBalance = currentBalance + incomeAmt;
+
+      final upd = await Supabase.instance.client
+          .from('bank')
+          .update({'balance': newBalance})
+          .eq('id', bankId);
+
+      Income income = await IncomeRepository().createIncome({
+        "name": name.controller.text,
+        'category': category.controller.text,
+        'date': (date.controller.text),
+        'paid_from': paid_from.controller.text,
+        "specific_from": specific_from.controller.text,
+        "amount": amount.controller.text,
+        'user_id': userId,
+        'description': description.controller.text,
+      });
+    }
+
+    final paymentValue = specific_from.controller.text;
+
+    if (paidBy == 'Partner') {
+      String loanerIdOrName = paymentValue;
+      int? partnerId;
+
+      String? rawPhone;
+      String? rawName;
+      Map<String, dynamic>? existingPartner;
+
+      if (loanerIdOrName.endsWith('-addpartner')) {
+        final raw = loanerIdOrName.replaceAll('-addpartner', '');
+
+        final parts = raw.split('–');
+        rawName = parts.first.trim();
+
+        rawPhone =
+            parts.length > 1
+                ? parts[1].replaceAll(RegExp(r'[\[\]]'), '').trim()
+                : null;
+
+        if (rawPhone != null && rawPhone.isNotEmpty) {
+          existingPartner =
+              await Supabase.instance.client
+                  .from('partners')
+                  .select('id, name, phone_number')
+                  .eq('phone_number', rawPhone)
+                  .maybeSingle();
+        }
+
+        if (existingPartner != null) {
+          partnerId = existingPartner['id'] as int;
+        } else {
+          // 3) Insert the new partner
+          final insertRes =
+              await Supabase.instance.client
+                  .from('partners')
+                  .insert({
+                    'name': rawName,
+                    'phone_number': rawPhone,
+                    'user_id': userId,
+                  })
+                  .select('id')
+                  .maybeSingle();
+          partnerId = insertRes?['id'] as int?;
+        }
+      } else {
+        // 4) It was an existing partner, so paymentValue is the id
+        partnerId = int.tryParse(paymentValue);
+      }
+
+      if (partnerId == null) {
+        throw Exception('Unable to determine partner_id for $paymentValue');
+      }
+
+      // Prepare for the loan insert
+      final loanerName =
+          (loanerIdOrName.endsWith('-addpartner') && rawName != null)
+              ? rawName
+              : loanerIdOrName;
+      final phoneNumForLoan = rawPhone != null ? int.tryParse(rawPhone) : null;
+
+      // 5) Insert the loan row
+      await Supabase.instance.client.from('loan').insert({
+        'amount': amount.controller.text,
+        'type': 'Receivable',
+        'date': formatDate(date.controller.text),
+        'bank': 'Income',
+        'loanerName': loanerName,
+        // if phoneNumForLoan is null, you may want to handle that case differently
+        'phoneNumber': phoneNumForLoan ?? 0,
+        'userId': userId,
+        'partner_id': partnerId,
+      });
+
+      Income income = await IncomeRepository().createIncome({
+        "name": name.controller.text,
+        'category': category.controller.text,
+        'date': (date.controller.text),
+        'paid_from': paid_from.controller.text,
+        "specific_from": specific_from.controller.text,
+        "amount": amount.controller.text,
+        'user_id': userId,
+        'description': description.controller.text,
+        'partner_id': partnerId,
+      });
+    }
 
     print("Income Saved");
   }
@@ -195,7 +291,9 @@ class _IncomeFormState extends State<IncomeForm> {
 
   void _updateFuture() {
     if (paid_from.controller.text == "Partner") {
-      _dataFuture = widget.datamanager.getLoan();
+      _dataFuture = PartnerRepository().fetchPartners();
+
+      // _dataFuture = widget.datamanager.getLoan();
     } else if (paid_from.controller.text == "Bank") {
       _dataFuture = widget.datamanager.getBanks();
     } else {

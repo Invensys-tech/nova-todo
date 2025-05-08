@@ -19,7 +19,8 @@ enum Entities {
   HABIT_LIST('productivity_habit_lists'),
   INCOME('incomes'),
   NOTIFICATIONS('notifications'),
-  USER('user');
+  USER('user'),
+  PARTNER('partners');
 
   final String dbName;
 

@@ -138,6 +138,7 @@ class ChapaService {
       final responseStream = await response.stream.bytesToString();
       final responseBody = jsonDecode(responseStream);
       if (responseBody['status'] == 'success') {
+        await UserRepository().addSubscription(null, '+251911451079');
         NotificationService().showNotification(
           -3,
           'Subscription Payment',
