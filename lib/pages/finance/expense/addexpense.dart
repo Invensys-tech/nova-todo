@@ -452,6 +452,10 @@ class _AddExpenseState extends State<AddExpense> {
                                             .eq('id', paymentValue);
                                       }
 
+                                      print("hhhhhhhhhhhhhh");
+
+                                      print(_expenseCategoryController.text);
+
                                       // 2) Insert the expense
                                       final expenseResponse = await Supabase
                                           .instance

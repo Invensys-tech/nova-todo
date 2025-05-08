@@ -54,7 +54,9 @@ void main() async {
   dynamic data = await hiveService.getData('user');
   // print('printing user data');
   // print(data);
-  updateUser(data);
+  if (data != null) {
+    updateUser(data);
+  }
   // print('----------------- user store in hive -----------------');
   // print(jsonEncode(data));
   await Supabase.initialize(
@@ -91,7 +93,16 @@ void main() async {
   }
 
   // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
-  runApp(LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: initPage))));
+  // runApp(
+  //   LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: initPage))),
+  // );
+
+  runApp(
+    LocalizedApp(
+      delegate,
+      ProviderScope(child: MyApp(initPage: InitPage.HOME)),
+    ),
+  );
 }
 
 Future<void> requestNotificationPermission() async {
