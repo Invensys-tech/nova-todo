@@ -242,8 +242,6 @@ class _HabitViewState extends State<HabitView> {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(10.0),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
@@ -278,8 +276,6 @@ class _HabitViewState extends State<HabitView> {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(10.0),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(

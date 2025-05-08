@@ -58,6 +58,8 @@ class _OTPPageState extends State<OTPPage> {
     await hiveService.initHive(boxName: 'session');
     dynamic data = await hiveService.getData('user');
 
+    print(" this is th eprinting in the efhkbverfv$data");
+
     bool isSubscriptionActive = DateTime.now().isBefore(
       (await UserRepository().getSubscriptionEndDate(data['phoneNumber'])),
     );

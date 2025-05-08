@@ -33,7 +33,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'drawer/Seeting Page/SeetingPage.dart';
-
+InitPage initPage = InitPage.AUTH;
 bool isDark = true;
 int userId = 0;
 void main() async {
@@ -65,7 +65,7 @@ void main() async {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhemdjcWFkbXJqaHN6cGVxeHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzODMxNDksImV4cCI6MjA1Nzk1OTE0OX0.v70ChJdX7BiAjvW3DmeZ1ekZ9gKGQ5zNxgbaKfsCC9c",
   );
 
-  InitPage initPage = InitPage.AUTH;
+
 
   bool isLoggedIn = data != null && data['phoneNumber'] != null;
 

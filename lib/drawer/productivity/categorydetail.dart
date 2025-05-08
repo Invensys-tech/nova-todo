@@ -23,7 +23,6 @@ class _CategoryDetailState extends State<CategoryDetail> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: const Color(0xff2F2F2F),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -105,12 +104,20 @@ class _CategoryDetailState extends State<CategoryDetail> {
           horizontal: MediaQuery.of(context).size.width * .045,
         ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: LinearGradient(
-            colors: [Color(0xFF18181B), Color(0xFF27272A)],
+          borderRadius: BorderRadius.circular(10),
+          gradient:
+          Theme.of(context).brightness == Brightness.dark
+              ? LinearGradient(
+            colors: [Color(0xff18181B), Color(0xff27272A)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          )
+              : LinearGradient(
+            colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
+          border: Border.all(width: 1, color: Colors.grey.withOpacity(.3)),
         ),
         // decoration: BoxDecoration(
         //   borderRadius: BorderRadius.circular(10),
@@ -135,11 +142,12 @@ class _CategoryDetailState extends State<CategoryDetail> {
   Widget smallListBuilder(HabitList habit) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * .025,
+        horizontal: MediaQuery.of(context).size.width * .0,
         vertical: MediaQuery.of(context).size.height * .005,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -149,21 +157,29 @@ class _CategoryDetailState extends State<CategoryDetail> {
                 color: Colors.white.withOpacity(.85),
               ),
               SizedBox(width: MediaQuery.of(context).size.width * .01),
-              Text(
-                habit.title,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+              Container(
+                width: MediaQuery.of(context).size.width*.4,
+                child: Text(
+                  habit.title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ],
           ),
-          Text(
-            habit.time,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.green,
+          SizedBox(width: MediaQuery.of(context).size.width*.025,),
+          Container(
+
+            width: MediaQuery.of(context).size.width*.315,
+            child: Text(
+              habit.time,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.green,
+              ),
             ),
           ),
         ],
