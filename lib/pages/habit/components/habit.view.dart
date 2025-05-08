@@ -20,6 +20,12 @@ class _HabitViewState extends State<HabitView> {
   late Future<List<HabitHistory>> habitHistories;
   bool isEndingStreak = false;
 
+  updateIsEndingStreak(bool value) {
+    setState(() {
+      isEndingStreak = value;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,13 +41,15 @@ class _HabitViewState extends State<HabitView> {
       isEndingStreak = true;
     });
 
-    final result = await HabitsRepository().breakStreak(
+    HabitsRepository().breakStreak(
       widget.habit,
       widget.habit.id!,
-    );
-
-    setState(() {
-      isEndingStreak = false;
+    ).then((value) {
+      if (value) {
+        updateIsEndingStreak(false);
+      }
+    }).catchError((error) {
+      updateIsEndingStreak(false);
     });
   }
 
@@ -207,7 +215,7 @@ class _HabitViewState extends State<HabitView> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
-                                          '${widget.habit.frequencyPhrase}',
+                                          '${widget.habit.type}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 16.0,
@@ -242,8 +250,6 @@ class _HabitViewState extends State<HabitView> {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(10.0),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
@@ -278,8 +284,6 @@ class _HabitViewState extends State<HabitView> {
                               flex: 1,
                               child: Container(
                                 padding: EdgeInsets.all(10.0),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(

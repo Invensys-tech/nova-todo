@@ -4,6 +4,9 @@ import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/chapa.service.dart';
 
+import '../../main.dart';
+import '../../utils/helpers.dart';
+
 class PricingScreen extends StatefulWidget {
   const PricingScreen({Key? key}) : super(key: key);
 
@@ -16,7 +19,9 @@ class _PricingScreenState extends State<PricingScreen> {
   ChapaService chapaService = ChapaService();
 
   handleMakePayment() {
+
     chapaService.makePayment(context);
+
   }
 
   verifyPayment() async {
@@ -210,32 +215,22 @@ class _PricingScreenState extends State<PricingScreen> {
             // ),
             const SizedBox(height: 16),
             Center(
-              child: Column(
-                children: const [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '3-Day ',
-                        style: TextStyle( fontSize: 20),
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          text: 'Free Trial',
-                          style: TextStyle(
-                            color: Color(0xFF00D084),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Text(
-                    '100% Money-back Guarantee',
-                    style: TextStyle( fontSize: 16),
+                    '3-Day ',
+                    style: TextStyle( fontSize: 20),
+                  ),
+                  Text.rich(
+                    TextSpan(
+                      text: 'Free Trial',
+                      style: TextStyle(
+                        color: Color(0xFF00D084),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
                   ),
                 ],
               ),

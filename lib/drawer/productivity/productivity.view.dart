@@ -58,7 +58,7 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
       body: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * .89,
+            height: MediaQuery.of(context).size.height * .875,
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).size.height * .0175,
             ),

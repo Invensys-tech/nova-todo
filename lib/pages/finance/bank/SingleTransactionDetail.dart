@@ -35,261 +35,256 @@ class _SingleTransactionDetailsState extends State<SingleTransactionDetails> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorDark.withOpacity(.6),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
+          Align(
+            alignment: Alignment.bottomCenter,
             child: Container(
-              height: MediaQuery.of(context).size.height * .41,
-              width: MediaQuery.of(context).size.width * 1,
-            ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * .59,
-            color: Theme.of(context).scaffoldBackgroundColor,
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * .035,
-              vertical: MediaQuery.of(context).size.height * .015,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Single Transaction Details ",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+              alignment: Alignment.bottomCenter,
+              color: Theme.of(context).scaffoldBackgroundColor,
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * .035,
+                vertical: MediaQuery.of(context).size.height * .015,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Single Transaction Details ",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: FaIcon(FontAwesomeIcons.x, size: 15),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * .035),
+                  Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * .55,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Type Of Transaction",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                "${widget.whatType}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Amount",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * .00,
+                            ),
+                            Text(
+                              "ETB ${widget.amount}",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: FaIcon(FontAwesomeIcons.x, size: 15),
+                  ),
+                  Divider(),
+                  SizedBox(height: MediaQuery.of(context).size.height * .025),
+                  Container(
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * .55,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Before Amount",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                widget.beforeAmount.toString(),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "AfterAmount ",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * .00,
+                            ),
+                            Text(
+                              widget.afterAmount.toString(),
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * .035),
-                Container(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * .55,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Type Of Transaction",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              "${widget.whatType}",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Amount",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * .00,
-                          ),
-                          Text(
-                            "ETB ${widget.amount}",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
                   ),
-                ),
-                Divider(),
-                SizedBox(height: MediaQuery.of(context).size.height * .025),
-                Container(
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * .55,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Before Amount",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              widget.beforeAmount.toString(),
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "AfterAmount ",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * .00,
-                          ),
-                          Text(
-                            widget.afterAmount.toString(),
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(),
+                  Divider(),
 
-                SizedBox(height: MediaQuery.of(context).size.height * .025),
-                Container(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * .55,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Date",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                  SizedBox(height: MediaQuery.of(context).size.height * .025),
+                  Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * .55,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Date",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "${widget.date.toLocal().toString().split(" ")[0]} , (${GetTimeAgo.parse(widget.date.toLocal())})",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                              Text(
+                                "${widget.date.toLocal().toString().split(" ")[0]} , (${GetTimeAgo.parse(widget.date.toLocal())})",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * .55,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Type",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                        Container(
+                          width: MediaQuery.of(context).size.width * .35,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Type",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            Text(
-                              widget.type,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                              Text(
+                                widget.type,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Divider(),
+                  Divider(),
 
-                SizedBox(height: MediaQuery.of(context).size.height * .025),
-                Container(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * .55,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Name Of Type",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                  SizedBox(height: MediaQuery.of(context).size.height * .025),
+                  Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * .55,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Name Of Type",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            Text(
-                              widget.name,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                              Text(
+                                widget.name,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Divider(),
-                SizedBox(height: MediaQuery.of(context).size.height * .025),
-                Container(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * .93,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Addtional Note",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                  Divider(),
+                  SizedBox(height: MediaQuery.of(context).size.height * .025),
+                  Container(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * .93,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Addtional Note",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            Text(
-                              widget.notes,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w200,
+                              Text(
+                                widget.notes,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w200,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

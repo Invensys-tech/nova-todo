@@ -34,8 +34,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'drawer/Seeting Page/SeetingPage.dart';
 
+InitPage initPage = InitPage.AUTH;
 bool isDark = true;
 int userId = 0;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   requestNotificationPermission();
@@ -65,11 +67,6 @@ void main() async {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhemdjcWFkbXJqaHN6cGVxeHBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzODMxNDksImV4cCI6MjA1Nzk1OTE0OX0.v70ChJdX7BiAjvW3DmeZ1ekZ9gKGQ5zNxgbaKfsCC9c",
   );
 
-  print("We Habe ${x.client}");
-  print("We Habe ${x}");
-
-  InitPage initPage = InitPage.AUTH;
-
   bool isLoggedIn = data != null && data['phoneNumber'] != null;
 
   if (isLoggedIn) {
@@ -96,15 +93,8 @@ void main() async {
   }
 
   // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
-  // runApp(
-  //   LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: initPage))),
-  // );
-
   runApp(
-    LocalizedApp(
-      delegate,
-      ProviderScope(child: MyApp(initPage: InitPage.HOME)),
-    ),
+    LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: initPage))),
   );
 }
 
@@ -125,6 +115,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatefulWidget {
   final InitPage initPage;
+
   const MyApp({super.key, this.initPage = InitPage.AUTH});
 
   @override
@@ -227,6 +218,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   final Telephony telephony = Telephony.instance;
+
   // StreamSubscription<SmsMessage>? _onSmsReceived;
   String _permission = 'Not Requested';
 
@@ -302,13 +294,13 @@ class _MyAppState extends State<MyApp> {
             ],
             //locale: Locale('en', 'US'),
             routes: {
-              '/':
-                  (context) =>
-                      widget.initPage == InitPage.HOME
-                          ? const MainScreenPage()
-                          : widget.initPage == InitPage.PAYMENT
-                          ? PricingScreen()
-                          : const AuthGate(),
+              '/': (context) {
+                return widget.initPage == InitPage.HOME
+                    ? const MainScreenPage()
+                    : widget.initPage == InitPage.PAYMENT
+                    ? PricingScreen()
+                    : const AuthGate();
+              },
               // (context) => const MainScreenPage(),
               '/login': (context) => const AuthGate(),
               '/expense-form':

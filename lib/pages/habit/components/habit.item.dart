@@ -190,7 +190,6 @@ class _HabitItemState extends State<HabitItem> {
               horizontal: MediaQuery.of(context).size.width * .025,
             ),
             child: Container(
-              height: MediaQuery.of(context).size.height * .1,
               padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
               decoration: BoxDecoration(
                 // color: Colors.blueGrey.shade900,
@@ -319,7 +318,6 @@ class _HabitItemState extends State<HabitItem> {
           vertical: MediaQuery.of(context).size.height * .01,
         ),
         child: Container(
-          height: MediaQuery.of(context).size.height * .1,
           padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
           decoration: BoxDecoration(
             // color: Colors.blueGrey.shade900,

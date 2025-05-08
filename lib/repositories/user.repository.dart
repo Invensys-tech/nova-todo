@@ -70,21 +70,10 @@ class UserRepository {
     }
   }
 
-  Future<void> _testConnection() async {
-    try {
-      final response = await http.get(Uri.parse('https://google.com'));
-
-      print(response.body);
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
   Future<Map<String, dynamic>?> fetchUser(String phoneNumber) async {
-    print("Getting In");
     try {
-      print("lllllllllllllllllllllllllllllllllllll");
-      await _testConnection();
+      print('fetch user');
+
       final data =
           await supabaseClient
               .from(Entities.USER.dbName)
@@ -96,7 +85,7 @@ class UserRepository {
       print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
       // print('fetch user');
-      // print(jsonEncode(data));
+      print(data);
 
       return data;
     } catch (e) {
@@ -158,6 +147,8 @@ class UserRepository {
         Duration(days: 366),
       );
 
+      print("adding subscription");
+      print(phoneNumber);
       print(subscriptionEndDateTime);
 
       final response = await supabaseClient
