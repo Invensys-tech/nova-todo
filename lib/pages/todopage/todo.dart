@@ -36,22 +36,20 @@ class _TodoPageState extends State<TodoPage> {
   void initState() {
     super.initState();
     if (isCalendarEthiopian()) {
-      now = getStartOfDay(ETDateTime(now.year, now.month, now.day).convertToEthiopian());
+      now = getStartOfDay(
+        ETDateTime(now.year, now.month, now.day).convertToEthiopian(),
+      );
     }
 
     todos = DailyTaskRepository().fetchAll(now);
-    dailyJournal = DailyJournalRepository().fetchByDate(
-      getDateOnly(DateTime.now()),
-    );
+    dailyJournal = DailyJournalRepository().fetchByDate(getDateOnly(now));
     completionPercentage = DailyTaskRepository().fetchCompletionPercentage(now);
   }
 
   void refetchData() {
     setState(() {
       todos = DailyTaskRepository().fetchAll(now);
-      dailyJournal = DailyJournalRepository().fetchByDate(
-        getDateOnly(now),
-      );
+      dailyJournal = DailyJournalRepository().fetchByDate(getDateOnly(now));
       completionPercentage = DailyTaskRepository().fetchCompletionPercentage(
         now,
       );
@@ -85,7 +83,11 @@ class _TodoPageState extends State<TodoPage> {
   openDailyJournalQuill(dynamic content) async {
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
-      screen: DailyJournalQuill(date: getDateOnly(now), content: content),
+      screen: DailyJournalQuill(
+        date: getDateOnly(now),
+        content: content,
+        refetchData: refetchData,
+      ),
       withNavBar: false,
       pageTransitionAnimation: PageTransitionAnimation.cupertino,
       settings: const RouteSettings(),

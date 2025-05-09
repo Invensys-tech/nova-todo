@@ -93,7 +93,9 @@ void main() async {
     await delegate.changeLocale(Locale(languageCode));
   }
 
-  // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+  // runApp(
+  //   LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: InitPage.PAYMENT))),
+  // );
   runApp(
     LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: initPage))),
   );
