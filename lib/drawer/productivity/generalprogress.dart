@@ -68,17 +68,17 @@ class _GeneralprogressState extends State<Generalprogress> {
         ),
         decoration: BoxDecoration(
           gradient:
-          Theme.of(context).brightness == Brightness.dark
-              ? LinearGradient(
-            colors: [Color(0xff18181B), Color(0xff27272A)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          )
-              : LinearGradient(
-            colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+              Theme.of(context).brightness == Brightness.dark
+                  ? LinearGradient(
+                    colors: [Color(0xff18181B), Color(0xff27272A)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                  : LinearGradient(
+                    colors: [Color(0xffD4D4D8), Color(0xffF4F4F5)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
           border: Border.all(width: 1, color: Colors.grey.withOpacity(.3)),
           borderRadius: BorderRadius.circular(10),
         ),
@@ -190,6 +190,11 @@ class _GeneralprogressState extends State<Generalprogress> {
 
               final habits = snapshot.data?.productivityHabits ?? [];
 
+              final my_date =
+                  habits
+                      .map((e) => DateTime.parse(e.created_at).toLocal())
+                      .toList();
+
               // 1) Group by title
               final Map<String, List<ProductivityHabit>> grouped = {};
               for (var h in habits) {
@@ -214,8 +219,11 @@ class _GeneralprogressState extends State<Generalprogress> {
                         context,
                         MaterialPageRoute(
                           builder:
-                              (_) =>
-                                  CategoryDetail(title: title, habits: group),
+                              (_) => CategoryDetail(
+                                title: title,
+                                habits: group,
+                                date: my_date,
+                              ),
                         ),
                       );
                     }

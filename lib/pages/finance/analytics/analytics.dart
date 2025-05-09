@@ -253,6 +253,9 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   );
                 }
                 final categoryData = snapshot.data!;
+
+                print("Category Data");
+                print(categoryData);
                 return Column(
                   children:
                       categoryData.entries.take(3).map((entry) {

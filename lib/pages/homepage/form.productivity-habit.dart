@@ -21,6 +21,7 @@ class ProductivityHabitForm extends StatefulWidget {
   final FormInput? time;
   final FormInput? description;
   final int? productivity_id;
+  final num? streak_count;
   const ProductivityHabitForm({
     super.key,
     this.description,
@@ -28,6 +29,7 @@ class ProductivityHabitForm extends StatefulWidget {
     this.time,
     this.title,
     this.productivity_id,
+    this.streak_count,
   });
 
   @override
@@ -252,6 +254,11 @@ class _ProductivityHabitFormState extends State<ProductivityHabitForm> {
 
           DateTime habitDate = DateTime.now();
         }
+
+        Productivity productivity = await ProductivityRepository()
+            .updateProductivity(widget.productivity_id!, {
+              'streak_count': widget.streak_count! + 1,
+            });
       }
     }
 

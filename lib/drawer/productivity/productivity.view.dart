@@ -16,7 +16,7 @@ class ProductivityViewPgae extends StatefulWidget {
 }
 
 class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
-  late Future<Productivity> _productivityFuture;
+  late Future<Productivity> _productivityFuture = Future.value();
   @override
   void initState() {
     super.initState();
@@ -32,12 +32,12 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
         title: Row(
           children: [
             Text(translate("Productivity View")),
-            SizedBox(width: MediaQuery.of(context).size.width*.015,),
+            SizedBox(width: MediaQuery.of(context).size.width * .015),
+
             // Container(
             //     height: MediaQuery.of(context).size.height*.03,
             //     width: MediaQuery.of(context).size.width*.06,
             //     child: Image.asset('assets/Gif/Quotes.gif'))
-
           ],
         ),
 
@@ -49,7 +49,7 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon:  FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
+              icon: FaIcon(FontAwesomeIcons.chevronLeft, color: Colors.green),
             ),
           ],
         ),
@@ -79,7 +79,6 @@ class _ProductivityViewPgaeState extends State<ProductivityViewPgae> {
                 background: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
-
                   ),
                 ),
                 position: TabBarPosition.top,

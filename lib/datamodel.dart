@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_application_1/entities/partner-entity.dart';
 
 class User {
   int id;
@@ -39,6 +40,9 @@ class Expense {
   String description;
   num amount;
   int userId;
+  Bank? bank;
+  Partner? partner;
+  int? partner_id;
 
   Expense({
     required this.amount,
@@ -51,6 +55,9 @@ class Expense {
     required this.paidBy,
     required this.type,
     required this.userId,
+    this.bank,
+    this.partner,
+    this.partner_id,
   });
 
   factory Expense.fromJson(Map<String, dynamic> json) {
@@ -65,6 +72,10 @@ class Expense {
       userId: json['userid'] as int,
       expenseName: json['expenseName'] as String,
       id: json['id'] as int,
+      partner_id: json['partner_id'] as int?,
+      bank: json['bank'] == null ? null : Bank.fromJson(json['bank']),
+      partner:
+          json['partners'] == null ? null : Partner.fromJson(json['partners']),
     ));
   }
 }

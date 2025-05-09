@@ -268,6 +268,11 @@ class _ExpensespageState extends State<Expensespage> {
                                                   type: e.type,
                                                   date: e.date,
                                                   description: e.description,
+                                                  accountNumber:
+                                                      e.bank?.accountNumber,
+
+                                                  phoneNumber:
+                                                      e.partner?.phone_number,
                                                 ),
                                       ),
                                     );
@@ -278,20 +283,80 @@ class _ExpensespageState extends State<Expensespage> {
                                       motion: const ScrollMotion(),
                                       children: [
                                         SlidableAction(
-                                          onPressed: (_) {
-                                            _expenseRepository.deleteExpense(
-                                              e.id,
-                                              (e.paidBy == "Bank"
-                                                      ? e.bankAccount
-                                                      : null)
-                                                  as int?,
-                                              e.paidBy == "Bank"
-                                                  ? e.amount
-                                                  : null,
+                                          onPressed: (alert_context) {
+                                            showDialog(
+                                              context: alert_context,
+                                              builder:
+                                                  (ctx) => AlertDialog(
+                                                    title: const Text(
+                                                      'Confirm Delete',
+                                                    ),
+                                                    content: const Text(
+                                                      'Are you sure you want to delete this income?',
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed:
+                                                            () =>
+                                                                Navigator.of(
+                                                                  ctx,
+                                                                ).pop(),
+                                                        child: const Text(
+                                                          'Cancel',
+                                                        ),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () async {
+                                                          try {
+                                                            await _expenseRepository
+                                                                .deleteExpense(
+                                                                  e.id,
+                                                                  (e.paidBy ==
+                                                                              "Bank"
+                                                                          ? e.bankAccount
+                                                                          : null)
+                                                                      as int?,
+                                                                  e.paidBy ==
+                                                                          "Bank"
+                                                                      ? e.amount
+                                                                      : null,
+                                                                );
+                                                            Navigator.of(
+                                                              ctx,
+                                                            ).pop();
+                                                            setState(
+                                                              _loadExpenses,
+                                                            );
+                                                          } catch (e) {
+                                                            Navigator.of(
+                                                              ctx,
+                                                            ).pop();
+                                                            ScaffoldMessenger.of(
+                                                              context,
+                                                            ).showSnackBar(
+                                                              SnackBar(
+                                                                content: Text(
+                                                                  'Failed to delete expense',
+                                                                ),
+                                                              ),
+                                                            );
+                                                            print(
+                                                              'Error deleting expense: $e',
+                                                            );
+                                                          }
+                                                        },
+                                                        child: const Text(
+                                                          'Delete',
+                                                          style: TextStyle(
+                                                            color: Colors.red,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                             );
-                                            setState(() {});
-                                            // _loadExpenses();
                                           },
+
                                           backgroundColor: Colors.red,
                                           foregroundColor: Colors.white,
                                           icon: Icons.delete,
