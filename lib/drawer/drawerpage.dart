@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/drawer/CommunityChallenges.dart';
 import 'package:flutter_application_1/drawer/Profile/Profile.dart';
 import 'package:flutter_application_1/drawer/Seeting%20Page/SeetingPage.dart';
-import 'package:flutter_application_1/drawer/productivity/productivity.view.dart';
 import 'package:flutter_application_1/drawer/productivity/productivity.home.dart';
-import 'package:flutter_application_1/entities/habit.entity.dart';
 import 'package:flutter_application_1/pages/goal/goal.dart';
-import 'package:flutter_application_1/pages/habit/habits.dart';
 import 'package:flutter_application_1/pages/notifications/notifications.dart';
 import 'package:flutter_application_1/pages/pricing/pricing.dart';
 import 'package:flutter_application_1/pages/quotes/quotes.dart';
@@ -51,7 +48,7 @@ class _DrawerpageState extends State<Drawerpage> {
   routeToPricing() {
     PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
       context,
-      screen: PricingScreen(),
+      screen: PricingScreen(canNavigateBack: true),
       withNavBar: false,
       pageTransitionAnimation: PageTransitionAnimation.cupertino,
       settings: const RouteSettings(),

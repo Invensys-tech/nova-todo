@@ -97,7 +97,6 @@ class _AddExpenseState extends State<AddExpense> {
   @override
   void initState() {
     super.initState();
-
     _loadExpenseList();
     _paidByController.text = "Bank";
     _updateFuture();

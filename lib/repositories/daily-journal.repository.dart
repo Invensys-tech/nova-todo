@@ -3,7 +3,7 @@ import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DailyJournalRepository {
-  void upsertFromMap(Map<String, dynamic> dailyJournalMap) async {
+  Future<bool> upsertFromMap(Map<String, dynamic> dailyJournalMap) async {
     try {
       final userId = getUserId();
 
@@ -16,6 +16,8 @@ class DailyJournalRepository {
       if (response.count == 0) {
         throw Exception('Error upserting daily journal!');
       }
+
+      return true;
     } catch (e) {
       // print('Error creating daily journal');
       print(e);

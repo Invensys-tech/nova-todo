@@ -29,7 +29,7 @@ import 'package:flutter_application_1/services/notification.service.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'drawer/Seeting Page/SeetingPage.dart';
@@ -92,7 +92,9 @@ void main() async {
     await delegate.changeLocale(Locale(languageCode));
   }
 
-  // runApp(LocalizedApp(delegate, MyApp(initPage: InitPage.HOME)));
+  // runApp(
+  //   LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: InitPage.PAYMENT))),
+  // );
   runApp(
     LocalizedApp(delegate, ProviderScope(child: MyApp(initPage: initPage))),
   );
@@ -289,7 +291,7 @@ class _MyAppState extends State<MyApp> {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
-              FlutterQuillLocalizations
+              quill.FlutterQuillLocalizations
                   .delegate, // Add this line for FlutterQuill localization
             ],
             //locale: Locale('en', 'US'),
