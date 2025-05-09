@@ -454,6 +454,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/repositories/partner.repository.dart';
 import 'package:flutter_application_1/ui/inputs/autocompletetext.dart';
 import 'package:flutter_application_1/ui/inputs/dateselector.dart';
 import 'package:flutter_application_1/ui/inputs/dropdown.dart';
@@ -492,6 +493,8 @@ class _EditExpenseState extends State<EditExpense> {
   final _paidByController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _dateController = TextEditingController();
+  final TextEditingController _bankId = TextEditingController();
+
   late double _firstAmount;
 
   bool _isLoading = true;
@@ -537,15 +540,16 @@ class _EditExpenseState extends State<EditExpense> {
         .catchError((e) => debugPrint("Error loading categories: $e"));
 
     // 2️⃣ Prepare the PaidBy future
+    _fetchExpense();
     _updateFuture();
 
     // 3️⃣ Fetch the existing expense
-    _fetchExpense();
   }
 
   void _updateFuture() {
     if (_paidByController.text == "Partner") {
-      _dataFuture = widget.datamanager.getLoan();
+      _dataFuture = PartnerRepository().fetchPartners();
+      // _dataFuture = widget.datamanager.getLoan();
     } else if (_paidByController.text == "Bank") {
       _dataFuture = widget.datamanager.getBanks();
     } else {
@@ -561,7 +565,10 @@ class _EditExpenseState extends State<EditExpense> {
               .select('*')
               .eq('id', widget.expenseId)
               .maybeSingle();
-      if (resp != null && resp is Map<String, dynamic>) {
+
+      print("1111111111111111111111111111111111");
+      print(resp);
+      if (resp != null) {
         // Populate controllers
         _amountController.text = (resp['amount'] ?? '').toString();
         _firstAmount = double.tryParse(_amountController.text) ?? 0.0;
@@ -604,11 +611,11 @@ class _EditExpenseState extends State<EditExpense> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back, ),
+            icon: const Icon(Icons.arrow_back),
           ),
-          title:  Text(
+          title: Text(
             translate("Edit Expense"),
-            style: TextStyle(fontWeight: FontWeight.bold, ),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -626,8 +633,8 @@ class _EditExpenseState extends State<EditExpense> {
             color: const Color(0xff006045),
           ),
         ),
-        title:  Text(
-         translate( "Edit Expense"),
+        title: Text(
+          translate("Edit Expense"),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
@@ -657,7 +664,7 @@ class _EditExpenseState extends State<EditExpense> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                   // Amount
-                   Text(
+                  Text(
                     translate("Amount"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
@@ -681,7 +688,7 @@ class _EditExpenseState extends State<EditExpense> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                   // Expense Name
-                   Text(
+                  Text(
                     translate("Expense Name"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
@@ -708,7 +715,7 @@ class _EditExpenseState extends State<EditExpense> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text(
+                            Text(
                               translate("Category"),
                               style: TextStyle(
                                 fontSize: 12,
@@ -719,38 +726,35 @@ class _EditExpenseState extends State<EditExpense> {
                               height:
                                   MediaQuery.of(context).size.height * 0.0025,
                             ),
-                            _expenseList.isEmpty
-                                ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                                : AutoCompleteText(
-                                  isFromEdit: true,
-                                  suggestions:
-                                      _expenseList
-                                          .map((e) => e.category)
-                                          .toSet()
-                                          .toList(),
-                                  controller: _expenseCategoryController,
-                                  hintText: translate("Search for a Category..."),
-                                  icon: Icons.search,
-                                  suggestionBuilder:
-                                      (text) => ListTile(
-                                        title: Text(
-                                          text,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+
+                            AutoCompleteText(
+                              isFromEdit: true,
+                              suggestions:
+                                  _expenseList
+                                      .map((e) => e.category)
+                                      .toSet()
+                                      .toList(),
+                              controller: _expenseCategoryController,
+                              hintText: translate("Search for a Category..."),
+                              icon: Icons.search,
+                              suggestionBuilder:
+                                  (text) => ListTile(
+                                    title: Text(
+                                      text,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.white,
                                       ),
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please select a Category';
-                                  //   }
-                                  //   return null;
-                                  // },
-                                ),
+                                    ),
+                                  ),
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return 'Please select a Category';
+                              //   }
+                              //   return null;
+                              // },
+                            ),
                           ],
                         ),
                       ),
@@ -762,7 +766,7 @@ class _EditExpenseState extends State<EditExpense> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                             Text(
+                            Text(
                               translate("Date"),
                               style: TextStyle(
                                 fontSize: 12,
@@ -802,6 +806,7 @@ class _EditExpenseState extends State<EditExpense> {
                         paidByController: _paidByController,
                         specificFromController: _paymentController,
                         dataFuture: _dataFuture ?? Future.value([]),
+                        bankController: _bankId,
                         onPaidByChanged: (newPaidBy) {
                           setState(_updateFuture);
                         },
@@ -811,7 +816,7 @@ class _EditExpenseState extends State<EditExpense> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                   // Description
-                   Text(
+                  Text(
                     translate("Description"),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                   ),
@@ -828,7 +833,7 @@ class _EditExpenseState extends State<EditExpense> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width*.3,
+                        width: MediaQuery.of(context).size.width * .3,
                         child: ElevatedButton(
                           onPressed: () {
                             // Reset to original and go back
@@ -844,13 +849,13 @@ class _EditExpenseState extends State<EditExpense> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
-                          child:  Text(translate("Cancel")),
+                          child: Text(translate("Cancel")),
                         ),
                       ),
                       const SizedBox(width: 10),
 
                       Container(
-                        width: MediaQuery.of(context).size.width*.5,
+                        width: MediaQuery.of(context).size.width * .5,
                         child: ElevatedButton(
                           onPressed:
                               isLoading
@@ -864,7 +869,9 @@ class _EditExpenseState extends State<EditExpense> {
 
                                     final bankId = _paymentController.text;
                                     final expenseAmt =
-                                        double.tryParse(_amountController.text) ??
+                                        double.tryParse(
+                                          _amountController.text,
+                                        ) ??
                                         0.0;
 
                                     try {
@@ -877,7 +884,8 @@ class _EditExpenseState extends State<EditExpense> {
                                               .single();
 
                                       final currentBalance =
-                                          (bankRes['balance'] as num).toDouble();
+                                          (bankRes['balance'] as num)
+                                              .toDouble();
 
                                       if (_paidByController.text != "Partner") {
                                         if (currentBalance < expenseAmt) {
@@ -895,7 +903,8 @@ class _EditExpenseState extends State<EditExpense> {
                                           return;
                                         }
 
-                                        final change = expenseAmt - _firstAmount;
+                                        final change =
+                                            expenseAmt - _firstAmount;
 
                                         final newBalance =
                                             currentBalance - change;
@@ -929,7 +938,8 @@ class _EditExpenseState extends State<EditExpense> {
                                           .eq('id', widget.expenseId);
 
                                       if (_paidByController.text == "Partner") {
-                                        final specific = _paymentController.text;
+                                        final specific =
+                                            _paymentController.text;
                                         final loanLookup =
                                             await Supabase.instance.client
                                                 .from('loan')
@@ -953,7 +963,9 @@ class _EditExpenseState extends State<EditExpense> {
                                             });
                                       }
 
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
                                         const SnackBar(
                                           content: Text(
                                             "Expense updated successfully!",
@@ -963,7 +975,9 @@ class _EditExpenseState extends State<EditExpense> {
                                       Navigator.pop(context);
                                     } catch (e) {
                                       // 7️⃣ Error handling
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
                                         SnackBar(content: Text("Error: $e")),
                                       );
                                     } finally {
@@ -972,7 +986,9 @@ class _EditExpenseState extends State<EditExpense> {
                                   },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                isLoading ? Colors.grey : const Color(0xff009966),
+                                isLoading
+                                    ? Colors.grey
+                                    : const Color(0xff009966),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -988,67 +1004,12 @@ class _EditExpenseState extends State<EditExpense> {
                                       strokeWidth: 2,
                                     ),
                                   )
-                                  :  Text(
+                                  : Text(
                                     translate("Update Expense"),
                                     style: TextStyle(color: Colors.white),
                                   ),
                         ),
                       ),
-                      // Expanded(
-                      //   flex: 3,
-                      //   child: ElevatedButton(
-                      //     onPressed: () async {
-                      //       if (!_formKey.currentState!.validate()) return;
-
-                      //       try {
-                      //         await Supabase.instance.client
-                      //             .from('expense')
-                      //             .update({
-                      //               'amount':
-                      //                   double.tryParse(
-                      //                     _amountController.text,
-                      //                   ) ??
-                      //                   0.0,
-                      //               'expenseName': _expenseNameController.text,
-                      //               'category': _expenseCategoryController.text,
-                      //               'type': _expenseTypeController.text,
-                      //               'bankAccount':
-                      //                   _paidByController.text == "Partner"
-                      //                       ? null
-                      //                       : _paymentController.text,
-                      //               'paidBy': _paidByController.text,
-                      //               'description': _descriptionController.text,
-                      //               'date': formatDate(_dateController.text),
-                      //             })
-                      //             .eq('id', widget.expenseId);
-
-                      //         ScaffoldMessenger.of(context).showSnackBar(
-                      //           const SnackBar(
-                      //             content: Text(
-                      //               "Expense updated successfully!",
-                      //             ),
-                      //           ),
-                      //         );
-                      //         Navigator.pop(context);
-                      //       } catch (e) {
-                      //         ScaffoldMessenger.of(context).showSnackBar(
-                      //           SnackBar(content: Text("Error: $e")),
-                      //         );
-                      //       }
-                      //     },
-                      //     style: ElevatedButton.styleFrom(
-                      //       backgroundColor: const Color(0xff009966),
-                      //       padding: const EdgeInsets.symmetric(vertical: 15),
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(5),
-                      //       ),
-                      //     ),
-                      //     child: const Text(
-                      //       "Update Expense",
-                      //       style: TextStyle(color: Colors.white),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.04),

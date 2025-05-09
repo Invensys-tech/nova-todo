@@ -138,9 +138,21 @@ class Datamanager {
   Future<List<Expense>> fetchExpenseWithDateFilter(DateTime dateTime) async {
     final data = await Supabase.instance.client
         .from('expense')
-        .select('*')
+        .select('*, bank(*), partners(*)')
         .eq("userid", userId)
         .eq('date', getDateOnly(dateTime));
+
+    print("lllllllllllllllllllllllllllll");
+
+    for (final e in data) {
+      print(e);
+    }
+
+    // print(
+    //   (data as List<dynamic>)
+    //       .map((e) => Expense.fromJson(e as Map<String, dynamic>))
+    //       .toList(),
+    // );
 
     return (data as List<dynamic>)
         .map((e) => Expense.fromJson(e as Map<String, dynamic>))
@@ -181,10 +193,12 @@ class Datamanager {
       print("My date time in the data manager");
       print(dateTime);
       final List<ConnectivityResult> connectivityResult =
-      await Connectivity().checkConnectivity();
+          await Connectivity().checkConnectivity();
 
-
-      final isConnected = connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi) | connectivityResult.contains(ConnectivityResult.ethernet);
+      final isConnected =
+          connectivityResult.contains(ConnectivityResult.mobile) ||
+          connectivityResult.contains(ConnectivityResult.wifi) |
+              connectivityResult.contains(ConnectivityResult.ethernet);
 
       if (dateTime != null) {
         if (analytics == true) {
@@ -203,17 +217,19 @@ class Datamanager {
         }
         return await fetchExpenseWithDateFilter(dateTime);
       } else {
-        if (![
-          ConnectivityResult.wifi,
-          ConnectivityResult.mobile,
-          ConnectivityResult.ethernet,
-        ].contains(connectivityResult)) {
-          // print('no connection');
-          final oldExpenses = await getOfflineExpense();
-          return oldExpenses ?? [];
-        } else {
-          return await fetchExpense();
-        }
+        // if (![
+        //   ConnectivityResult.wifi,
+        //   ConnectivityResult.mobile,
+        //   ConnectivityResult.ethernet,
+        // ].contains(connectivityResult)) {
+        //   // print('no connection');
+        //   final oldExpenses = await getOfflineExpense();
+        //   return oldExpenses ?? [];
+        // }
+
+        // else {
+        return await fetchExpense();
+        // }
         // print('connection');
       }
     } catch (e) {

@@ -178,7 +178,7 @@ class _BankPageState extends State<BankPage> {
                                     onPressed: (context) {
                                       showDialog(
                                         context: context,
-                                        builder: (BuildContext context) {
+                                        builder: (BuildContext c) {
                                           return AlertDialog(
                                             title: Text(
                                               translate('Confirm Delete'),
@@ -191,7 +191,7 @@ class _BankPageState extends State<BankPage> {
                                             actions: [
                                               TextButton(
                                                 onPressed: () {
-                                                  Navigator.of(context).pop();
+                                                  Navigator.of(c).pop();
                                                 },
                                                 child: Text(
                                                   translate('Cancel'),
@@ -202,9 +202,7 @@ class _BankPageState extends State<BankPage> {
                                                   // Navigator.of(dialogCtx).pop();
 
                                                   final messenger =
-                                                      ScaffoldMessenger.of(
-                                                        context,
-                                                      );
+                                                      ScaffoldMessenger.of(c);
                                                   final supabase =
                                                       Supabase.instance.client;
                                                   final bankId = bank.id;
@@ -254,6 +252,8 @@ class _BankPageState extends State<BankPage> {
                                                             Colors.redAccent,
                                                       ),
                                                     );
+                                                    Navigator.of(c).pop();
+
                                                     return;
                                                   }
 
@@ -272,7 +272,7 @@ class _BankPageState extends State<BankPage> {
                                                       ),
                                                     );
                                                     setState(() {});
-                                                    Navigator.of(context).pop();
+                                                    Navigator.of(c).pop();
                                                   } catch (e) {
                                                     messenger.showSnackBar(
                                                       SnackBar(
@@ -286,7 +286,7 @@ class _BankPageState extends State<BankPage> {
                                                             Colors.redAccent,
                                                       ),
                                                     );
-                                                    Navigator.of(context).pop();
+                                                    Navigator.of(c).pop();
                                                   }
                                                 },
                                                 child: Text(

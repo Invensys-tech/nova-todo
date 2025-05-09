@@ -352,6 +352,7 @@ class _PaidByAndSpecificFromInputContentState
       FlutterNativeContactPicker();
 
   @override
+  @override
   void initState() {
     super.initState();
     selectedPaidBy =
@@ -359,25 +360,66 @@ class _PaidByAndSpecificFromInputContentState
             ? widget.paidByController.text
             : null;
 
-    // Propagate initial PaidBy
+    // Notify parent of the initial paidBy so they can set dataFuture
     if (selectedPaidBy != null && widget.onPaidByChanged != null) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         widget.onPaidByChanged!(selectedPaidBy!);
       });
     }
 
-    // Preload partners if already selected
+    // **NEW**: Initialize selectedSpecificFrom for BOTH Partner *and* Bank
+    final savedSpecific = widget.specificFromController.text;
+    if (savedSpecific.isNotEmpty) {
+      selectedSpecificFrom = savedSpecific;
+    }
+
+    // Build mapping or just trigger a rebuild once the data arrives
     widget.dataFuture.then((list) {
       if (selectedPaidBy == "Partner") {
         _buildPartnerMapping(list);
-        final saved = widget.specificFromController.text;
-        if (saved.isNotEmpty && partnerMapping.containsValue(saved)) {
-          selectedSpecificFrom = saved;
+        // if you want to re-sync selectedSpecificFrom against mapping you can:
+        if (!partnerMapping.containsValue(selectedSpecificFrom)) {
+          selectedSpecificFrom = null;
         }
       }
       setState(() {});
     });
   }
+
+  // void initState() {
+  //   super.initState();
+  //   selectedPaidBy =
+  //       widget.paidByController.text.isNotEmpty
+  //           ? widget.paidByController.text
+  //           : null;
+
+  //   if (selectedPaidBy != null && widget.onPaidByChanged != null) {
+  //     WidgetsBinding.instance!.addPostFrameCallback((_) {
+  //       widget.onPaidByChanged!(selectedPaidBy!);
+  //     });
+  //   }
+
+  //   widget.dataFuture.then((list) {
+  //     if (selectedPaidBy == "Partner") {
+  //       _buildPartnerMapping(list);
+  //       final saved = widget.specificFromController.text;
+
+  //       if (saved.isNotEmpty && partnerMapping.containsValue(saved)) {
+  //         selectedSpecificFrom = saved;
+  //       }
+
+  //       print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+  //       print(selectedPaidBy);
+  //       print(widget.specificFromController.text);
+  //       print(selectedSpecificFrom);
+  //     } else {
+  //       print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+  //       print(selectedPaidBy);
+  //       print(selectedSpecificFrom);
+  //     }
+  //     setState(() {});
+  //   });
+  // }
 
   void _buildPartnerMapping(List<dynamic> list) {
     partnerMapping.clear();

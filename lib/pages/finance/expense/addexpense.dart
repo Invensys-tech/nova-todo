@@ -42,6 +42,8 @@ class _AddExpenseState extends State<AddExpense> {
   int? _parentLoanId;
   List<String> _expenseList = [];
 
+  List<Expense> _expList = [];
+
   final List<String> banks = [
     'Abay Bank',
     'Addis International Bank',
@@ -104,7 +106,17 @@ class _AddExpenseState extends State<AddExpense> {
   }
 
   void _loadExpenseList() async {
-    _expenseList = await ExpenseRepository().getExpenseCategory();
+    final x = await ExpenseRepository().getExpenseCategory();
+    setState(() {
+      _expenseList = x;
+    });
+    print("oooooooo");
+    print(_expenseList);
+  }
+
+  void _loadExpList() async {
+    _expList = (await ExpenseRepository().getExp(null)).cast<Expense>();
+    setState(() {}); // Rebuild to show autocomplete suggestions
   }
 
   void _updateFuture() {
@@ -236,44 +248,37 @@ class _AddExpenseState extends State<AddExpense> {
                               height:
                                   MediaQuery.of(context).size.height * 0.0025,
                             ),
-                            // _expenseList.
-                            //     ? const Center(
-                            //       child: CircularProgressIndicator(),
-                            //     )
-                            //     :
-                            AutoCompleteText(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please select a Category';
-                                }
-                                return null;
-                              },
+                            _expenseList.isEmpty
+                                ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                                : AutoCompleteText(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please select a Category';
+                                    }
+                                    return null;
+                                  },
 
-                              suggestions: _expenseList,
-                              //     .map((exp) => exp)
-                              //     .toSet()
-                              //     .toList()
-                              //     .isNotEmpty
-                              // ? _expenseList
-                              //     .map((exp) => exp)
-                              //     .toSet()
-                              //     .toList()
-                              // : [],
-                              controller: _expenseCategoryController,
-                              hintText: translate("Search for a Category..."),
-                              icon: Icons.search,
-                              suggestionBuilder: (String text) {
-                                return ListTile(
-                                  title: Text(
-                                    text,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                    ),
+                                  suggestions: _expenseList,
+
+                                  controller: _expenseCategoryController,
+                                  hintText: translate(
+                                    "Search for a Category...",
                                   ),
-                                );
-                              },
-                            ),
+                                  icon: Icons.search,
+                                  suggestionBuilder: (String text) {
+                                    return ListTile(
+                                      title: Text(
+                                        text,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
                           ],
                         ),
                       ),

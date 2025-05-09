@@ -7,11 +7,12 @@ class SingleEpensesFullViewPage extends StatefulWidget {
   final String expenseName;
   final num amount;
   final String paidBy;
-  final String? accountNumber;
+  final num? accountNumber;
   final String type;
   final String category;
   final DateTime date;
   final String? description;
+  final String? phoneNumber;
 
   const SingleEpensesFullViewPage({
     super.key,
@@ -23,6 +24,7 @@ class SingleEpensesFullViewPage extends StatefulWidget {
     required this.category,
     required this.date,
     this.description,
+    this.phoneNumber,
   });
 
   @override
@@ -147,7 +149,9 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            translate("Account Number"),
+                            widget.paidBy == "Bank"
+                                ? translate("Account Number")
+                                : translate("Phone Number"),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -157,7 +161,9 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                             height: MediaQuery.of(context).size.height * .00,
                           ),
                           Text(
-                            "10023289433",
+                            widget.paidBy == "Bank"
+                                ? "${widget.accountNumber}"
+                                : "${widget.phoneNumber}",
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,

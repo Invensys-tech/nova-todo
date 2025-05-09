@@ -495,6 +495,8 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
 
   late int productivity_id;
 
+  late int streak;
+
   @override
   void initState() {
     super.initState();
@@ -554,8 +556,10 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
             context,
             MaterialPageRoute(
               builder:
-                  (context) =>
-                      ProductivityHabitForm(productivity_id: productivity_id),
+                  (context) => ProductivityHabitForm(
+                    productivity_id: productivity_id,
+                    streak_count: streak,
+                  ),
             ),
           );
           setState(() {}); // refresh after new habit
@@ -592,6 +596,7 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
 
                 final data = snapshot.data!;
                 productivity_id = data.id;
+                streak = data.streak_count!;
                 final allHabits = data.productivityHabits ?? [];
 
                 // filter by queryDate (Gregorian midnight)
@@ -614,7 +619,9 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
                 }
 
                 return ListView.builder(
-                  padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*.0015),
+                  padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * .0015,
+                  ),
                   itemCount: filtered.length,
                   itemBuilder: (ctx, i) => _buildHabitTile(filtered[i]),
                 );
@@ -728,7 +735,7 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
               ),
               SizedBox(width: MediaQuery.of(context).size.width * .01),
               Container(
-                width: MediaQuery.of(context).size.width*.4,
+                width: MediaQuery.of(context).size.width * .4,
                 child: Text(
                   habit.title,
                   style: const TextStyle(
@@ -739,10 +746,9 @@ class _DailyprogressListsState extends State<DailyprogressLists> {
               ),
             ],
           ),
-          SizedBox(width: MediaQuery.of(context).size.width*.025,),
+          SizedBox(width: MediaQuery.of(context).size.width * .025),
           Container(
-
-            width: MediaQuery.of(context).size.width*.315,
+            width: MediaQuery.of(context).size.width * .315,
             child: Text(
               habit.time,
               style: const TextStyle(

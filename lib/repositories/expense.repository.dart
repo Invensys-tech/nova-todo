@@ -1,6 +1,8 @@
 import 'package:flutter_application_1/datamanager.dart';
 import 'package:flutter_application_1/entities/expense-entity.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/services/hive.service.dart';
+import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -13,6 +15,38 @@ class ExpenseRepository {
       return data.map((expense) => Expense.fromJson(expense)).toList();
     } catch (e) {
       throw Exception('Failed to fetch expenses: $e');
+    }
+  }
+
+  Future<List<Expense>> getExp(DateTime? dateTime) async {
+    final HiveService _hiveService = HiveService();
+
+    try {
+      final List<dynamic> rawData;
+      print('Original dateTime: $dateTime');
+
+      DateTime? queryDate = dateTime;
+
+      if (queryDate != null) {
+        rawData = await supabaseClient
+            .from(Entities.INCOME.dbName)
+            .select("*")
+            .eq('userid', userId)
+            .eq('date', getDateOnly(queryDate));
+      } else {
+        rawData = await supabaseClient.from(Entities.INCOME.dbName).select("*");
+      }
+
+      print("Fetched Income Data: $rawData");
+
+      final List<Expense> incomeList =
+          rawData.map((income) => Expense.fromJson(income)).toList();
+
+      return incomeList;
+    } catch (e, stackTrace) {
+      print('Error in Fetching Income: $e');
+      print('StackTrace: $stackTrace');
+      rethrow;
     }
   }
 
@@ -120,12 +154,18 @@ class ExpenseRepository {
     DateTime? endDate,
   ) async {
     try {
+      print("Dates in database");
+      print(dateTime);
+      print(endDate);
       // Fetch all expenses using your existing fetchAll function.
       final expenses = await Datamanager().getExpense(
         dateTime: dateTime,
         endDate: endDate,
         analytics: true,
       );
+
+      print("From the database");
+      print(expenses);
 
       // Prepare an empty map to accumulate counts and totals.
       final Map<String, Map<String, dynamic>> categoryTotals = {};
@@ -148,6 +188,8 @@ class ExpenseRepository {
         // Add the amount. In case amount is null, use 0.
         categoryTotals[categoryName]!["totalAmount"] += expense.amount ?? 0.0;
       }
+
+      print("From the database");
 
       print(categoryTotals);
 
