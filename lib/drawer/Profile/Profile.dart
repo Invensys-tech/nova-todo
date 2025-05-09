@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/datamodel.dart';
 import 'package:flutter_application_1/main.dart';
@@ -101,7 +102,7 @@ class _ProfileState extends State<Profile> {
                         height: MediaQuery.of(context).size.height * .0015,
                       ),
                       Text(
-                        "Mebmber Since ${user?['created_at'] ?? ""} ",
+                        "Mebmber Since ${DateFormat('MMMM d, y').format(DateTime.parse(user?['created_at'])) ?? ""} ",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.normal,

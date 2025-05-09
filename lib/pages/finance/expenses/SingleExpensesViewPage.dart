@@ -245,7 +245,7 @@ class _SingleEpensesFullViewPageState extends State<SingleEpensesFullViewPage> {
                               ),
                             ),
                             Text(
-                              "${widget.date.toLocal()} (${GetTimeAgo.parse(widget.date.toLocal())})",
+                              "${widget.date.toLocal().toString().split(' ')[0]} (${GetTimeAgo.parse(widget.date.toLocal())})",
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,

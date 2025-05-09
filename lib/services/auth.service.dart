@@ -47,6 +47,8 @@ class AuthService {
       print(otp);
 
       UserRepository userRepository = UserRepository();
+
+      print(phoneNumber);
       Map<String, dynamic>? userData = await userRepository.fetchUser(
         phoneNumber,
       );
@@ -55,7 +57,7 @@ class AuthService {
 
       await sendMessage(
         token:
-        'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiOGFmUEx2TFBZOVQ1N3E1OXFpaUFYS2xtdjAxamZ3RGciLCJleHAiOjE5MDQzMDE3NzYsImlhdCI6MTc0NjUzNTM3NiwianRpIjoiMTk5ODlmMGEtNDk2Yi00NTcwLTkyZTUtNjJmMGQ3ZWI2ODk1In0.O3SPD2rzOoQMl-w8das74YxMvGJQOrHc7rf627b6aK8',
+            'eyJhbGciOiJIUzI1NiJ9.eyJpZGVudGlmaWVyIjoiOGFmUEx2TFBZOVQ1N3E1OXFpaUFYS2xtdjAxamZ3RGciLCJleHAiOjE5MDQzMDE3NzYsImlhdCI6MTc0NjUzNTM3NiwianRpIjoiMTk5ODlmMGEtNDk2Yi00NTcwLTkyZTUtNjJmMGQ3ZWI2ODk1In0.O3SPD2rzOoQMl-w8das74YxMvGJQOrHc7rf627b6aK8',
 
         recipient: phoneNumber,
         message: 'የቪታ ቦርድ ቁጥርዎ ${otp} ነው!',
@@ -117,10 +119,10 @@ class AuthService {
   }
 
   Future<UserEntity> initializeUser(
-      String phoneNumber,
-      String name,
-      String gender,
-      ) async {
+    String phoneNumber,
+    String name,
+    String gender,
+  ) async {
     try {
       // print(phoneNumber);
       UserRepository userRepository = UserRepository();
