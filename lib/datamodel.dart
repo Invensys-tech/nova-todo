@@ -377,8 +377,6 @@ class Journal {
 
       return data;
     } catch (e) {
-      print("----------------------Issue in the model------------------");
-      print(e);
       rethrow;
     }
   }

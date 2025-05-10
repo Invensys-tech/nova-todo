@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/utils/helpers.dart';
 import 'package:flutter_application_1/utils/supabase.clients.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -205,6 +206,33 @@ class UserRepository {
         throw Exception('Error creating otp');
       }
     } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<void> deleteUser(int id) async {
+    try {
+      final userToBeDeleted =
+          await supabaseClient
+              .from(Entities.USER.dbName)
+              .select()
+              .eq("id", id)
+              .maybeSingle();
+
+      print("We tried deleting");
+
+      print(userToBeDeleted);
+      final updateTheUser = await supabaseClient
+          .from(Entities.USER.dbName)
+          .update({
+            "phoneNumber": "${userToBeDeleted?['phoneNumber']} -- Deleted",
+          })
+          .eq("id", userId);
+
+      print(updateTheUser);
+    } catch (e) {
+      print("11111111");
       print(e);
       rethrow;
     }

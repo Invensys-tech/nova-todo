@@ -85,7 +85,7 @@ class _NoteQuilState extends State<NoteQuil> {
       'user_id': userId,
       'color': _selectedHex,
     });
-    Navigator.pop(context);
+    Navigator.pop(context, true);
   }
 
   Future<void> updateJournal() async {
@@ -93,7 +93,7 @@ class _NoteQuilState extends State<NoteQuil> {
     await NotesRepository().updateNote([
       {'title': title.controller.text, 'notes': json, 'color': _selectedHex},
     ], widget.id!);
-    Navigator.pop(context);
+    Navigator.pop(context, true);
   }
 
   String? _validateTitle(String? value) {
@@ -193,7 +193,7 @@ class _NoteQuilState extends State<NoteQuil> {
                 }
               },
               child: Text(
-                translate("Save"),
+                widget.id == null ? translate("Save") : translate("Edit"),
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -239,9 +239,9 @@ class _NoteQuilState extends State<NoteQuil> {
                         ],
                       ),
                     ),
-            
+
                     const SizedBox(width: 10),
-            
+
                     // **Dropdown in place of color selector**
                     Expanded(
                       child: Column(
@@ -259,8 +259,9 @@ class _NoteQuilState extends State<NoteQuil> {
                           ),
                           Container(
                             height: MediaQuery.of(context).size.height * .045,
-                            padding:  EdgeInsets.symmetric(
-                              horizontal: MediaQuery.of(context).size.width*.03,
+                            padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width * .03,
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
@@ -318,9 +319,9 @@ class _NoteQuilState extends State<NoteQuil> {
                     ),
                   ],
                 ),
-            
+
                 SizedBox(height: MediaQuery.of(context).size.height * .025),
-            
+
                 // Quill toolbar + editor
                 Localizations.override(
                   context: context,
@@ -340,7 +341,7 @@ class _NoteQuilState extends State<NoteQuil> {
                           width: MediaQuery.of(context).size.width * 1,
                           child: QuillSimpleToolbar(
                             controller: _controller,
-            
+
                             config: QuillSimpleToolbarConfig(
                               toolbarIconAlignment: WrapAlignment.start,
                               toolbarRunSpacing: 0,
@@ -359,7 +360,7 @@ class _NoteQuilState extends State<NoteQuil> {
                                   ),
                                 ],
                               ),
-            
+
                               showStrikeThrough: false,
                               showInlineCode: false,
                               showClearFormat: false,
@@ -404,7 +405,7 @@ class _NoteQuilState extends State<NoteQuil> {
                                 ),
                               ],
                             ),
-            
+
                             showUndo:
                                 false, // Set this to false to remove the undo button
                             showRedo: false,

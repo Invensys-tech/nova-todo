@@ -142,18 +142,6 @@ class Datamanager {
         .eq("userid", userId)
         .eq('date', getDateOnly(dateTime));
 
-    print("lllllllllllllllllllllllllllll");
-
-    for (final e in data) {
-      print(e);
-    }
-
-    // print(
-    //   (data as List<dynamic>)
-    //       .map((e) => Expense.fromJson(e as Map<String, dynamic>))
-    //       .toList(),
-    // );
-
     return (data as List<dynamic>)
         .map((e) => Expense.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -166,10 +154,6 @@ class Datamanager {
     // convert to "YYYY-MM-DD" (or whatever your getDateOnly produces)
     final start = getDateOnly(startDate);
     final end = getDateOnly(endDate);
-
-    print("IN the datamager");
-    print(start);
-    print(end);
 
     final data = await Supabase.instance.client
         .from('expense')
@@ -190,8 +174,6 @@ class Datamanager {
     DateTime? endDate = null,
   }) async {
     try {
-      print("My date time in the data manager");
-      print(dateTime);
       final List<ConnectivityResult> connectivityResult =
           await Connectivity().checkConnectivity();
 
@@ -233,10 +215,6 @@ class Datamanager {
         // print('connection');
       }
     } catch (e) {
-      print('error type');
-      print(e.runtimeType);
-      print('error');
-      print(e);
       rethrow;
     }
   }
@@ -341,8 +319,6 @@ class Datamanager {
   }
 
   Future<List<Goal>> fetchGoals() async {
-    print("My user id");
-    print(userId);
     final data = await Supabase.instance.client
         .from('goal')
         .select('*  ,sub_goal(*,  sub_goal_task(*))')
@@ -368,16 +344,12 @@ class Datamanager {
   }
 
   double totalBankExpense(List<Expense> expenses) {
-    print("I am the idiot");
-    print(expenses);
     return expenses
         .where((e) => e.paidBy == "Bank")
         .fold(0.0, (sum, e) => sum + e.amount);
   }
 
   double totalBankIncome(List<Income> incomes) {
-    print("No you are");
-    print(incomes);
     return incomes
         .where((i) => i.paidBy == 'Bank')
         .fold(0.0, (sum, i) => sum + i.amount);
