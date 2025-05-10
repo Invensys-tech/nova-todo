@@ -120,7 +120,6 @@ class _EditExpenseState extends State<EditExpense> {
 
       print("1111111111111111111111111111111111");
       print(resp);
-
       if (resp != null) {
         // Populate controllers
         _amountController.text = (resp['amount'] ?? '').toString();

@@ -142,6 +142,18 @@ class Datamanager {
         .eq("userid", userId)
         .eq('date', getDateOnly(dateTime));
 
+    print("lllllllllllllllllllllllllllll");
+
+    for (final e in data) {
+      print(e);
+    }
+
+    // print(
+    //   (data as List<dynamic>)
+    //       .map((e) => Expense.fromJson(e as Map<String, dynamic>))
+    //       .toList(),
+    // );
+
     return (data as List<dynamic>)
         .map((e) => Expense.fromJson(e as Map<String, dynamic>))
         .toList();

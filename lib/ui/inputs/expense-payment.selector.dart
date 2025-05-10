@@ -68,34 +68,29 @@ class _PaidByAndSpecificFromInputContentState
       FlutterNativeContactPicker();
 
   @override
+  @override
   void initState() {
     super.initState();
 
-    // 1️⃣ Pre-select PaidBy from controller (Partner or Bank)
     selectedPaidBy =
         widget.paidByController.text.isNotEmpty
             ? widget.paidByController.text
             : null;
 
-    // 2️⃣ Tell parent so it can load the right dataFuture
     if (selectedPaidBy != null && widget.onPaidByChanged != null) {
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         widget.onPaidByChanged!(selectedPaidBy!);
       });
     }
 
-    // 3️⃣ Pre-select SpecificFrom (could be a partner-id, bank-id, or contact tag)
     final savedSpecific = widget.specificFromController.text;
     if (savedSpecific.isNotEmpty) {
       selectedSpecificFrom = savedSpecific;
     }
 
-    // 4️⃣ Once the dataFuture returns, reconcile that pre-selection
     widget.dataFuture.then((list) {
       if (selectedPaidBy == "Partner") {
-        // build mapping label→id
         _buildPartnerMapping(list);
-        // if the savedSpecific isn’t in our map, clear it
         if (!partnerMapping.containsValue(selectedSpecificFrom)) {
           selectedSpecificFrom = null;
         }
@@ -104,7 +99,6 @@ class _PaidByAndSpecificFromInputContentState
         print(selectedSpecificFrom);
         print(widget.specificFromController.text);
         print(widget.paidByController.text);
-        // ensure the saved bank-id exists in this bank list
         final exists = list.any((b) => b.id.toString() == selectedSpecificFrom);
         if (!exists) {
           selectedSpecificFrom = null;
@@ -242,7 +236,6 @@ class _PaidByAndSpecificFromInputContentState
                   if (selectedPaidBy == "Partner" && snap.hasData) {
                     _buildPartnerMapping(snap.data!);
 
-                    // 1) Insert all your saved partners:
                     items.addAll(
                       partnerMapping.entries.map(
                         (e) => DropdownMenuItem(
@@ -252,7 +245,6 @@ class _PaidByAndSpecificFromInputContentState
                       ),
                     );
 
-                    // 2) If the user has just picked a contact, include it as an item:
                     if (selectedSpecificFrom != null &&
                         selectedSpecificFrom!.endsWith('-addpartner')) {
                       items.insert(
@@ -260,14 +252,12 @@ class _PaidByAndSpecificFromInputContentState
                         DropdownMenuItem(
                           value: selectedSpecificFrom,
                           child: Text(
-                            // You can strip the “-addpartner” suffix if you like:
                             selectedSpecificFrom!.replaceAll('-addpartner', ''),
                           ),
                         ),
                       );
                     }
 
-                    // 3) Finally, always include the “Add from Contacts” action:
                     items.add(
                       DropdownMenuItem(
                         value: "CONTACT_ADD",
