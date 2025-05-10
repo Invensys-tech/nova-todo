@@ -2,6 +2,7 @@ import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/auth/login.dart';
 import 'package:flutter_application_1/providers/preferences.provider.dart';
+import 'package:flutter_application_1/repositories/user.repository.dart';
 import 'package:flutter_application_1/services/auth.service.dart';
 import 'package:flutter_application_1/services/hive.service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -122,8 +123,17 @@ class _SeetingpageState extends State<Seetingpage> {
                 child: const Text('Cancel'),
               ),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  await UserRepository().deleteUser(userId);
+
                   Navigator.pop(context);
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LogInPage()),
+                    (Route<dynamic> route) =>
+                        false, // This will remove all previous routes
+                  );
                   // Call your delete account function here
                 },
                 child: const Text(

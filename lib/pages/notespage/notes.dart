@@ -41,20 +41,41 @@ class _NotesPageState extends State<NotesPage> {
       String plainText = quillData.toPlainText();
 
       return GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder:
-                  (context) => NoteQuil(
-                    note: note.notes,
-                    id: note.id,
-                    title: note.title,
-                  ),
-            ),
-          ).then((value) {
+        onTap: () async {
+          // final didChange = await Navigator.push<bool>(
+          //   context,
+          //   MaterialPageRoute<bool>(
+          //     builder:
+          //         (_) => NoteQuil(
+          //           note: note.notes,
+          //           id: note.id,
+          //           title: note.title,
+          //         ),
+          //   ),
+          // );
+
+          // // only refresh if the editor returned `true`
+          // if (didChange == true) {
+          //   fetchNotes();
+          // }
+          final result =
+              await PersistentNavBarNavigator.pushNewScreenWithRouteSettings<
+                bool
+              >(
+                context,
+                screen: NoteQuil(
+                  note: note.notes,
+                  id: note.id,
+                  title: note.title,
+                ),
+                withNavBar: false, // hide the bottom nav bar on the editor
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                settings: const RouteSettings(),
+              );
+
+          if (result == true) {
             fetchNotes();
-          });
+          }
         },
 
         child: Container(
@@ -118,16 +139,17 @@ class _NotesPageState extends State<NotesPage> {
         backgroundColor: const Color(0xff009966),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onPressed: () async {
-          PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
-            context,
-            screen: NoteQuil(note: ''),
-            withNavBar: false,
-            pageTransitionAnimation: PageTransitionAnimation.cupertino,
-            settings: const RouteSettings(),
-          ).then((_) {
-            // Refresh the notes when returning from the form.
+          final result =
+              await PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
+                context,
+                screen: NoteQuil(note: ''),
+                withNavBar: false,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                settings: const RouteSettings(),
+              );
+          if (result == true) {
             fetchNotes();
-          });
+          }
         },
         child: const Icon(Icons.add, color: Colors.white, size: 30),
       ),

@@ -198,8 +198,6 @@ class _MyAppState extends State<MyApp> {
   Future<void> loabThemeApp() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      print("j");
-      print(prefs);
       isDark = prefs.getBool('ThemeOfApp')!;
     });
   }
@@ -291,7 +289,8 @@ class _MyAppState extends State<MyApp> {
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
-              quill.FlutterQuillLocalizations
+              quill
+                  .FlutterQuillLocalizations
                   .delegate, // Add this line for FlutterQuill localization
             ],
             //locale: Locale('en', 'US'),
